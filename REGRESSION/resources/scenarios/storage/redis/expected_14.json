@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"LREM\",\"arg\":[\"mylist\",\"0\",\"grape\"]}",
+    "content": "1"
+  }
+]

@@ -1,0 +1,10 @@
+[ {
+  "query" : "SELECT * FROM news WHERE newsName LIKE \"{{slights}}\"",
+  "content" : [ {
+    "id" : {{id}},
+    "newsName" : "Slurs and slights of pre-Ashes ?phoney war? are all part of the show",
+    "newsNumber" : {{newsNumber}},
+    "active" : {{expressionsVarTrue}},
+    "createdAt" : "{{year}}-{{monthVariable}}-24T08:02:24.000+00:00"
+  } ]
+} ]

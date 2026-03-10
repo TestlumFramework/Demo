@@ -1,0 +1,103 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of SendGrid test</description>
+        <name>SendGrid</name>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <sendgrid comment="Trying to send email via sendgrid" alias="SG_0">
+        <post endpoint="/mail/send">
+            <response code="202" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "from": {
+                    "email": "contact@testlum.com"
+                    },
+                    "subject": "Test message from file (sendgrid)",
+                    "personalizations": [
+                    {
+                    "to": [
+                    {
+                    "email": "testlum.test.acc@gmail.com"
+                    }
+                    ]
+                    }
+                    ],
+                    "content": [
+                    {
+                    "type": "text/plain",
+                    "value": "Hello, this is test message from file (sendgrid)"
+                    }
+                    ]
+                    }
+                </raw>
+            </body>
+        </post>
+    </sendgrid>
+
+    <sendgrid comment="Testing post method" alias="SG_0">
+        <post endpoint="/templates">
+            <response code="201" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "example_name",
+                    "generation": "legacy"
+                    }
+                </raw>
+            </body>
+        </post>
+    </sendgrid>
+
+    <var comment="Create variable for templates id token" name="template_id">
+        <path value="$.id"/>
+    </var>
+
+    <sendgrid comment="Testing get method" alias="SG_0">
+        <get endpoint="/templates">
+            <response code="200" file="expected_4.json"/>
+            <header name="Content-Type" data="application/json"/>
+        </get>
+    </sendgrid>
+
+    <sendgrid comment="Testing patch method" alias="SG_0">
+        <patch endpoint="/templates/{{template_id}}">
+            <response code="200" file="expected_5.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "new_example_name"
+                    }
+                </raw>
+            </body>
+        </patch>
+    </sendgrid>
+
+    <sendgrid comment="Testing get method" alias="SG_0">
+        <get endpoint="/templates">
+            <response code="200" file="expected_6.json"/>
+            <header name="Content-Type" data="application/json"/>
+        </get>
+    </sendgrid>
+
+    <sendgrid comment="Testing delete method" alias="SG_0">
+        <delete endpoint="/templates/{{template_id}}">
+            <response code="204" file="expected_7.json"/>
+        </delete>
+    </sendgrid>
+
+    <sendgrid comment="Get all templates to make sure that delete work correctly" alias="SG_0">
+        <get endpoint="/templates">
+            <response code="200" file="expected_8.json"/>
+            <queryParam key="page_size" value="18"/>
+        </get>
+    </sendgrid>
+
+</scenario>

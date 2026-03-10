@@ -1,0 +1,6 @@
+[
+  {
+    "query": "              {             delete: \"mongo_news\",             deletes: [             {             q: { active: false, number: 10 },             limit: 1             } ] }         ",
+    "content": "{\"n\":1,\"ok\":1.0}"
+  }
+]

@@ -1,0 +1,104 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Scenario for basic auth</description>
+        <name>Auth Basic</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>auth-basic-mixed</tags>
+    </settings>
+
+    <migrate comment="Migrate list of registered users from patch to 'users' table" alias="POSTGRES_AUTH">
+        <dataset>postgres_auth_basic.sql</dataset>
+    </migrate>
+
+    <postgres comment="Make sure that users were added to 'users' table" alias="POSTGRES_AUTH" file="expected_2.json">
+        <query>SELECT * FROM users</query>
+    </postgres>
+
+    <http comment="Check ability to login added user with valid credentials" alias="MEGA_APP_BASIC">
+        <post endpoint="/basic/login">
+            <response code="200" file="expected_3.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <header name="Authorization"
+                    data="Basic dGVzdGx1bTokMmEkMTAkU3BKVmZHYy9yMVAvNEV2YlFIZ1EyLk14YmhZdENaUlJjUE1pNExtQ2xMOGhaZzNqYzRUSjI="/>
+            <body>
+                <raw>
+                    {
+                    "username": "testlum",
+                    "password": "$2a$10$SpJVfGc/r1P/4EvbQHgQ2.MxbhYtCZRRcPMi4LmClL8hZg3jc4TJ2"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to get list of all users by authorized user using bearer token in header"
+          alias="MEGA_APP_BASIC">
+        <get endpoint="/basic/users">
+            <response code="200" file="expected_4.json"/>
+            <header name="Authorization"
+                    data="Basic dGVzdGx1bTokMmEkMTAkU3BKVmZHYy9yMVAvNEV2YlFIZ1EyLk14YmhZdENaUlJjUE1pNExtQ2xMOGhaZzNqYzRUSjI="/>
+        </get>
+    </http>
+
+    <auth comment="Check ability to log in by 'auth' command" apiAlias="MEGA_APP_BASIC"
+          credentials="auth-user-basic.json" loginEndpoint="/basic/login">
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP_BASIC">
+            <get endpoint="/basic/users">
+                <response code="200" file="expected_7.json"/>
+            </get>
+        </http>
+
+        <http comment="Check ability to add new user inside auth command" alias="MEGA_APP_BASIC">
+            <post endpoint="/basic/users">
+                <response code="200" file="expected_8.json"/>
+                <body>
+                    <raw>
+                        {
+                        "username": "Ronaldo",
+                        "password": "kris123",
+                        "role": "USER",
+                        "enabled": true,
+                        "accountNonExpired": true,
+                        "accountNonLocked": true,
+                        "credentialsNonExpired": true
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+        
+        <var comment="Create var for basic auth password" name="password">
+            <path value="$.password"/>
+        </var>
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP_BASIC">
+            <get endpoint="/basic/users">
+                <response code="200" file="expected_10.json"/>
+            </get>
+        </http>
+
+        <http comment="Check ability to login added user with valid credentials" alias="MEGA_APP_BASIC">
+            <post endpoint="/basic/login">
+                <response code="200" file="expected_11.json"/>
+                <header name="Content-Type" data="application/json"/>
+                <body>
+                    <raw>
+                        {
+                        "username": "Ronaldo",
+                        "password": "{{password}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+    </auth>
+
+</scenario>

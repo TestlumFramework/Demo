@@ -1,0 +1,20 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test to verify that connection can be established for native testing</description>
+        <name>Native health check</name>
+    </overview>
+
+    <settings>
+        <tags>native-healthcheck</tags>
+    </settings>
+
+    <native comment="Start native scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+    </native>
+
+</scenario>

@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"HGETALL\",\"arg\":[\"user:1\"]}",
+    "content": "[name, John Doe, age, 30]"
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "query": "SELECT * FROM news WHERE newsName LIKE \"%slights%\"",
+    "content": [
+      {
+        "id": 1,
+        "newsName": "Slurs and slights of pre-Ashes 'phoney war' are all part of the show",
+        "newsNumber": 10,
+        "active": true,
+        "createdAt": "2023-05-24T08:02:24.000+00:00"
+      }
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Modal</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for modal page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="openModalBtn">
+            <xpath>.//button[text()= ' Open Modal ']</xpath>
+        </locator>
+
+        <locator locatorId="assertExit">
+            <xpath>.//div[contains(@class,"modal opacity-0 pointer-events-none z-50 fixed w-full h-full")]</xpath>
+        </locator>
+
+        <locator locatorId="alertBtn">
+            <id>alert-button</id>
+        </locator>
+    </locators>
+
+</page>

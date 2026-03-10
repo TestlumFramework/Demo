@@ -1,0 +1,40 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for main page on native app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="moreRoutines">
+            <xpath>(//android.widget.ImageView[@content-desc="More options"])[2]</xpath>
+        </locator>
+        
+        <locator locatorId="moreInspiration">
+            <xpath>(//android.widget.ImageView[@content-desc="More options"])[3]</xpath>
+        </locator>
+        
+        <locator locatorId="addTask">
+            <xpath>//android.widget.TextView[@text='Add task']</xpath>
+        </locator>
+        
+        <locator locatorId="taskName">
+            <id>android:id/message</id>
+        </locator>
+
+        <locator locatorId="add">
+            <id>android:id/button1</id>
+        </locator>
+        
+        <locator locatorId="from">
+            <xpath>(//android.widget.TextView[@resource-id='com.todoist:id/text'])[2]</xpath>
+        </locator>
+        
+        <locator locatorId="to">
+            <xpath>(//android.widget.TextView[@resource-id='com.todoist:id/text'])[1]</xpath>
+        </locator>
+    </locators>
+</page>

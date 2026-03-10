@@ -1,0 +1,16 @@
+[
+  {
+    "query": "INSERT INTO news (id, newsName, newsNumber, active, capital, createdAt) VALUES (27, 'Malta', 514000, true, 'Valletta', '2021-01-24 14:00:00')",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "SELECT capital FROM news WHERE newsName LIKE '%Ma%'",
+    "content": [
+      {
+        "capital": "Valletta"
+      }
+    ]
+  }
+]

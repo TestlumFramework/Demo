@@ -1,0 +1,8 @@
+[
+  {
+    "query": "             INSERT INTO dynamodb_news VALUE {             'name': 'News4',             'number': 4,             'active': true,             'createdAt': '2023-04-17T12:34:20.367',             'id': '4'             }         "
+  },
+  {
+    "query": "             INSERT INTO dynamodb_news VALUE {             'name': 'News5',             'number': 5,             'active': true,             'createdAt': '2023-04-17T12:34:20.367',             'id': '5'             }         "
+  }
+]

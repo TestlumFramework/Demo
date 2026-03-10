@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of SES test</description>
+        <name>SES</name>
+    </overview>
+
+    <settings>
+        <tags>ses</tags>
+    </settings>
+
+    <ses comment="Testing ses work" alias="SES_0">
+        <destination>testlum.test.acc@gmail.com</destination>
+        <source>testlum@gmail.com</source>
+        <message>
+            <body>
+                <html>Amazon SES test</html>
+                <text>Hello World</text>
+            </body>
+            <subject>TITLE</subject>
+        </message>
+    </ses>
+
+</scenario>

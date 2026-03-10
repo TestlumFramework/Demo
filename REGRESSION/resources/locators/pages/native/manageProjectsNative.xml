@@ -1,0 +1,16 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for main page on native app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="home">
+            <xpath>//android.widget.TextView[contains(@text,'Home')]</xpath>
+        </locator>
+    </locators>
+</page>

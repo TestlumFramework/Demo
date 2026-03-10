@@ -1,0 +1,150 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Image</description>
+        <name>Image test</name>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+        <var comment="Check ability to fetch URL of current page and create variable with it" name="url">
+            <url/>
+        </var>
+
+        <!--Conditions is prescribed in steps with images, so that the tests can be performed both locally,
+        and on Jenkins, because they have difference in size-->
+        <!--Local is - http://localhost:3000 / Remote is - http://mega-test-site -->
+
+        <condition comment="Create condition for check correct work of var 'url'" name="remote"
+                   spel="'{{url}}' eq 'http://mega-test-site/dashboard'"/>
+
+        <condition comment="Create condition for check correct work of var 'url'" name="local"
+                   spel="'{{url}}' eq 'http://localhost:3000/dashboard'"/>
+
+        <click comment="Click on cards button" locator="sideBar.cards"/>
+
+        <wait comment="Wait three seconds" time="3"/>
+
+        <image comment="Compare full screen (local image)" file="compare1_local.png" condition="local">
+            <fullScreen percentage="99.9"/>
+        </image>
+
+        <image comment="Compare full screen (remote Jenkins image)" file="compare1_remote.png" condition="remote">
+            <fullScreen percentage="85"/>
+        </image>
+
+<!--        todo: diff 0.02 -->
+<!--        <image comment="Compare image file with type png" file="compare2.png">-->
+<!--            <picture locator="cards.compare" attribute="src"/>-->
+<!--        </image>-->
+
+        <navigate comment="Navigate to forms tab" command="to" path="/forms"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <scrollTo comment="Scroll to save button" locator="forms.save"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <image comment="Compare full screen from another tab (local image)"
+               file="compare1_local.png" condition="local">
+            <fullScreen percentage="89"/>
+        </image>
+
+        <image comment="Compare full screen from another tab (remote Jenkins image)"
+               file="compare1_remote.png" condition="remote">
+            <fullScreen percentage="87"/>
+        </image>
+
+        <input comment="Input Username field for check image" locator="forms.username"
+               value="Image percentage check" highlight="false"/>
+
+        <click comment="Click to save button" locator="forms.save" highlight="false"/>
+
+        <image comment="Compare full screen with percentage less then 100 (local image)"
+               file="compare3_local.png" condition="local">
+            <fullScreen percentage="99.8"/>
+        </image>
+
+        <image comment="Compare full screen with percentage less then 100 (remote Jenkins image)"
+               file="compare3_remote.png" condition="remote">
+            <fullScreen percentage="95"/>
+        </image>
+
+        <image comment="Compare full screen with locator exclude (local image)"
+               file="compare3_local.png" condition="local">
+            <fullScreen percentage="99.9">
+                <exclude locator="forms.username"/>
+            </fullScreen>
+        </image>
+
+        <image comment="Compare full screen with locator exclude (remote Jenkins image)"
+               file="compare3_remote.png" condition="remote">
+            <fullScreen percentage="95">
+                <exclude locator="forms.username"/>
+            </fullScreen>
+        </image>
+
+
+
+<!--TODO FIX SCHEMA IN CORE-->
+<!--        <image comment="Compare full screen with area exclude (local image)"-->
+<!--               file="compare4_local.png" condition="local">-->
+<!--            <fullScreen percentage="99.9">-->
+<!--                <exclude>-->
+<!--                    <byArea height="82"-->
+<!--                            width="1151"-->
+<!--                            x="609"-->
+<!--                            y="900"/>-->
+<!--                </exclude>-->
+<!--            </fullScreen>-->
+<!--        </image>-->
+
+<!--TODO FIX SCHEMA IN CORE-->
+<!--        <image comment="Compare full screen with area exclude (remote Jenkins image)"-->
+<!--               file="compare4_remote.png" condition="remote">-->
+<!--            <fullScreen percentage="95">-->
+<!--                <exclude>-->
+<!--                    <byArea height="45"-->
+<!--                            width="574"-->
+<!--                            x="302"-->
+<!--                            y="480"/>-->
+<!--                </exclude>-->
+<!--            </fullScreen>-->
+<!--        </image>-->
+
+        <image comment="Compare a part of screen - form table (local image)"
+               file="compare5_local.png" condition="local">
+            <part locator="forms.form" percentage="99.9"/>
+        </image>
+
+        <image comment="Compare a part of screen - form table (remote Jenkins image)"
+               file="compare5_remote.jpeg" condition="remote">
+            <part locator="forms.form" percentage="90"/>
+        </image>
+
+        <clear comment="Clear Username field for check image" locator="forms.username" highlight="false"/>
+
+        <click comment="Click to save button" locator="forms.save" highlight="false"/>
+
+        <image comment="Compare a part of screen with percentage less then 100 (local image)"
+               file="compare5_local.png" condition="local">
+            <part locator="forms.form" percentage="99"/>
+        </image>
+
+        <image comment="Compare a part of screen with percentage less then 100 (remote Jenkins image)"
+               file="compare5_remote.jpeg" condition="remote">
+            <part locator="forms.form" percentage="95"/>
+        </image>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </web>
+
+</scenario>

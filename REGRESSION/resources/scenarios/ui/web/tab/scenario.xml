@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: tab</description>
+        <name>Tab test</name>
+    </overview>
+
+    <settings active="true">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB scripts">
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <click comment="Click on forms button" locator="sideBar.forms"/>
+
+        <click comment="Click on 'UI Elements' tab" locator="sideBar.uiElements"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <tab comment="Switch to second tab">
+            <switch index="2"/>
+        </tab>
+
+        <assert comment="Create assert for 'tab' command">
+            <attribute comment="Assert for 'Switch Tab'" name="innerHTML" locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <tab comment="Switch to first tab">
+            <switch index="1"/>
+        </tab>
+
+        <assert comment="Create assert for 'tab' command">
+            <attribute comment="Assert for 'Switch Tab'" name="type" locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+        <tab comment="Switch to last opened tab">
+            <switch/>
+        </tab>
+        
+        <tab comment="Close current tab">
+            <close/>
+        </tab>
+
+        <assert comment="Create assert for 'tab' command">
+            <attribute comment="Assert for 'Close Tab'" name="type" locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+        <var comment="Get the url" name="url">
+            <url/>
+        </var>
+
+        <tab comment="Open a tab via url locally" condition="'http://localhost:3000/forms' eq '{{url}}'">
+            <open url="http://localhost:3000/ui-elements"/>
+        </tab>
+
+        <tab comment="Open a tab via url remotely" condition="'http://mega-test-site/forms' eq '{{url}}'">
+            <open url="http://mega-test-site/ui-elements"/>
+        </tab>
+
+        <assert comment="Create assert for 'tab' command">
+            <attribute comment="Assert for 'Open Tab'" name="innerHTML" locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <tab comment="Close tab with index 2">
+            <close index="2"/>
+        </tab>
+
+        <assert comment="Create assert for 'tab' command">
+            <attribute comment="Assert for 'Close Tab with index'" name="type" locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </web>
+
+</scenario>

@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of Web Socket test</description>
+        <name>Web Socket</name>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="Connect to stomp websocket API" alias="MEGA_WS_APP" disconnect="false">
+        <stomp>
+            <subscribe comment="Check ability to subscribe to the 'Ping' topic" topic="/topic/ping"/>
+
+            <send comment="Check ability to send first 'Ping' message"
+                  endpoint="/app/ping">
+                <message>first ping message</message>
+            </send>
+        </stomp>
+    </websocket>
+
+    <websocket comment="Connect to stomp websocket API" alias="MEGA_WS_APP" disconnect="true">
+        <stomp>
+            <subscribe comment="Check ability to subscribe to the 'Ping' topic again to make sure that messages sent
+            while previous subscription are still available"
+                       topic="/topic/ping"/>
+
+            <subscribe comment="Check ability to subscribe to the 'server' topic to make sure that this subscription
+            doesn't affect 'ping' topic messages availability"
+                       topic="/topic/server"/>
+
+            <receive comment="Check ability to receive three 'Pong' messages that were send previously"
+                     topic="/topic/ping"
+                     limit="3" timeoutMillis="5000">
+                <message>
+                    [ {
+                    "value" : "first ping message"
+                    } ]
+                </message>
+            </receive>
+        </stomp>
+    </websocket>
+</scenario>

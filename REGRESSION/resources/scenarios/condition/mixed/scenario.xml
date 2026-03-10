@@ -1,0 +1,261 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for conditions</description>
+        <name>Conditions</name>
+        <developer>Serhii Soroka</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>condition-mixed</tags>
+    </settings>
+
+    <http comment="Check ability to send news via API" alias="MEGA_APP">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Slurs and slights of pre-Ashes 'phoney war' are all part of the show",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Create var with ID" name="id">
+        <path value="$.id"/>
+    </var>
+
+    <condition comment="Create fist condition that is true" name="firstCondition" spel="{{id}} == 1"/>
+
+    <condition comment="Create second condition that is false" name="secondCondition" spel="{{id}} == 10"/>
+
+    <mysql comment="Check ability to conduct SELECT query with TRUE condition" condition="firstCondition"
+           alias="MYSQL_0"
+           file="expected_5.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct SELECT query with FALSE condition" condition="secondCondition"
+           alias="MYSQL_0"
+           file="expected_6.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <condition comment="Check ability to create condition with TRUE condition 'firstCondition'" name="thirdCondition"
+               spel="{{id}} matches '\d+'" condition="firstCondition"/>
+
+    <condition comment="Check impossibility to create condition with FALSE condition 'secondCondition'"
+               name="fourthCondition" spel="{{id}} matches '\d+'" condition="secondCondition"/>
+
+    <mysql comment="Check ability to conduct SELECT query with TRUE condition" condition="thirdCondition"
+           alias="MYSQL_0"
+           file="expected_9.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using two TRUE conditions and 'AND' operator"
+           condition="thirdCondition &amp;&amp; firstCondition"
+           alias="MYSQL_0"
+           file="expected_10.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (2, 'News2', 2, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 2 was successfully added" alias="MYSQL_0" file="expected_11.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 2
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct SELECT query using two TRUE conditions, one FALSE condition and 'AND'
+    operator ('Command was skipped because of the condition' must be displayed in logs)"
+           condition="{{id}} == 1 &amp;&amp; thirdCondition &amp;&amp; {{id}} == 10"
+           alias="MYSQL_0"
+           file="expected_12.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using two TRUE conditions and 'AND' operator"
+           condition="thirdCondition &amp;&amp; {{id}} == 1"
+           alias="MYSQL_0"
+           file="expected_13.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (3, 'News3', 3, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 3 was successfully added" alias="MYSQL_0" file="expected_14.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 3
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct SELECT query using one TRUE condition, one FALSE condition and 'AND'
+    operator ('Command was skipped because of the condition' must be displayed in logs)"
+           condition="{{id}} == 10 &amp;&amp; {{id}} == 1"
+           alias="MYSQL_0"
+           file="expected_15.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using one TRUE, one FALSE conditions and 'OR' operator"
+           condition="firstCondition || secondCondition"
+           alias="MYSQL_0"
+           file="expected_16.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (4, 'News4', 4, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 4 was successfully added" alias="MYSQL_0" file="expected_17.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 4
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using TRUE, FALSE, TRUE conditions and 'OR', 'AND' operators"
+           condition="firstCondition &amp;&amp; {{id}} == 10 || thirdCondition"
+           alias="MYSQL_0"
+           file="expected_18.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (5, 'News5', 5, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 5 was successfully added" alias="MYSQL_0" file="expected_19.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 5
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct SELECT query using FALSE, TRUE, FALSE conditions and 'AND', 'OR'
+    operators ('Command was skipped because of the condition' must be displayed in logs)"
+           condition="{{id}} == 10 || {{id}} == 11  &amp;&amp;  thirdCondition"
+           alias="MYSQL_0"
+           file="expected_20.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using FALSE, FALSE, TRUE conditions and 'OR' operator"
+           condition="{{id}} == 10 || {{id}} == 11  ||  thirdCondition"
+           alias="MYSQL_0"
+           file="expected_21.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (6, 'News6', 6, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 6 was successfully added" alias="MYSQL_0" file="expected_22.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 6
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using two TRUE conditions and 'AND' operator"
+           condition="thirdCondition and firstCondition"
+           alias="MYSQL_0"
+           file="expected_23.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (7, 'News7', 7, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 7 was successfully added" alias="MYSQL_0" file="expected_24.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 7
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct INSERT query using TRUE condition and '!' operator ('Command was
+    skipped because of the condition' must be displayed in logs)"
+           condition="!firstCondition"
+           alias="MYSQL_0"
+           file="expected_25.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (8, 'News8', 8, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using 'true' statement as condition"
+           condition="true"
+           alias="MYSQL_0"
+           file="expected_26.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (9, 'News9', 9, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 9 was successfully added" alias="MYSQL_0" file="expected_27.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 9
+        </query>
+    </mysql>
+
+    <mysql comment="Check impossibility to conduct INSERT query using 'false' statement as condition"
+           condition="false"
+           alias="MYSQL_0"
+           file="expected_28.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (10, 'News10', 10, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct INSERT query using complicated condition"
+           condition="!firstCondition == false &amp;&amp; !secondCondition"
+           alias="MYSQL_0"
+           file="expected_29.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (11, 'News11', 11, true, '2023-04-21 10:48:26.096000')
+        </query>
+    </mysql>
+
+    <mysql comment="Make sure that new with id 11 was successfully added" alias="MYSQL_0" file="expected_30.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 11
+        </query>
+    </mysql>
+</scenario>

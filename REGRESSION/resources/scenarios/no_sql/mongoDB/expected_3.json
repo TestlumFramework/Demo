@@ -1,0 +1,6 @@
+[
+  {
+    "query": "             {             insert: \"mongo_news\",             documents: [             {_id: 1, name: \"Gianluigi Donnarumma\", number: 21, active: true, createdAt: ISODate(\"2023-04-15T05:45:00.000Z\") },             {_id: 2, name: \"Riyad Mahrez\", number: 26, active: false, createdAt: ISODate(\"2023-04-15T06:30:00.000Z\") },             {_id: 3, name: \"Thiago Alcantara\", number: 10, active: false, createdAt: ISODate(\"2023-04-15T08:15:00.000Z\") },             {_id: 4, name: \"Nicolò Barella\", number: 23, active: false, createdAt: ISODate(\"2023-04-15T15:45:00.000Z\") },             {_id: 5, name: \"Karim Benzema\", number: 9, active: true, createdAt: ISODate(\"2023-04-15T16:30:00.000Z\") },             {_id: 6, name: \"Jadon Sancho\", number: 11, active: true, createdAt: ISODate(\"2023-04-15T18:15:00.000Z\") },             {_id: 7, name: \"Edinson Cavani\", number: 10, active: true, createdAt: ISODate(\"2023-04-15T19:10:00.000Z\") }             ] }         ",
+    "content": "{\"n\":7,\"ok\":1.0}"
+  }
+]

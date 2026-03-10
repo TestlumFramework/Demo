@@ -1,0 +1,17 @@
+[
+  {
+    "query": "select * from t_table;",
+    "content": [
+      {
+        "id": 2,
+        "name": "Ruslan",
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Example 2</title>\n</head>\n<body>\n    <a href=\"https://example.com\" custom-id=\"67890\">Visit Example</a>\n</body>\n</html>\n"
+      },
+      {
+        "id": 1,
+        "name": "Bohdan",
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Example 1</title>\n</head>\n<body>\n    <div id=\"content\" custom-id=\"https://dev.testlum.com/\">Hello, World!</div>\n</body>\n</html>\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+{
+  insert: "mongo_news",
+  documents: [
+    {name: "Lionel Messi", number: 10, active: true, createdAt: ISODate("2023-04-14T08:00:00.000Z") },
+    {name: "Cristiano Ronaldo", number: 7, active: true, createdAt: ISODate("2023-04-14T09:30:00.000Z") },
+    {name: "Neymar Jr.", number: 10, active: false, createdAt: ISODate("2023-04-14T11:15:00.000Z") },
+    {name: "Kylian Mbappé", number: 7, active: true, createdAt: ISODate("2023-04-14T12:00:00.000Z") },
+    {name: "Mohamed Salah", number: 11, active: true, createdAt: ISODate("2023-04-14T13:45:00.000Z") },
+    {name: "Virgil van Dijk", number: 4, active: false, createdAt: ISODate("2023-04-14T15:30:00.000Z") },
+    {name: "Kevin De Bruyne", number: 17, active: true, createdAt: ISODate("2023-04-14T16:15:00.000Z") },
+    {name: "Luis Suárez", number: 9, active: false, createdAt: ISODate("2023-04-14T17:00:00.000Z") },
+    {name: "Sadio Mané", number: 10, active: true, createdAt: ISODate("2023-04-14T18:45:00.000Z") },
+    {name: "Robert Lewandowski", number: 9, active: false, createdAt: ISODate("2023-04-14T19:30:00.000Z") },
+    {name: "Harry Kane", number: 10, active: true, createdAt: ISODate("2023-04-14T21:00:00.000Z") },
+    {name: "Jan Oblak", number: 13, active: true, createdAt: ISODate("2023-04-14T22:30:00.000Z") },
+    {name: "Luka Modric", number: 10, active: false, createdAt: ISODate("2023-04-14T23:15:00.000Z") },
+    {name: "Manuel Neuer", number: 1, active: true, createdAt: ISODate("2023-04-14T23:59:00.000Z") },
+    {name: "Eden Hazard", number: 7, active: false, createdAt: ISODate("2023-04-15T01:00:00.000Z") },
+    {name: "Joshua Kimmich", number: 6, active: true, createdAt: ISODate("2023-04-15T02:30:00.000Z") },
+    {name: "Antoine Griezmann", number: 7, active: true, createdAt: ISODate("2023-04-15T03:15:00.000Z") },
+    {name: "Paul Pogba", number: 6, active: false, createdAt: ISODate("2023-04-15T04:00:00.000Z") },
+    {name: "Sergio Ramos", number: 4, active: true, createdAt: ISODate("2023-04-15T05:45:00.000Z") },
+    {name: "NGolo Kanté", number: 7, active: true, createdAt: ISODate("2023-04-15T06:30:00.000Z") }
+  ]
+}

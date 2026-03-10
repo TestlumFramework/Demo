@@ -1,0 +1,6 @@
+[
+  {
+    "query": "CREATE TABLE test_db.cities ( id UInt32, name String NOT NULL, country_id UInt32, population UInt32, createdAt DateTime DEFAULT now(), PRIMARY KEY (id)) ENGINE = MergeTree ORDER BY id",
+    "content": "Query completed successfully"
+  }
+]

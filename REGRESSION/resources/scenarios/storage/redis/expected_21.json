@@ -1,0 +1,30 @@
+[
+  {
+    "query": "{\"command\":\"SADD\",\"arg\":[\"myset\",\"element1\"]}",
+    "content": "1"
+  },
+  {
+    "query": "{\"command\":\"SISMEMBER\",\"arg\":[\"myset\",\"element1\"]}",
+    "content": "1"
+  },
+  {
+    "query": "{\"command\":\"SMEMBERS\",\"arg\":[\"myset\"]}",
+    "content": "[element1]"
+  },
+  {
+    "query": "{\"command\":\"SREM\",\"arg\":[\"myset\",\"element2\"]}",
+    "content": "0"
+  },
+  {
+    "query": "{\"command\":\"SISMEMBER\",\"arg\":[\"myset\",\"element2\"]}",
+    "content": "0"
+  },
+  {
+    "query": "{\"command\":\"DEL\",\"arg\":[\"myset\"]}",
+    "content": "1"
+  },
+  {
+    "query": "{\"command\":\"SMEMBERS\",\"arg\":[\"myset\"]}",
+    "content": "[]"
+  }
+]

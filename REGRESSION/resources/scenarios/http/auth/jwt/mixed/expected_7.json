@@ -1,0 +1,6 @@
+[
+  {
+    "query": "ALTER SEQUENCE users_id_seq RESTART WITH 3",
+    "content": "Query completed successfully"
+  }
+]

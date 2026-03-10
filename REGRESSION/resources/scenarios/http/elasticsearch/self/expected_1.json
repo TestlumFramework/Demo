@@ -1,0 +1,19 @@
+{
+  "error" : {
+    "root_cause" : [ {
+      "type" : "index_not_found_exception",
+      "reason" : "no such index [news]",
+      "resource.type" : "index_expression",
+      "resource.id" : "news",
+      "index_uuid" : "_na_",
+      "index" : "news"
+    } ],
+    "type" : "index_not_found_exception",
+    "reason" : "no such index [news]",
+    "resource.type" : "index_expression",
+    "resource.id" : "news",
+    "index_uuid" : "_na_",
+    "index" : "news"
+  },
+  "status" : 404
+}

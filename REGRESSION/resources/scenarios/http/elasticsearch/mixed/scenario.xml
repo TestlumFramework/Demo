@@ -1,0 +1,131 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of the positive ElasticSearch test</description>
+        <name>Positive ElasticSearch test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-mixed</tags>
+    </settings>
+
+   <elasticsearch comment="Execute elasticsearch command get before post method" alias="ELASTIC_0">
+        <get endpoint="/news/_doc/1">
+            <response file="expected_1.json" code="404">
+                <warning name="null"/>
+            </response>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch comment="Execute elasticsearch command post" alias="ELASTIC_0">
+        <post endpoint="/news/_doc/1">
+            <header name="content-type" data="application/json"/>
+            <response code="201" file="expected_2.json">
+                <header name="content-length" data="152"/>
+                <warning name="types removal"/>
+            </response>
+            <body>
+                <from file="request_2.json"/>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <wait comment="Wait 1 second for retrieve info" time="1"/>
+    
+    <http comment="Check ability to get list of all news" alias="MEGA_APP">
+        <get endpoint="/es/news">
+            <response file="expected_4.json" code="200"/>
+        </get>
+    </http>
+
+    <elasticsearch comment="Execute elasticsearch command get" alias="ELASTIC_0">
+        <get endpoint="/news/_doc/1">
+            <response file="expected_5.json" code="200">
+                <header name="content-length" data="206"/>
+                <warning name="null"/>
+            </response>
+        </get>
+    </elasticsearch>
+
+    <http comment="Check ability to add a news" alias="MEGA_APP">
+        <post endpoint="/es/news">
+            <response file="expected_6.json" code="200"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Steph",
+                    "number": 30,
+                    "active": true,
+                    "createdAt": "2023-06-05T16:19:34.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <elasticsearch comment="Execute elasticsearch command delete" alias="ELASTIC_0">
+        <delete endpoint="/news/_doc/1">
+            <response code="200" file="expected_7.json"/>
+        </delete>
+    </elasticsearch>
+
+    <wait comment="Wait 1 second for retrieve info" time="1"/>
+
+    <http comment="Check ability to get list of news by name" alias="MEGA_APP">
+        <get endpoint="/es/news?name=Steph">
+            <response file="expected_9.json" code="200"/>
+        </get>
+    </http>
+
+    <elasticsearch comment="Execute elasticsearch command get after delete" alias="ELASTIC_0">
+        <get endpoint="/news/_doc/1">
+            <response file="expected_10.json" code="404">
+                <warning name="null"/>
+            </response>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch comment="Execute elasticsearch command post to another endpoint" alias="ELASTIC_0">
+        <post endpoint="/news/_doc/1">
+            <header name="content-type" data="application/json"/>
+            <response code="201" file="expected_11.json"/>
+            <body>
+                <from file="request_11.json"/>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch comment="Execute elasticsearch command put" alias="ELASTIC_0">
+        <put endpoint="/news/_doc/2">
+            <response code="201" file="expected_12.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Luka",
+                    "number": 7,
+                    "active": true,
+                    "createdAt": "2023-06-04T16:22:59.432Z"
+                    }
+                </raw>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch comment="Execute elasticsearch command head" alias="ELASTIC_0">
+        <head endpoint="/news/_doc/2">
+            <response code="200">
+                <header name="content-length" data="197"/>
+                <header name="content-type" data="application/json; charset=UTF-8"/>
+            </response>
+        </head>
+    </elasticsearch>
+
+    <elasticsearch comment="Execute elasticsearch command get after put" alias="ELASTIC_0">
+        <get endpoint="/news/_doc/2">
+            <response file="expected_14.json" code="200"/>
+        </get>
+    </elasticsearch>
+
+</scenario>

@@ -1,0 +1,6 @@
+[
+  {
+    "query": "DROP TABLE test_db.cities",
+    "content": "Query completed successfully"
+  }
+]

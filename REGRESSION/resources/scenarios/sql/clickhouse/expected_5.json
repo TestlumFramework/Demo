@@ -1,0 +1,197 @@
+[
+  {
+    "query": "SELECT * FROM news ORDER BY id",
+    "content": [
+      {
+        "id": 1,
+        "newsName": "United States",
+        "newsNumber": 331449281,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 2,
+        "newsName": "Canada",
+        "newsNumber": 38005238,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 3,
+        "newsName": "Mexico",
+        "newsNumber": 130262216,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 4,
+        "newsName": "Brazil",
+        "newsNumber": 213993437,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 5,
+        "newsName": "Argentina",
+        "newsNumber": 45981607,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 6,
+        "newsName": "France",
+        "newsNumber": 67348151,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 7,
+        "newsName": "Germany",
+        "newsNumber": 83149300,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 8,
+        "newsName": "United Kingdom",
+        "newsNumber": 68207116,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 9,
+        "newsName": "Italy",
+        "newsNumber": 60367497,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 10,
+        "newsName": "Spain",
+        "newsNumber": 46754783,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 11,
+        "newsName": "China",
+        "newsNumber": 1393800000,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 12,
+        "newsName": "India",
+        "newsNumber": 1393409038,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 13,
+        "newsName": "Japan",
+        "newsNumber": 126267000,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 14,
+        "newsName": "South Korea",
+        "newsNumber": 51361956,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 15,
+        "newsName": "Australia",
+        "newsNumber": 25687041,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 16,
+        "newsName": "New Zealand",
+        "newsNumber": 4984670,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 17,
+        "newsName": "Ukraine",
+        "newsNumber": 43752156,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 18,
+        "newsName": "South Africa",
+        "newsNumber": 59622350,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 19,
+        "newsName": "Egypt",
+        "newsNumber": 102334404,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 20,
+        "newsName": "Nigeria",
+        "newsNumber": 211400708,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 21,
+        "newsName": "Norway",
+        "newsNumber": 5421241,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 22,
+        "newsName": "Sweden",
+        "newsNumber": 10379295,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 23,
+        "newsName": "Finland",
+        "newsNumber": 5527578,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 24,
+        "newsName": "Denmark",
+        "newsNumber": 5795780,
+        "active": 0,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 25,
+        "newsName": "Iceland",
+        "newsNumber": 341243,
+        "active": 1,
+        "createdAt": "p(any)"
+      },
+      {
+        "id": 26,
+        "newsName": "Switzerland",
+        "newsNumber": 8715853,
+        "active": 1,
+        "createdAt": "p(any)"
+      }
+    ]
+  },
+  {
+    "query": "ALTER TABLE test_db.news UPDATE newsNumber = 99999999 WHERE newsName = 'Mexico'",
+    "content": "Query completed successfully"
+  },
+  {
+    "query": "ALTER TABLE test_db.news UPDATE active = false WHERE newsNumber > 100000000",
+    "content": "Query completed successfully"
+  }
+]

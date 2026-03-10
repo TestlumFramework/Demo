@@ -1,0 +1,159 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of positive test for MySQL DB</description>
+        <name>Positive MYSQL DB Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>mysql</tags>
+    </settings>
+
+    <http comment="Check ability to get empty list of news" alias="MEGA_APP">
+        <get endpoint="/mysql/news">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <mysql comment="Check ability to get empty list of news"
+           alias="MYSQL_0" file="expected_2.json">
+        <query>
+            SELECT * FROM news;;
+            SELECT newsName FROM news
+        </query>
+    </mysql>
+
+    <migrate comment="Check ability to migrate test dataset"
+             alias="MYSQL_0" name="MYSQL">
+        <dataset>mysql_patch.sql</dataset>
+    </migrate>
+
+    <mysql comment="Check ability to get new news data with SQL query"
+           alias="MYSQL_0"
+           file="expected_4.json">
+        <query>
+            SELECT * FROM news;;
+            SELECT newsNumber FROM news
+            WHERE id = 1;;
+        </query>
+    </mysql>
+
+    <http comment="Check ability to get new news data with HTTP query"
+          alias="MEGA_APP">
+        <get endpoint="/mysql/news">
+            <response code="200" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <mysql comment="Check ability to make INSERT query into the DB"
+           alias="MYSQL_0"
+           file="expected_6.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (4, 'News4', 4, false, '2023-04-21 10:49:02');;
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (5, 'News5', 5, false, '2023-04-21 10:49:10');;
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (6, 'News6', 6, true, '2023-04-21 10:49:05');;
+        </query>
+    </mysql>
+
+    <http comment="Check ability to post new news with HTTP query"
+          alias="MEGA_APP">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_7.json"/>
+            <body>
+                <from file="request_7.json"/>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Creating variable with id of previous command" name="newsId">
+        <path value="$.id"/>
+    </var>
+
+    <mysql comment="Check ability to get news added with INSERT and HTTP queries"
+           alias="MYSQL_0"
+           file="expected_9.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 4 OR id = {{newsId}};;
+            SELECT createdAt FROM news
+            WHERE id = {{newsId}};;
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to delete data"
+           alias="MYSQL_0"
+           file="expected_10.json">
+        <query>
+            DELETE FROM news
+            WHERE active = false;;
+            DELETE FROM news
+            WHERE id = 6
+        </query>
+    </mysql>
+
+    <mysql comment="Checking that that records were deleted"
+           alias="MYSQL_0"
+           file="expected_11.json">
+        <query>
+            SELECT * FROM news
+            WHERE active = false;;
+            SELECT * FROM news
+            WHERE id = 6;;
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct UPDATE query"
+           alias="MYSQL_0"
+           file="expected_12.json">
+        <query>
+            UPDATE news SET newsname = 'NewsWithVar'
+            WHERE id = {{newsId}};;
+            UPDATE news SET newsname = 'UpdatedNewsWithVar'
+            WHERE id = {{newsId}};;
+        </query>
+    </mysql>
+
+    <http comment="Check ability to get news by name with updated name"
+          alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name=UpdatedNewsWithVar">
+            <response code="200" file="expected_13.json"/>
+        </get>
+    </http>
+
+    <mysql comment="Check ability to get updated news name"
+           alias="MYSQL_0"
+           file="expected_14.json">
+        <query>
+            SELECT newsname, newsnumber FROM news
+            WHERE id = {{newsId}}
+        </query>
+    </mysql>
+
+    <mysql comment="Check ability to conduct 4 query in one conduction"
+           alias="MYSQL_0"
+           file="expected_15.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (10, 'News10', 10, true, '2023-04-21 10:51:02')
+        </query>
+        <query>
+            SELECT * FROM news
+            WHERE newsnumber = 10
+        </query>
+        <query>
+            UPDATE news
+            SET newsnumber = 11
+            WHERE newsname = 'News10'
+        </query>
+        <query>
+            DELETE FROM news
+            WHERE newsnumber = 11
+        </query>
+    </mysql>
+
+</scenario>

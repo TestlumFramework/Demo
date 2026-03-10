@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"DEL\",\"arg\":[\"name\"]}",
+    "content": "1"
+  }
+]

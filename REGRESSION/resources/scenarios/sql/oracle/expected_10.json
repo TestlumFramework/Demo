@@ -1,0 +1,16 @@
+[
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT, CAPITAL) VALUES ('Malta', 514000, 1, TO_TIMESTAMP('2021-01-24 14:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Valletta')",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "SELECT CAPITAL FROM NEWS WHERE NEWSNAME LIKE '%Ma%'",
+    "content": [
+      {
+        "CAPITAL": "Valletta"
+      }
+    ]
+  }
+]

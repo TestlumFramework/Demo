@@ -1,0 +1,165 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for ClickHouse SQL</description>
+        <name>ClickHouse test scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>clickhouse</tags>
+    </settings>
+
+    <migrate comment="Prepare information from clickhouse_patch.sql (20 records)"
+             alias="CLICKHOUSE_0"
+             name="CLICKHOUSE">
+        <dataset>clickhouse_patch.sql</dataset>
+    </migrate>
+
+    <http comment="Check ability to get all news from database through http" alias="MEGA_APP">
+        <get endpoint="/clickhouse/news">
+            <response code="200" file="expected_2.json"/>
+        </get>
+    </http>
+
+    <clickhouse comment="Execute INSERT 'click house' command" alias="CLICKHOUSE_0" file="expected_3.json">
+        <query>
+            INSERT INTO news (id, newsName, newsNumber, active, createdAt)
+            VALUES
+            (21, 'Norway', 5421241, true, '2021-01-20 07:00:00'),
+            (22, 'Sweden', 10379295, true, '2021-01-21 08:00:00'),
+            (23, 'Finland', 5527578, true, '2021-01-22 09:00:00'),
+            (24, 'Denmark', 5795780, false, '2021-01-23 10:00:00'),
+            (25, 'Iceland', 341243, true, '2021-01-24 11:00:00')
+        </query>
+    </clickhouse>
+
+    <http comment="Check ability to add news to database through http" alias="MEGA_APP">
+        <post endpoint="/clickhouse/news">
+            <response code="200" file="expected_4.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Switzerland",
+                    "number": 8715853,
+                    "active": true,
+                    "createdAt": "2021-01-25T07:27:44.273Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <clickhouse comment="Execute SELECT and UPDATE 'click house' commands" alias="CLICKHOUSE_0" file="expected_5.json">
+        <query>
+            SELECT * FROM news ORDER BY id
+        </query>
+        <query>
+            ALTER TABLE test_db.news
+            UPDATE newsNumber = 99999999
+            WHERE newsName = 'Mexico'
+        </query>
+        <query>
+            ALTER TABLE test_db.news
+            UPDATE active = false
+            WHERE newsNumber > 100000000
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute DELETE 'click house' command" alias="CLICKHOUSE_0" file="expected_6.json">
+        <query>
+            ALTER TABLE test_db.news
+            DELETE WHERE id = 16
+        </query>
+    </clickhouse>
+
+    <wait comment="Wait for 2 seconds" time="2"/>
+
+    <http comment="Check ability to get news from database through http by 'id' that was delete" alias="MEGA_APP">
+        <get endpoint="/clickhouse/news/16">
+            <response code="404" file="expected_7.json"/>
+        </get>
+    </http>
+
+    <clickhouse comment="Execute SELECT 'click house' command" alias="CLICKHOUSE_0" file="expected_8.json">
+        <query>
+            SELECT * FROM news ORDER BY id
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute ALTER TABLE ADD COLUMN 'click house' command" alias="CLICKHOUSE_0" file="expected_9.json">
+        <query>
+            ALTER TABLE test_db.news
+            ADD COLUMN capital String
+            AFTER active
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute INSERT and SELECT 'click house' commands for new column" alias="CLICKHOUSE_0" file="expected_10.json">
+        <query>
+            INSERT INTO news (id, newsName, newsNumber, active, capital, createdAt)
+            VALUES
+            (27, 'Malta', 514000, true, 'Valletta', '2021-01-24 14:00:00')
+        </query>
+
+        <query>
+            SELECT capital FROM news WHERE newsName LIKE '%Ma%'
+        </query>
+    </clickhouse>
+
+    <http comment="Check ability to get news from database through http by 'name'" alias="MEGA_APP">
+        <get endpoint="/clickhouse/news/by?name=Malta">
+            <response code="200" file="expected_11.json"/>
+        </get>
+    </http>
+
+    <clickhouse comment="Execute ALTER TABLE DROP COLUMN 'click house' command" alias="CLICKHOUSE_0" file="expected_12.json">
+        <query>
+            ALTER TABLE test_db.news
+            DROP COLUMN capital
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute CREATE TABLE 'click house' command" alias="CLICKHOUSE_0" file="expected_13.json">
+        <query>
+            CREATE TABLE test_db.cities (
+            id UInt32,
+            name String NOT NULL,
+            country_id UInt32,
+            population UInt32,
+            createdAt DateTime DEFAULT now(),
+            PRIMARY KEY (id))
+            ENGINE = MergeTree
+            ORDER BY id
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute INSERT 'click house' command for a new table" alias="CLICKHOUSE_0" file="expected_14.json">
+        <query>
+            INSERT INTO cities (id, `name`, country_id, population, createdAt)
+            VALUES
+            (1, 'New York City', 1, 8537673, '2022-04-22 10:00:00'),
+            (2, 'Los Angeles', 1, 3977683, '2022-04-22 10:00:00'),
+            (3, 'Chicago', 1, 2693976, '2022-04-22 10:00:00'),
+            (4, 'Paris', 2, 2140526, '2022-04-22 10:00:00')
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute INNER JOIN 'click house' command" alias="CLICKHOUSE_0" file="expected_15.json">
+        <query>
+            SELECT newsName, newsNumber, name, population
+            FROM news
+            INNER JOIN cities
+            ON news.id = cities.country_id
+            ORDER BY id
+        </query>
+    </clickhouse>
+
+    <clickhouse comment="Execute DROP TABLE 'click house' command" alias="CLICKHOUSE_0" file="expected_16.json">
+        <query>
+            DROP TABLE test_db.cities
+        </query>
+    </clickhouse>
+
+</scenario>

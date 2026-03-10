@@ -1,0 +1,38 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Dashboard</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for dashboard page</description>
+    </details>
+
+    <include component="header.xml"/>
+
+    <locators>
+        <locator locatorId="title">
+            <xpath>.//h3[text()= 'Dashboard']</xpath>
+        </locator>
+
+        <locator locatorId="name10">
+            <className>on</className>
+            <xpath>(.//div[text()= 'John Doe'])[10]</xpath>
+            <cssSelector>#app > div > div.flex-1.flex.flex-col.overflow-hidden > main > div > div > div.flex.flex-col.mt-8 > div > div > table > tbody > tr:nth-child(10) > td:nth-child(1) > div > div.ml-4 > div.text-sm.font-medium.leading-5.text-gray-900</cssSelector>
+            <className>off</className>
+            <xpath>(.//div[text()= 'John Doe'])[10]</xpath>
+        </locator>
+
+        <locator locatorId="up">
+            <xpath>.//button[@class='to-topppp']</xpath>
+            <className>to-top</className>
+            <cssSelector>#app > fake > div > div.flex-1.flex.flex-col.overflow-hidden > main > button</cssSelector>
+            <className>error</className>
+        </locator>
+
+        <locator locatorId="inner">
+            <cssSelector>#app > div > div.flex-1.flex.flex-col.overflow-hidden > main</cssSelector>
+        </locator>
+    </locators>
+
+</page>

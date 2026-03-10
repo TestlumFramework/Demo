@@ -1,0 +1,6 @@
+[
+  {
+    "query": "             {             find: \"mongo_news\",             filter: {             active: false,             number: { \"$eq\": 7 }             } }         ",
+    "content": "\\{\"cursor\":\\{\"firstBatch\":\\[\\{\"_id\":\\{p(any)},\"name\":\"Eden Hazard\",\"number\":7,\"active\":false,\"createdAt\":\"2023-04-15Tp(any)\"}],\"id\":0,\"ns\":\"mongo_db.mongo_news\"},\"ok\":1.0}"
+  }
+]

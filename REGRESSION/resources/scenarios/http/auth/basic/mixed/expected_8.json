@@ -1,0 +1,13 @@
+{
+  "password" : "p(any)",
+  "role" : "USER",
+  "credentialsNonExpired" : true,
+  "accountNonExpired" : true,
+  "id" : "p(any)",
+  "enabled" : true,
+  "authorities" : [ {
+    "authority" : "USER"
+  } ],
+  "username" : "Ronaldo",
+  "accountNonLocked" : true
+}

@@ -1,0 +1,6 @@
+browser,isSupported
+Chrome,true
+Firefox,true
+Safari,true
+Edge,true
+Opera,false

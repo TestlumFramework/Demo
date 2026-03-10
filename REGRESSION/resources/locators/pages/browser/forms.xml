@@ -1,0 +1,65 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Forms</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for forms page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="save">
+            <xpath>.//button[text()= ' Save '][contains(@class, '700')]</xpath>
+        </locator>
+
+        <locator locatorId="class">
+            <xpath>.//label[@class='text-xs']</xpath>
+        </locator>
+
+        <locator locatorId="type">
+            <xpath>(.//input[@type='password'])[1]</xpath>
+        </locator>
+
+        <locator locatorId="for">
+            <xpath>.//label[@for='username']</xpath>
+        </locator>
+
+        <locator locatorId="fromVar">
+            <xpath>.//label[@for='emailAddress']</xpath>
+        </locator>
+
+        <locator locatorId="username">
+            <xpath>.//label[text()='Username']/following-sibling::input</xpath>
+        </locator>
+
+        <locator locatorId="email">
+            <xpath>.//label[text()='Email Address']/following-sibling::input</xpath>
+        </locator>
+
+        <locator locatorId="title">
+            <xpath>.//h3[text()= 'Forms']</xpath>
+        </locator>
+
+        <locator locatorId="password">
+            <xpath>.//label[text()='Password']/following-sibling::input</xpath>
+        </locator>
+
+        <locator locatorId="repeatPassword">
+            <xpath>.//label[text()='Password Confirmation']/following-sibling::input</xpath>
+        </locator>
+
+        <locator locatorId="category">
+            <xpath>(.//input[@type='text'])[2]</xpath>
+        </locator>
+        
+        <locator locatorId="form">
+            <xpath>.//div[contains(@class,'p-6 bg-white')]</xpath>
+        </locator>
+
+        <locator locatorId="inner">
+            <cssSelector>#app > div > div.flex-1.flex.flex-col.overflow-hidden > main</cssSelector>
+        </locator>
+    </locators>
+
+</page>

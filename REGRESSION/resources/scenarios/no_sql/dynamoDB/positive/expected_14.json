@@ -1,0 +1,5 @@
+[
+  {
+    "query": "             DELETE FROM dynamodb_news             WHERE name = 'News3' AND id = '3'         "
+  }
+]

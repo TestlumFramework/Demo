@@ -1,0 +1,14 @@
+{
+  "args": {
+    "testParam12!": "Hello World!12@",
+    "testParam13!": "Hello World!13@"
+  },
+  "headers": {
+    "host": "postman-echo.com",
+    "accept-encoding": "gzip, br",
+    "user-agent": "p(any)",
+    "x-forwarded-proto": "https",
+    "content-type": "application/json"
+  },
+  "url": "https://postman-echo.com/get?testParam12!=Hello%20World%2112%40&testParam13!=Hello%20World%2113%40"
+}

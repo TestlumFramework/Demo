@@ -1,0 +1,5 @@
+{
+  "message": "Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.knubisoft.testapi.model.MongoNews> com.knubisoft.testapi.api.impl.MongodbNewsController.createNews(com.knubisoft.testapi.dto.NewsDto): [Field error in object 'newsDto' on field 'number': rejected value [null]; codes [NotNull.newsDto.number,NotNull.number,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [newsDto.number,number]; arguments []; default message [number]]; default message [Number is required]] ",
+  "status": "BAD_REQUEST",
+  "timestamp": "p(any)"
+}

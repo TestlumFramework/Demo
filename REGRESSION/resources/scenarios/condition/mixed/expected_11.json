@@ -1,0 +1,14 @@
+[
+  {
+    "query": "SELECT * FROM news WHERE id = 2",
+    "content": [
+      {
+        "id": 2,
+        "newsName": "News2",
+        "newsNumber": 2,
+        "active": true,
+        "createdAt": "2023-04-21T07:48:26.000+00:00"
+      }
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+[
+  {
+    "query": "             {             find: \"mongo_book\"             }         ",
+    "content": "{\"cursor\":{\"firstBatch\":[{\"_id\":\"1\",\"author\":\"J. K. Rowling\",\"title\":\"Harry Potter and Philosopher's Stone\",\"number\":1},{\"_id\":\"2\",\"author\":\"J. R. R. Tolkien\",\"title\":\"The Lord of the Rings: The Fellowship of the Ring\",\"number\":2},{\"_id\":\"3\",\"author\":\"George R. R. Martin\",\"title\":\"A Game of Thrones\",\"number\":3},{\"_id\":\"4\",\"author\":\"Fredrik Backman\",\"title\":\"A Man Called Ove\",\"number\":4}],\"id\":0,\"ns\":\"graphql_db.mongo_book\"},\"ok\":1.0}"
+  }
+]

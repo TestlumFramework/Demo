@@ -1,0 +1,44 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: clear</description>
+        <name>Clear native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Start native scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Google Auth' button" locator="loginNative.googleAuth"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <input comment="Input email field" locator="loginNative.email" value="native.test.testlum@gmail.com"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <clear comment="Clear email field" locator="loginNative.email" highlight="true"/>
+
+        <click comment="Click on 'Email' field" locator="loginNative.email"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Next' button" locator="loginNative.next"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'clear'" name="resource-id" locator="loginNative.email">
+                <content>identifierId</content>
+            </attribute>
+        </assert>
+
+    </native>
+
+</scenario>

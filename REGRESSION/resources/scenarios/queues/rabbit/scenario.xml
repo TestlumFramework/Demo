@@ -1,0 +1,272 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self rabbitMQ test</description>
+        <name>Rabbit test scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http comment="Check ability to receive a message" alias="MEGA_APP">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <rabbit comment="Receive 1 time, send 1 time, receive 2 times and send 2 times" alias="RABBIT_0">
+        <send routingKey="out" correlationId="1">
+            <value>
+                [ {
+                "city": "New York",
+                "temperature": 1,
+                "condition": "sunny",
+                "timestamp": 1650762900
+                } ]
+            </value>
+            <headers>
+                <header name="Lviv" value="20"/>
+                <header name="Odessa" value="25"/>
+            </headers>
+        </send>
+
+        <receive queue="out" headers="false">
+           <value>
+               [ {
+               "message" : [ {
+               "city" : "New York",
+               "temperature" : 1,
+               "condition" : "sunny",
+               "timestamp" : 1650762900
+               } ],
+               "correlationId" : "1",
+               "headers" : null
+               } ]
+            </value>
+        </receive>
+
+        <receive queue="out">
+           <value>
+                []
+            </value>
+        </receive>
+
+        <send routingKey="out">
+            <value>
+                [{
+                "city": "Los Angeles",
+                "temperature": 2,
+                "condition": "partly cloudy",
+                "timestamp": 1650763200
+                }]
+            </value>
+        </send>
+
+        <send routingKey="out">
+            <value>
+                    [{
+                    "city": "Chicago",
+                    "temperature": 3,
+                    "condition": "rainy",
+                    "timestamp": 1650763500
+                    }]
+            </value>
+        </send>
+
+        <send routingKey="in" correlationId="77">
+            <file>body_8.json</file>
+        </send>
+    </rabbit>
+
+    <http comment="Check ability to receive a message" alias="MEGA_APP">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_9.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to send a message" alias="MEGA_APP">
+        <post endpoint="/queue/rabbit/send/in">
+            <response code="200" file="expected_10.json"/>
+            <body>
+                <from file="request_10.json"/>
+            </body>
+        </post>
+    </http>
+
+    <rabbit comment="Receive 2 times, send 1 time, receive 1 time, send 3 times and receive 2 times" alias="RABBIT_0">
+        <receive queue="in">
+            <file>expected_12.json</file>
+        </receive>
+
+        <receive queue="out" timeoutMillis="2000" prefetchCount="2">
+           <value>
+               [ {
+               "message" : [ {
+               "city" : "Los Angeles",
+               "temperature" : 2,
+               "condition" : "partly cloudy",
+               "timestamp" : 1650763200
+               } ],
+               "correlationId" : "null",
+               "headers" : { }
+               }, {
+               "message" : [ {
+               "city" : "Chicago",
+               "temperature" : 3,
+               "condition" : "rainy",
+               "timestamp" : 1650763500
+               } ],
+               "correlationId" : "null",
+               "headers" : { }
+               } ]
+            </value>
+        </receive>
+
+        <send routingKey="out" correlationId="5">
+            <value>
+                [{
+                "city": "Houston",
+                "temperature": 5,
+                "condition": "cloudy",
+                "timestamp": 1650763800
+                }]
+            </value>
+            <headers>
+                <header name="Lviv" value="20"/>
+                <header name="Odessa" value="25"/>
+            </headers>
+        </send>
+
+        <receive queue="out" timeoutMillis="2000">
+           <value>
+               [ {
+               "message" : [ {
+               "city" : "Houston",
+               "temperature" : 5,
+               "condition" : "cloudy",
+               "timestamp" : 1650763800
+               } ],
+               "correlationId" : "5",
+               "headers" : {
+               "Lviv" : "20",
+               "Odessa" : "25"
+               }
+               } ]
+            </value>
+        </receive>
+
+        <send routingKey="out" correlationId="7">
+            <value>
+                [{
+                "city": "San Francisco",
+                "temperature": 6,
+                "condition": "foggy",
+                "timestamp": 1650764400
+                }]
+            </value>
+            <headers>
+                <header name="Kharkiv" value="18"/>
+                <header name="Kyiv" value="15"/>
+            </headers>
+        </send>
+
+        <send routingKey="out">
+            <value>
+                [{
+                "city": "Seattle",
+                "temperature": 7,
+                "condition": "rainy",
+                "timestamp": 1650764700
+                }]
+            </value>
+        </send>
+
+        <send routingKey="out">
+            <value>
+                [{
+                "city": "Boston",
+                "temperature": 8,
+                "condition": "windy",
+                "timestamp": 1650765000
+                }]
+            </value>
+            <headers>
+                <header name="Lviv" value="33"/>
+            </headers>
+        </send>
+
+        <receive queue="out" prefetchCount="2">
+            <value>
+                [ {
+                "message" : [ {
+                "city" : "San Francisco",
+                "temperature" : 6,
+                "condition" : "foggy",
+                "timestamp" : 1650764400
+                } ],
+                "correlationId" : "7",
+                "headers" : {
+                "Kyiv" : "15",
+                "Kharkiv" : "18"
+                }
+                }, {
+                "message" : [ {
+                "city" : "Seattle",
+                "temperature" : 7,
+                "condition" : "rainy",
+                "timestamp" : 1650764700
+                } ],
+                "correlationId" : "null",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <receive queue="out" headers="false">
+            <value>
+                [ {
+                "message" : [ {
+                "city" : "Boston",
+                "temperature" : 8,
+                "condition" : "windy",
+                "timestamp" : 1650765000
+                } ],
+                "correlationId" : "null",
+                "headers" : null
+                } ]
+            </value>
+        </receive>
+
+    </rabbit>
+
+    <http comment="Check ability to receive all message" alias="MEGA_APP">
+        <get endpoint="/queue/rabbit/receive/all/in">
+            <response code="200" file="expected_21.json"/>
+        </get>
+    </http>
+
+    <repeat comment="Send hundred messages to queue" times="100">
+        <rabbit comment="hundred sends" alias="RABBIT_0">
+            <send routingKey="out">
+                <value>
+                    {
+                    "sender": "Nazar",
+                    "recipient": "Oleh",
+                    "message": "Hey Oleh, how is it going?",
+                    "timestamp": 1650762900
+                    }
+                </value>
+            </send>
+        </rabbit>
+    </repeat>
+
+    <rabbit comment="receive after hundred sends" alias="RABBIT_0">
+        <receive queue="out" timeoutMillis="5000" prefetchCount="20">
+           <file>expected_223.json</file>
+        </receive>
+    </rabbit>
+
+</scenario>

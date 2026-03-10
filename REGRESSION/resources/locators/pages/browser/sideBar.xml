@@ -1,0 +1,37 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>SideBar</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for side bar</description>
+    </details>
+
+    <locators>
+        <locator locatorId="tables">
+            <xpath>.//a[@href='/tables']</xpath>
+        </locator>
+
+        <locator locatorId="uiElements">
+            <xpath>.//span[text()= 'UI Elements']</xpath>
+        </locator>
+
+        <locator locatorId="sideBarButton">
+            <xpath>.//button[@class="text-gray-500 focus:outline-none lg:hidden"]</xpath>
+        </locator>
+
+        <locator locatorId="forms">
+            <xpath>.//span[text() ='Forms']</xpath>
+        </locator>
+
+        <locator locatorId="cards">
+            <xpath>.//span[text() ='Cards']</xpath>
+        </locator>
+
+        <locator locatorId="developerBoard1">
+            <xpath>(.//span[text() ='Developer Board'])[1]</xpath>
+        </locator>
+    </locators>
+
+</page>

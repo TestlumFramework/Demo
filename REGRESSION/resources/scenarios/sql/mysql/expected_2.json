@@ -1,0 +1,10 @@
+[
+  {
+    "query": "SELECT * FROM news",
+    "content": []
+  },
+  {
+    "query": "SELECT newsName FROM news",
+    "content": []
+  }
+]

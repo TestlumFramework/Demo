@@ -1,0 +1,8 @@
+[
+  {
+    "query": "INSERT INTO news (id, newsName, newsNumber, active, createdAt) VALUES (21, 'Norway', 5421241, true, '2021-01-20 07:00:00'), (22, 'Sweden', 10379295, true, '2021-01-21 08:00:00'), (23, 'Finland', 5527578, true, '2021-01-22 09:00:00'), (24, 'Denmark', 5795780, false, '2021-01-23 10:00:00'), (25, 'Iceland', 341243, true, '2021-01-24 11:00:00')",
+    "content": {
+      "count": 5
+    }
+  }
+]

@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Shell</description>
+        <name>Isolated Shell</name>
+        <developer>Bohdan Shakhov</developer>
+    </overview>
+
+    <settings>
+        <tags>shell-self</tags>
+    </settings>
+    
+    <shell comment="Execute simple echo command" file="expected_1.json">
+        <shellCommand>echo "Hello World"</shellCommand>
+    </shell>
+
+    <shell comment="Execute basic failure command with empty output" file="expected_2.json">
+        <shellCommand>false</shellCommand>
+    </shell>
+    
+    <shell comment="Execute ls command with invalid option" file="expected_3.json">
+        <shellCommand>ls --invalid-option</shellCommand>
+    </shell>
+
+    <shell comment="Execute sleep and echo command as separate commands" file="expected_4.json">
+        <shellCommand>sleep 2</shellCommand>
+        <shellCommand>echo "done"</shellCommand>
+    </shell>
+    
+    <shell comment="Execute simple echo command from shell file" file="expected_5.json">
+        <shellFile>echo.sh</shellFile>
+    </shell>
+
+    <shell comment="Execute sleep as shell command and simple echo from shell file" file="expected_6.json">
+        <shellFile>echo.sh</shellFile>
+        <shellCommand>sleep 2</shellCommand>
+    </shell>
+
+    <shell comment="Execute sh script which require parameters without it" file="expected_7.json">
+        <shellFile>self-test.sh</shellFile>
+    </shell>
+
+    <shell comment="Execute sh script with success parameter" file="expected_8.json">
+        <shellFile>self-test.sh success</shellFile>
+    </shell>
+
+    <shell comment="Execute sh script with slow parameter" file="expected_9.json">
+        <shellFile>self-test.sh slow</shellFile>
+    </shell>
+
+    <shell comment="Execute sh script with env parameter" file="expected_10.json">
+        <shellFile>self-test.sh env</shellFile>
+    </shell>
+
+
+</scenario>

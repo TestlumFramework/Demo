@@ -1,0 +1,6 @@
+[
+  {
+    "query": "              {             update: \"mongo_news\",             updates: [             {             q: { name: \"Harry Kane\" },             u: { \"$set\": { number: 17 } }             } ] }         ",
+    "content": "{\"n\":1,\"nModified\":1,\"ok\":1.0}"
+  }
+]

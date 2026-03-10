@@ -1,0 +1,11 @@
+[
+  {
+    "query": "SELECT newsname, newsnumber FROM news WHERE id = 7",
+    "content": [
+      {
+        "newsname": "UpdatedNewsWithVar",
+        "newsnumber": 7
+      }
+    ]
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "query": "             SELECT * FROM dynamodb_news         ",
+    "content": [
+      {
+        "number": {
+          "n": "1",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:32:53.558",
+          "type": "S"
+        },
+        "name": {
+          "s": "News1",
+          "type": "S"
+        },
+        "active": {
+          "bool": true,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "1",
+          "type": "S"
+        }
+      },
+      {
+        "number": {
+          "n": "4",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:34:20.367",
+          "type": "S"
+        },
+        "name": {
+          "s": "News4",
+          "type": "S"
+        },
+        "active": {
+          "bool": true,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "4",
+          "type": "S"
+        }
+      },
+      {
+        "number": {
+          "n": "3",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:32:53.558",
+          "type": "S"
+        },
+        "name": {
+          "s": "News3",
+          "type": "S"
+        },
+        "active": {
+          "bool": false,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "3",
+          "type": "S"
+        }
+      },
+      {
+        "number": {
+          "n": "5",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:34:20.367",
+          "type": "S"
+        },
+        "name": {
+          "s": "News5",
+          "type": "S"
+        },
+        "active": {
+          "bool": true,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "5",
+          "type": "S"
+        }
+      },
+      {
+        "number": {
+          "n": "2",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:32:53.558",
+          "type": "S"
+        },
+        "name": {
+          "s": "News2",
+          "type": "S"
+        },
+        "active": {
+          "bool": true,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "2",
+          "type": "S"
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "query": "mutation ($newBook: MongoBookInput!) { addBook(newBook: $newBook) { id author title number } }",
+  "variables": {
+    "newBook": {
+      "id": 5,
+      "author": "Taras Shevchenko",
+      "title": "Kobzar",
+      "number": 5
+    }
+  }
+}

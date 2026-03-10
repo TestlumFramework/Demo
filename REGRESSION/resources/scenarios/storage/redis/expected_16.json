@@ -1,0 +1,10 @@
+[
+  {
+    "query": "{\"command\":\"DEL\",\"arg\":[\"mylist\"]}",
+    "content": "1"
+  },
+  {
+    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "content": "[]"
+  }
+]

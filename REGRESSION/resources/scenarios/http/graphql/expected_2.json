@@ -1,0 +1,30 @@
+{
+  "data": {
+    "getAllBooks": [
+      {
+        "number": 1,
+        "author": "J. K. Rowling",
+        "id": "1",
+        "title": "Harry Potter and Philosopher's Stone"
+      },
+      {
+        "number": 2,
+        "author": "J. R. R. Tolkien",
+        "id": "2",
+        "title": "The Lord of the Rings: The Fellowship of the Ring"
+      },
+      {
+        "number": 3,
+        "author": "George R. R. Martin",
+        "id": "3",
+        "title": "A Game of Thrones"
+      },
+      {
+        "number": 4,
+        "author": "Fredrik Backman",
+        "id": "4",
+        "title": "A Man Called Ove"
+      }
+    ]
+  }
+}

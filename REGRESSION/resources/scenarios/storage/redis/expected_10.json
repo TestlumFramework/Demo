@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"MGET\",\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"]}",
+    "content": "[, , , , ]"
+  }
+]

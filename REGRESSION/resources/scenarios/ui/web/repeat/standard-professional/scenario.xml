@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for WEB repeat</description>
+        <name>Repeat in WEB</name>
+    </overview>
+
+    <settings active="true">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB scripts">
+        <navigate comment="Navigate to developer board tab" command="to" path="/blank"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <repeat comment="Check the ability to run variations in repeat" variations="variations_2.csv">
+            <dragAndDrop comment="Check the ability to upload a photo via drop zone" toLocator="developerBoard.selectFileDropZone">
+                <fileName>{{fileName}}</fileName>
+            </dragAndDrop>
+
+            <assert comment="Create assert for command's test">
+                <attribute comment="Assert for dragAndDrop 'fileName'" name="innerHTML" locator="developerBoard.fileDropZone">
+                    <content>{{content}}</content>
+                </attribute>
+            </assert>
+            <wait comment="Wait for 1 second" time="1"/>
+        </repeat>
+
+        <navigate comment="Navigate to ui-elements tab" command="to" path="/ui-elements"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <repeat comment="Check the ability to run commands in repeat for 3 times" times="3">
+
+            <click comment="Click on drop down filed" locator="uiElements.dropDownField"/>
+
+            <click comment="Click on first options" locator="uiElements.firstOptions"/>
+
+            <wait comment="Wait for 1 second" time="1"/>
+        </repeat>
+
+        <assert comment="Make sure that repeat performed three times">
+            <attribute comment="Check first selected options" name="aria-label" locator="uiElements.selected1">
+                <content>Batman ❎</content>
+            </attribute>
+        </assert>
+        <assert comment="Make sure that repeat performed three times">
+            <attribute comment="Check second selected options" name="aria-label" locator="uiElements.selected2">
+                <content>Robin ❎</content>
+            </attribute>
+        </assert>
+        <assert comment="Make sure that repeat performed three times">
+            <attribute comment="Check third selected options" name="aria-label" locator="uiElements.selected3">
+                <content>Joker ❎</content>
+            </attribute>
+        </assert>
+    </web>
+
+</scenario>

@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Shell</description>
+        <name>Shell general test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>shell-mixed</tags>
+    </settings>
+
+    <web comment="Start web steps">
+        <var comment="Check ability to fetch URL of current page and create variable with it" name="url">
+            <url/>
+        </var>
+
+        <!--Conditions is prescribed in steps with images, so that the tests can be performed both locally,
+        and on browser stack, because they have a little difference in phone size-->
+        <!--Local is - http://localhost:3000 / Remote Jenkins is http://mega-test-site -->
+
+        <condition comment="Create condition for check correct work of var 'url'" name="remote"
+                   spel="'{{url}}' eq 'http://mega-test-site/'"/>
+
+        <condition comment="Create condition for check correct work of var 'url'" name="local"
+                   spel="'{{url}}' eq 'http://localhost:3000/'"/>
+    </web>
+
+    <shell comment="Execute a shell script for Successful http post query. Remote" file="expected_5.json"
+           condition="local">
+        <shellFile>shell-1.sh</shellFile>
+        <shellCommand>echo "Response:"</shellCommand>
+        <shellCommand>echo "$response"</shellCommand>
+    </shell>
+
+    <shell comment="Execute a shell script for Successful http post query. Local" file="expected_5.json"
+           condition="remote">
+        <shellFile>shell-1-jenkins.sh</shellFile>
+        <shellCommand>echo "Response:"</shellCommand>
+        <shellCommand>echo "$response"</shellCommand>
+    </shell>
+
+    <http comment="Check ability to get news by name after shell command"
+          alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name=Shell">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <shell comment="Execute a shell script with Fail" file="expected_7.json">
+        <shellFile>shell-2.sh</shellFile>
+    </shell>
+
+</scenario>

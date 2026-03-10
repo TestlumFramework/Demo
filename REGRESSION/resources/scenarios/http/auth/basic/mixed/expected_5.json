@@ -1,0 +1,6 @@
+{
+  "path" : "/api/v1/basic/login",
+  "error" : "Unauthorized",
+  "timestamp" : "p(any)",
+  "status" : 401
+}

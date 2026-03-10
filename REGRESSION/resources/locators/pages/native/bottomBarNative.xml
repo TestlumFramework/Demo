@@ -1,0 +1,32 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for menu page on native app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="drag1">
+            <xpath>(//android.widget.ImageView[@content-desc='Drag'])[2]</xpath>
+        </locator>
+
+        <locator locatorId="drop1">
+            <xpath>//android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="drag2">
+            <xpath>(//android.widget.ImageView[@content-desc='Drag'])[3]</xpath>
+        </locator>
+
+        <locator locatorId="drop2">
+            <xpath>//android.widget.TextView[@text='Menu']</xpath>
+        </locator>
+        
+        <locator locatorId="assert">
+            <xpath>(//android.widget.TextView)[9]</xpath>
+        </locator>
+    </locators>
+</page>

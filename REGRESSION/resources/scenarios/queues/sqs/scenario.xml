@@ -1,0 +1,96 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of SQS test</description>
+        <name>SQS Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs comment="Check disability to receive message from not existing queue" alias="SQS_0">
+        <receive queue="queue1">
+            <value>[ ]</value>
+        </receive>
+    </sqs>
+
+    <sqs comment="Check ability to create queue and send first text message and json file" alias="SQS_0">
+        <send queue="queue1" delaySeconds="5">
+            <value>Hello World!</value>
+        </send>
+
+        <send queue="queue1" delaySeconds="5">
+            <file>body_5.json</file>
+        </send>
+    </sqs>
+
+    <sqs comment="Check ability to receive null message, because delay" alias="SQS_0">
+        <receive queue="queue1">
+            <value>[ ]</value>
+        </receive>
+    </sqs>
+
+    <wait comment="wait 6 seconds" time="6"/>
+
+    <sqs comment="Check ability to receive messages after delay" alias="SQS_0">
+        <receive queue="queue1">
+            <file>expected_10.json</file>
+        </receive>
+
+        <receive queue="queue1" receiveRequestAttemptId="1">
+            <value>
+                [ {
+                "id" : 2,
+                "petId" : 2,
+                "quantity" : 2,
+                "shipDate" : "2020-10-11T00:00:00.000+0000",
+                "status" : "test",
+                "complete" : true
+                } ]
+            </value>
+        </receive>
+    </sqs>
+
+    <sqs comment="Check ability to send and receive 'null' in new queue and empty array" alias="SQS_0">
+        <send queue="queue2">
+            <value>null</value>
+        </send>
+
+        <send queue="queue2">
+            <value>[]</value>
+        </send>
+
+        <receive queue="queue2" receiveRequestAttemptId="1">
+            <value>[ "null" ]</value>
+        </receive>
+
+        <receive queue="queue2" receiveRequestAttemptId="2">
+            <value>[ [ ] ]</value>
+        </receive>
+
+        <send queue="queue2">
+            <value>
+                І вам слава, сині гори,
+                Кригою окуті!
+                І вам, лицарі великі,
+                Богом не забуті.
+                Борітеся — поборете!
+                Вам бог помагає!
+                За вас правда, за вас слава
+                І воля святая!
+            </value>
+        </send>
+    </sqs>
+
+    <sqs comment="Check ability to receive text that was sent from API" alias="SQS_0">
+        <receive queue="queue2">
+            <value>
+                [ "І вам слава, сині гори,Кригою окуті!І вам, лицарі великі,Богом не забуті.Борітеся — поборете!Вам бог помагає!За вас правда, за вас славаІ воля святая!" ]
+            </value>
+        </receive>
+    </sqs>
+
+</scenario>

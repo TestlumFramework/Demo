@@ -1,0 +1,5 @@
+[
+  {
+    "query": "             SELECT * FROM dynamodb_news             WHERE name = News1         "
+  }
+]

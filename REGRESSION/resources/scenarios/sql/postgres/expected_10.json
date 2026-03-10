@@ -1,0 +1,8 @@
+[
+  {
+    "query": "DELETE FROM news WHERE active = false",
+    "content": {
+      "count": 2
+    }
+  }
+]

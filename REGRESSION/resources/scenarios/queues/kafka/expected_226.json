@@ -1,0 +1,28 @@
+[
+  {
+    "key": "11",
+    "value": {
+      "sender": "Nazar",
+      "recipient": "Oleh",
+      "message": "Hey Oleh, how is it going?",
+      "timestamp": 1650762900
+    },
+    "correlationId": "11",
+    "headers": {
+      "Odessa": "11"
+    }
+  },
+  {
+    "key": "11",
+    "value": {
+      "sender": "Nazar",
+      "recipient": "Oleh",
+      "message": "Hey Oleh, how is it going?",
+      "timestamp": 1650762900
+    },
+    "correlationId": "11",
+    "headers": {
+      "Odessa": "11"
+    }
+  }
+]

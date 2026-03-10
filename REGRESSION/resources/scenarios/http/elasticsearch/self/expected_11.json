@@ -1,0 +1,15 @@
+{
+  "_index" : "news",
+  "_type" : "_doc",
+  "_id" : "2",
+  "_version" : 2,
+  "_seq_no" : 3,
+  "_primary_term" : 1,
+  "found" : true,
+  "_source" : {
+    "name" : "Luka",
+    "number" : 7,
+    "active" : true,
+    "createdAt" : "2023-06-04T16:22:59.432Z"
+  }
+}

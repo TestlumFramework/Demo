@@ -1,0 +1,23 @@
+[
+  {
+    "number": 1,
+    "createdAt": "2023-04-21T10:48:26",
+    "name": "News1",
+    "active": true,
+    "id": 1
+  },
+  {
+    "number": 2,
+    "createdAt": "2023-04-21T10:48:26",
+    "name": "News2",
+    "active": false,
+    "id": 2
+  },
+  {
+    "number": 3,
+    "createdAt": "2023-04-21T10:48:26",
+    "name": "News3",
+    "active": true,
+    "id": 3
+  }
+]

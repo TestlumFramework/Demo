@@ -1,0 +1,7 @@
+[ {
+  "query" : "{\"command\":\"SET\",\"arg\":[\"name\",\"Bruce\"]}",
+  "content" : "OK"
+}, {
+  "query" : "{\"command\":\"GET\",\"arg\":[\"name\"]}",
+  "content" : "Bruce"
+} ]

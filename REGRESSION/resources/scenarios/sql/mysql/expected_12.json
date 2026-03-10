@@ -1,0 +1,14 @@
+[
+  {
+    "query": "UPDATE news SET newsname = 'NewsWithVar' WHERE id = 7",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "UPDATE news SET newsname = 'UpdatedNewsWithVar' WHERE id = 7",
+    "content": {
+      "count": 1
+    }
+  }
+]

@@ -1,0 +1,42 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: dragAndDrop</description>
+        <name>Drag and Drop native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_native/scenario.xml"/>
+
+    <native comment="Start native scripts">
+
+        <click comment="Click on 'menu' button" locator="mainNative.menuBtn"/>
+
+        <click comment="Click on 'Settings' button" locator="menuNative.settings"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+        
+        <click comment="Click on 'Bottom app bar' button" locator="settingsNative.bottomBar"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <dragAndDrop comment="Drag one task to another area" fromLocator="bottomBarNative.drag1" toLocator="bottomBarNative.drop1"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'scroll' down" name="text" locator="bottomBarNative.assert">
+                <content>Search</content>
+            </attribute>
+        </assert>
+
+        <dragAndDrop comment="Drag one task to another area" fromLocator="bottomBarNative.drag2" toLocator="bottomBarNative.drop2"/>
+        
+    </native>
+
+</scenario>

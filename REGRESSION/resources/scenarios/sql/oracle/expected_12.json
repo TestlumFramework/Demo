@@ -1,0 +1,6 @@
+[
+  {
+    "query": "ALTER TABLE NEWS DROP COLUMN CAPITAL",
+    "content": "Query completed successfully"
+  }
+]

@@ -1,0 +1,65 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>DeveloperBoard</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for developer board page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="dragMe1">
+            <xpath>(.//div[text()='drag me'])[1]</xpath>
+        </locator>
+
+        <locator locatorId="dragMe2">
+            <xpath>(.//div[text()='drag me'])[2]</xpath>
+        </locator>
+
+        <locator locatorId="dragMe3">
+            <xpath>(.//div[text()='drag me'])[3]</xpath>
+        </locator>
+
+        <locator locatorId="dragMe4">
+            <xpath>(.//div[text()='drag me'])[4]</xpath>
+        </locator>
+
+        <locator locatorId="zone1">
+            <xpath>.//h5[text()='Drop zone']/following-sibling::div</xpath>
+        </locator>
+
+        <locator locatorId="zone2">
+            <xpath>.//h5[text()='Also drop zone']/following-sibling::div</xpath>
+        </locator>
+
+        <locator locatorId="zone2Drag2">
+            <xpath>(.//h5[text()='Also drop zone']/following-sibling::div/div[text()='drag me'])[2]</xpath>
+        </locator>
+
+        <locator locatorId="zone2Drag3">
+            <xpath>(.//h5[text()='Also drop zone']/following-sibling::div/div[text()='drag me'])[3]</xpath>
+        </locator>
+
+        <locator locatorId="fileEmpty">
+            <xpath>.//span[text()= 'File: ']</xpath>
+        </locator>
+
+        <locator locatorId="selectFileDropZone">
+            <xpath>.//span[@class="dropzone-text"]</xpath>
+        </locator>
+
+        <locator locatorId="selectFileInput">
+            <xpath>.//input[@id="dropzoneFile"]</xpath>
+        </locator>
+
+        <locator locatorId="fileDropZone">
+            <id>fileDivName</id>
+        </locator>
+
+        <locator locatorId="fileInput">
+            <id>fileInputName</id>
+        </locator>
+    </locators>
+
+</page>

@@ -1,0 +1,32 @@
+[
+  {
+    "query": "INSERT INTO news (id, newsname, newsnumber, active, createdat) VALUES (10, 'News10', 10, true, '2023-04-21 10:51:02')",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "SELECT * FROM news WHERE newsnumber = 10",
+    "content": [
+      {
+        "id": 10,
+        "newsName": "News10",
+        "newsNumber": 10,
+        "active": true,
+        "createdAt": "2023-04-21T07:51:02.000+00:00"
+      }
+    ]
+  },
+  {
+    "query": "UPDATE news SET newsnumber = 11 WHERE newsname = 'News10'",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "DELETE FROM news WHERE newsnumber = 11",
+    "content": {
+      "count": 1
+    }
+  }
+]

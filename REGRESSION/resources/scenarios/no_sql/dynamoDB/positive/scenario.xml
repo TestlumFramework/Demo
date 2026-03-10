@@ -1,0 +1,153 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of positive test for Dynamo DB</description>
+        <name>Positive DynamoDB Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>dynamodb</tags>
+    </settings>
+
+    <http comment="Check ability to get empty list of news" alias="MEGA_APP">
+        <get endpoint="/dynamo/news">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <migrate comment="Check ability to migrate test dataset"
+             alias="DYNAMO_0"
+             name="DYNAMO">
+        <dataset>dynamo_patch.partiql</dataset>
+    </migrate>
+
+    <http comment="Check ability to get new records with http query" alias="MEGA_APP">
+        <get endpoint="/dynamo/news">
+            <response code="200" file="expected_3.json"/>
+        </get>
+    </http>
+
+    <dynamo comment="Check ability to get new records with SELECT query"
+            alias="DYNAMO_0" file="expected_4.json">
+        <query>
+            SELECT * FROM dynamodb_news
+        </query>
+    </dynamo>
+
+    <dynamo comment="Check ability to make INSERT query into the DB"
+            alias="DYNAMO_0" file="expected_5.json">
+        <query>
+            INSERT INTO dynamodb_news VALUE {
+            'name': 'News4',
+            'number': 4,
+            'active': true,
+            'createdAt': '2023-04-17T12:34:20.367',
+            'id': '4'
+            }
+        </query>
+        <query>
+            INSERT INTO dynamodb_news VALUE {
+            'name': 'News5',
+            'number': 5,
+            'active': true,
+            'createdAt': '2023-04-17T12:34:20.367',
+            'id': '5'
+            }
+        </query>
+    </dynamo>
+
+    <http comment="Check ability to get new records with http query" alias="MEGA_APP">
+        <get endpoint="/dynamo/news">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <dynamo comment="Check ability to get new records with SELECT query"
+            alias="DYNAMO_0" file="expected_7.json">
+        <query>
+            SELECT * FROM dynamodb_news
+        </query>
+    </dynamo>
+
+    <http comment="Check ability to add a news into the DB" alias="MEGA_APP">
+        <post endpoint="/dynamo/news">
+            <response code="200" file="expected_8.json"/>
+            <body>
+                <from file="request_8.json"/>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Creating variable for id of previous news" name="newsId">
+        <path value="$.id"/>
+    </var>
+
+    <dynamo comment="Check ability to get previous record with SELECT query"
+            alias="DYNAMO_0" file="expected_10.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE id = '{{newsId}}'
+        </query>
+    </dynamo>
+
+    <http comment="Check ability to get news by id" alias="MEGA_APP">
+        <get endpoint="/dynamo/news/{{newsId}}">
+            <response code="200" file="expected_11.json"/>
+        </get>
+    </http>
+
+    <dynamo comment="Check ability to get 'name' where 'active' is false"
+            alias="DYNAMO_0" file="expected_12.json">
+        <query>
+            SELECT name FROM dynamodb_news
+            WHERE active = false
+        </query>
+    </dynamo>
+
+    <var comment="Creating variable with name from previous query" name="newsName">
+        <path value="$[0].content[0].name.s"/>
+    </var>
+
+    <dynamo comment="Check ability to delete record from DB" alias="DYNAMO_0" file="expected_14.json">
+        <query>
+            DELETE FROM dynamodb_news
+            WHERE name = '{{newsName}}' AND id = '3'
+        </query>
+    </dynamo>
+
+    <dynamo comment="Checking that previous record was deleted" alias="DYNAMO_0" file="expected_15.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE name = '{{newsName}}' AND id = '3'
+        </query>
+    </dynamo>
+
+    <http comment="Checking that previous record was deleted" alias="MEGA_APP">
+        <get endpoint="/dynamo/news/by?name=News3">
+            <response code="200" file="expected_16.json"/>
+        </get>
+    </http>
+
+    <dynamo comment="Check ability to update record in the DB" alias="DYNAMO_0" file="expected_17.json">
+        <query>
+            UPDATE dynamodb_news
+            SET name = 'HotNews4' WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo comment="Checking that previous record was updated" alias="DYNAMO_0" file="expected_18.json">
+        <query>
+            SELECT name FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <http comment="Checking that previous record was updated" alias="MEGA_APP">
+        <get endpoint="/dynamo/news/4">
+            <response code="200" file="expected_19.json"/>
+        </get>
+    </http>
+
+</scenario>

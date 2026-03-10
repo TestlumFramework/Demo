@@ -1,0 +1,31 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: double click</description>
+        <name>doubleClick test</name>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <doubleClick comment="Click on 'Forgot Password' button" locator="login.forgotPassword"/>
+
+        <wait comment="Wait 1 seconds" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <alert comment="Assert for double click">
+                <text>Do,uble click detected on the button!</text>
+            </alert>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </web>
+
+</scenario>

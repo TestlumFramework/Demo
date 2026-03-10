@@ -1,0 +1,52 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for menu page on native app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="logout">
+            <xpath>//android.widget.TextView[@text='Log out']</xpath>
+        </locator>
+
+        <locator locatorId="quickAdd">
+            <xpath>//android.widget.TextView[@text='Quick Add NEW']</xpath>
+        </locator>
+
+        <locator locatorId="account">
+            <xpath>//android.widget.TextView[@text='Account']</xpath>
+        </locator>
+
+        <locator locatorId="upgradeToPro">
+            <xpath>//android.widget.TextView[@text='Upgrade to Pro']</xpath>
+        </locator>
+
+        <locator locatorId="settingsTitle">
+            <xpath>//android.widget.TextView[@text='Settings']</xpath>
+        </locator>
+
+        <locator locatorId="personalization">
+            <xpath>//android.widget.TextView[@text='Personalization']</xpath>
+        </locator>
+
+        <locator locatorId="bottomBar">
+            <xpath>//android.widget.TextView[@text='Bottom app bar']</xpath>
+        </locator>
+
+        <locator locatorId="whatNew">
+            <xpath>(//android.widget.RelativeLayout)[15]</xpath>
+        </locator>
+
+        <locator locatorId="advanced">
+            <xpath>//android.widget.TextView[@text='ADVANCED']</xpath>
+        </locator>
+
+        <locator locatorId="general">
+            <xpath>//android.widget.TextView[@text='General']</xpath>
+        </locator>
+    </locators>
+</page>

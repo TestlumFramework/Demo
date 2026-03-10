@@ -1,0 +1,104 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: assert</description>
+        <name>Assert native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_native/scenario.xml"/>
+
+    <var comment="Check new assert by inject expected result" name="BestTool">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Check new assert by inject expected result" name="name">
+        <constant value="one"/>
+    </var>
+
+    <var comment="Check new assert by inject expected result" name="NAME">
+        <constant value="Today"/>
+    </var>
+
+    <native comment="Start native scripts">
+        
+        <wait comment="Wait 3 seconds" time="3"/>
+
+        <assert comment="Asserts for self test">
+            <attribute comment="Take the element from attribute"
+                       name="content-desc" locator="mainNative.quickAddBtn">
+                <content>Quick add</content>
+            </attribute>
+
+            <attribute comment="Check new assert by inject expected result"
+                       name="text" locator="mainNative.today">
+                <content>{{NAME}}</content>
+            </attribute>
+        </assert>
+
+        <assert comment="Self test for Assert notEqual">
+            <notEqual comment="Assert for check that 5 different contents is not equal">
+                <content>one</content>
+                <content>0ne</content>
+                <content>{{BestTool}}</content>
+                <content>two</content>
+                <content>ONE</content>
+            </notEqual>
+        </assert>
+
+        <assert comment="Self test for Assert equal">
+            <equal comment="Assert for check that three contents is equal">
+                <content>one</content>
+                <content>one</content>
+                <content>{{name}}</content>
+            </equal>
+        </assert>
+
+        <assert comment="Self test for Assert with few sub-command - notEqual and equal">
+            <notEqual comment="Assert for check that 5 different contents is not equal">
+                <content>one</content>
+                <content>0ne</content>
+                <content>{{BestTool}}</content>
+                <content>two</content>
+                <content>ONE</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents is equal">
+                <content>one</content>
+                <content>one</content>
+                <content>{{name}}</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from numbers is not equal">
+                <content>1</content>
+                <content>2</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from numbers is equal">
+                <content>7</content>
+                <content>7</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from symbols is not equal">
+                <content>!</content>
+                <content>"</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from symbols is equal">
+                <content>$</content>
+                <content>$</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from variable is not equal">
+                <content>{{name}}</content>
+                <content>{{BestTool}}</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from variable is equal">
+                <content>{{BestTool}}</content>
+                <content>{{BestTool}}</content>
+            </equal>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </native>
+
+</scenario>

@@ -1,0 +1,11 @@
+{
+  "templates": [
+    {
+      "id": "p(any)",
+      "name": "new_example_name",
+      "generation": "legacy",
+      "updated_at": "p(any)",
+      "versions": []
+    }
+  ]
+}

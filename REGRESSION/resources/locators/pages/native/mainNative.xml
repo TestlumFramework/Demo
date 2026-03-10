@@ -1,0 +1,52 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for main page on native app</description>
+    </details>
+
+    <locators>
+       <locator locatorId="quickAddBtn">
+           <id>com.todoist:id/fab</id>
+       </locator>
+
+        <locator locatorId="menuBtn">
+            <xpath>//android.widget.ImageButton[@content-desc="Menu"]</xpath>
+        </locator>
+
+        <locator locatorId="today">
+            <xpath>//android.widget.TextView[@text='Today']</xpath>
+        </locator>
+        
+        <locator locatorId="select">
+            <xpath>//android.widget.Button[@text='Select']</xpath>
+        </locator>
+
+        <locator locatorId="notifications">
+            <xpath>//android.widget.Button[@content-desc='Notifications']</xpath>
+        </locator>
+
+        <locator locatorId="help">
+            <id>com.todoist:id/empty_help_icon</id>
+        </locator>
+
+        <locator locatorId="statusBar">
+            <id>com.android.systemui:id/status_bar</id>
+        </locator>
+
+        <locator locatorId="overview">
+            <id>com.google.android.apps.nexuslauncher:id/icon</id>
+        </locator>
+
+        <locator locatorId="overview2">
+            <xpath>//android.widget.FrameLayout[@content-desc="Todoist"]/android.view.View[2]</xpath>
+        </locator>
+
+        <locator locatorId="home">
+            <xpath>//android.widget.TextView[@content-desc="Todoist"]</xpath>
+        </locator>
+    </locators>
+</page>

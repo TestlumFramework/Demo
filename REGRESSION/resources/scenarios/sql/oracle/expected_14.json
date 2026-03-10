@@ -1,0 +1,26 @@
+[
+  {
+    "query": "INSERT INTO CITIES (ID, NAME, COUNTRY_ID, POPULATION, CREATEDAT) VALUES (1, 'New York City', 1, 8537673, TO_TIMESTAMP('2022-04-22 10:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO CITIES (ID, NAME, COUNTRY_ID, POPULATION, CREATEDAT) VALUES (2, 'Los Angeles', 1, 3977683, TO_TIMESTAMP('2022-04-22 10:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO CITIES (ID, NAME, COUNTRY_ID, POPULATION, CREATEDAT) VALUES (3, 'Chicago', 1, 2693976, TO_TIMESTAMP('2022-04-22 10:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO CITIES (ID, NAME, COUNTRY_ID, POPULATION, CREATEDAT) VALUES (4, 'Paris', 2, 2140526, TO_TIMESTAMP('2022-04-22 10:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  }
+]

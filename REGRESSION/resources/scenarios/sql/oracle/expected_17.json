@@ -1,0 +1,7 @@
+[ {
+  "query" : "DROP SEQUENCE news_id_seq",
+  "content" : "Query completed successfully"
+}, {
+  "query" : "CREATE SEQUENCE news_id_seq START WITH 1",
+  "content" : "Query completed successfully"
+} ]

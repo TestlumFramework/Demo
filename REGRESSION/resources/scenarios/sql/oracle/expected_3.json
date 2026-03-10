@@ -1,0 +1,32 @@
+[
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT) VALUES ('Norway', 5421241, 1, TO_TIMESTAMP('2021-01-20 07:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT) VALUES ('Sweden', 10379295, 1, TO_TIMESTAMP('2021-01-21 08:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT) VALUES ('Finland', 5527578, 1, TO_TIMESTAMP('2021-01-22 09:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT) VALUES ('Denmark', 5795780, 0, TO_TIMESTAMP('2021-01-23 10:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  },
+  {
+    "query": "INSERT INTO NEWS (NEWSNAME, NEWSNUMBER, ACTIVE, CREATEDAT) VALUES ('Iceland', 341243, 1, TO_TIMESTAMP('2021-01-24 11:00:00', 'YYYY-MM-DD HH24:MI:SS'))",
+    "content": {
+      "count": 1
+    }
+  }
+]

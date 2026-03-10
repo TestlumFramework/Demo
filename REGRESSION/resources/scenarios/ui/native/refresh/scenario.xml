@@ -1,0 +1,36 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: refresh</description>
+        <name>Refresh native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_native/scenario.xml"/>
+
+    <native comment="Start native scripts">
+
+        <click comment="Click on the 'Quick Add' button" locator="mainNative.quickAddBtn"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <input comment="Input title name" locator="quickAddNative.title" value="Testlum"/>
+        
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <refresh comment="Refresh the page"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'refresh'"
+                       name="text" locator="quickAddNative.discard">
+                <content>DISCARD</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

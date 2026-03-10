@@ -1,0 +1,28 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for quick add page on native app</description>
+    </details>
+
+    <locators>
+       <locator locatorId="title">
+           <id>android:id/message</id>
+       </locator>
+
+        <locator locatorId="description">
+            <id>com.todoist:id/description</id>
+        </locator>
+
+        <locator locatorId="add">
+            <id>android:id/button1</id>
+        </locator>
+
+        <locator locatorId="discard">
+            <id>android:id/button1</id>
+        </locator>
+    </locators>
+</page>

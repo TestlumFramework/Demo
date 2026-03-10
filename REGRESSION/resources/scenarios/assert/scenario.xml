@@ -1,0 +1,79 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual</description>
+        <name>Assert general test</name>
+    </overview>
+
+    <settings>
+        <tags>assert-self</tags>
+    </settings>
+
+    <var comment="Check new assert by inject expected result" name="BestTool">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Check new assert by inject expected result" name="name">
+        <constant value="one"/>
+    </var>
+
+    <assert comment="Self test for Assert notEqual">
+        <notEqual comment="Assert for check that 5 different contents is not equal">
+            <content>one</content>
+            <content>0ne</content>
+            <content>{{BestTool}}</content>
+            <content>two</content>
+            <content>ONE</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="Self test for Assert equal">
+        <equal comment="Assert for check that three contents is equal">
+            <content>one</content>
+            <content>one</content>
+            <content>{{name}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Self test for Assert with few sub-command - notEqual and equal">
+        <notEqual comment="Assert for check that 5 different contents is not equal">
+            <content>one</content>
+            <content>0ne</content>
+            <content>{{BestTool}}</content>
+            <content>two</content>
+            <content>ONE</content>
+        </notEqual>
+        <equal comment="Assert for check that two contents is equal">
+            <content>one</content>
+            <content>one</content>
+            <content>{{name}}</content>
+        </equal>
+        <notEqual comment="Assert for check that contents from numbers is not equal">
+            <content>1</content>
+            <content>2</content>
+        </notEqual>
+        <equal comment="Assert for check that two contents from numbers is equal">
+            <content>7</content>
+            <content>7</content>
+        </equal>
+        <notEqual comment="Assert for check that contents from symbols is not equal">
+            <content>!</content>
+            <content>"</content>
+        </notEqual>
+        <equal comment="Assert for check that two contents from symbols is equal">
+            <content>$</content>
+            <content>$</content>
+        </equal>
+        <notEqual comment="Assert for check that contents from variable is not equal">
+            <content>{{name}}</content>
+            <content>{{BestTool}}</content>
+        </notEqual>
+        <equal comment="Assert for check that two contents from variable is equal">
+            <content>{{BestTool}}</content>
+            <content>{{BestTool}}</content>
+        </equal>
+    </assert>
+
+</scenario>

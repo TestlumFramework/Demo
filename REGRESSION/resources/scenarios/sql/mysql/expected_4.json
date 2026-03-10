@@ -1,0 +1,36 @@
+[
+  {
+    "query": "SELECT * FROM news",
+    "content": [
+      {
+        "id": 1,
+        "newsName": "News1",
+        "newsNumber": 1,
+        "active": true,
+        "createdAt": "2023-04-21T07:48:26.000+00:00"
+      },
+      {
+        "id": 2,
+        "newsName": "News2",
+        "newsNumber": 2,
+        "active": false,
+        "createdAt": "2023-04-21T07:48:26.000+00:00"
+      },
+      {
+        "id": 3,
+        "newsName": "News3",
+        "newsNumber": 3,
+        "active": true,
+        "createdAt": "2023-04-21T07:48:26.000+00:00"
+      }
+    ]
+  },
+  {
+    "query": "SELECT newsNumber FROM news WHERE id = 1",
+    "content": [
+      {
+        "newsNumber": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,6 @@
+[
+  {
+    "query": "ALTER TABLE NEWS ADD CAPITAL VARCHAR2(255)",
+    "content": "Query completed successfully"
+  }
+]

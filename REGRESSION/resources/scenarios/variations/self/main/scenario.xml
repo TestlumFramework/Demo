@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Variations</description>
+        <name>Variations</name>
+    </overview>
+
+    <settings>
+        <variations>variations_self.csv</variations>
+        <tags>variations-self</tags>
+    </settings>
+
+    <assert comment="Assert values from variations">
+        <equal comment="Verify that Chrome is supported in variation file" condition="'{{browser}}' eq 'Chrome'">
+            <content>{{isSupported}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Verify that Firefox is supported in variation file" condition="'{{browser}}' eq 'Firefox'">
+            <content>{{isSupported}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Verify that Safari is supported in variation file" condition="'{{browser}}' eq 'Safari'">
+            <content>{{isSupported}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Verify that Edge is supported in variation file" condition="'{{browser}}' eq 'Edge'">
+            <content>{{isSupported}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Verify that Opera isn't supported in variation file" condition="'{{browser}}' eq 'Opera'">
+            <content>{{isSupported}}</content>
+            <content>false</content>
+        </equal>
+    </assert>
+    
+    <include comment="Include some scenario" scenario="variations/self/include"/>
+
+    
+
+</scenario>

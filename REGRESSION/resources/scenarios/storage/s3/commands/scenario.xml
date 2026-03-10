@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self s3 test</description>
+        <name>S3 test scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="s3 commands" alias="S3_0">
+        <bucket comment="create bucket">
+            <create>bucket-one</create>
+        </bucket>
+        <file comment="upload file"
+              bucket="bucket-one"
+              key="/com/knubisoft/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+        <file comment="download file"
+              bucket="bucket-one"
+              key="/com/knubisoft/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+        <file comment="download file"
+              bucket="bucket-one"
+              key="/com/knubisoft/upload_1.json">
+            <download>
+                <value>{"Testlum": "TOP"}</value>
+            </download>
+        </file>
+        <file comment="remove file"
+              bucket="bucket-one"
+              key="/com/knubisoft/upload_1.json">
+            <remove/>
+        </file>
+        <bucket comment="remove bucket">
+            <remove>bucket-one</remove>
+        </bucket>
+        <bucket comment="create bucket with the same name as the last one, but after removing">
+            <create>bucket-one</create>
+        </bucket>
+        <file comment="upload file"
+              bucket="bucket-one"
+              key="/com/knubisoft">
+            <upload>upload_1.json</upload>
+        </file>
+        <file comment="upload file"
+              bucket="bucket-one"
+              key="/com/knubisoft">
+            <upload>upload_2.json</upload>
+        </file>
+        <file comment="download file"
+              bucket="bucket-one"
+              key="/com/knubisoft">
+            <download>
+                <file>expected_2.json</file>
+            </download>
+        </file>
+    </s3>
+
+</scenario>

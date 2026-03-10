@@ -1,0 +1,205 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for mobile browser command: Assert</description>
+        <name>Assert mobile browser test</name>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <var comment="Check new assert by inject expected result" name="BestTool">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Check new assert by inject expected result" name="name">
+        <constant value="one"/>
+    </var>
+
+    <var comment="Check new assert by inject expected result" name="NAME">
+        <constant value="emailAddress"/>
+    </var>
+
+    <mobilebrowser comment="Start WEB script">
+
+        <navigate comment="Navigate to 'tables page' for apply the 'assert' command"
+                  command="to" path="/forms"/>
+
+        <assert comment="asserting everything on /register page">
+            <title comment="assert title">
+                <content>V-Dashboard</content>
+            </title>
+            <attribute comment="Take the element 'Type'"
+                       name="type" locator="forms.type">
+                <content>password</content>
+            </attribute>
+            <attribute comment="Take the element 'Class'"
+                       name="class" locator="forms.class">
+                <content>text-xs</content>
+            </attribute>
+            <attribute comment="Take the element 'For'"
+                       name="for" locator="forms.for">
+                <content>username</content>
+            </attribute>
+            <attribute comment="Take the element 'innerHTML'"
+                       name="innerHTML" locator="forms.save">
+                <content>Save</content>
+            </attribute>
+            <attribute comment="Take the element 'outerHTML'"
+                       name="outerHTML" locator="forms.save">
+                <content><![CDATA[<button class="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700"> Save </button>]]></content>
+            </attribute>
+        </assert>
+        <assert comment="Asserting that everything on /forms page NOT equal expected content">
+            <title comment="assert title" negative="true">
+                <content>v-dashboard</content>
+            </title>
+            <attribute comment="Take the element 'Href'"
+                       name="href" locator=".//a[@href='/tables']" locatorStrategy="xpath" negative="true">
+                <content>tables</content>
+            </attribute>
+            <attribute comment="Take the element 'Type'"
+                       name="type" locator="forms.type" negative="true">
+                <content>passworD</content>
+            </attribute>
+            <attribute comment="Take the element 'Class'"
+                       name="class" locator="forms.class" negative="true">
+                <content>Testlum</content>
+            </attribute>
+            <attribute comment="Take the element 'For'"
+                       name="for" locator="forms.for" negative="true">
+                <content>Testlum</content>
+            </attribute>
+            <attribute comment="Take the element 'innerHTML'"
+                       name="innerHTML" locator="forms.save" negative="true">
+                <content>Testlum</content>
+            </attribute>
+            <attribute comment="Take the element 'outerHTML'"
+                       name="outerHTML" locator="forms.save" negative="true">
+                <content>Testlum</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for 3 seconds" time="3"/>
+
+        <assert comment="Make assert by inject expected result">
+            <attribute comment="Take the element 'For'"
+                       name="for" locator="forms.fromVar">
+                <content>{{NAME}}</content>
+            </attribute>
+            <attribute comment="Take the element 'For'"
+                       name="for" locator="forms.fromVar" negative="true">
+                <content>{{BestTool}}</content>
+            </attribute>
+        </assert>
+
+        <click comment="Click on side bar button" locator="sideBar.sideBarButton"/>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <assert comment="asserting href link">
+            <attribute comment="Take the element 'Href'"
+                       name="href" locator="sideBar.tables">
+                <content>/tables</content>
+            </attribute>
+        </assert>
+
+        <assert comment="Self test for Assert notEqual">
+            <notEqual comment="Assert for check that 5 different contents is not equal">
+                <content>one</content>
+                <content>0ne</content>
+                <content>{{BestTool}}</content>
+                <content>two</content>
+                <content>ONE</content>
+            </notEqual>
+        </assert>
+
+        <assert comment="Self test for Assert equal">
+            <equal comment="Assert for check that three contents is equal">
+                <content>one</content>
+                <content>one</content>
+                <content>{{name}}</content>
+            </equal>
+        </assert>
+
+        <assert comment="Self test for Assert with few sub-command - notEqual and equal">
+            <notEqual comment="Assert for check that 5 different contents is not equal">
+                <content>one</content>
+                <content>0ne</content>
+                <content>{{BestTool}}</content>
+                <content>two</content>
+                <content>ONE</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents is equal">
+                <content>one</content>
+                <content>one</content>
+                <content>{{name}}</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from numbers is not equal">
+                <content>1</content>
+                <content>2</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from numbers is equal">
+                <content>7</content>
+                <content>7</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from symbols is not equal">
+                <content>!</content>
+                <content>"</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from symbols is equal">
+                <content>$</content>
+                <content>$</content>
+            </equal>
+            <notEqual comment="Assert for check that contents from variable is not equal">
+                <content>{{name}}</content>
+                <content>{{BestTool}}</content>
+            </notEqual>
+            <equal comment="Assert for check that two contents from variable is equal">
+                <content>{{BestTool}}</content>
+                <content>{{BestTool}}</content>
+            </equal>
+        </assert>
+
+        <assert comment="Asserting on /forms page">
+            <present comment="Check that element on page is present" locator="forms.save"/>
+            <present comment="Check that element on page is NOT present" locator=".//img[@alt= 'Sunset in the mountains']"
+                     locatorStrategy="xpath" negative="true"/>
+        </assert>
+
+        <navigate comment="Navigate to 'ui element' page" command="to" path="/ui-elements"/>
+
+        <assert comment="Asserting on /forms page">
+            <checked comment="Check that checkbox is NOT chosen" locator="uiElements.checkbox" negative="true"/>
+        </assert>
+
+        <click comment="Click on checkbox" locator="uiElements.checkbox"/>
+
+        <assert comment="Asserting on /forms page">
+            <checked comment="Check that checkbox is chosen" locator="uiElements.checkbox" negative="false"/>
+        </assert>
+
+        <navigate comment="Navigate to 'ui element' page" command="to" path="/modal"/>
+
+        <click comment="Click on get alert" locator="modal.alertBtn"/>
+
+        <wait comment="Wait for 2 sec" time="2"/>
+
+        <assert comment="Asserting on /forms page">
+            <alert comment="Check that alert equal expected content">
+                <text>Alert! You are not Nazar</text>
+            </alert>
+            <alert comment="Check that alert not equal expected content" negative="true">
+                <text>Alert!</text>
+            </alert>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </mobilebrowser>
+
+</scenario>

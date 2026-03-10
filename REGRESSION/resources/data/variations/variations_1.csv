@@ -1,0 +1,3 @@
+username,email,password,name,expected_35-36,image_local,image_remote
+Andriy,yarmolenko10@dk.com,yarmolenko10!andr,News1,expected_35,variations_1_local,variations_1_remote
+Cristiano,ronaldo7@gmail.com,ronaldo7!lionel,News2,expected_36,variations_2_local,variations_2_remote

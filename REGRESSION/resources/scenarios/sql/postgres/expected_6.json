@@ -1,0 +1,8 @@
+[
+  {
+    "query": "INSERT INTO news (id, newsname, newsnumber, active, createdat) VALUES (104, 'News4', 4, false, '2023-04-21 10:49:02.491000')",
+    "content": {
+      "count": 1
+    }
+  }
+]

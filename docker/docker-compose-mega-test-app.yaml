@@ -1,0 +1,58 @@
+services:
+  # front
+  mega-test-site:
+    build:
+      context: ../TEST-UI
+      dockerfile: Dockerfile.jenkins
+    image: mega-test-site
+    container_name: mega-test-site
+    ports:
+      - "3000:80"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost/" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  # back ci
+  mega-test-api:
+    build:
+      context: ../TEST-API
+      dockerfile: Dockerfile.jenkins
+    image: mega-test-api
+    container_name: maga-test-api
+    ports:
+      - "8080:8080"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    profiles: [ci]
+
+  # back ci
+  mega-test-api-local:
+    build:
+      context: ../TEST-API
+      dockerfile: Dockerfile.local
+    image: mega-test-api
+    container_name: maga-test-api
+    ports:
+      - "8080:8080"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    profiles: [local]
+
+networks:
+  e2e_network:
+    external: true

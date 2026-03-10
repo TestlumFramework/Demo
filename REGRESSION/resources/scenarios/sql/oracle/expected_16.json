@@ -1,0 +1,6 @@
+[
+  {
+    "query": "DROP TABLE C##TESTLUM.CITIES",
+    "content": "Query completed successfully"
+  }
+]

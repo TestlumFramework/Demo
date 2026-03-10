@@ -1,0 +1,10 @@
+[
+  {
+    "query": "SELECT * FROM news WHERE active = false",
+    "content": []
+  },
+  {
+    "query": "SELECT * FROM news WHERE id = 6",
+    "content": []
+  }
+]

@@ -1,0 +1,218 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test with vars using in expected files</description>
+        <name>Insert vars in expected files</name>
+        <developer>Serhii Soroka</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>var-mixed</tags>
+    </settings>
+
+    <var comment="Create var for random value that consists of two integers" name="numeric">
+        <generate length="2">
+            <numeric/>
+        </generate>
+    </var>
+
+    <var comment="Create var for random value that consists of twenty random alphanumeric chars"
+         name="alphabetic">
+        <generate length="20">
+            <alphabetic/>
+        </generate>
+    </var>
+
+    <var comment="Create var for random value that consists of 10 alphanumeric chars" name="alphanumeric">
+        <generate length="10">
+            <alphanumeric/>
+        </generate>
+    </var>
+
+    <var comment="Create var with pattern ^[a-zA-Z]{12}$" name="regex">
+        <generate length="12">
+            <randomRegexp pattern="^[a-zA-Z]{12}$"/>
+        </generate>
+    </var>
+
+    <condition comment="Create condition for check correct work of var generate 'numeric'" name="numeric"
+               spel="'{{numeric}}' matches '\d{2}'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'alphabetic'" name="alphabetic"
+               spel="'{{alphabetic}}' matches '^[a-zA-Z]{20}$'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'alphanumeric'" name="alphanumeric"
+               spel="'{{alphanumeric}}' matches '^[a-zA-Z0-9]{10}$'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'regex'" name="regex"
+               spel="'{{regex}}' matches '^[a-zA-Z]{12}$'"/>
+
+    <http comment="Send news via API using random variable 'numeric'" alias="MEGA_APP" condition="numeric">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_9.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "any name",
+                    "number": "{{numeric}}",
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Send news via API using random variable 'alphabetic'" alias="MEGA_APP" condition="alphabetic">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_10.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{alphabetic}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Send news via API using random variable 'alphanumeric'" alias="MEGA_APP" condition="alphanumeric">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_11.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{alphanumeric}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Send news via API using random variable 'regex'" alias="MEGA_APP" condition="regex">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_12.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{regex}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Send news via API" alias="MEGA_APP">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_13.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Slurs and slights of pre-Ashes ‘phoney war’ are all part of the show",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Create var with ID" name="id">
+        <path value="$.id"/>
+    </var>
+
+    <var comment="Create sql var with news number" name="newsNumber">
+        <sql dbType="MYSQL" alias="MYSQL_0">
+            <query>
+                SELECT newsNumber FROM news
+                WHERE newsName LIKE "%slights%"
+            </query>
+        </sql>
+    </var>
+
+    <var comment="Create var with month" name="monthVariable">
+        <constant value="05"/>
+    </var>
+
+    <var comment="Create var with slights" name="slights">
+        <constant value="%slights%"/>
+    </var>
+
+    <var comment="Create var 'true' using expressions" name="expressionsVarTrue">
+        <expression value="'t' + 'rue'"/>
+    </var>
+
+    <var comment="Create var '2023' using file" name="year">
+        <file fileName="file.txt"/>
+    </var>
+
+    <mysql comment="Conduct SELECT query for using all types of vars created previously"
+           alias="MYSQL_0"
+           file="expected_20.json">
+        <query>
+            SELECT * FROM news
+            WHERE newsName LIKE "%slights%"
+        </query>
+    </mysql>
+
+    <migrate comment="Check ability to migrate test dataset"
+             alias="POSTGRES_0" name="POSTGRES">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <postgres comment="Check ability to get new news data with SQL query"
+              alias="POSTGRES_0"
+              file="expected_22.json">
+        <query>
+            SELECT * FROM news
+        </query>
+    </postgres>
+
+    <var comment="Create var for the value 'id' to the previous expected_file to get the desired value"
+         name="idFromPostgres">
+        <path value="$.[0].content.[0].id"/>
+    </var>
+
+    <var comment="Create var from file" name="jsonFromFile">
+        <file fileName="custom_data_24.json"/>
+    </var>
+
+    <var comment="Create var for html content from jsonFromFile variable" name="htmlFromExpectedVar">
+        <path value="$.[0].content.[0].html" fromVar="jsonFromFile"/>
+    </var>
+
+    <var comment="Create var for url inside html from htmlFromExpectedVar variable" name="urlFromHtml">
+        <path value="//a[@href='https://example.com']/@href" fromVar="htmlFromExpectedVar"/>
+    </var>
+
+    <assert comment="Assert that urlFromHtml variable equals to actual url from html content">
+        <equal comment="Assert for check that two contents is equal">
+            <content>{{urlFromHtml}}</content>
+            <content>https://example.com</content>
+        </equal>
+    </assert>
+
+    <var comment="Create a variable for the value 'id' from expected file of postgres query"
+         name="idFromPostgres">
+        <path value="$.[0].content.[0].id" fromFile="expected_22.json"/>
+    </var>
+
+    <assert comment="Assert that idFromPostgres variable equals to actual id from expected_2.json">
+        <equal comment="Assert for check that two contents is equal">
+            <content>{{idFromPostgres}}</content>
+            <content>101</content>
+        </equal>
+    </assert>
+</scenario>

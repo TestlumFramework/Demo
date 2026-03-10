@@ -1,0 +1,31 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: ScrollTo</description>
+        <name>ScrollTo test</name>
+    </overview>
+
+    <settings active="true">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB scripts">
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <scrollTo comment="Scroll to last name in the table" locator="dashboard.name10" locatorStrategy="locatorId"/>
+        
+        <assert comment="Make sure that page scrolled down and 'up' button is displayed">
+            <attribute comment="Assert for ScrollTo" name="class" locator="dashboard.up" locatorStrategy="locatorId">
+                <content>to-top</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </web>
+
+</scenario>

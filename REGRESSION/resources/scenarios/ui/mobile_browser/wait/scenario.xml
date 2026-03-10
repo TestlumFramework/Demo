@@ -1,0 +1,34 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for mobile browser command: wait</description>
+        <name>Wait mobile browser test</name>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start WEB scripts">
+
+        <wait comment="Wait for 10seconds or less until element become clickable" time="10" threshold="1500">
+            <clickable comment="Wait for 10 or less seconds until element become clickable" locator="login.signIn"/>
+        </wait>
+
+        <click comment="Click on 'Sign In' button"
+               locator="login.signIn"/>
+
+        <wait comment="Wait 1 second" time="1" threshold="1100"/>
+
+        <hover comment="hover to menu icon" locator="dashboard.menuIcon"/>
+
+        <wait comment="Wait 10 seconds" time="10000" unit="millis" threshold="600">
+            <visible comment="Wait for 10 or less seconds until element become visible" locator="dashboard.logout"/>
+        </wait>
+
+        <wait comment="Wait for timeout scenario" time="200" unit="millis" threshold="1500"/>
+    </mobilebrowser>
+
+</scenario>

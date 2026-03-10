@@ -1,0 +1,22 @@
+[
+  {
+    "query": "{\"command\":\"ZADD\",\"arg\":[\"mysortedset\",\"10\",\"element1\",\"5\",\"element2\",\"3\",\"element3\"]}",
+    "content": "3"
+  },
+  {
+    "query": "{\"command\":\"ZRANGE\",\"arg\":[\"mysortedset\",\"0\",\"-1\"]}",
+    "content": "[element3, element2, element1]"
+  },
+  {
+    "query": "{\"command\":\"ZREVRANGE\",\"arg\":[\"mysortedset\",\"0\",\"-1\"]}",
+    "content": "[element1, element2, element3]"
+  },
+  {
+    "query": "{\"command\":\"ZSCORE\",\"arg\":[\"mysortedset\",\"element1\"]}",
+    "content": "10"
+  },
+  {
+    "query": "{\"command\":\"DEL\",\"arg\":[\"mysortedset\"]}",
+    "content": "1"
+  }
+]

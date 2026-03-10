@@ -1,0 +1,8 @@
+[
+  {
+    "query": "DELETE FROM NEWS WHERE id = 16",
+    "content": {
+      "count": 1
+    }
+  }
+]

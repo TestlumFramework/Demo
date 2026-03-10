@@ -1,0 +1,31 @@
+[
+  {
+    "query": "SELECT newsName, newsNumber, name, population FROM news INNER JOIN cities ON news.id = cities.country_id ORDER BY id",
+    "content": [
+      {
+        "newsName": "United States",
+        "newsNumber": 331449281,
+        "name": "New York City",
+        "population": 8537673
+      },
+      {
+        "newsName": "United States",
+        "newsNumber": 331449281,
+        "name": "Los Angeles",
+        "population": 3977683
+      },
+      {
+        "newsName": "United States",
+        "newsNumber": 331449281,
+        "name": "Chicago",
+        "population": 2693976
+      },
+      {
+        "newsName": "Canada",
+        "newsNumber": 38005238,
+        "name": "Paris",
+        "population": 2140526
+      }
+    ]
+  }
+]

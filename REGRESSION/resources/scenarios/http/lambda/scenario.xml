@@ -1,0 +1,124 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of the lambda function test</description>
+        <name>AWS lambda function test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>lambda</tags>
+    </settings>
+
+    <!--todo var from env.profile -> condition==jenkins ? host=mega-test-api : host.docker.internal-->
+
+    <migrate comment="Migrate test dataset (4 books)"
+             alias="MONGO_BOOKS_0"
+             name="MONGODB">
+        <dataset>mongo_books_patch.bson</dataset>
+    </migrate>
+
+    <lambda comment="Invoke python function"
+            alias="LAMBDA"
+            functionName="hello-world-python">
+        <body>
+            <from file="body_2.json"/>
+        </body>
+        <response code="200" file="expected_2.json">
+            <header name="X-Amz-Executed-Version" data="$LATEST"/>
+        </response>
+    </lambda>
+
+    <http comment="Check ability to create new MongoBook" alias="MEGA_APP">
+        <post endpoint="/lambda/books">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <from file="request_3.json"/>
+            </body>
+        </post>
+    </http>
+
+    <lambda comment="Invoke python function"
+            alias="LAMBDA"
+            functionName="http-request-python">
+        <body>
+            <raw>
+                {
+                "data": {
+                "id": 6,
+                "author": "Taras Shevchenko",
+                "title": "Kobzar",
+                "number": 6
+                },
+                "url": "http://mega-test-api:8080/api/v1/lambda/books"
+                }
+            </raw>
+        </body>
+        <response code="200" file="expected_4.json"/>
+    </lambda>
+
+    <lambda comment="Invoke nodejs function"
+            alias="LAMBDA"
+            functionName="http-request-js">
+        <body>
+            <raw>
+                {
+                "data": "42",
+                "options": {
+                "protocol": "http:",
+                "hostname": "mega-test-api",
+                "port": "8080",
+                "path": "/api/v1/lambda/books/Kamenyari",
+                "method": "GET"
+                }
+                }
+            </raw>
+        </body>
+        <response code="200" file="expected_5.json"/>
+    </lambda>
+
+    <http comment="Check ability to get list of all MongoBooks" alias="MEGA_APP">
+        <get endpoint="/lambda/books">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <lambda comment="Invoke nodejs function"
+            alias="LAMBDA"
+            functionName="http-request-js">
+        <body>
+            <raw>
+                {
+                "data": "42",
+                "options": {
+                "protocol": "http:",
+                "hostname": "mega-test-api",
+                "port": "8080",
+                "path": "/api/v1/lambda/books",
+                "method": "GET",
+                "headers": {
+                "Content-Type": "application/json"
+                }
+                }
+                }
+            </raw>
+        </body>
+        <response code="200" file="expected_7.json"/>
+    </lambda>
+
+    <lambda comment="Invoke python function with error"
+            alias="LAMBDA"
+            functionName="http-request-python">
+        <body>
+            <raw>
+                {
+                "data": "post request",
+                "url": "https://catfact.ninja/error"
+                }
+            </raw>
+        </body>
+        <response code="200" file="expected_8.json"/>
+    </lambda>
+
+</scenario>

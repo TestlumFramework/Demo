@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of http multipart test</description>
+        <name>Multipart</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>api</tags>
+    </settings>
+
+    <http comment="Check ability to send http multipart query to POSTMAN ECHO"
+          alias="MULTIPART">
+        <post endpoint="/post">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <multipart>
+                    <file name="testName" fileName="image.jpg"/>
+                    <param name="testParam12!" data="Hello World!12@"/>
+                    <param name="testParam13!" data="Hello World!13@"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to send http multipart query with several attached images and params"
+          alias="MULTIPART">
+        <post endpoint="/post">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <multipart>
+                    <param name="additionalMetadata" data="Hello World!123/"/>
+                    <param name="Text with gaps" data="some parameter"/>
+                    <file name="picture1" fileName="download.jpeg"/>
+                    <file name="picture2" fileName="image.jpg"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to send txt and json files"
+          alias="MULTIPART">
+        <post endpoint="/post">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <multipart>
+                    <file name="fileWithText" fileName="text.txt"/>
+                    <file name="listOfAnimals" fileName="animalsList.json"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to send multipart query with boundary"
+          alias="MULTIPART">
+        <post endpoint="/post">
+            <response code="200" file="expected_4.json"/>
+            <body>
+                <multipart>
+                    <param name="someParameter" data="Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Donec interdum purus vitae lobortis mollis. Proin porttitor blandit metus at imperdiet. Morbi
+                    imperdiet et dui id tempus. Sed iaculis, lacus sed convallis varius, nulla odio bibendum ante,
+                    at dapibus neque orci in sapien. In faucibus, nisl congue feugiat porttitor, purus dui vehicula
+                    nibh, euismod scelerisque neque ligula id purus. Donec vehicula porttitor mollis. Suspendisse
+                    hendrerit quam rhoncus, auctor metus nec, maximus purus."/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to send http multipart query to POSTMAN ECHO"
+          alias="MULTIPART">
+        <post endpoint="/post">
+            <response code="200" file="expected_5.json"/>
+            <header name="Content-Type" data="multipart/form-data; boundary=boundary123!#$"/>
+            <body>
+                <multipart>
+                    <param name="testParam12!" data="Hello World!12@"/>
+                    <file name="listOfAnimals" fileName="animalsList.json"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check ability to get data from POSTMAN ECHO" alias="MULTIPART">
+        <get endpoint="/get?testParam12!=Hello%20World%2112%40&amp;testParam13!=Hello%20World%2113%40">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+</scenario>

@@ -1,0 +1,6 @@
+[
+  {
+    "query": "             {             find: \"mongo_book\",             filter: {             title: \"Kobzar\"             }             }         ",
+    "content": "{\"cursor\":{\"firstBatch\":[{\"_id\":\"5\",\"author\":\"Taras Shevchenko\",\"title\":\"Kobzar\",\"number\":5,\"_class\":\"com.knubisoft.testapi.model.MongoBook\"}],\"id\":0,\"ns\":\"graphql_db.mongo_book\"},\"ok\":1.0}"
+  }
+]

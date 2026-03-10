@@ -1,0 +1,145 @@
+#!/bin/bash
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export CMD_LINE_TOOLS="$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$CMD_LINE_TOOLS"
+export AVD_NAME="AndroidDevice"
+
+export MEGA_TEST_APP_FRONT_PORT=3000
+
+ARCH=$(uname -m)
+[[ "$ARCH" == "arm64" ]] && SYS_IMG="system-images;android-35;google_apis;arm64-v8a" || SYS_IMG="system-images;android-35;google_apis;x86_64"
+
+# -----------------------------------------------------------------------------
+# Logs a message to the console with an emoji prefix
+# -----------------------------------------------------------------------------
+log() { echo "🚀 $1"; }
+
+# -----------------------------------------------------------------------------
+# Logs an error message and terminates the script with exit code 1
+# -----------------------------------------------------------------------------
+error_exit() { echo "❌ Error: $1"; exit 1; }
+
+# -----------------------------------------------------------------------------
+# Maps emulator ports to host (Mac) ports so 'localhost' works on the device
+# -----------------------------------------------------------------------------
+setup_network_tunnel() {
+    log "Creating network tunnels for localhost..."
+    adb reverse tcp:$MEGA_TEST_APP_FRONT_PORT tcp:$MEGA_TEST_APP_FRONT_PORT
+    adb reverse tcp:$MEGA_TEST_APP_FRONT_PORT tcp:$MEGA_TEST_APP_FRONT_PORT
+    log "Tunnels active: Emulator localhost:$MEGA_TEST_APP_FRONT_PORT -> Mac localhost:$MEGA_TEST_APP_FRONT_PORT"
+}
+
+# -----------------------------------------------------------------------------
+# Checks for Node.js; installs Homebrew and Node.js if missing
+# -----------------------------------------------------------------------------
+check_and_install_node() {
+    if ! command -v node &> /dev/null; then
+        log "Node.js not found. Starting installation..."
+        if ! command -v brew &> /dev/null; then
+            log "Homebrew not found. Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || error_exit "Homebrew install failed"
+            eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null || eval "$(/usr/local/bin/brew shellenv)"
+        fi
+        log "Installing Node.js via Homebrew..."
+        brew install node || error_exit "Node.js install failed"
+    else
+        log "Node.js is already installed ($(node -v))"
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# Downloads and sets up the Android Command Line Tools if not present
+# -----------------------------------------------------------------------------
+setup_android_sdk() {
+    if [ ! -d "$ANDROID_HOME/cmdline-tools" ]; then
+        log "No Android SDK found. Downloading CLI tools..."
+        mkdir -p "$ANDROID_HOME/temp"
+        curl -o "$ANDROID_HOME/temp/tools.zip" https://dl.google.com/android/repository/commandlinetools-mac-11076708_latest.zip || error_exit "Download failed"
+        mkdir -p "$ANDROID_HOME/cmdline-tools"
+        unzip -q "$ANDROID_HOME/temp/tools.zip" -d "$ANDROID_HOME/cmdline-tools"
+        mv "$ANDROID_HOME/cmdline-tools/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
+        rm -rf "$ANDROID_HOME/temp"
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# Accepts SDK licenses and installs required platform-tools and system images
+# -----------------------------------------------------------------------------
+install_dependencies() {
+    log "Accepting licenses and installing components ($ARCH)..."
+    yes | sdkmanager --licenses > /dev/null
+    sdkmanager "platform-tools" "emulator" "platforms;android-35" "$SYS_IMG" || error_exit "SDK installation failed"
+}
+
+# -----------------------------------------------------------------------------
+# Ensures Appium and the UiAutomator2 driver are installed globally
+# -----------------------------------------------------------------------------
+check_node_appium() {
+    log "Checking Appium..."
+    if ! command -v appium >/dev/null 2>&1; then
+        log "Appium not found. Installing globally..."
+        npm install -g appium
+        appium driver install uiautomator2
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# Finds the first available APK in the project and installs it on the device
+# -----------------------------------------------------------------------------
+install_apk() {
+    log "Searching for APK file..."
+    APK_FILE=$(find . -name "*.apk" | head -n 1)
+
+    if [ -n "$APK_FILE" ]; then
+        log "Installing $APK_FILE on emulator..."
+        adb install -r -t -g "$APK_FILE" || log "⚠️ APK installation failed, but proceeding to Appium."
+    else
+        log "⚠️ No APK file found in the project. Skipping installation."
+    fi
+}
+
+# -----------------------------------------------------------------------------
+# Creates, launches, and waits for the Android Emulator to boot
+# -----------------------------------------------------------------------------
+manage_emulator() {
+    if ! emulator -list-avds | grep -q "$AVD_NAME"; then
+        log "Creating Emulator: $AVD_NAME..."
+        echo "no" | avdmanager create avd -n "$AVD_NAME" -k "$SYS_IMG" --force
+    fi
+
+    log "Starting $AVD_NAME..."
+    emulator -avd "$AVD_NAME" -no-snapshot-load -no-boot-anim > /dev/null 2>&1 &
+
+    log "Waiting for boot..."
+    adb wait-for-device
+    while [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" != "1" ]; do
+        sleep 3
+    done
+    log "Device is ready!"
+
+    setup_network_tunnel
+    install_apk
+}
+
+# -----------------------------------------------------------------------------
+# Starts the Appium Server with insecure features enabled for automation
+# -----------------------------------------------------------------------------
+start_appium() {
+    log "Starting Appium Server..."
+    appium --address 127.0.0.1 --port 4723 --allow-insecure *:chromedriver_autodownload
+}
+
+# -----------------------------------------------------------------------------
+# Orchestrates the full setup and launch sequence
+# -----------------------------------------------------------------------------
+main() {
+    check_and_install_node
+    setup_android_sdk
+    install_dependencies
+    check_node_appium
+    manage_emulator
+    start_appium
+}
+
+main "$@"

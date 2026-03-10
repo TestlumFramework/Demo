@@ -1,0 +1,7 @@
+[ {
+  "message" : "[\n  {\n    \"city\": \"Miami\",\n    \"temperature\": 2,\n    \"condition\": \"cold\",\n    \"timestamp\": 1650765300\n  }\n]",
+  "correlationId" : "null",
+  "headers" : {
+    "__TypeId__" : "java.lang.String"
+  }
+} ]

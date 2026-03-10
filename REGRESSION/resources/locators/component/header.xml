@@ -1,0 +1,23 @@
+<component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages component.xsd">
+
+    <locators>
+        <locator locatorId="searchField">
+            <xpath>.//input[@type='text']</xpath>
+        </locator>
+        
+        <locator locatorId="menuIcon">
+            <xpath>.//img[@alt='Your avatar']</xpath>
+        </locator>
+
+        <locator locatorId="menuBtn">
+            <xpath>.//img[@alt='Your avatar']/parent::button</xpath>
+        </locator>
+
+        <locator locatorId="logout">
+            <xpath>.//a[text()= 'Log out']</xpath>
+        </locator>
+    </locators>
+
+</component>

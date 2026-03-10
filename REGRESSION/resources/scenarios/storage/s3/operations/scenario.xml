@@ -1,0 +1,205 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Scenario for operations with s3</description>
+        <name>s3 operations</name>
+        <developer>Serhii Soroka</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <http comment="Check ability to create new 'bucket-one' bucket" alias="MEGA_APP">
+        <post endpoint="/s3/buckets">
+            <response code="200" file="expected_1.json"/>
+            <header name="Content-Type" data="text/plain"/>
+            <body>
+                <param name="bucketName" data="bucket-one"/>
+            </body>
+        </post>
+    </http>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Check ability to upload pdf file to 'bucket-one' bucket"
+              bucket="bucket-one"
+              key="random_pdf.pdf">
+            <upload>random_pdf.pdf</upload>
+        </file>
+    </s3>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Check ability to upload pdf file to 'bucket-one' bucket"
+              bucket="bucket-one"
+              key="random_pdf.pdf">
+            <download>
+                <file>expected_5.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <http comment="Check ability to get list of all files from 'bucket-one'" alias="MEGA_APP">
+        <get endpoint="/s3/bucket-one/files">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to get info about file 'random_pdf.pdf' from 'bucket-one'" alias="MEGA_APP">
+        <get endpoint="/s3/bucket-one/random_pdf.pdf">
+            <response code="200" file="expected_7.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to download file 'random_pdf.pdf' from 'bucket-one'" alias="MEGA_APP">
+        <get endpoint="/s3/bucket-one/random_pdf.pdf/download">
+            <response code="200" file="expected_8.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to upload mp3 file to 'bucket-one'" alias="MEGA_APP">
+        <post endpoint="/s3/bucket-one/upload">
+            <response code="200" file="expected_9.json"/>
+            <body>
+                <multipart>
+                    <file name="file" fileName="random_mp3.mp3"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Compare mp3 file from bucket with expected file"
+              bucket="bucket-one"
+              key="random_mp3.mp3">
+            <download>
+                <file>random_mp3.mp3</file>
+            </download>
+        </file>
+    </s3>
+
+    <http comment="Check ability to add new 'bucket-three' bucket" alias="MEGA_APP">
+        <post endpoint="/s3/buckets">
+            <response code="200" file="expected_12.json"/>
+            <header name="Content-Type" data="text/plain"/>
+            <body>
+                <param name="bucketName" data="bucket-three"/>
+            </body>
+        </post>
+    </http>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Check ability to upload mp4 file to 'bucket-three' bucket"
+              bucket="bucket-three"
+              key="random_mp4.mp4">
+            <upload>random_mp4.mp4</upload>
+        </file>
+    </s3>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Check ability to upload mp3 file to 'bucket-three' bucket"
+              bucket="bucket-three"
+              key="random_mp3.mp3">
+            <upload>random_mp3.mp3</upload>
+        </file>
+    </s3>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Check ability to download mp3 file from 'bucket-three' bucket"
+              bucket="bucket-three"
+              key="random_mp4.mp4">
+            <download>
+                <file>random_mp4.mp4</file>
+            </download>
+        </file>
+    </s3>
+
+    <http comment="Check ability to upload 'random_image.jpeg' file to 'bucket-three'" alias="MEGA_APP">
+        <post endpoint="/s3/bucket-three/upload">
+            <response code="200" file="expected_19.json"/>
+            <body>
+                <multipart>
+                    <file name="file" fileName="random_image_1.jpeg"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <s3 comment="S3 command" alias="S3_0">
+        <file comment="Compare 'random_image_1.jpeg' file from bucket-three with expected file"
+              bucket="bucket-three"
+              key="random_image_1.jpeg">
+            <download>
+                <file>random_image.png</file>
+            </download>
+        </file>
+    </s3>
+
+    <http comment="Check ability to remove all files from 'bucket-three'" alias="MEGA_APP">
+        <delete endpoint="/s3/bucket-three/files">
+            <response code="200" file="expected_22.json"/>
+        </delete>
+    </http>
+
+    <http comment="Check ability to get list of all files from 'bucket-three'" alias="MEGA_APP">
+        <get endpoint="/s3/bucket-three/files">
+            <response code="200" file="expected_23.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to get list of all buckets" alias="MEGA_APP">
+        <get endpoint="/s3/buckets">
+            <response code="200" file="expected_24.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to remove all files from 'bucket-one'" alias="MEGA_APP">
+        <delete endpoint="/s3/bucket-one/files">
+            <response code="200" file="expected_25.json"/>
+        </delete>
+    </http>
+
+    <http comment="Check ability to remove 'bucket-one'" alias="MEGA_APP">
+        <delete endpoint="/s3/buckets?bucketName=bucket-one">
+            <response code="200" file="expected_26.json"/>
+        </delete>
+    </http>
+
+    <s3 comment="s3 commands" alias="S3_0">
+        <bucket comment="create bucket">
+            <create>bucket-one</create>
+        </bucket>
+        <file comment="Check ability to upload photo to 'bucket-one' bucket"
+              bucket="bucket-one"
+              key="/com/knubisoft/random_image.png">
+            <upload>random_image.png</upload>
+        </file>
+        <file comment="Compare png file from bucket with expected jpeg file"
+              bucket="bucket-one"
+              key="/com/knubisoft/random_image.png">
+            <download>
+                <file>random_image_1.jpeg</file>
+            </download>
+        </file>
+        <file comment="Check ability to upload txt file to 'bucket-one' bucket"
+              bucket="bucket-one"
+              key="/com/knubisoft/sample.txt">
+            <upload>sample.txt</upload>
+        </file>
+        <file comment="Compare txt file from bucket with expected file"
+              bucket="bucket-one"
+              key="/com/knubisoft/sample.txt">
+            <download>
+                <value>Sample txt file to upload to s3 bucket</value>
+            </download>
+        </file>
+    </s3>
+
+    <http comment="Check ability to get list of all files from 'bucket-one'" alias="MEGA_APP">
+        <get endpoint="/s3/bucket-one/files">
+            <response code="200" file="expected_33.json"/>
+        </get>
+    </http>
+
+</scenario>

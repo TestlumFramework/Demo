@@ -1,0 +1,8 @@
+[
+  {
+    "query": "             SELECT name FROM dynamodb_news             WHERE id = '2'         ",
+    "content": [
+      {}
+    ]
+  }
+]

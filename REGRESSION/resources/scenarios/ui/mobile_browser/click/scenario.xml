@@ -1,0 +1,31 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for mobile browser command: click</description>
+        <name>Click mobile browser test</name>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start WEB scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Sign In' button" locator="login.signIn"/>
+
+        <wait comment="Wait 1 seconds" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for click" name="outerHTML" locator="dashboard.title">
+                <content><![CDATA[<h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>]]></content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </mobilebrowser>
+
+</scenario>

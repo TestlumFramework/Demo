@@ -1,0 +1,158 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for variations with all types of integrations</description>
+        <name>Variations test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>variations.csv</variations>
+        <tags>variations-mixed</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="{{scenario_path}}"/>
+
+    <web comment="Start WEB scripts for condition with url var">
+        <var comment="Check ability to fetch URL of current page and create variable with it" name="url">
+            <url/>
+        </var>
+
+        <!--Conditions is prescribed in steps with images, so that the tests can be performed both locally,
+        and on browser stack, because they have a little difference in phone size-->
+        <!--Local is - http://localhost:3000 / Remote Jenkins is http://mega-test-site -->
+
+        <condition comment="Create condition for check correct work of var 'url'" name="remote"
+                   spel="'{{url}}' eq 'http://mega-test-site/dashboard/'"/>
+
+        <condition comment="Create condition for check correct work of var 'url'" name="local"
+                   spel="'{{url}}' eq 'http://localhost:3000/dashboard'"/>
+    </web>
+
+    <repeat comment="Check the ability to run variations in  repeat" variations="variations_1.csv">
+        <web comment="Start WEB scripts">
+
+            <wait comment="Wait for loading new page 1 second" time="1"/>
+
+            <click comment="Click on forms button" locator="sideBar.forms"/>
+
+            <wait comment="Wait for loading new page 1 second" time="1"/>
+
+            <scrollTo comment="Scroll to 'save' button" locator="forms.save"/>
+
+            <input comment="Input username" locator="forms.username" value="{{username}}"/>
+
+            <input comment="Input Email Address" locator="forms.email" value="{{email}}"/>
+
+            <input comment="Input Password" locator="forms.password" value="{{password}}"/>
+
+            <input comment="Input Password Confirmation" locator="forms.repeatPassword" value="{{password}}"/>
+
+            <wait comment="Wait for 1 second" time="1"/>
+
+            <image comment="Check that input fields correspond to data from the variation file" file="{{image_local}}.png"
+                   condition="local">
+                <part locator="forms.form"/>
+            </image>
+            <image comment="Check that input fields correspond to data from the variation file" file="{{image_remote}}.png"
+                   condition="remote">
+                <part locator="forms.form"/>
+            </image>
+        </web>
+    </repeat>
+
+    <mysql comment="Check ability to make INSERT query into the DB"
+           alias="MYSQL_0"
+           file="expected_33.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (1, 'News1', 4, false, '2023-04-21 10:49:02');;
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (2, 'News2', 5, false, '2023-04-21 10:49:10');;
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (3, 'News3', 6, true, '2023-04-21 10:49:05');;
+        </query>
+    </mysql>
+
+    <repeat comment="Check the ability to run variations in  repeat" variations="variations_1.csv">
+        <mysql comment="Check ability to get list of news"
+               alias="MYSQL_0" file="{{expected_35-36}}.json">
+            <query>
+                SELECT * FROM news WHERE newsname ='{{name}}'
+            </query>
+        </mysql>
+    </repeat>
+
+    <redis comment=" Check ability to add single key-value pair to redis using SET command and get key-value pair using
+    GET command" alias="REDIS_0" file="{{expected_40}}.json">
+        <query>
+            <command>SET</command>
+            <arg>name</arg>
+            <arg>{{ARGname}}</arg>
+        </query>
+
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+    <http comment="Check ability to get news by name with updated name"
+          alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name={{name}}">
+            <response code="200" file="{{expected_41}}.json"/>
+        </get>
+    </http>
+
+    <repeat comment="Check the ability to run variations in  repeat" variations="variations.csv">
+        <http comment="Check ability to get news by name with updated name"
+              alias="MEGA_APP">
+            <get endpoint="/mysql/news/by?name={{name}}">
+                <response code="200" file="{{expected_43-44}}.json"/>
+            </get>
+        </http>
+    </repeat>
+
+    <migrate comment="Migrate list of registered users from patch to 'users' table" alias="POSTGRES_AUTH">
+        <dataset>{{patch}}</dataset>
+    </migrate>
+
+    <auth comment="Check ability to log in by 'auth' command" apiAlias="MEGA_APP" credentials="{{auth}}.json"
+          loginEndpoint="/jwt/login">
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP">
+            <get endpoint="/jwt/users">
+                <response code="200" file="{{expected_47}}.json"/>
+            </get>
+        </http>
+
+        <http comment="Check ability to add new user inside auth command" alias="MEGA_APP">
+            <post endpoint="/jwt/users">
+                <response code="200" file="expected_48.json"/>
+                <body>
+                    <raw>
+                        {
+                        "username": "Ronaldo",
+                        "password": "kris123",
+                        "role": "USER",
+                        "enabled": true,
+                        "accountNonExpired": false,
+                        "accountNonLocked": true,
+                        "credentialsNonExpired": true
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP">
+            <get endpoint="/jwt/users">
+                <response code="200" file="{{expected_49}}.json"/>
+            </get>
+        </http>
+    </auth>
+
+</scenario>

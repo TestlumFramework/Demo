@@ -1,0 +1,37 @@
+[
+  {
+    "number": 1,
+    "createdAt": "2023-04-17T12:32:53.558",
+    "name": "News1",
+    "active": true,
+    "id": "1"
+  },
+  {
+    "number": 2,
+    "createdAt": "2023-04-17T12:32:53.558",
+    "name": "News2",
+    "active": true,
+    "id": "2"
+  },
+  {
+    "number": 3,
+    "createdAt": "2023-04-17T12:32:53.558",
+    "name": "News3",
+    "active": false,
+    "id": "3"
+  },
+  {
+    "number": 4,
+    "createdAt": "2023-04-17T12:34:20.367",
+    "name": "News4",
+    "active": true,
+    "id": "4"
+  },
+  {
+    "number": 5,
+    "createdAt": "2023-04-17T12:34:20.367",
+    "name": "News5",
+    "active": true,
+    "id": "5"
+  }
+]

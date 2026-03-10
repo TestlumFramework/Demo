@@ -1,0 +1,29 @@
+[
+  {
+    "query": "p(any)",
+    "content": [
+      {
+        "number": {
+          "n": "6",
+          "type": "N"
+        },
+        "createdAt": {
+          "s": "2023-04-17T12:35:02.856",
+          "type": "S"
+        },
+        "name": {
+          "s": "News6",
+          "type": "S"
+        },
+        "active": {
+          "bool": true,
+          "type": "BOOL"
+        },
+        "id": {
+          "s": "p(any)",
+          "type": "S"
+        }
+      }
+    ]
+  }
+]

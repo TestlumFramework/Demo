@@ -1,0 +1,28 @@
+[
+  {
+    "query": "SELECT * FROM news",
+    "content": [
+      {
+        "id": 101,
+        "active": true,
+        "createdat": "2023-04-21Tp(any)",
+        "newsname": "News1",
+        "newsnumber": 1
+      },
+      {
+        "id": 102,
+        "active": false,
+        "createdat": "2023-04-21Tp(any)",
+        "newsname": "News2",
+        "newsnumber": 2
+      },
+      {
+        "id": 103,
+        "active": true,
+        "createdat": "2023-04-21Tp(any)",
+        "newsname": "News3",
+        "newsnumber": 3
+      }
+    ]
+  }
+]

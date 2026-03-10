@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: swipe</description>
+        <name>Swipe native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_native/scenario.xml"/>
+
+    <native comment="Start native scripts">
+
+        <click comment="Click on 'notifications' icon" locator="mainNative.notifications"/>
+
+        <swipe comment="Swipe page right">
+            <page comment="Swipe page right" direction="right" percent="70"/>
+        </swipe>
+
+        <wait comment="Wait 3 seconds" time="3"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'swipe' right" name="selected" locator="notificationsNative.unread">
+                <content>true</content>
+            </attribute>
+        </assert>
+
+        <swipe comment="Swipe page left">
+            <page comment="Swipe page left" direction="left" percent="100"/>
+        </swipe>
+
+        <wait comment="Wait 3 seconds" time="3"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'swipe' left" name="selected" locator="notificationsNative.all">
+                <content>true</content>
+            </attribute>
+        </assert>
+
+        <swipe comment="Swipe page down with locator">
+            <element comment="Swipe page down with locator" locator="notificationsNative.title" direction="down"/>
+        </swipe>
+
+        <click comment="Click on 'menu' button" locator="mainNative.menuBtn"/>
+
+        <click comment="Click on 'settings' button" locator="menuNative.settings"/>
+
+        <click comment="Click on 'General' button" locator="settingsNative.general"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <swipe comment="Swipe page up">
+            <page comment="Swipe page up" direction="up" quantity="3" percent="39"/>
+        </swipe>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'swipe' up" name="text" locator="settingsNative.advanced">
+                <content>ADVANCED</content>
+            </attribute>
+        </assert>
+
+    </native>
+
+</scenario>

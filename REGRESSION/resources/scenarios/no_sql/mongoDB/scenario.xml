@@ -1,0 +1,161 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Positive test for Mongo Database</description>
+        <name>MongoDB positive test scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>mongodb</tags>
+    </settings>
+
+    <migrate comment="Prepare information from mongo_patch.bson"
+             name="MONGODB"
+             alias="MONGO_0">
+        <dataset>mongo_patch.bson</dataset>
+    </migrate>
+
+    <http comment="Check ability to add new info" alias="MEGA_APP">
+        <post endpoint="/mongo/news">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <from file="request_2.json"/>
+            </body>
+        </post>
+    </http>
+
+    <mongo comment="Execute mongodb insert command"
+           alias="MONGO_0"
+           file="expected_3.json">
+        <query>
+            {
+            insert: "mongo_news",
+            documents: [
+            {_id: 1, name: "Gianluigi Donnarumma", number: 21, active: true, createdAt: ISODate("2023-04-15T05:45:00.000Z") },
+            {_id: 2, name: "Riyad Mahrez", number: 26, active: false, createdAt: ISODate("2023-04-15T06:30:00.000Z") },
+            {_id: 3, name: "Thiago Alcantara", number: 10, active: false, createdAt: ISODate("2023-04-15T08:15:00.000Z") },
+            {_id: 4, name: "Nicolò Barella", number: 23, active: false, createdAt: ISODate("2023-04-15T15:45:00.000Z") },
+            {_id: 5, name: "Karim Benzema", number: 9, active: true, createdAt: ISODate("2023-04-15T16:30:00.000Z") },
+            {_id: 6, name: "Jadon Sancho", number: 11, active: true, createdAt: ISODate("2023-04-15T18:15:00.000Z") },
+            {_id: 7, name: "Edinson Cavani", number: 10, active: true, createdAt: ISODate("2023-04-15T19:10:00.000Z") }
+            ] }
+        </query>
+    </mongo>
+
+    <mongo comment="Execute mongodb find command with active: 'true'"
+           alias="MONGO_0"
+           file="expected_4.json">
+        <query>
+            {
+            find: "mongo_news",
+            filter: {
+            active: true,
+            number: { "$eq": 17 }
+            } }
+        </query>
+    </mongo>
+
+    <mongo comment="Execute mongodb find command with active: 'false'"
+           alias="MONGO_0"
+           file="expected_5.json">
+        <query>
+            {
+            find: "mongo_news",
+            filter: {
+            active: false,
+            number: { "$eq": 7 }
+            } }
+        </query>
+    </mongo>
+
+    <http comment="Check ability to get list of all news" alias="MEGA_APP">
+        <get endpoint="/mongo/news">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <var comment="Create 'id' var for tenth user" name="id">
+        <path value="$[10].id"/>
+    </var>
+
+    <mongo comment="Execute mongodb update command by 'id'"
+           alias="MONGO_0"
+           file="expected_8.json">
+        <query>
+            {
+            update: "mongo_news",
+            updates: [
+            {
+            q: { _id: 3 },
+            u: { "$set": { number: 30 } }
+            } ] }
+        </query>
+    </mongo>
+
+    <http comment="Check ability to get news by 'name' and make sure that the document is updated" alias="MEGA_APP">
+        <get endpoint="/mongo/news/by?name=Thiago%20Alcantara">
+            <response code="200" file="expected_9.json"/>
+        </get>
+    </http>
+
+    <mongo comment="Execute mongodb update command by 'name'"
+           alias="MONGO_0"
+           file="expected_10.json">
+        <query>
+            {
+            update: "mongo_news",
+            updates: [
+            {
+            q: { name: "Harry Kane" },
+            u: { "$set": { number: 17 } }
+            } ] }
+        </query>
+    </mongo>
+
+    <http comment="Check ability to get news by 'id' and make sure that the document is updated" alias="MEGA_APP">
+        <get endpoint="/mongo/news/{{id}}">
+            <response code="200" file="expected_11.json"/>
+        </get>
+    </http>
+
+    <mongo comment="Execute mongodb delete command"
+           alias="MONGO_0"
+           file="expected_12.json">
+        <query>
+            {
+            delete: "mongo_news",
+            deletes: [
+            {
+            q: { active: false, number: 10 },
+            limit: 1
+            } ] }
+        </query>
+    </mongo>
+
+    <http comment="Check ability to get list of all news and make sure that the document is deleted" alias="MEGA_APP">
+        <get endpoint="/mongo/news">
+            <response code="200" file="expected_13.json"/>
+        </get>
+    </http>
+
+    <mongo comment="Execute mixed mongodb commands (find/update/delete)"
+           alias="MONGO_0"
+           file="expected_14.json">
+        <query>{ update: "mongo_news", updates: [{q: {name: "Jadon Sancho"}, u: { "$set": { active: false }}}] }</query>
+        <query>{ find: "mongo_news", filter: {name: "Jadon Sancho", number: 11} }</query>
+        <query>{ delete: "mongo_news", deletes: [{q: { active: false, number: 4 }, limit: 1}] }</query>
+        <query>{ find: "mongo_news", filter: { number: 4 } }</query>
+    </mongo>
+
+    <http comment="Check ability add new info without required field" alias="MEGA_APP">
+        <post endpoint="/mongo/news">
+            <response code="400" file="expected_15.json"/>
+            <body>
+                <from file="request_15.json"/>
+            </body>
+        </post>
+    </http>
+
+</scenario>

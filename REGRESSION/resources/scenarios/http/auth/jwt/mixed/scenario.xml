@@ -1,0 +1,147 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Scenario for jwt auth</description>
+        <name>Auth JWT</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>auth-jwt-mixed</tags>
+    </settings>
+
+    <migrate comment="Migrate list of registered users from patch to 'users' table" alias="POSTGRES_AUTH">
+        <dataset>postgres_auth_patch.sql</dataset>
+    </migrate>
+
+    <postgres comment="Make sure that users were added to 'users' table" alias="POSTGRES_AUTH" file="expected_2.json">
+        <query>SELECT * FROM users</query>
+    </postgres>
+
+    <http comment="Check ability to login added user with valid credentials" alias="MEGA_APP">
+        <post endpoint="/jwt/login">
+            <response code="200" file="expected_3.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "username": "testlum",
+                    "password": "testlum123"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Create var for access token" name="accessToken">
+        <path value="$.token"/>
+    </var>
+
+    <http comment="Check ability to get list of all users by authorized user using bearer token in header"
+          alias="MEGA_APP">
+        <get endpoint="/jwt/users">
+            <response code="200" file="expected_5.json"/>
+            <header name="Authorization" data="Bearer {{accessToken}}"/>
+        </get>
+    </http>
+
+    <http comment="Check impossibility to get list of all users by unauthorized user" alias="MEGA_APP">
+        <get endpoint="/jwt/users">
+            <response code="401" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <postgres comment="Alter sequence users_id_seq restart with 3" alias="POSTGRES_AUTH" file="expected_7.json">
+        <query>ALTER SEQUENCE users_id_seq RESTART WITH 3</query>
+    </postgres>
+
+    <http comment="Check ability to add new user by authorized user with bearer token in header" alias="MEGA_APP">
+        <post endpoint="/jwt/users">
+            <response code="200" file="expected_8.json"/>
+            <header name="Authorization" data="Bearer {{accessToken}}"/>
+            <body>
+                <raw>
+                    {
+                    "username": "new user",
+                    "password": "newuser123",
+                    "role": "USER",
+                    "enabled": true,
+                    "accountNonExpired": true,
+                    "accountNonLocked": true,
+                    "credentialsNonExpired": true
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <postgres comment="Make sure that user with id 3 was added to 'users' table" alias="POSTGRES_AUTH"
+              file="expected_9.json">
+        <query>SELECT * FROM users</query>
+    </postgres>
+
+    <http comment="Check impossibility to add new user without header with bearer token" alias="MEGA_APP">
+        <post endpoint="/jwt/users">
+            <response code="401" file="expected_10.json"/>
+            <body>
+                <raw>
+                    {
+                    "username": "new username",
+                    "password": "newuser123",
+                    "role": "USER",
+                    "enabled": true,
+                    "accountNonExpired": true,
+                    "accountNonLocked": true,
+                    "credentialsNonExpired": true
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <auth comment="Check ability to log in by 'auth' command" apiAlias="MEGA_APP" credentials="auth-user.json"
+          loginEndpoint="/jwt/login">
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP">
+            <get endpoint="/jwt/users">
+                <response code="200" file="expected_12.json"/>
+            </get>
+        </http>
+
+        <http comment="Check ability to add new user inside auth command" alias="MEGA_APP">
+            <post endpoint="/jwt/users">
+                <response code="200" file="expected_13.json"/>
+                <body>
+                    <raw>
+                        {
+                        "username": "Ronaldo",
+                        "password": "kris123",
+                        "role": "USER",
+                        "enabled": true,
+                        "accountNonExpired": false,
+                        "accountNonLocked": true,
+                        "credentialsNonExpired": true
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
+              alias="MEGA_APP">
+            <get endpoint="/jwt/users">
+                <response code="200" file="expected_14.json"/>
+            </get>
+        </http>
+    </auth>
+
+    <http comment="Check impossibility to get list of all users outside 'auth' command"
+          alias="MEGA_APP">
+        <get endpoint="/jwt/users">
+            <response code="401" file="expected_16.json"/>
+        </get>
+    </http>
+
+</scenario>

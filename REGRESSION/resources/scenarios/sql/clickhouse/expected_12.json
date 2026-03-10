@@ -1,0 +1,6 @@
+[
+  {
+    "query": "ALTER TABLE test_db.news DROP COLUMN capital",
+    "content": "Query completed successfully"
+  }
+]

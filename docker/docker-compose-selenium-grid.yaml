@@ -1,0 +1,87 @@
+services:
+  selenium-hub:
+    image: selenium/hub:4.41.0-20260222
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4444/status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  chrome:
+    platform: ${PLATFORM:-linux/amd64}
+    image: selenium/node-chrome:4.41.0-20260222
+    shm_size: 4gb
+    depends_on:
+      selenium-hub:
+        condition: service_healthy
+    environment:
+      - SE_NODE_MAX_SESSIONS=3
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=90
+      - SE_NODE_GRID_URL=http://localhost:4444
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -s http://localhost:5555/status | jq -r '.value.ready' | grep -q 'true'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+#  edge:
+#    platform: ${PLATFORM:-linux/amd64}
+#    image: selenium/node-edge:latest
+#    shm_size: 2gb
+#    depends_on:
+#      selenium-hub:
+#        condition: service_healthy
+#    environment:
+#      - SE_NODE_MAX_SESSIONS=3
+#      - SE_EVENT_BUS_HOST=selenium-hub
+#      - SE_EVENT_BUS_PUBLISH_PORT=4442
+#      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+#      - SE_NODE_SESSION_TIMEOUT=20
+#      - SE_DRAIN_AFTER_SESSION_COUNT=10
+#    networks:
+#      - e2e_network
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl -s http://localhost:5555/status | jq -r '.value.ready' | grep -q 'true'" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 3
+
+#  firefox:
+#    platform: ${PLATFORM:-linux/amd64}
+#    image: selenium/node-firefox:latest
+#    shm_size: 2gb
+#    depends_on:
+#      selenium-hub:
+#        condition: service_healthy
+#    environment:
+#      - SE_NODE_MAX_SESSIONS=3
+#      - SE_EVENT_BUS_HOST=selenium-hub
+#      - SE_EVENT_BUS_PUBLISH_PORT=4442
+#      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+#      - SE_NODE_SESSION_TIMEOUT=20
+#      - SE_DRAIN_AFTER_SESSION_COUNT=10
+#    networks:
+#      - e2e_network
+#    healthcheck:
+#      test: [ "CMD-SHELL", "curl -s http://localhost:5555/status | jq -r '.value.ready' | grep -q 'true'" ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 3
+
+networks:
+  e2e_network:
+    external: true

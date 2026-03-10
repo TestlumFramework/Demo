@@ -1,0 +1,3 @@
+INSERT INTO dynamodb_news VALUE { 'name' : 'News1', 'number' : 1, 'active' : true, 'createdAt': '2023-04-17T12:32:53.558', 'id': '1' };;
+INSERT INTO dynamodb_news VALUE { 'name' : 'News2', 'number' : 2, 'active' : true, 'createdAt': '2023-04-17T12:32:53.558', 'id': '2' };;
+INSERT INTO dynamodb_news VALUE { 'name' : 'News3', 'number' : 3, 'active' : false, 'createdAt': '2023-04-17T12:32:53.558', 'id': '3' };;

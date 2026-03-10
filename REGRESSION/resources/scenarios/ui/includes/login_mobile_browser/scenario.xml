@@ -1,0 +1,22 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: hover</description>
+        <name>Hover test</name>
+    </overview>
+
+    <settings active="false">
+        <tags>web</tags>
+    </settings>
+
+    <mobilebrowser comment="Start WEB scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Sign In' button" locator="login.signIn"/>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,10 @@
+[
+  {
+    "query": "{\"command\":\"SET\",\"arg\":[\"name\",\"John\"]}",
+    "content": "OK"
+  },
+  {
+    "query": "{\"command\":\"SETNX\",\"arg\":[\"name\",\"Andrew\"]}",
+    "content": "0"
+  }
+]

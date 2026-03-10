@@ -1,0 +1,36 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for Native command: repeat</description>
+        <name>Repeat in native</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+    
+    <native comment="Start native scripts">
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Google Auth' button" locator="loginNative.googleAuth"/>
+
+        <wait comment="Wait 3 seconds" time="3"/>
+
+        <repeat comment="Check the ability to run variations in repeat" variations="variations_native.csv">
+            <input comment="Input email field" locator="loginNative.email" value="{{value}}"/>
+
+            <wait comment="Wait 2 second" time="2"/>
+
+            <assert comment="Create assert for repeat">
+                <attribute comment="Assert for repeat in input" name="text" locator="loginNative.email">
+                    <content>{{value}}</content>
+                </attribute>
+            </assert>
+
+            <clear comment="Clear input field" locator="loginNative.email"/>
+        </repeat>
+    </native>
+
+</scenario>

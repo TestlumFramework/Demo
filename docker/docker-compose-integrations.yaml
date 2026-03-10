@@ -1,0 +1,309 @@
+services:
+  dynamodb-e2e:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-e2e
+    environment:
+      AWS_ACCESS_KEY_ID: dHwXPbnU9FVb3o
+      AWS_SECRET_ACCESS_KEY: Kbg7XdQ2YD5hAh
+      AWS_DEFAULT_REGION: eu-central-1
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath . -optimizeDbBeforeStartup
+    volumes:
+      - dynamodb-data:/home/dynamodblocal
+    working_dir: /home/dynamodblocal
+    ports:
+      - "8100:8000"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", 'if [ "$(curl -s -o /dev/null -I -w ''%{http_code}'' http://localhost:8000)" == "400" ]; then exit 0; else exit 1; fi',]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  # only to drop and create table
+  dynamodb-init:
+    image: amazon/aws-cli:latest
+    container_name: dynamodb-init
+    depends_on:
+      dynamodb-e2e:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: dHwXPbnU9FVb3o
+      AWS_SECRET_ACCESS_KEY: Kbg7XdQ2YD5hAh
+      AWS_DEFAULT_REGION: eu-central-1
+    entrypoint: [ "" ]
+    volumes:
+      - ./init-data/dynamodb/aws-cli:/init
+    command:
+      /bin/sh -c /init/dynamo-init.sh
+    networks:
+      - e2e_network
+    profiles: [ci, local]
+
+  mongodb-e2e:
+    image: mongo:4.2.3-bionic
+    container_name: mongodb-e2e
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: username
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mongo_db,graphql_db
+    volumes:
+      - mongodb:/data/db
+      - ./init-data/mongodb/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - "27017:27017"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    profiles: [ci, local]
+
+  postgres-e2e:
+    image: postgres
+    container_name: postgres-e2e
+    restart: always
+    environment:
+      POSTGRES_USER: playground
+      POSTGRES_PASSWORD: playground
+      POSTGRES_DB: playground_db
+    volumes:
+      - ./init-data/postgres:/docker-entrypoint-initdb.d
+    ports:
+      - "5434:5432"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U playground -d playground_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  postgres-auth-e2e:
+    image: postgres
+    container_name: postgres-auth-e2e
+    restart: always
+    environment:
+      TZ: Europe/Kyiv
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users_db
+    volumes:
+      - ./init-data/postgres-auth:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d users_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  mysql-e2e:
+    image: mysql
+    container_name: mysql-e2e
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: playground_db
+      MYSQL_USER: playground
+      MYSQL_PASSWORD: playground
+    volumes:
+      - ./init-data/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  oracle-e2e:
+    image: pvargacl/oracle-xe-18.4.0
+    container_name: oracle-e2e
+    environment:
+      - ORACLE_SID=xe
+      - ORACLE_PDB=c##testlum
+      - ORACLE_PWD=password
+    volumes:
+      - /opt/oracle/oradata
+      - ./init-data/oracle:/opt/oracle/scripts/startup
+    ports:
+      - "1521:1521"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "lsnrctl status | grep -q 'READY'" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles: [ci]
+
+  clickhouse-e2e:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse-e2e
+    environment:
+      CLICKHOUSE_DB: test_db
+      CLICKHOUSE_USER: test
+      CLICKHOUSE_PASSWORD: test
+    volumes:
+      - ./init-data/clickhouse/init.sh:/docker-entrypoint-initdb.d/init.sh:ro
+      - ./init-data/clickhouse/users.xml:/etc/clickhouse-server/users.xml
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "-q", "localhost:8123/ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci]
+
+  kafka-e2e:
+    image: apache/kafka-native
+    container_name: kafka-e2e
+    environment:
+      KAFKA_LISTENERS: CONTROLLER://kafka-e2e:9091,DOCKER://kafka-e2e:9093,EXTERNAL://0.0.0.0:9094
+      KAFKA_ADVERTISED_LISTENERS: DOCKER://kafka-e2e:9093,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,DOCKER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-e2e:9091
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+    ports:
+      - "9094:9094"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "/usr/bin/kafka-topics.sh --bootstrap-server localhost:9093 --list" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    profiles: [ci, local]
+
+  rabbitmq-e2e:
+    image: rabbitmq:3.6.6-management
+    container_name: rabbitmq-e2e
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    profiles: [ci, local]
+
+  redis-e2e:
+    image: redis:7.0.4-alpine
+    container_name: redis-e2e
+    ports:
+      - "6379:6379"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  localstack-e2e:
+    image: localstack/localstack:latest
+    container_name: localstack-e2e
+    environment:
+      - SERVICES=lambda,sqs,s3,ses
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_REMOVE_CONTAINERS=true
+      - AWS_REGION=eu-central-1
+      - AWS_ACCESS_KEY_ID=JQttVjEfR3y4UJ
+      - AWS_SECRET_ACCESS_KEY=wzsTjXDJL2C5Wq
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./init-data/aws:/etc/localstack/init/ready.d
+    ports:
+      - "4566:4566"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -s localhost:4566/_localstack/health | grep -q '\"status\": \"running\"'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+  elasticsearch-e2e:
+    container_name: elasticsearch-e2e
+    build:
+      context: ./init-data/elasticsearch
+      args:
+        ELK_VERSION: 7.12.0
+    volumes:
+      - ./init-data/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./init-data/elasticsearch/data:/var/lib/elasticsearch/data
+      - ./init-data/elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options
+    environment:
+      ELASTIC_PASSWORD: q98374fkjdkfuyqiweysdc
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -s -u elastic:q98374fkjdkfuyqiweysdc http://localhost:9200/_cluster/health | grep -vq '\"status\":\"red\"'" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+    profiles: [ci]
+
+  vault-e2e:
+    container_name: vault-e2e
+    image: hashicorp/vault:latest
+    volumes:
+      - ./init-data/vault/init_vault.sh:/tmp/init_vault.sh
+      - ./init-data/vault/vault_config.conf:/vault/config.d/vault_config.conf:ro
+    cap_add:
+      - IPC_LOCK
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=myroot
+    command: server -dev
+    ports:
+      - "8200:8200"
+    networks:
+      - e2e_network
+    healthcheck:
+      test: [ "CMD", "vault", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ci, local]
+
+networks:
+  e2e_network:
+    external: true
+
+volumes:
+  dynamodb-data:
+    driver: local
+  mongodb:

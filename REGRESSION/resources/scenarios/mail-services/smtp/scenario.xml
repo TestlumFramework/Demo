@@ -1,0 +1,19 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of SMTP test</description>
+        <name>SMTP</name>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <smtp comment="Testing smtp work" alias="SMTP_0" recipientEmail="testlum.test.acc@gmail.com">
+        <subject>Test subject</subject>
+        <text>Test text</text>
+    </smtp>
+
+</scenario>

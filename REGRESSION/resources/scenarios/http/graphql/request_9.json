@@ -1,0 +1,3 @@
+{
+  "query": "{ getBookByTitle(title: \"A Man Called Ove\") { id number } }"
+}

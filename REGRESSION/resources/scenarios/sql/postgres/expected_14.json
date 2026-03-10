@@ -1,0 +1,11 @@
+[
+  {
+    "query": "p(any)",
+    "content": [
+      {
+        "newsname": "NewsWithVar",
+        "newsnumber": 5
+      }
+    ]
+  }
+]

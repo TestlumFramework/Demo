@@ -1,0 +1,255 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Var</description>
+        <name>Var</name>
+        <developer>Bohdan Shakhov</developer>
+    </overview>
+
+    <settings>
+        <tags>var-self</tags>
+    </settings>
+
+    <var comment="Create constant variable with value - Testlum" name="constant">
+        <constant value="Testlum"/>
+    </var>
+
+    <assert comment="Check equality of variable constant">
+        <equal comment="Check that constant variable equals to 'Testlum'">
+            <content>{{constant}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable from json file" name="jsonFile">
+        <file fileName="data.json"/>
+    </var>
+
+    <assert comment="Check equality of variable jsonFile">
+        <equal comment="Check that jsonFile variable equals to content from data.json">
+            <content>{{jsonFile}}</content>
+            <content>{
+  "name": "Testlum",
+  "description": "No Code, Full Coverage"
+}</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable from txt file" name="txtFile">
+        <file fileName="data.txt"/>
+    </var>
+
+    <assert comment="Check equality of variable txtFile">
+        <equal comment="Check that txtFile variable equals to content from data.txt">
+            <content>{{txtFile}}</content>
+            <content>Testlum - No Code, Full Coverage</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable from expression" name="expression">
+        <expression value="'Testlum'.repeat(3)"/>
+    </var>
+
+    <assert comment="Check equality of variable expression">
+        <equal comment="Check that expression variable equals to 'TestlumTestlumTestlum'">
+            <content>{{expression}}</content>
+            <content>TestlumTestlumTestlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create alphabetic generated variable" name="generateAlphabetic">
+        <generate length="10">
+            <alphabetic/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that generateAlphabetic var contains only alphabetic symbols and length is 10"
+               name="generateAlphabeticCondition"
+               spel="'{{generateAlphabetic}}'.length() == 10 and '{{generateAlphabetic}}'.matches('^[a-zA-Z]+$')"/>
+
+    <assert comment="Check that condition for generateAlphabetic var is true">
+        <equal comment="Check that generateAlphabeticCondition is true">
+            <content>{{generateAlphabeticCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create alphanumeric generated variable" name="generateAlphanumeric">
+        <generate length="10">
+            <alphanumeric/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that generateAlphanumeric var contains only alphanumeric symbols and length is 10"
+               name="generateAlphanumericCondition"
+               spel="'{{generateAlphanumeric}}'.length() == 10 and '{{generateAlphanumeric}}'.matches('^[a-zA-Z0-9]+$')"/>
+
+    <assert comment="Check that condition for generateAlphanumeric var is true">
+        <equal comment="Check that generateAlphanumericCondition is true">
+            <content>{{generateAlphanumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create numeric generated variable" name="generateNumeric">
+        <generate length="10">
+            <numeric/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that generateNumeric var contains only numeric symbols and length is 10"
+               name="generateNumericCondition"
+               spel="'{{generateNumeric}}'.length() == 10 and '{{generateNumeric}}'.matches('^[0-9]+$')"/>
+
+    <assert comment="Check that condition for generateNumeric var is true">
+        <equal comment="Check that generateNumericCondition is true">
+            <content>{{generateNumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with email pattern" name="generateRandomRegexp">
+        <generate length="15">
+            <randomRegexp pattern="^[a-z]{5}.[1-9]{5}=com$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 15"
+               name="generateRandomRegexpCondition"
+               spel="'{{generateRandomRegexp}}'.length() == 15 and '{{generateRandomRegexp}}'.matches('^[a-z]{5}.[1-9]{5}=com$')"/>
+
+    <assert comment="Check that condition for generateRandomRegexp var is true">
+        <equal comment="Check that generateRandomRegexpCondition is true">
+            <content>{{generateRandomRegexpCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with pattern for digits" name="generateRandomRegexpDigitsOnly">
+        <generate length="10">
+            <randomRegexp pattern="^[0-9]+$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 10"
+               name="generateRandomRegexpDigitsOnlyCondition"
+               spel="'{{generateRandomRegexpDigitsOnly}}'.length() == 10 and '{{generateRandomRegexpDigitsOnly}}'.matches('^[0-9]+$')"/>
+
+    <assert comment="Check that condition for generateRandomRegexpDigitsOnly var is true">
+        <equal comment="Check that generateRandomRegexpDigitsOnlyCondition is true">
+            <content>{{generateRandomRegexpDigitsOnlyCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with fixed start/end pattern" name="generateRandomRegexpFixedStartAndEnd">
+        <generate length="8">
+            <randomRegexp pattern="^A[a-z]*Z$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 8"
+               name="generateRandomRegexpFixedStartAndEndCondition"
+               spel="'{{generateRandomRegexpFixedStartAndEnd}}'.length() == 8 and '{{generateRandomRegexpFixedStartAndEnd}}'.matches('^A[a-z]*Z$')"/>
+
+    <assert comment="Check that condition for generateRandomRegexpFixedStartAndEnd var is true">
+        <equal comment="Check that generateRandomRegexpFixedStartAndEndCondition is true">
+            <content>{{generateRandomRegexpFixedStartAndEndCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with email simple pattern" name="emailSimple">
+        <generate length="12">
+            <randomRegexp pattern="^[a-z]+@[a-z]+\.[a-z]{3}$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 12"
+               name="emailSimpleCondition"
+               spel="'{{emailSimple}}'.length() == 12 and '{{emailSimple}}'.matches('^[a-z]+@[a-z]+\.[a-z]{3}$')"/>
+
+    <assert comment="Check that condition for emailSimple var is true">
+        <equal comment="Check that emailSimpleCondition is true">
+            <content>{{emailSimpleCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with hexadecimal pattern" name="hexadecimal">
+        <generate length="7">
+            <randomRegexp pattern="^#[A-Fa-f0-9]{6}$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 7"
+               name="hexadecimalCondition"
+               spel="'{{hexadecimal}}'.length() == 7 and '{{hexadecimal}}'.matches('^#[A-Fa-f0-9]{6}$')"/>
+
+    <assert comment="Check that condition for hexadecimal var is true">
+        <equal comment="Check that hexadecimalCondition is true">
+            <content>{{hexadecimalCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with strict pattern" name="strictPattern">
+        <generate length="8">
+            <randomRegexp pattern="^[A-Z]{3}-[0-9]{4}$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 8"
+               name="strictPatternCondition"
+               spel="'{{strictPattern}}'.length() == 8 and '{{strictPattern}}'.matches('^[A-Z]{3}-[0-9]{4}$')"/>
+
+    <assert comment="Check that condition for strictPattern var is true">
+        <equal comment="Check that strictPatternCondition is true">
+            <content>{{strictPatternCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create randomRegexp generated variable with wildcard pattern" name="wildcard">
+        <generate length="20">
+            <randomRegexp pattern="^.*$"/>
+        </generate>
+    </var>
+
+    <condition comment="Verify that randomRegexp var generated base on pattern and length is 20"
+               name="wildcardCondition"
+               spel="'{{wildcard}}'.length() == 20 and '{{wildcard}}'.matches('^.*$')"/>
+
+    <assert comment="Check that condition for wildcard var is true">
+        <equal comment="Check that wildcardCondition is true">
+            <content>{{wildcardCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create path variable from file" name="pathFromFile">
+        <path value="$.name" fromFile="data.json"/>
+    </var>
+
+    <assert comment="Check equality of variable pathFromFile">
+        <equal comment="Check that pathFromFile variable equals to 'Testlum'">
+            <content>{{pathFromFile}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create path variable from var" name="pathFromVar">
+        <path value="$.name" fromVar="jsonFile"/>
+    </var>
+
+    <assert comment="Check equality of variable pathFromVar">
+        <equal comment="Check that pathFromVar variable equals to 'Testlum'">
+            <content>{{pathFromVar}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+
+</scenario>

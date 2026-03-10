@@ -1,0 +1,18 @@
+[
+  {
+    "query": "{\"command\":\"RPUSH\",\"arg\":[\"mylist\",\"apple\",\"banana\",\"orange\"]}",
+    "content": "3"
+  },
+  {
+    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "content": "[apple, banana, orange]"
+  },
+  {
+    "query": "{\"command\":\"RPUSH\",\"arg\":[\"mylist\",\"pineapple\"]}",
+    "content": "4"
+  },
+  {
+    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "content": "[apple, banana, orange, pineapple]"
+  }
+]

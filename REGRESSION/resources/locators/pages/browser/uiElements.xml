@@ -1,0 +1,75 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>UIelements</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for UI elements page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="title">
+            <xpath>.//h3[text()= 'UI Elements']</xpath>
+        </locator>
+
+        <locator locatorId="video">
+            <xpath>.//h4[text()= 'Video in other frame']</xpath>
+        </locator>
+
+        <locator locatorId="iFrame">
+            <cssSelector>#app > div > div.flex-1.flex.flex-col.overflow-hidden > main > div > div > div:nth-child(7) > div > div > iframe</cssSelector>
+        </locator>
+
+        <locator locatorId="play">
+            <xpath>fake</xpath>
+            <cssSelector>#movie_player > div.ytp-cued-thumbnail-overlay > button</cssSelector>
+        </locator>
+
+        <locator locatorId="pause">
+            <className>fake</className>
+            <cssSelector>#movie_player > fake button</cssSelector>
+            <cssSelector>#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button</cssSelector>
+            <xpath>fake</xpath>
+        </locator>
+
+        <locator locatorId="img">
+            <text>fake---</text>
+            <className>fake---</className>
+            <xpath>fake---</xpath>
+            <id>fake---</id>
+            <cssSelector>fake---</cssSelector>
+            <cssSelector>#movie_player > div.ytp-player-content.ytp-iv-player-content > div > button > img</cssSelector>
+            <cssSelector>fake-2---</cssSelector>
+        </locator>
+
+        <locator locatorId="fullScreen">
+            <cssSelector>#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-right-controls > button.ytp-fullscreen-button.ytp-button</cssSelector>
+        </locator>
+
+        <locator locatorId="checkbox">
+            <xpath>.//input[@name="checkbox"]</xpath>
+        </locator>
+
+        <locator locatorId="dropDownField">
+            <xpath>.//input[@class="multiselect-tags-search"]</xpath>
+        </locator>
+
+        <locator locatorId="firstOptions">
+            <xpath>(.//li[contains(@id, "multiselect-option")])[1]</xpath>
+        </locator>
+
+        <locator locatorId="selected1">
+            <xpath>(.//span[@class="multiselect-tag"])[1]</xpath>
+        </locator>
+
+        <locator locatorId="selected2">
+            <xpath>(.//span[@class="multiselect-tag"])[2]</xpath>
+        </locator>
+
+        <locator locatorId="selected3">
+            <xpath>(.//span[@class="multiselect-tag"])[3]</xpath>
+        </locator>
+    </locators>
+
+</page>

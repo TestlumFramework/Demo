@@ -1,0 +1,266 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: var</description>
+        <name>Var native test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>native</tags>
+    </settings>
+
+    <migrate comment="Migrate test dataset"
+             alias="MYSQL_0" name="MYSQL">
+        <dataset>mysql_patch.sql</dataset>
+    </migrate>
+
+    <native comment="Start native scripts">
+
+        <var comment="Check ability to create constant variable" name="constant">
+            <constant value="@gmail.com"/>
+        </var>
+
+        <var comment="Check ability to create var with expression" name="expression">
+            <expression value="'Native'.concat('1!1test')"/>
+        </var>
+
+        <var comment="Check that element is present on the page" name="elemIsPresent">
+            <element>
+                <present locator="loginNative.googleAuth"/>
+            </element>
+        </var>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+    </native>
+
+    <condition comment="Create condition for check correct work of var 'present'" name="present"
+               spel="{{elemIsPresent}}"/>
+
+    <native comment="Start native scripts">
+
+        <click comment="Click on 'Google Auth' button with condition where user var 'element'"
+               locator="loginNative.googleAuth" condition="present"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <input comment="Input email field with value where used var constant"
+               locator="loginNative.email" value="native.test.testlum{{constant}}"/>
+
+        <click comment="Click on 'Email' field" locator="loginNative.email"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+    </native>
+
+    <mysql comment="Check ability to get PRODUCT_ID with sql query to create var from jpath"
+           alias="MYSQL_0" file="expected_14.json">
+        <query>
+            SELECT *
+            FROM news
+            WHERE id = 3
+        </query>
+    </mysql>
+
+    <native comment="Starting web script">
+
+        <var comment="Check ability to create var from json file using jpath" name="varPath">
+            <path value="$.[0].content[0].active"/>
+        </var>
+
+        <wait comment="Wait for 1 sec" time="1" unit="seconds"/>
+
+    </native>
+
+    <condition comment="Create condition for check correct work of var 'path'" name="path" spel="{{varPath}}"/>
+
+    <native comment="Starting web script">
+
+        <click comment="Click on 'Next' button with condition that used var path"
+               locator="loginNative.next" condition="path"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <input comment="Input password field with value where used var expression"
+               locator="loginNative.password" value="{{expression}}"/>
+
+        <click comment="Click on 'Password' field" locator="loginNative.password"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on 'Next' button" locator="loginNative.next"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <click comment="Click on 'Agree' button" locator="loginNative.agree"/>
+
+        <var comment="Check if the accept page is present" name="accept">
+            <element>
+                <present locator="loginNative.acceptPresent"/>
+            </element>
+        </var>
+
+    </native>
+
+    <condition comment="Create condition with element present var" name="acceptPresent" spel="{{accept}}"/>
+
+    <native comment="Start native scripts">
+
+        <wait comment="Wait 2 seconds" time="2" condition="acceptPresent"/>
+
+        <swipe comment="Swipe page down">
+            <page comment="Swipe page down" direction="down" percent="80" condition="acceptPresent"/>
+        </swipe>
+
+        <wait comment="Wait 2 seconds" time="2" condition="acceptPresent"/>
+
+        <click comment="Click on 'Accept' button" locator="loginNative.accept" condition="acceptPresent"/>
+
+        <wait comment="Wait 20 seconds for opening main page" time="20"/>
+
+        <click comment="Click 'never ask' on pop up about time zone" locator="loginNative.timeNeverAsk"/>
+
+        <var comment="Check ability to create var from file" name="name">
+            <file fileName="file.txt"/>
+        </var>
+
+        <var comment="Check ability to create variable from sql query" name="id">
+            <sql dbType="MYSQL" alias="MYSQL_0">
+                <query>
+                    SELECT id
+                    FROM news
+                    WHERE newsname = '{{name}}'
+                </query>
+            </sql>
+        </var>
+
+        <wait comment="wait 2 sec with used sql var in time field" time="{{id}}" unit="seconds"/>
+
+        <var comment="Create alphabetic var with generated alphabetic value" name="alphabetic">
+            <generate length="12">
+                <alphabetic/>
+            </generate>
+        </var>
+
+        <var comment="Create alphanumeric var with generated value" name="alphanumeric">
+            <generate length="12">
+                <alphanumeric/>
+            </generate>
+        </var>
+
+        <var comment="Create numeric var with generated value" name="numeric">
+            <generate length="2">
+                <numeric/>
+            </generate>
+        </var>
+
+        <var comment="Create var with generated random Euro price value" name="regex">
+            <generate length="5">
+                <randomRegexp pattern="\-[1-9]{4}"/>
+            </generate>
+        </var>
+    </native>
+
+    <condition comment="Create condition for check correct work of var generate 'alphabetic'" name="alphabetic"
+               spel="'{{alphabetic}}' matches '^[a-zA-Z]{12}$'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'alphanumeric'" name="alphanumeric"
+               spel="'{{alphanumeric}}' matches '^[a-zA-Z0-9]{12}$'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'numeric'" name="numeric"
+               spel="'{{numeric}}' matches '\d{2}'"/>
+
+    <condition comment="Create condition for check correct work of var generate 'regex'" name="regex"
+               spel="'{{regex}}' matches '-(\d{4})'"/>
+
+    <http comment="Send news via API using random variable 'numeric'" alias="MEGA_APP" condition="numeric">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_39.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "James",
+                    "number": "{{numeric}}",
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check that news was created with numeric var" alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name=James">
+            <response file="expected_40.json" code="200"/>
+        </get>
+    </http>
+
+    <http comment="Send news via API using random variable 'alphabetic'" alias="MEGA_APP" condition="alphabetic">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_41.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{alphabetic}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check that news was created with alphabetic var" alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name={{alphabetic}}">
+            <response file="expected_42.json" code="200"/>
+        </get>
+    </http>
+
+    <http comment="Send news via API using random variable 'alphanumeric'" alias="MEGA_APP" condition="alphanumeric">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_43.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{alphanumeric}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check that news was created with alphanumeric var" alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name={{alphanumeric}}">
+            <response file="expected_44.json" code="200"/>
+        </get>
+    </http>
+
+    <http comment="Send news via API using random variable 'regex'" alias="MEGA_APP" condition="regex">
+        <post endpoint="/mysql/news">
+            <response code="200" file="expected_45.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{regex}}",
+                    "number": 10,
+                    "active": true,
+                    "createdAt": "2023-05-24T11:02:24.101Z"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Check that news was created with regex var" alias="MEGA_APP">
+        <get endpoint="/mysql/news/by?name={{regex}}">
+            <response file="expected_46.json" code="200"/>
+        </get>
+    </http>
+
+</scenario>

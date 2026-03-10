@@ -1,0 +1,146 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of positive test for PostgresDB</description>
+        <name>Positive PostgresDB Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>postgresql</tags>
+    </settings>
+
+    <http comment="Check ability to get empty list of news" alias="MEGA_APP">
+        <get endpoint="/postgres/news">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <postgres comment="Check ability to get empty list of news"
+              alias="POSTGRES_0" file="expected_2.json">
+        <query>
+            SELECT * FROM news
+        </query>
+    </postgres>
+
+    <migrate comment="Check ability to migrate test dataset"
+             alias="POSTGRES_0" name="POSTGRES">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <postgres comment="Check ability to get new news data with SQL query"
+              alias="POSTGRES_0"
+              file="expected_4.json">
+        <query>
+            SELECT * FROM news
+        </query>
+    </postgres>
+
+    <http comment="Check ability to get new news data with HTTP query"
+          alias="MEGA_APP">
+        <get endpoint="/postgres/news">
+            <response code="200" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <postgres comment="Check ability to make INSERT query into the DB"
+              alias="POSTGRES_0"
+              file="expected_6.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (104, 'News4', 4, false, '2023-04-21 10:49:02.491000')
+        </query>
+    </postgres>
+
+    <http comment="Check ability to post new news with HTTP query"
+          alias="MEGA_APP">
+        <post endpoint="/postgres/news">
+            <response code="200" file="expected_7.json"/>
+            <body>
+                <from file="request_7.json"/>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Creating variable with id of previous command" name="newsId">
+        <path value="$.id"/>
+    </var>
+
+    <postgres comment="Check ability to get news added with INSERT and HTTP queries"
+              alias="POSTGRES_0"
+              file="expected_9.json">
+        <query>
+            SELECT * FROM news
+            WHERE id = 104 OR id = {{newsId}}
+            ORDER BY id
+        </query>
+    </postgres>
+
+    <postgres comment="Check ability to delete data"
+              alias="POSTGRES_0"
+              file="expected_10.json">
+        <query>
+            DELETE FROM news
+            WHERE active = false
+        </query>
+    </postgres>
+
+    <postgres comment="Checking that that records were deleted"
+              alias="POSTGRES_0"
+              file="expected_11.json">
+        <query>
+            SELECT * FROM news
+            WHERE active = false
+        </query>
+    </postgres>
+
+    <postgres comment="Check ability to conduct UPDATE query"
+              alias="POSTGRES_0"
+              file="expected_12.json">
+        <query>
+            UPDATE news SET newsname = 'NewsWithVar'
+            WHERE id = {{newsId}}
+        </query>
+    </postgres>
+
+    <http comment="Check ability to get news by name with updated name"
+          alias="MEGA_APP">
+        <get endpoint="/postgres/news/by?name=NewsWithVar">
+            <response code="200" file="expected_13.json"/>
+        </get>
+    </http>
+
+    <postgres comment="Check ability to get updated news name"
+              alias="POSTGRES_0"
+              file="expected_14.json">
+        <query>
+            SELECT newsname, newsnumber FROM news
+            WHERE id = {{newsId}}
+        </query>
+    </postgres>
+
+    <postgres comment="Check ability to conduct 4 query within one command"
+              alias="POSTGRES_0"
+              file="expected_15.json">
+        <query>
+            INSERT INTO news (id, newsname, newsnumber, active, createdat)
+            VALUES (100, 'News10', 10, true, '2023-04-21 10:49:02.491000')
+        </query>
+        <query>
+            SELECT * FROM news
+            WHERE newsnumber = 10
+            ORDER BY id
+        </query>
+        <query>
+            UPDATE news
+            SET newsnumber = 11
+            WHERE newsname = 'News10'
+        </query>
+        <query>
+            DELETE FROM news
+            WHERE newsnumber = 11
+        </query>
+    </postgres>
+
+</scenario>

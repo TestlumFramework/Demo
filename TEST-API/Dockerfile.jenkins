@@ -1,0 +1,15 @@
+FROM maven:3.9.6-amazoncorretto-8 as build
+
+WORKDIR /app
+COPY . .
+RUN mvn install -DskipTests
+
+FROM amazoncorretto:8
+
+WORKDIR /app
+COPY --from=build /app/target/ .
+
+VOLUME /indexes
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "mega-test-api.jar", "--spring.profiles.active=jenkins", "--spring.config.location=classes/"]

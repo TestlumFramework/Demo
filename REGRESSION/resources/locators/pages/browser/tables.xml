@@ -1,0 +1,33 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Tables</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for tables page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="title">
+            <xpath>.//h3[text()= 'Tables']</xpath>
+        </locator>
+
+        <locator locatorId="amount">
+            <xpath>.//select[contains(@class, 'rounded-l')]</xpath>
+        </locator>
+
+        <locator locatorId="status">
+            <xpath>.//select[contains(@class, 'rounded-r')]</xpath>
+        </locator>
+
+        <locator locatorId="value1">
+            <xpath>.//p[text()= 'Selected value: 1']</xpath>
+        </locator>
+
+        <locator locatorId="value2">
+            <xpath>.//p[text()= 'Selected value: 2']</xpath>
+        </locator>
+    </locators>
+
+</page>

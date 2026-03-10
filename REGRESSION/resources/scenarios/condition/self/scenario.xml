@@ -1,0 +1,119 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Condition</description>
+        <name>Conditions</name>
+        <developer>Bohdan Shakhov</developer>
+    </overview>
+
+    <settings>
+        <variations>variations_condition.csv</variations>
+        <tags>condition-self</tags>
+    </settings>
+
+    <condition comment="Create positive condition based on framework name" name="testlumCondition"
+               spel="'{{framework}}' == 'Testlum'"/>
+
+    <condition comment="Create negative condition based on framework name" name="randomCondition"
+               spel="'{{framework}}' == 'Random'"/>
+
+    <assert comment="Check that assert will be executed if framework eq 'Testlum'"
+            condition="testlumCondition">
+        <equal comment="Check that framework value is equal to Testlum">
+            <content>{{framework}}</content>
+            <content>Testlum</content>
+        </equal>
+
+        <notEqual comment="Check that framework value is not equal to Random">
+            <content>{{framework}}</content>
+            <content>Random</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="Check that assert will be executed if framework eq 'Random'"
+            condition="randomCondition">
+        <equal comment="Check that framework value is equal to Random">
+            <content>{{framework}}</content>
+            <content>Random</content>
+        </equal>
+
+        <notEqual comment="Check that framework value is not equal to Testlum">
+            <content>{{framework}}</content>
+            <content>Testlum</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="Check conditions work inside assert command">
+        <equal comment="Check that framework value is equal to Testlum" condition="testlumCondition">
+            <content>{{framework}}</content>
+            <content>Testlum</content>
+        </equal>
+
+        <notEqual comment="Check that framework value is not equal to Random" condition="testlumCondition">
+            <content>{{framework}}</content>
+            <content>Random</content>
+        </notEqual>
+
+        <equal comment="Check that framework value is equal to Random" condition="randomCondition">
+            <content>{{framework}}</content>
+            <content>Random</content>
+        </equal>
+
+        <notEqual comment="Check that framework value is not equal to Testlum" condition="randomCondition">
+            <content>{{framework}}</content>
+            <content>Testlum</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="Create combined condition which always false" name="combinedNegativeCondition"
+               spel="testlumCondition and randomCondition"/>
+
+    <condition comment="Create combined condition which always true" name="combinedPositiveCondition"
+               spel="testlumCondition or randomCondition"/>
+    
+    <assert comment="Check conditions work inside assert command">
+        <equal comment="Check that combinedPositiveCondition is equal to true" condition="combinedPositiveCondition">
+            <content>{{combinedPositiveCondition}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Check that combinedNegativeCondition is equal to false" condition="combinedPositiveCondition">
+            <content>{{combinedNegativeCondition}}</content>
+            <content>false</content>
+        </equal>
+
+        <equal comment="Check that equality command will never be executed based on combinedNegativeCondition"
+               condition="combinedNegativeCondition">
+            <content>{{combinedNegativeCondition}}</content>
+            <content>error</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable with quotes to check correct processing in condition" name="variable_with_quotes">
+        <constant value="''start_from_double'single_in_the_middle''double_in_the_middle'and_end_with_double''"/>
+    </var>
+
+    <condition comment="Create positive condition to verify length and pattern matching for variable_with_quotes"
+               name="positive_quoted_condition"
+               spel="'{{variable_with_quotes}}'.length() == 84 and '{{variable_with_quotes}}'.matches('^.*$')"/>
+
+    <condition comment="Create negative condition to verify length and pattern matching for variable_with_quotes"
+               name="negative_quoted_condition"
+               spel="'{{variable_with_quotes}}'.length() == 83 and '{{variable_with_quotes}}'.matches('^.*$')"/>
+
+    <assert comment="Verify values of positive_quoted_condition and negative_quoted_condition">
+        <equal comment="Verify that value of positive_quoted_condition is true">
+            <content>{{positive_quoted_condition}}</content>
+            <content>true</content>
+        </equal>
+
+        <equal comment="Verify that value of negative_quoted_condition is false because of incorrect length check">
+            <content>{{negative_quoted_condition}}</content>
+            <content>false</content>
+        </equal>
+    </assert>
+
+
+</scenario>

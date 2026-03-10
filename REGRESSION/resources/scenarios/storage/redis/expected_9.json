@@ -1,0 +1,18 @@
+[
+  {
+    "query": "{\"command\":\"MSET\",\"arg\":[\"name\",\"Andrew\",\"email\",\"new@example.com\"]}",
+    "content": "OK"
+  },
+  {
+    "query": "{\"command\":\"GET\",\"arg\":[\"name\"]}",
+    "content": "Andrew"
+  },
+  {
+    "query": "{\"command\":\"GET\",\"arg\":[\"email\"]}",
+    "content": "new@example.com"
+  },
+  {
+    "query": "{\"command\":\"DEL\",\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"]}",
+    "content": "5"
+  }
+]

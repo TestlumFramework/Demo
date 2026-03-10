@@ -1,0 +1,37 @@
+[ {
+  "password" : "$2a$10$SpJVfGc/r1P/4EvbQHgQ2.MxbhYtCZRRcPMi4LmClL8hZg3jc4TJ2",
+  "role" : "ADMIN",
+  "credentialsNonExpired" : true,
+  "accountNonExpired" : true,
+  "id" : 1,
+  "enabled" : true,
+  "authorities" : [ {
+    "authority" : "ADMIN"
+  } ],
+  "username" : "testlum",
+  "accountNonLocked" : true
+}, {
+  "password" : "$2a$10$vheiYKTWyagT1qhPEp.oB.MypeXWFsi6qCqE1oPpradIRWjJM07uG ",
+  "role" : "ADMIN",
+  "credentialsNonExpired" : true,
+  "accountNonExpired" : true,
+  "id" : 2,
+  "enabled" : true,
+  "authorities" : [ {
+    "authority" : "ADMIN"
+  } ],
+  "username" : "admin",
+  "accountNonLocked" : true
+}, {
+  "password" : "p(any)",
+  "role" : "USER",
+  "credentialsNonExpired" : true,
+  "accountNonExpired" : true,
+  "id" : "p(any)",
+  "enabled" : true,
+  "authorities" : [ {
+    "authority" : "USER"
+  } ],
+  "username" : "Ronaldo",
+  "accountNonLocked" : true
+} ]

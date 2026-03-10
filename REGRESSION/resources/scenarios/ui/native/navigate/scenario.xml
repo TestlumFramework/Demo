@@ -1,0 +1,140 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for native command: navigate</description>
+        <name>Navigate native test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Start native scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <image comment="Compare image by locator" file="compare2.png">
+            <part locator="loginNative.img"/>
+        </image>
+
+        <image comment="Compare part screen" file="compare3.png">
+            <part locator="loginNative.googleAuth"/>
+        </image>
+
+        <click comment="Click on 'Google Auth' button" locator="loginNative.googleAuth"/>
+
+        <wait comment="Wait 3 second" time="3"/>
+
+        <var comment="Check if the account has already been created" name="created">
+            <element>
+                <present locator="loginNative.account"/>
+            </element>
+        </var>
+
+        <var comment="Check if the account has not already been created" name="notCreated">
+            <element>
+                <present locator="loginNative.email"/>
+            </element>
+        </var>
+
+        <click comment="Click on 'Native test' account" locator="loginNative.account" condition="{{created}}"/>
+
+        <wait comment="Wait 3 second" time="3" condition="{{created}}"/>
+
+        <input comment="Input email field" locator="loginNative.email" value="native.test.testlum@gmail.com"
+               condition="{{notCreated}}"/>
+
+        <click comment="Click on 'Email' field" locator="loginNative.email" condition="{{notCreated}}"/>
+
+        <wait comment="Wait 1 second" time="1" condition="{{notCreated}}"/>
+
+        <click comment="Click on 'Next' button" locator="loginNative.next" condition="{{notCreated}}"/>
+
+        <wait comment="Wait 2 seconds" time="2" condition="{{notCreated}}"/>
+
+        <input comment="Input password field" locator="loginNative.password" value="Native1!1test"
+               condition="{{notCreated}}"/>
+
+        <click comment="Click on 'Password' field" locator="loginNative.password" condition="{{notCreated}}"/>
+
+        <wait comment="Wait 1 second" time="1" condition="{{notCreated}}"/>
+
+        <click comment="Click on 'Next' button" locator="loginNative.next" condition="{{notCreated}}"/>
+
+        <wait comment="Wait 2 seconds" time="2" condition="{{notCreated}}"/>
+
+        <click comment="Click on 'Agree' button" locator="loginNative.agree" condition="{{notCreated}}"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <var comment="Check if the accept page is present" name="accept">
+            <element>
+                <present locator="loginNative.acceptPresent"/>
+            </element>
+        </var>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <condition comment="Create condition with element present var" name="acceptPresent" spel="{{accept}}"/>
+
+        <wait comment="Wait 2 seconds" time="2" condition="acceptPresent"/>
+
+        <swipe comment="Swipe page down">
+            <page comment="Swipe page down" direction="down" percent="100" condition="acceptPresent"/>
+        </swipe>
+
+        <wait comment="Wait 2 seconds" time="2" condition="acceptPresent"/>
+
+        <click comment="Click on 'Accept' button" locator="loginNative.accept" condition="acceptPresent"/>
+
+        <wait comment="Wait 15 seconds for opening main page" time="15" condition="{{notCreated}}"/>
+
+        <click comment="Click 'never ask' on pop up about time zone" locator="loginNative.timeNeverAsk"
+               condition="{{notCreated}}"/>
+
+        <wait comment="Wait 3 seconds" time="3"/>
+
+        <click comment="Click on 'menu' button" locator="mainNative.menuBtn"/>
+
+        <click comment="Click on 'Manage Projects' button" locator="menuNative.manageProjects"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <navigate comment="Perform navigate back" destination="back"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'Navigate back'"
+                       name="content-desc" locator="mainNative.quickAddBtn">
+                <content>Quick add</content>
+            </attribute>
+        </assert>
+
+        <navigate comment="Perform navigate overview" destination="overview"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <navigate comment="Perform navigate 'home'" destination="home"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <navigate comment="Perform navigate overview" destination="overview"/>
+
+        <wait comment="Wait 2 seconds" time="2"/>
+
+        <click comment="Click on toDoist tab" locator="mainNative.overview2"/>
+
+        <wait comment="Wait 1 seconds" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for 'overview'"
+                       name="content-desc" locator="mainNative.quickAddBtn">
+                <content>Quick add</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

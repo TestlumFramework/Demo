@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"GETSET\",\"arg\":[\"name\",\"Andrew\"]}",
+    "content": "John"
+  }
+]

@@ -1,0 +1,62 @@
+<uiConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
+
+    <web enabled="true">
+        <baseUrl>http://mega-test-site:80</baseUrl>
+        <browserSettings>
+            <takeScreenshots enabled="false"/>
+            <elementAutowait seconds="5"/>
+            <browsers>
+                <chrome alias="CHROME_0" enabled="true" maximizedBrowserWindow="false" headlessMode="true"
+                        browserWindowSize="1536x864">
+                    <browserType>
+                        <remoteBrowser browserVersion="142.0" remoteBrowserURL="http://localhost:4444/"/>
+                    </browserType>
+                </chrome>
+            </browsers>
+        </browserSettings>
+    </web>
+
+    <mobilebrowser enabled="true">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <baseUrl>http://localhost:3000</baseUrl>
+        <connection>
+            <appiumServer>
+                <serverUrl>http://localhost:4723</serverUrl>
+            </appiumServer>
+        </connection>
+        <devices>
+            <device platformName="android" enabled="true" alias="ANDROID_0">
+                <appiumCapabilities>
+                    <deviceName>AndroidDevice</deviceName>
+                    <platformVersion>15.0</platformVersion>
+                    <udid>emulator-5554</udid>
+                </appiumCapabilities>
+            </device>
+        </devices>
+    </mobilebrowser>
+
+    <native enabled="true">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <connection>
+            <appiumServer>
+                <serverUrl>http://localhost:4723</serverUrl>
+            </appiumServer>
+        </connection>
+        <devices>
+            <device alias="NATIVE_0" platformName="android" enabled="true">
+                <appiumCapabilities>
+                    <deviceName>AndroidDevice</deviceName>
+                    <platformVersion>15.0</platformVersion>
+                    <udid>emulator-5554</udid>
+                    <appPackage>com.todoist</appPackage>
+                    <appActivity>com.todoist.activity.HomeActivity</appActivity>
+                </appiumCapabilities>
+            </device>
+        </devices>
+    </native>
+
+</uiConfig>

@@ -1,0 +1,47 @@
+[
+  {
+    "password": "testlum123",
+    "role": "ADMIN",
+    "credentialsNonExpired": true,
+    "accountNonExpired": true,
+    "id": 1,
+    "enabled": true,
+    "authorities": [
+      {
+        "authority": "ADMIN"
+      }
+    ],
+    "username": "testlum",
+    "accountNonLocked": true
+  },
+  {
+    "password": "admin123",
+    "role": "ADMIN",
+    "credentialsNonExpired": true,
+    "accountNonExpired": true,
+    "id": 2,
+    "enabled": true,
+    "authorities": [
+      {
+        "authority": "ADMIN"
+      }
+    ],
+    "username": "admin",
+    "accountNonLocked": true
+  },
+  {
+    "password": "p(any)",
+    "role": "USER",
+    "credentialsNonExpired": true,
+    "accountNonExpired": false,
+    "id": "p(any)",
+    "enabled": true,
+    "authorities": [
+      {
+        "authority": "USER"
+      }
+    ],
+    "username": "Ronaldo",
+    "accountNonLocked": true
+  }
+]

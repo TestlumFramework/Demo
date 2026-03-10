@@ -1,0 +1,3 @@
+username,email,password,name,city,temperature,expected_40,ARGname,expected_43-44,patch,auth,expected_47,expected_49,scenario_path,expected_41
+Marco,reus11@bvb.com,Reus11!reus,News1,New York,1,expected_40_1,John,expected_43,postgres_auth_patch.sql,auth-user,expected_47_1,expected_49_1,/ui/includes/login_web/scenario.xml,expected_41_1
+Messi,messi10@gmail.com,Lionel10!lionel,News2,Chicago,2,expected_40_2,Bruce,expected_44,postgres_auth_patch2.sql,auth-user2,expected_47_2,expected_49_2,/ui/includes/login_web/scenario.xml,expected_41_2

@@ -1,0 +1,31 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Sign In</name>
+        <url>http://localhost:3000/</url>
+        <description>Sign In for regression tests</description>
+    </details>
+
+    <include component="header.xml"/>
+
+    <locators>
+        <locator locatorId="email">
+            <xpath>.//input[@type="email"]</xpath>
+        </locator>
+
+        <locator locatorId="password">
+            <xpath>.//input[@type="password"]</xpath>
+        </locator>
+
+        <locator locatorId="signIn">
+            <xpath>.//button[@type="submit"]</xpath>
+        </locator>
+
+        <locator locatorId="forgotPassword">
+            <id>dblClickButton</id>
+        </locator>
+    </locators>
+
+</page>

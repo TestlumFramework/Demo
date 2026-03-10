@@ -1,0 +1,37 @@
+[
+  {
+    "query": "SELECT * FROM users",
+    "content": [
+      {
+        "id": 1,
+        "username": "testlum",
+        "password": "testlum123",
+        "role": "ADMIN",
+        "is_account_non_expired": true,
+        "is_account_non_locked": true,
+        "is_credentials_non_expired": true,
+        "is_enabled": true
+      },
+      {
+        "id": 2,
+        "username": "admin",
+        "password": "admin123",
+        "role": "ADMIN",
+        "is_account_non_expired": true,
+        "is_account_non_locked": true,
+        "is_credentials_non_expired": true,
+        "is_enabled": true
+      },
+      {
+        "id": 3,
+        "username": "new user",
+        "password": "p(any)",
+        "role": "USER",
+        "is_account_non_expired": true,
+        "is_account_non_locked": true,
+        "is_credentials_non_expired": true,
+        "is_enabled": true
+      }
+    ]
+  }
+]

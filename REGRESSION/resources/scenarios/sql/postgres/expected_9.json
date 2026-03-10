@@ -1,0 +1,21 @@
+[
+  {
+    "query": "p(any)",
+    "content": [
+      {
+        "id": "p(digit)",
+        "active": true,
+        "createdat": "2023-04-26Tp(any)",
+        "newsname": "News5",
+        "newsnumber": 5
+      },
+      {
+        "id": 104,
+        "active": false,
+        "createdat": "2023-04-21Tp(any)",
+        "newsname": "News4",
+        "newsnumber": 4
+      }
+    ]
+  }
+]

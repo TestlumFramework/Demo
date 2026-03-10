@@ -1,0 +1,6 @@
+[
+  {
+    "query": "ALTER TABLE test_db.news DELETE WHERE id = 16",
+    "content": "Query completed successfully"
+  }
+]

@@ -1,0 +1,123 @@
+[
+  {
+    "id": 9223372036854749000,
+    "name": "dog11sold",
+    "photoUrls": [],
+    "tags": [],
+    "status": "sold"
+  },
+  {
+    "id": 13,
+    "category": {
+      "id": 0,
+      "name": "cats"
+    },
+    "photoUrls": [
+      "string"
+    ],
+    "tags": [
+      {
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "status": "sold"
+  },
+  {
+    "id": 89,
+    "category": {
+      "id": 630
+    },
+    "name": "ZL8R9L4VZd",
+    "photoUrls": [
+      "",
+      "sXj5gvs3veEUyJev",
+      "MvtLYE8en"
+    ],
+    "tags": [],
+    "status": "sold"
+  },
+  {
+    "id": 113,
+    "category": {
+      "id": 0
+    },
+    "name": "5o5Myzq57",
+    "photoUrls": [
+      "AfYQo5lYYgDqyuV",
+      "ct0kwz506aD3t6wg",
+      "9YMqSm_pI",
+      "5fiwPzxAh8Ck"
+    ],
+    "tags": [
+      {
+        "id": 0
+      }
+    ],
+    "status": "sold"
+  },
+  {
+    "id": 9223372036854750000,
+    "category": {
+      "id": -5214169,
+      "name": "dolor consequat Lorem"
+    },
+    "name": "doggie",
+    "photoUrls": [
+      "non exercitation elit",
+      "aliquip irure cillum eu"
+    ],
+    "tags": [
+      {
+        "id": 97975597,
+        "name": "dolore qui"
+      },
+      {
+        "id": 73824823,
+        "name": "commodo"
+      }
+    ],
+    "status": "sold"
+  },
+  {
+    "id": 1453,
+    "category": {
+      "id": 101,
+      "name": "testcategory"
+    },
+    "name": "valueimplcat",
+    "photoUrls": [
+      "a.png",
+      "b.png"
+    ],
+    "tags": [
+      {
+        "id": 102,
+        "name": "testtag1"
+      },
+      {
+        "id": 103,
+        "name": "testtag2"
+      }
+    ],
+    "status": "sold"
+  },
+  {
+    "id": 9223372036854746000,
+    "category": {
+      "id": 0,
+      "name": "string"
+    },
+    "name": "gog24",
+    "photoUrls": [
+      "string"
+    ],
+    "tags": [
+      {
+        "id": 0,
+        "name": "string"
+      }
+    ],
+    "status": "sold"
+  }
+]

@@ -1,0 +1,30 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: javascript</description>
+        <name>Javascript test</name>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Starting web script">
+
+        <wait comment="wait 3 sec for visibility" time="3" unit="seconds"/>
+
+        <javascript comment="Check ability to click on 'Tables' link via javascript file" file="function.js"/>
+
+        <assert comment="Check ability to assert element after executing js function">
+            <attribute comment="Assert 'Tables' header" name="outerHTML" locator="tables.title">
+                <content><![CDATA[<h3 class="text-3xl font-medium text-gray-700">Tables</h3>]]></content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,159 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: HotKey</description>
+        <name>HotKey test</name>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB scripts">
+        <var comment="Check ability to fetch URL of current page and create variable with it" name="url">
+            <url/>
+        </var>
+
+        <!--Conditions is prescribed in steps with images, so that the tests can be performed both locally,
+        and on Jenkins, because they have difference in size-->
+        <!--Local is - http://localhost:3000 / Remote is - http://mega-test-site -->
+
+        <condition comment="Create condition for check correct work of var 'url'" name="remote"
+                   spel="'{{url}}' eq 'http://mega-test-site/dashboard'"/>
+
+        <condition comment="Create condition for check correct work of var 'url'" name="local"
+                   spel="'{{url}}' eq 'http://localhost:3000/dashboard'"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <hotKey comment="Press tab page">
+            <tab comment="Press tab " times="3"/>
+            <tab comment="Press tab "/>
+        </hotKey>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <image comment="Make sure that 'tab' command is working(remote Jenkins image)"
+               file="expected_tab_remote1.png" condition="remote">
+            <fullScreen percentage="90"/>
+        </image>
+
+        <image comment="Make sure that 'tab' command is working(local image)"
+               file="expected_tab_local.png" condition="local">
+            <fullScreen percentage="99.9"/>
+        </image>
+
+        <hotKey comment="Open selected page">
+            <enter comment="Press enter" times="1"/>
+        </hotKey>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for hotKey 'Enter'" name="innerHTML" locator="forms.title">
+                <content>Forms</content>
+            </attribute>
+        </assert>
+
+        <input comment="Input Add Category field" locator="forms.category" value="Text that used for copy"/>
+
+        <hotKey comment="Highlight text from locator">
+            <highlight comment="Highlight text" locator="forms.category"/>
+        </hotKey>
+
+        <hotKey comment="Copy text from 'Add Category' field">
+            <copy comment="Copy text "/>
+        </hotKey>
+
+        <scroll comment="Scroll page down" type="inner" value="100" measure="percent" direction="down"
+                locator="dashboard.inner"/>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <hotKey comment="Paste text">
+            <paste comment="Paste text" locator="forms.username"/>
+        </hotKey>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <hotKey comment="Add two spaces into field">
+            <space comment="Press space" times="2"/>
+        </hotKey>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <hotKey comment="Paste text 'Username'">
+            <paste comment="Paste text" locator="forms.username"/>
+        </hotKey>
+
+        <hotKey comment="Delete 4 characters">
+            <backSpace comment="Press backSpace"/>
+            <backSpace comment="Press backSpace"/>
+            <backSpace comment="Press backSpace"/>
+            <backSpace comment="Press backSpace"/>
+        </hotKey>
+
+        <click comment="Click on save button" locator="forms.save"/>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+<!--        <image comment="Make sure that 'highlight', 'copy', 'paste', 'space', 'backSpace' commands is working(remote)"-->
+<!--               file="expected_hotKey_remote.jpeg" condition="remote" highlightDifference="true">-->
+<!--            <part locator="forms.username"/>-->
+<!--        </image>-->
+
+<!--        <image comment="Make sure that 'highlight', 'copy', 'paste', 'space', 'backSpace' commands is working(local)"-->
+<!--               file="expected_hotKey_local.png" condition="local" highlightDifference="true">-->
+<!--            <part locator="forms.username"/>-->
+<!--        </image>-->
+
+        <hotKey comment="Highlight text from locator">
+            <highlight comment="Highlight text" locator="forms.username"/>
+        </hotKey>
+
+        <hotKey comment="Cut the text in the field">
+            <cut comment="Execute cut"/>
+        </hotKey>
+
+        <click comment="Click on save button" locator="forms.save"/>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <image comment="Make sure that 'cut' command is working (remote Jenkins image)"
+               file="expected_cut_remote.png" condition="remote" highlightDifference="true">
+            <part locator="forms.username"/>
+        </image>
+
+        <image comment="Make sure that 'cut' command is working (local image)"
+               file="expected_cut_local.png" condition="local" highlightDifference="true">
+            <part locator="forms.username"/>
+        </image>
+
+        <navigate comment="navigate to 'Modal' tab" command="to" path="/modal"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <click comment="Click on 'Open Modal' button" locator="modal.openModalBtn"/>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <hotKey comment="Close pop-up">
+            <escape comment="Execute escape"/>
+        </hotKey>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <assert comment="Make sure that 'escape' command is working">
+            <attribute comment="Assert for hotKey 'escape'" name="class" locator="modal.assertExit">
+                <content>modal opacity-0 pointer-events-none z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </web>
+
+</scenario>

@@ -1,0 +1,10 @@
+{
+  "data": {
+    "getBookByTitle": {
+      "number": 5,
+      "author": "Taras Shevchenko",
+      "id": "5",
+      "title": "Kobzar"
+    }
+  }
+}

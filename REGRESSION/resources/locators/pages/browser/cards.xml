@@ -1,0 +1,33 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Cards</name>
+        <url>http://localhost:3000/</url>
+        <description>Locators for cards page</description>
+    </details>
+
+    <locators>
+        <locator locatorId="title">
+            <xpath>.//h3[text()= 'Card']</xpath>
+        </locator>
+
+        <locator locatorId="imgSunset">
+            <xpath>.//img[@alt= 'Sunset in the mountains']</xpath>
+        </locator>
+        
+        <locator locatorId="imgLaptop">
+            <xpath>.//div[@title= 'Woman holding a mug']</xpath>
+        </locator>
+
+        <locator locatorId="html">
+            <xpath>.//html</xpath>
+        </locator>
+
+        <locator locatorId="compare">
+            <xpath>.//img[@class= 'w-full']</xpath>
+        </locator>
+    </locators>
+
+</page>

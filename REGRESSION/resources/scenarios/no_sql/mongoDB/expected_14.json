@@ -1,0 +1,18 @@
+[
+  {
+    "query": "{ update: \"mongo_news\", updates: [{q: {name: \"Jadon Sancho\"}, u: { \"$set\": { active: false }}}] }",
+    "content": "{\"n\":1,\"nModified\":1,\"ok\":1.0}"
+  },
+  {
+    "query": "{ find: \"mongo_news\", filter: {name: \"Jadon Sancho\", number: 11} }",
+    "content": "\\{\"cursor\":\\{\"firstBatch\":\\[\\{\"_id\":6,\"name\":\"Jadon Sancho\",\"number\":11,\"active\":false,\"createdAt\":p(any)}],\"id\":0,\"ns\":\"mongo_db.mongo_news\"},\"ok\":1.0}"
+  },
+  {
+    "query": "{ delete: \"mongo_news\", deletes: [{q: { active: false, number: 4 }, limit: 1}] }",
+    "content": "{\"n\":1,\"ok\":1.0}"
+  },
+  {
+    "query": "{ find: \"mongo_news\", filter: { number: 4 } }",
+    "content": "\\{\"cursor\":\\{\"firstBatch\":\\[\\{\"_id\":\\{p(any)},\"name\":\"Sergio Ramos\",\"number\":4,\"active\":true,\"createdAt\":\"p(any)\"}],\"id\":0,\"ns\":\"mongo_db.mongo_news\"},\"ok\":1.0}"
+  }
+]

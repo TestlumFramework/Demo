@@ -1,0 +1,55 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for login pages on native app</description>
+    </details>
+
+    <locators>
+       <locator locatorId="googleAuth">
+           <id>com.todoist:id/btn_google</id>
+       </locator>
+
+        <locator locatorId="email">
+            <className>android.widget.EditText</className>
+        </locator>
+
+        <locator locatorId="next">
+            <xpath>//android.view.View[contains(@resource-id, 'Next')]</xpath>
+            <xpath>//android.view.View[@resource-id='identifierNext']</xpath>
+            <xpath>//android.widget.Button[@text='Next']</xpath>
+            <xpath>//android.widget.Button[@text='NEXT']</xpath>
+        </locator>
+        
+        <locator locatorId="password">
+            <className>android.widget.EditText</className>
+        </locator>
+        
+        <locator locatorId="agree">
+            <xpath>.//android.view.View[@resource-id='signinconsentNext']/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="accept">
+            <className>android.widget.Button</className>
+        </locator>
+
+        <locator locatorId="acceptPresent">
+            <xpath>.//android.widget.Button[@text='MORE']</xpath>
+        </locator>
+
+        <locator locatorId="timeNeverAsk">
+            <id>android:id/button3</id>
+        </locator>
+
+        <locator locatorId="img">
+            <xpath>//android.widget.ImageView[@content-desc="Illustration"]</xpath>
+        </locator>
+
+        <locator locatorId="account">
+            <id>com.google.android.gms:id/account_display_name</id>
+        </locator>
+    </locators>
+</page>

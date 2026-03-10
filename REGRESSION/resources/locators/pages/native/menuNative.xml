@@ -1,0 +1,44 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>customLocators</name>
+        <url>todoist</url>
+        <description>Locators for menu page on native app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="manageProjects">
+            <xpath>//android.widget.TextView[@text='Manage projects']</xpath>
+        </locator>
+
+        <locator locatorId="username">
+            <xpath>//android.widget.TextView[@text='native.test.testlum']</xpath>
+        </locator>
+        
+        <locator locatorId="settings">
+            <xpath>//android.widget.ImageView[@content-desc='Settings']</xpath>
+        </locator>
+        
+        <locator locatorId="inbox">
+            <xpath>//android.widget.TextView[@text='Inbox']</xpath>
+        </locator>
+
+        <locator locatorId="today">
+            <xpath>//android.widget.TextView[@text='Today']</xpath>
+        </locator>
+
+        <locator locatorId="upcoming">
+            <xpath>//android.widget.TextView[@text='Upcoming']</xpath>
+        </locator>
+
+        <locator locatorId="projects">
+            <xpath>//android.widget.TextView[@text='Projects']</xpath>
+        </locator>
+
+        <locator locatorId="add">
+            <xpath>//android.view.View[@content-desc='Add']</xpath>
+        </locator>
+    </locators>
+</page>

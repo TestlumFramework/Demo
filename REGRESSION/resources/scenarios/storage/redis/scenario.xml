@@ -1,0 +1,370 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for redis database</description>
+        <name>Redis</name>
+        <developer>Serhii Soroka</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>redis,api</tags>
+    </settings>
+
+    <redis comment=" Check ability to add single key-value pair to redis using SET command; check impossibility to add
+    the same key-value using SETNX" alias="REDIS_0" file="expected_1.json">
+        <query>
+            <command>SET</command>
+            <arg>name</arg>
+            <arg>John</arg>
+        </query>
+        <query>
+            <command>SETNX</command>
+            <arg>name</arg>
+            <arg>Andrew</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get key-value pair using GET command" alias="REDIS_0" file="expected_2.json">
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to update value using GETSET command" alias="REDIS_0" file="expected_3.json">
+        <query>
+            <command>GETSET</command>
+            <arg>name</arg>
+            <arg>Andrew</arg>
+        </query>
+    </redis>
+
+    <redis comment="Make sure that name value was changed using GET command for 'key' == 'name'"
+           alias="REDIS_0" file="expected_4.json">
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to remove single value using DEL command" alias="REDIS_0" file="expected_5.json">
+        <query>
+            <command>DEL</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+    <redis comment="Make sure that key-value was removed using GET command for 'key' == 'name'"
+           alias="REDIS_0" file="expected_6.json">
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+    <redis comment=" Check ability to add a few key-value pairs using MSET command" alias="REDIS_0"
+           file="expected_7.json">
+        <query>
+            <command>MSET</command>
+            <arg>name</arg>
+            <arg>John</arg>
+            <arg>age</arg>
+            <arg>25</arg>
+            <arg>city</arg>
+            <arg>New York</arg>
+            <arg>email</arg>
+            <arg>john@example.com</arg>
+            <arg>phone</arg>
+            <arg>123-456-7890</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get info about key-value pairs using MGET command" alias="REDIS_0"
+           file="expected_8.json">
+        <query>
+            <command>MGET</command>
+            <arg>name</arg>
+            <arg>age</arg>
+            <arg>city</arg>
+            <arg>email</arg>
+            <arg>phone</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to update few values using MSET, get info using GET, remove few keys using DEL in
+    one construction" alias="REDIS_0" file="expected_9.json">
+        <query>
+            <command>MSET</command>
+            <arg>name</arg>
+            <arg>Andrew</arg>
+            <arg>email</arg>
+            <arg>new@example.com</arg>
+        </query>
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+        <query>
+            <command>GET</command>
+            <arg>email</arg>
+        </query>
+        <query>
+            <command>DEL</command>
+            <arg>name</arg>
+            <arg>age</arg>
+            <arg>city</arg>
+            <arg>email</arg>
+            <arg>phone</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get info that key-value pairs are removed using MGET command" alias="REDIS_0"
+           file="expected_10.json">
+        <query>
+            <command>MGET</command>
+            <arg>name</arg>
+            <arg>age</arg>
+            <arg>city</arg>
+            <arg>email</arg>
+            <arg>phone</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to add lists using RPUSH command and get info about list values using LRANGE command"
+           alias="REDIS_0" file="expected_11.json">
+        <query>
+            <command>RPUSH</command>
+            <arg>mylist</arg>
+            <arg>apple</arg>
+            <arg>banana</arg>
+            <arg>orange</arg>
+        </query>
+        <query>
+            <command>LRANGE</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+        <query>
+            <command>RPUSH</command>
+            <arg>mylist</arg>
+            <arg>pineapple</arg>
+        </query>
+        <query>
+            <command>LRANGE</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to update list first value from 'apple' to 'grape' using LSET" alias="REDIS_0"
+           file="expected_12.json">
+        <query>
+            <command>LSET</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>grape</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get values after list update using LRANGE" alias="REDIS_0" file="expected_13.json">
+        <query>
+            <command>LRANGE</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to remove singe list value after using LREM" alias="REDIS_0" file="expected_14.json">
+        <query>
+            <command>LREM</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>grape</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get values after 'grape' removing using LRANGE" alias="REDIS_0"
+           file="expected_15.json">
+        <query>
+            <command>LRANGE</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to remove 'mylist' list using DEL and make sure that removing was successful"
+           alias="REDIS_0" file="expected_16.json">
+        <query>
+            <command>DEL</command>
+            <arg>mylist</arg>
+        </query>
+        <query>
+            <command>LRANGE</command>
+            <arg>mylist</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to add hash using HMSET command" alias="REDIS_0" file="expected_17.json">
+        <query>
+            <command>HMSET</command>
+            <arg>user:1</arg>
+            <arg>name</arg>
+            <arg>John Doe</arg>
+            <arg>age</arg>
+            <arg>30</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get info about hash 'user:1' using HGETALL command" alias="REDIS_0"
+           file="expected_18.json">
+        <query>
+            <command>HGETALL</command>
+            <arg>user:1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to change age value from 30 to 35 of hash 'user:1' using HSET command and check that
+    update was successful using HGET" alias="REDIS_0" file="expected_19.json">
+        <query>
+            <command>HSET</command>
+            <arg>user:1</arg>
+            <arg>age</arg>
+            <arg>35</arg>
+        </query>
+        <query>
+            <command>HGET</command>
+            <arg>user:1</arg>
+            <arg>age</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to remove 'user:1' hash using DEL and make sure that removing was successful"
+           alias="REDIS_0" file="expected_20.json">
+        <query>
+            <command>DEL</command>
+            <arg>user:1</arg>
+        </query>
+        <query>
+            <command>HGETALL</command>
+            <arg>user:1</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to add, read, update and remove sets" alias="REDIS_0" file="expected_21.json">
+        <query>
+            <command>SADD</command>
+            <arg>myset</arg>
+            <arg>element1</arg>
+        </query>
+        <query>
+            <command>SISMEMBER</command>
+            <arg>myset</arg>
+            <arg>element1</arg>
+        </query>
+        <query>
+            <command>SMEMBERS</command>
+            <arg>myset</arg>
+        </query>
+        <query>
+            <command>SREM</command>
+            <arg>myset</arg>
+            <arg>element2</arg>
+        </query>
+        <query>
+            <command>SISMEMBER</command>
+            <arg>myset</arg>
+            <arg>element2</arg>
+        </query>
+        <query>
+            <command>DEL</command>
+            <arg>myset</arg>
+        </query>
+        <query>
+            <command>SMEMBERS</command>
+            <arg>myset</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to add, read, update and remove sorted sets" alias="REDIS_0" file="expected_22.json">
+        <query>
+            <command>ZADD</command>
+            <arg>mysortedset</arg>
+            <arg>10</arg>
+            <arg>element1</arg>
+            <arg>5</arg>
+            <arg>element2</arg>
+            <arg>3</arg>
+            <arg>element3</arg>
+        </query>
+        <query>
+            <command>ZRANGE</command>
+            <arg>mysortedset</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+        <query>
+            <command>ZREVRANGE</command>
+            <arg>mysortedset</arg>
+            <arg>0</arg>
+            <arg>-1</arg>
+        </query>
+        <query>
+            <command>ZSCORE</command>
+            <arg>mysortedset</arg>
+            <arg>element1</arg>
+        </query>
+        <query>
+            <command>DEL</command>
+            <arg>mysortedset</arg>
+        </query>
+    </redis>
+
+    <http comment="Add info about employee to the Redis DB through the API" alias="MEGA_APP">
+        <post endpoint="/cache/redis/employee/put">
+            <response code="200" file="expected_23.json"/>
+            <body>
+                <raw>
+                    {
+                    "id": 1,
+                    "firstName": "Serhii",
+                    "lastName": "Soroka",
+                    "email": "serhii.soroka@gmail.com"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Create var for id" name="id">
+        <path value="$.id"/>
+    </var>
+
+    <redis comment="Check ability to get key-value pairs of added employee using HGET command" alias="REDIS_0"
+           file="expected_25.json">
+        <query>
+            <command>HGET</command>
+            <arg>"Employee"</arg>
+            <arg>{{id}}</arg>
+        </query>
+    </redis>
+
+    <http comment="Check ability to get info about employee through the API" alias="MEGA_APP">
+        <get endpoint="/cache/redis/employee/get/{{id}}">
+            <response code="200" file="expected_26.json"/>
+        </get>
+    </http>
+
+    <http comment="Check ability to remove employee with id 1 through API" alias="MEGA_APP">
+        <delete endpoint="/cache/redis/employee/delete/{{id}}">
+            <response code="200" file="expected_27.json"/>
+        </delete>
+    </http>
+</scenario>

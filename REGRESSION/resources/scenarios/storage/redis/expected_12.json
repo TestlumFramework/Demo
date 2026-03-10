@@ -1,0 +1,6 @@
+[
+  {
+    "query": "{\"command\":\"LSET\",\"arg\":[\"mylist\",\"0\",\"grape\"]}",
+    "content": "OK"
+  }
+]

@@ -1,0 +1,274 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self kafka test</description>
+        <name>Kafka test scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka comment="Receive 1 time, send 1 time, receive 2 times and send 2 times" alias="KAFKA_0">
+        <receive topic="weather">
+            <value>
+                []
+            </value>
+        </receive>
+
+        <send topic="weather" correlationId="1">
+            <value>
+                [ {
+                "city": "New York",
+                "temperature": 1,
+                "condition": "sunny",
+                "timestamp": 1650762900
+                } ]
+            </value>
+        </send>
+
+        <receive topic="weather" timeoutMillis="4000">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city" : "New York",
+                "temperature" : 1,
+                "condition" : "sunny",
+                "timestamp" : 1650762900
+                } ],
+                "correlationId" : "1",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <receive topic="weather" commit="true">
+            <value>
+                []
+            </value>
+        </receive>
+
+        <send topic="weather">
+            <value>
+                [{
+                "city": "Los Angeles",
+                "temperature": 2,
+                "condition": "partly cloudy",
+                "timestamp": 1650763200
+                }]
+            </value>
+        </send>
+
+        <send topic="weather">
+            <value>
+                [{
+                "city": "Chicago",
+                "temperature": 3,
+                "condition": "rainy",
+                "timestamp": 1650763500
+                }]
+            </value>
+        </send>
+    </kafka>
+
+    <kafka comment="Receive 1 time, send 1 time, receive 2 times and send 3 times" alias="KAFKA_0">
+        <receive topic="weather" timeoutMillis="1000">
+            <file>expected_9.json</file>
+        </receive>
+
+        <send topic="weather" correlationId="5">
+            <value>
+                [{
+                "city": "Houston",
+                "temperature": 5,
+                "condition": "cloudy",
+                "timestamp": 1650763800
+                }]
+            </value>
+            <headers>
+                <header name="Lviv" value="20"/>
+                <header name="Odessa" value="25"/>
+            </headers>
+        </send>
+
+        <send topic="weather">
+            <value>
+                [{
+                "city": "Miami",
+                "temperature": 6,
+                "condition": "sunny",
+                "timestamp": 1650764100
+                }]
+            </value>
+        </send>
+
+        <receive topic="weather">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city" : "Houston",
+                "temperature" : 5,
+                "condition" : "cloudy",
+                "timestamp" : 1650763800
+                } ],
+                "correlationId" : "5",
+                "headers" : {
+                "Lviv" : "20",
+                "Odessa" : "25"
+                }
+                }, {
+                "key" : null,
+                "value" : [ {
+                "city" : "Miami",
+                "temperature" : 6,
+                "condition" : "sunny",
+                "timestamp" : 1650764100
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <receive topic="weather" commit="false" headers="false">
+            <file>expected_13.json</file>
+        </receive>
+
+        <send topic="weather" correlationId="7">
+            <value>
+                [{
+                "city": "San Francisco",
+                "temperature": 7,
+                "condition": "foggy",
+                "timestamp": 1650764400
+                }]
+            </value>
+            <key>7</key>
+            <headers>
+                <header name="Kharkiv" value="18"/>
+                <header name="Kyiv" value="15"/>
+            </headers>
+        </send>
+
+        <send topic="weather">
+            <value>
+                [{
+                "city": "Seattle",
+                "temperature": 8,
+                "condition": "rainy",
+                "timestamp": 1650764700
+                }]
+            </value>
+        </send>
+
+        <send topic="weather">
+            <value>
+                [{
+                "city": "Boston",
+                "temperature": 9,
+                "condition": "windy",
+                "timestamp": 1650765000
+                }]
+            </value>
+            <key>33</key>
+            <headers>
+                <header name="Lviv" value="33"/>
+            </headers>
+        </send>
+
+    </kafka>
+
+    <kafka comment="Receive then send 2 times and receive 2 times" alias="KAFKA_0">
+        <receive topic="weather" headers="false">
+            <file>expected_18.json</file>
+        </receive>
+
+        <send topic="crypto">
+            <value>
+                [{"symbol": "BTC-USD",
+                "price": 1,
+                "timestamp": 1650762900}]
+            </value>
+        </send>
+
+        <send topic="crypto">
+            <value>
+                [{"symbol": "BTC-USD",
+                "price": 111,
+                "timestamp": 1650762900}]
+            </value>
+        </send>
+
+        <receive topic="crypto">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "symbol" : "BTC-USD",
+                "price" : 1,
+                "timestamp" : 1650762900
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                }, {
+                "key" : null,
+                "value" : [ {
+                "symbol" : "BTC-USD",
+                "price" : 111,
+                "timestamp" : 1650762900
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <receive topic="weather" headers="true">
+            <value>
+                [ {
+                "key" : "33",
+                "value" : [ {
+                "city" : "Boston",
+                "temperature" : 9,
+                "condition" : "windy",
+                "timestamp" : 1650765000
+                } ],
+                "correlationId" : null,
+                "headers" : {
+                "Lviv" : "33"
+                }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+    <repeat comment="Send hundred messages to queue" times="100">
+        <kafka comment="hundred sends" alias="KAFKA_0">
+            <send topic="hundred" correlationId="11">
+                <value>
+                    {
+                    "sender": "Nazar",
+                    "recipient": "Oleh",
+                    "message": "Hey Oleh, how is it going?",
+                    "timestamp": 1650762900
+                    }
+                </value>
+                <key>11</key>
+                <headers>
+                    <header name="Odessa" value="11"/>
+                </headers>
+            </send>
+        </kafka>
+    </repeat>
+
+    <kafka comment="receive after hundred sends" alias="KAFKA_0">
+        <receive topic="hundred" timeoutMillis="5000" commit="true">
+            <file>expected_226.json</file>
+        </receive>
+    </kafka>
+
+</scenario>

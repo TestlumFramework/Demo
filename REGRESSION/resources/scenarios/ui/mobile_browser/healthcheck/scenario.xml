@@ -1,0 +1,20 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test to verify that connection can be established for mobile browser testing</description>
+        <name>Mobile Browser health check</name>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser-healthcheck</tags>
+    </settings>
+
+    <mobilebrowser comment="Start Mobile Browser script">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+    </mobilebrowser>
+
+</scenario>

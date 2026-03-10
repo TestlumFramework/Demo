@@ -1,0 +1,28 @@
+[
+  {
+    "key": null,
+    "value": [
+      {
+        "city": "Los Angeles",
+        "temperature": 2,
+        "condition": "partly cloudy",
+        "timestamp": 1650763200
+      }
+    ],
+    "correlationId": null,
+    "headers": {}
+  },
+  {
+    "key": null,
+    "value": [
+      {
+        "city": "Chicago",
+        "temperature": 3,
+        "condition": "rainy",
+        "timestamp": 1650763500
+      }
+    ],
+    "correlationId": null,
+    "headers": {}
+  }
+]
