@@ -68,6 +68,7 @@ services:
     container_name: postgres-e2e
     restart: always
     environment:
+      TZ: Europe/Kyiv
       POSTGRES_USER: playground
       POSTGRES_PASSWORD: playground
       POSTGRES_DB: playground_db
