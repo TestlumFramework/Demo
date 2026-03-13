@@ -57,6 +57,9 @@ jobs:
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: site
 
+      - name: Create Docker Network
+        run: docker network create e2e_network
+        
       - name: File Structure
         run: |
           pwd
