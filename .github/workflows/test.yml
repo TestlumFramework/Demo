@@ -1,6 +1,8 @@
 name: FullRegression
 
 on:
+  schedule:
+    - cron: '0 4 * * *'
   workflow_dispatch:
     inputs:
       branch:
@@ -22,6 +24,7 @@ on:
         options:
           - latest
           - 1.0.2
+        default: latest
 
       mobile:
         description: 'Do You want to run mobile browser and native tests?'
@@ -30,6 +33,7 @@ on:
         options:
           - Yes
           - No
+        default: Yes
 
 jobs:
   run-tests:
@@ -211,21 +215,21 @@ jobs:
           local-tunnel-name: 'TestlumTunnel'
         env:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-          
-      - name: Slack Notification Success
-        if: success()
-        uses: slackapi/slack-github-action@v1
-        with:
-          channel-id: '#jenkins-notification'
-          slack-message: "✔️ GITHUB | SUCCESS: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: Slack Notification Failure
-        if: failure()
-        uses: slackapi/slack-github-action@v1
-        with:
-          channel-id: '#jenkins-notification'
-          slack-message: "✖️ GITHUB | FAILED: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # - name: Slack Notification Success
+      #   if: success()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     channel-id: '#jenkins-notification'
+      #     slack-message: "✔️ GITHUB | SUCCESS: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      # - name: Slack Notification Failure
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     channel-id: '#jenkins-notification'
+      #     slack-message: "✖️ GITHUB | FAILED: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
