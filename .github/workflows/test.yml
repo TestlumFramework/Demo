@@ -59,7 +59,7 @@ jobs:
 
       - name: Create Docker Network
         run: docker network create e2e_network
-        
+
       - name: File Structure
         run: |
           pwd
@@ -120,7 +120,7 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
-            -e TZ=Europe/Kiev \
+            -e TZ=Europe/Kyiv \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -162,7 +162,7 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
-            -e TZ=Europe/Kiev \
+            -e TZ=Europe/Kyiv \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
