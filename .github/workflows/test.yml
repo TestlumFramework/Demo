@@ -73,19 +73,19 @@ jobs:
       - name: Run Integrations
         working-directory: site
         run: |
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci up -d --force-recreate
+          docker compose -f docker/docker-compose-integrations.yaml --profile ci up -d --force-recreate
           docker exec -t vault-e2e sh /tmp/init_vault.sh
 
       - name: Run Selenium Grid Browsers
         working-directory: site
         run: |
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci up -d --force-recreate
+          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci up -d --force-recreate
           sleep 30
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t || true
+          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t || true
 
       - name: Run Mega Test App
         working-directory: site
-        run: docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
+        run: docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
@@ -187,13 +187,13 @@ jobs:
           echo "Post actions"
           docker ps
 
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci logs -t --tail=400 || true
-          docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci logs -t || true
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t --tail=400 || true
+          docker compose -f docker/docker-compose-integrations.yaml --profile ci logs -t --tail=400 || true
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci logs -t || true
+          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t --tail=400 || true
 
-          docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
+          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
+          docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
 
           docker rm -f -v $(docker ps -q) || true
           docker rmi -f $(docker images -f "dangling=true" -q) || true
