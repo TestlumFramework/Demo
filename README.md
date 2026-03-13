@@ -1,5 +1,7 @@
 # Testlum DEMO APP
 
+[![FullRegression](https://github.com/TestlumFramework/Demo/actions/workflows/test.yml/badge.svg)](https://github.com/TestlumFramework/Demo/actions/workflows/test.yml)
+
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
 
 ## Overview
