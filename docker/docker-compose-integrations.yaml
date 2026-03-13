@@ -132,6 +132,7 @@ services:
     image: pvargacl/oracle-xe-18.4.0
     container_name: oracle-e2e
     environment:
+      - TZ=Europe/Kiev
       - ORACLE_SID=xe
       - ORACLE_PDB=c##testlum
       - ORACLE_PWD=password
