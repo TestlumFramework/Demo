@@ -3,7 +3,7 @@
 ## Testlum Image Status
 
 <!-- BADGES:START -->
-_No tag results yet._
+![testlum:1.0.2](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/TestlumFramework/Demo/fullregression/badges/1.0.2.json) ![testlum:latest](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/TestlumFramework/Demo/fullregression/badges/latest.json)
 <!-- BADGES:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
