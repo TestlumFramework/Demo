@@ -29,13 +29,18 @@ on:
 jobs:
   list-tags:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     outputs:
       tags: ${{ steps.set-matrix.outputs.tags }}
     steps:
       - name: Fetch image tags
         id: set-matrix
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          tags=$(curl -fsSL "https://ghcr.io/v2/testlumframework/testlum/tags/list?n=1000" | jq -r '.tags[]' | sort -V)
+          tags=$(gh api --paginate "/orgs/TestlumFramework/packages/container/testlum/versions?per_page=100" --jq '.[].metadata.container.tags[]' | sort -V | uniq)
           if [ -z "$tags" ]; then
             echo "No tags found in registry."
             exit 1
