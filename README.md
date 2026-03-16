@@ -5,6 +5,7 @@
 ## Testlum Image Status
 
 <!-- BADGES:START -->
+_No tag results yet._
 <!-- BADGES:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
