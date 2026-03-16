@@ -1,10 +1,10 @@
 # Testlum DEMO APP
 
-[![FullRegression](https://github.com/TestlumFramework/Demo/actions/workflows/test.yml/badge.svg)](https://github.com/TestlumFramework/Demo/actions/workflows/test.yml)
-
 ## Testlum Image Status
 
-![Testlum tag status dashboard](https://raw.githubusercontent.com/TestlumFramework/Demo/gh-pages/testlum-tags.svg)
+<!-- BADGES:START -->
+_No tag results yet._
+<!-- BADGES:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
 
