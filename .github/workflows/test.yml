@@ -5,21 +5,17 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
     inputs:
+      branch:
+        description: 'Choose branch'
+        required: true
+        type: string
+        default: 'main'
 
       branch_site:
         description: 'Choose site branch'
         required: true
         type: string
         default: 'main'
-
-      image:
-        description: 'Choose image version'
-        required: true
-        type: choice
-        options:
-          - latest
-          - 1.0.2
-        default: latest
 
       mobile:
         description: 'Do You want to run mobile browser and native tests?'
@@ -31,16 +27,45 @@ on:
         default: Yes
 
 jobs:
-  run-tests:
+  list-tags:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.set-matrix.outputs.tags }}
+    steps:
+      - name: Fetch image tags
+        id: set-matrix
+        run: |
+          tags=$(curl -fsSL "https://ghcr.io/v2/testlumframework/testlum/tags/list?n=1000" | jq -r '.tags[]' | sort -V)
+          if [ -z "$tags" ]; then
+            echo "No tags found in registry."
+            exit 1
+          fi
+          tags_json=$(printf '%s\n' $tags | jq -R -s -c 'split("\n")[:-1]')
+          echo "tags=$tags_json" >> "$GITHUB_OUTPUT"
+
+  run-tests:
+    needs: list-tags
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(needs.list-tags.outputs.tags) }}
 
     steps:
+
+      - name: Checkout Testlum Tool
+        uses: actions/checkout@v4
+        with:
+          repository: TestlumFramework/Testlum
+          ref: ${{ inputs.branch || 'main' }}
+          ssh-key: ${{ secrets.SSH_ACCESS }}
+          path: tool
 
       - name: Checkout Testlum Site
         uses: actions/checkout@v4
         with:
           repository: TestlumFramework/Demo
-          ref: ${{ inputs.branch_site }}
+          ref: ${{ inputs.branch_site || 'main' }}
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: site
 
@@ -83,16 +108,16 @@ jobs:
       - name: Image TESTLUM
         working-directory: tool
         run: |
-          docker rmi testlum:${{ inputs.image }} || true
-          docker pull ghcr.io/testlumframework/testlum:${{ inputs.image }}
-          docker tag ghcr.io/testlumframework/testlum:${{ inputs.image }} testlum:${{ inputs.image }}
+          docker rmi testlum:${{ matrix.image }} || true
+          docker pull ghcr.io/testlumframework/testlum:${{ matrix.image }}
+          docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
       - name: Run Regression (General)
         working-directory: tool
         run: |
           CI_CONFIG="config-ci-regression.xml"
           PATH_TO_RESOURCES="site/REGRESSION"
-          VERSION="${{ inputs.image }}"
+          VERSION="${{ matrix.image }}"
           MOUNT_DIR="${{ github.workspace }}/${PATH_TO_RESOURCES}"
           RESOURCES_DIR_INSIDE_CONTAINER="/REGRESSION/resources"
 
@@ -133,7 +158,7 @@ jobs:
         run: |
           CI_CONFIG="config-ci-regression-mobile.xml"
           PATH_TO_RESOURCES="site/REGRESSION"
-          VERSION="${{ inputs.image }}"
+          VERSION="${{ matrix.image }}"
           MOUNT_DIR="${{ github.workspace }}/${PATH_TO_RESOURCES}"
           RESOURCES_DIR_INSIDE_CONTAINER="/REGRESSION/resources"
 
@@ -202,6 +227,35 @@ jobs:
         env:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
 
+      - name: Build Tag Badge
+        if: always()
+        id: badge
+        run: |
+          tag="${{ matrix.image }}"
+          safe_tag=$(echo "$tag" | sed 's/[^a-zA-Z0-9._-]/_/g')
+
+          status="${{ job.status }}"
+          message="passing"
+          color="green"
+          if [ "$status" != "success" ]; then
+            message="failed"
+            color="red"
+          fi
+
+          mkdir -p badges
+          cat > "badges/${safe_tag}.json" <<EOF
+          {"schemaVersion":1,"label":"testlum:${tag}","message":"${message}","color":"${color}"}
+          EOF
+
+          echo "safe_tag=$safe_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Tag Badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-${{ steps.badge.outputs.safe_tag }}
+          path: badges/*.json
+
       # - name: Slack Notification Success
       #   if: success()
       #   uses: slackapi/slack-github-action@v1
@@ -210,6 +264,75 @@ jobs:
       #     slack-message: "✔️ GITHUB | SUCCESS: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
       #   env:
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+  update-badges:
+    runs-on: ubuntu-latest
+    needs: [list-tags, run-tests]
+    if: always()
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download badge artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-*
+          path: badge-artifacts
+          merge-multiple: true
+
+      - name: Update badges and README
+        env:
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          mkdir -p badges
+          cp badge-artifacts/*.json badges/ 2>/dev/null || true
+
+          python - <<'PY'
+          import json
+          import os
+          import re
+          from glob import glob
+
+          repo = os.environ["REPO"]
+          branch = os.environ["BRANCH"]
+
+          badge_files = sorted(glob("badges/*.json"))
+          lines = []
+          for path in badge_files:
+            with open(path, "r", encoding="utf-8") as f:
+              data = json.load(f)
+            label = data.get("label", os.path.splitext(os.path.basename(path))[0])
+            url = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{branch}/{path}"
+            lines.append(f"![{label}]({url})")
+
+          content = " ".join(lines) if lines else "_No tag results yet._"
+
+          with open("README.md", "r", encoding="utf-8") as f:
+            readme = f.read()
+
+          pattern = r"<!-- BADGES:START -->(.*?)<!-- BADGES:END -->"
+          replacement = f"<!-- BADGES:START -->\n{content}\n<!-- BADGES:END -->"
+          updated = re.sub(pattern, replacement, readme, flags=re.S)
+
+          with open("README.md", "w", encoding="utf-8") as f:
+            f.write(updated)
+          PY
+
+      - name: Commit and push changes
+        run: |
+          if git diff --quiet; then
+            echo "No badge updates to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md badges
+          git commit -m "Update testlum tag badges"
+          git push
 
       # - name: Slack Notification Failure
       #   if: failure()
