@@ -5,11 +5,6 @@ on:
     - cron: '0 4 * * *'
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Choose branch'
-        required: true
-        type: string
-        default: 'main'
 
       branch_site:
         description: 'Choose site branch'
@@ -40,14 +35,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout Testlum Tool
-        uses: actions/checkout@v4
-        with:
-          repository: TestlumFramework/Testlum
-          ref: ${{ inputs.branch }}
-          ssh-key: ${{ secrets.SSH_ACCESS }}
-          path: tool
 
       - name: Checkout Testlum Site
         uses: actions/checkout@v4
