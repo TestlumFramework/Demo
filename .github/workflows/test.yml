@@ -270,7 +270,7 @@ jobs:
       #   env:
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-  update-badges:
+  publish-dashboard:
     runs-on: ubuntu-latest
     needs: [list-tags, run-tests]
     if: always()
@@ -287,57 +287,86 @@ jobs:
           path: badge-artifacts
           merge-multiple: true
 
-      - name: Update badges and README
-        env:
-          REPO: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
+      - name: Build dashboard SVG
         run: |
-          mkdir -p badges
-          cp badge-artifacts/*.json badges/ 2>/dev/null || true
+          mkdir -p dashboard
+          cp badge-artifacts/*.json dashboard/ 2>/dev/null || true
 
           python - <<'PY'
           import json
+          import math
           import os
-          import re
           from glob import glob
 
-          repo = os.environ["REPO"]
-          branch = os.environ["BRANCH"]
+          def escape(text):
+            return (
+              text.replace("&", "&amp;")
+                  .replace("<", "&lt;")
+                  .replace(">", "&gt;")
+            )
 
-          badge_files = sorted(glob("badges/*.json"))
-          lines = []
-          for path in badge_files:
+          items = []
+          for path in sorted(glob("dashboard/*.json")):
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
             label = data.get("label", os.path.splitext(os.path.basename(path))[0])
-            url = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{branch}/{path}"
-            lines.append(f"![{label}]({url})")
+            message = data.get("message", "unknown")
+            color = data.get("color", "gray")
+            items.append((label, message, color))
 
-          content = " ".join(lines) if lines else "_No tag results yet._"
+          width = 900
+          line_height = 22
+          padding = 20
+          header = "Testlum Image Tags"
+          rows = max(1, len(items))
+          height = padding * 2 + line_height * (rows + 2)
 
-          with open("README.md", "r", encoding="utf-8") as f:
-            readme = f.read()
+          lines = [
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+            '<style>',
+            '  .title { font: 700 16px "Courier New", monospace; fill: #111; }',
+            '  .label { font: 14px "Courier New", monospace; fill: #222; }',
+            '  .status { font: 14px "Courier New", monospace; }',
+            '</style>',
+            f'<rect width="100%" height="100%" fill="#ffffff" stroke="#e5e7eb" />',
+            f'<text x="{padding}" y="{padding + 12}" class="title">{escape(header)}</text>',
+          ]
 
-          pattern = r"<!-- BADGES:START -->(.*?)<!-- BADGES:END -->"
-          replacement = f"<!-- BADGES:START -->\n{content}\n<!-- BADGES:END -->"
-          updated = re.sub(pattern, replacement, readme, flags=re.S)
+          y = padding + line_height * 2
+          if items:
+            for label, message, color in items:
+              lines.append(f'<text x="{padding}" y="{y}" class="label">{escape(label)}</text>')
+              lines.append(f'<text x="{width - padding - 150}" y="{y}" class="status" fill="{color}">{escape(message)}</text>')
+              y += line_height
+          else:
+            lines.append(f'<text x="{padding}" y="{y}" class="label">No tag results yet.</text>')
 
-          with open("README.md", "w", encoding="utf-8") as f:
-            f.write(updated)
+          lines.append('</svg>')
+
+          with open("testlum-tags.svg", "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
           PY
+          mv testlum-tags.svg /tmp/testlum-tags.svg
 
-      - name: Commit and push changes
+      - name: Publish dashboard to gh-pages
         run: |
-          if git diff --quiet; then
-            echo "No badge updates to commit."
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git switch --orphan gh-pages
+          git reset --hard
+          git clean -fdx
+
+          mv /tmp/testlum-tags.svg testlum-tags.svg
+          git add testlum-tags.svg
+
+          if git diff --cached --quiet; then
+            echo "No dashboard updates to commit."
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md badges
-          git commit -m "Update testlum tag badges"
-          git push
+          git commit -m "Update Testlum tag dashboard"
+          git push --force origin gh-pages
 
       # - name: Slack Notification Failure
       #   if: failure()
