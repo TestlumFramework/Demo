@@ -104,7 +104,7 @@
             <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
             <username>{{secret/data/mysql/user.username}}</username>
             <password>{{secret/data/mysql/password.password}}</password>
-            <connectionUrl>jdbc:mysql://mysql-e2e:3306/playground_db</connectionUrl>
+            <connectionUrl>jdbc:mysql://mysql-e2e:3306/playground_db?serverTimezone=Europe/Kyiv</connectionUrl>
             <schema>playground_db</schema>
             <hikari>
                 <connectionTimeout>45000</connectionTimeout>

@@ -104,7 +104,7 @@
             <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
             <username>playground</username>
             <password>playground</password>
-            <connectionUrl>jdbc:mysql://localhost:3306/playground_db</connectionUrl>
+            <connectionUrl>jdbc:mysql://localhost:3306/playground_db?serverTimezone=Europe/Kyiv</connectionUrl>
             <schema>playground_db</schema>
             <hikari>
                 <connectionTimeout>45000</connectionTimeout>
