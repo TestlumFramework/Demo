@@ -116,6 +116,8 @@ services:
       MYSQL_DATABASE: playground_db
       MYSQL_USER: playground
       MYSQL_PASSWORD: playground
+      TZ: Europe/Kyiv
+    command: --default-time-zone='Europe/Kyiv'
     volumes:
       - ./init-data/mysql:/docker-entrypoint-initdb.d
     ports:

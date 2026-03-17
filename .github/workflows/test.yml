@@ -124,7 +124,6 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
-            -e TZ=Europe/Kiev \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -166,7 +165,6 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
-            -e TZ=Europe/Kiev \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -196,13 +194,13 @@ jobs:
           docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
           docker system prune -af --volumes || true
 
-      - name: Stop BrowserStackLocal
-        if: always()
-        uses: browserstack/github-actions/setup-local@master
-        with:
-          local-testing: stop
-        env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+#      - name: Stop BrowserStackLocal
+#        if: always()
+#        uses: browserstack/github-actions/setup-local@master
+#        with:
+#          local-testing: stop
+#        env:
+#          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
 
       - name: Build Tag Badge
         if: always()
