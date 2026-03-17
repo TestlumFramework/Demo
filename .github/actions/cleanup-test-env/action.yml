@@ -1,0 +1,34 @@
+name: Cleanup Test Environment
+description: Stops Docker services and prunes leftover resources after regression runs.
+
+inputs:
+  working_directory:
+    description: Directory that contains the docker compose files.
+    required: false
+    default: testlum-tests
+  browserstack_access_key:
+    description: BrowserStack access key for local testing.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Shutdown Docker Compose Services
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      run: |
+        docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
+        docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
+        docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
+
+    - name: Prune Docker Resources
+      shell: bash
+      run: docker system prune -af --volumes || true
+
+    - name: Stop BrowserStackLocal
+      if: always()
+      uses: browserstack/github-actions/setup-local@master
+      with:
+        local-testing: stop
+      env:
+        BROWSERSTACK_ACCESS_KEY: ${{ inputs.browserstack_access_key }}

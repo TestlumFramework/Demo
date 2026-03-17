@@ -93,22 +93,12 @@ jobs:
           config_file: config-ci-regression-mobile.xml
           resources_path: testlum-tests/REGRESSION
 
-      - name: Post Actions
-        working-directory: testlum-tests
+      - name: Cleanup Test Environment
         if: always()
-        run: |
-          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
-          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
-          docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
-          docker system prune -af --volumes || true
-
-      - name: Stop BrowserStackLocal
-        if: always()
-        uses: browserstack/github-actions/setup-local@master
+        uses: ./.github/actions/cleanup-test-env
         with:
-          local-testing: stop
-        env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
 
       - name: Build Tag Badge
         if: always()
