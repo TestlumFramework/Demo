@@ -69,19 +69,8 @@ jobs:
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: testlum-tests
 
-      - name: Check Docker State
-        run: |
-          docker ps -a
-          docker images
-          docker volume ls
-
       - name: Create Docker Network
         run: docker network create e2e_network
-
-      - name: File Structure
-        run: |
-          pwd
-          tree -L 4
 
       - name: Start BrowserStackLocal
         uses: browserstack/github-actions/setup-local@master
@@ -101,8 +90,6 @@ jobs:
         working-directory: testlum-tests
         run: |
           docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci up -d --force-recreate
-          sleep 30
-          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t || true
 
       - name: Run Mega Test App
         working-directory: testlum-tests
@@ -114,7 +101,6 @@ jobs:
       - name: Image TESTLUM
         working-directory: testlum-tests
         run: |
-          docker rmi testlum:${{ matrix.image }} || true
           docker pull ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
@@ -138,7 +124,7 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
-            -e TZ=Europe/Kiev
+            -e TZ=Europe/Kiev \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -180,6 +166,7 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
+            -e TZ=Europe/Kiev \
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -204,28 +191,10 @@ jobs:
         working-directory: testlum-tests
         if: always()
         run: |
-          echo "docker ps"
-          docker ps
-
-          echo "docker compose -f"
           docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
           docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
           docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
-
-          echo "docker remove containers"
-          docker rm -f -v $(docker ps -q) || true
-          echo "docker remove images"
-          docker rmi -f $(docker images -f "dangling=true" -q) || true
-          echo "docker remove volumes"
-          docker volume ls -qf "dangling=true" | xargs docker volume rm || true
-          echo "docker remove network"
-          docker network rm e2e_network || true
-
-          docker ps -a
-          docker ps
-          docker image ls
-          docker volume ls
-          docker network ls
+          docker system prune -af --volumes || true
 
       - name: Stop BrowserStackLocal
         if: always()
@@ -329,7 +298,7 @@ jobs:
             f.write(updated)
           PY
 
-      - name: Commit and push changes
+      - name: Commit and push updated badges
         run: |
           if git diff --quiet; then
             echo "No badge updates to commit."
