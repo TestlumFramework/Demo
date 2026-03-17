@@ -63,31 +63,11 @@ jobs:
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: testlum-tests
 
-      - name: Create Docker Network
-        run: docker network create e2e_network
-
-      - name: Start BrowserStackLocal
-        uses: browserstack/github-actions/setup-local@master
+      - name: Setup Test Environment
+        uses: ./.github/actions/setup-test-env
         with:
-          local-testing: start
-          local-identifier: random
-        env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
-      - name: Run Integrations
-        working-directory: testlum-tests
-        run: |
-          docker compose -f docker/docker-compose-integrations.yaml --profile ci up -d --force-recreate
-          docker exec -t vault-e2e sh /tmp/init_vault.sh
-
-      - name: Run Selenium Grid Browsers
-        working-directory: testlum-tests
-        run: |
-          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci up -d --force-recreate
-
-      - name: Run Mega Test App
-        working-directory: testlum-tests
-        run: docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
