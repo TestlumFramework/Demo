@@ -69,6 +69,12 @@ jobs:
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: testlum-tests
 
+      - name: Check Docker State
+        run: |
+          docker ps -a
+          docker images
+          docker volume ls
+
       - name: Create Docker Network
         run: docker network create e2e_network
 
@@ -132,6 +138,7 @@ jobs:
 
           docker run -t -u $(id -u):$(id -g) --rm \
             --network=e2e_network \
+            -e TZ=Europe/Kiev
             -v ${MOUNT_DIR}:/REGRESSION \
             ${COMMAND}
 
@@ -197,20 +204,21 @@ jobs:
         working-directory: testlum-tests
         if: always()
         run: |
-          echo "Post actions"
+          echo "docker ps"
           docker ps
 
-          docker compose -f docker/docker-compose-integrations.yaml --profile ci logs -t --tail=400 || true
-          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci logs -t || true
-          docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t --tail=400 || true
-
+          echo "docker compose -f"
           docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
           docker compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
           docker compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
 
+          echo "docker remove containers"
           docker rm -f -v $(docker ps -q) || true
+          echo "docker remove images"
           docker rmi -f $(docker images -f "dangling=true" -q) || true
+          echo "docker remove volumes"
           docker volume ls -qf "dangling=true" | xargs docker volume rm || true
+          echo "docker remove network"
           docker network rm e2e_network || true
 
           docker ps -a
