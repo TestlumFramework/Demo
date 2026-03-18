@@ -132,16 +132,14 @@ services:
     profiles: [ci, local]
 
   oracle-e2e:
-    image: pvargacl/oracle-xe-18.4.0
-    container_name: oracle-e2e
+    image: gvenzl/oracle-free:latest
     environment:
-      - TZ=Europe/Kiev
-      - ORACLE_SID=xe
-      - ORACLE_PDB=c##testlum
-      - ORACLE_PWD=password
+      TZ: Europe/Kiev
+      ORACLE_PASSWORD: password
+      ORACLE_DATABASE: TESTLUM
     volumes:
       - /opt/oracle/oradata
-      - ./init-data/oracle:/opt/oracle/scripts/startup
+      - ./init-data/oracle:/container-entrypoint-initdb.d
     ports:
       - "1521:1521"
     networks:

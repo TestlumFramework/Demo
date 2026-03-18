@@ -1,17 +1,18 @@
-CONNECT system/oracle@XE;
+ALTER SESSION SET CONTAINER = TESTLUM;
 
-CREATE USER c##testlum IDENTIFIED BY password;
+CREATE USER testlum IDENTIFIED BY password;
 
-GRANT ALL PRIVILEGES TO c##testlum;
+GRANT CONNECT, RESOURCE TO testlum;
+GRANT UNLIMITED TABLESPACE TO testlum;
 
-CONNECT c##testlum/password@XE;
+ALTER SESSION SET CURRENT_SCHEMA = testlum;
 
 CREATE SEQUENCE news_id_seq START WITH 1;
 
 CREATE TABLE NEWS
 (
-    id         INTEGER   DEFAULT ON NULL news_id_seq.nextval PRIMARY KEY,
-    newsName   VARCHAR(512)        NOT NULL UNIQUE,
+    id         INTEGER   DEFAULT news_id_seq.nextval PRIMARY KEY,
+    newsName   VARCHAR2(512)       NOT NULL UNIQUE,
     newsNumber INTEGER             NOT NULL UNIQUE,
     active     NUMBER(1) DEFAULT 0 NOT NULL,
     createdAt  TIMESTAMP           NOT NULL
