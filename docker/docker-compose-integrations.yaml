@@ -241,6 +241,7 @@ services:
       - AWS_REGION=eu-central-1
       - AWS_ACCESS_KEY_ID=JQttVjEfR3y4UJ
       - AWS_SECRET_ACCESS_KEY=wzsTjXDJL2C5Wq
+      - LAMBDA_IGNORE_ARCHITECTURE=1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./init-data/aws:/etc/localstack/init/ready.d
