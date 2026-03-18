@@ -4,52 +4,39 @@ on:
   schedule:
     - cron: '0 4 * * *'
   workflow_dispatch:
-    inputs:
-
-      branch_tests:
-        description: 'Choose site branch'
-        required: true
-        type: string
-        default: 'main'
-
-      launch_mobile_tests:
-        description: 'Do You want to run mobile browser and native tests?'
-        required: true
-        type: choice
-        options:
-          - Yes
-          - No
-        default: Yes
+    inputs: {}
 
 jobs:
-  list-tags:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-    outputs:
-      tags: ${{ steps.set-matrix.outputs.tags }}
-    steps:
-      - name: Fetch image tags
-        id: set-matrix
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          tags=$(gh api --paginate "/orgs/TestlumFramework/packages/container/testlum/versions?per_page=100" --jq '.[].metadata.container.tags[]' | sort -V | uniq)
-          if [ -z "$tags" ]; then
-            echo "No tags found in registry."
-            exit 1
-          fi
-          tags_json=$(printf '%s\n' $tags | jq -R -s -c 'split("\n")[:-1]')
-          echo "tags=$tags_json" >> "$GITHUB_OUTPUT"
-
   run-tests:
-    needs: list-tags
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
       matrix:
-        image: ${{ fromJSON(needs.list-tags.outputs.tags) }}
+        include:
+
+          - image: latest
+            tests_branch: main
+            config_file: config-ci-regression.xml
+            arch: amd64
+            runs_on: ubuntu-latest
+
+          - image: latest
+            tests_branch: main
+            config_file: config-ci-regression.xml
+            arch: arm64
+            runs_on: ubuntu-24.04-arm
+
+          - image: 1.0.2
+            tests_branch: main
+            config_file: config-ci-regression.xml
+            arch: amd64
+            runs_on: ubuntu-latest
+
+          - image: 1.0.2
+            tests_branch: main
+            config_file: config-ci-regression.xml
+            arch: arm64
+            runs_on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout Workflow Repository
@@ -59,7 +46,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: TestlumFramework/Demo
-          ref: ${{ inputs.branch_tests || 'main' }}
+          ref: ${{ matrix.tests_branch }}
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: testlum-tests
 
@@ -75,22 +62,14 @@ jobs:
       - name: Pull Testlum Image
         working-directory: testlum-tests
         run: |
-          docker pull ghcr.io/testlumframework/testlum:${{ matrix.image }}
+          docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
-      - name: Run Regression (General)
+      - name: Run Regression
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
-          config_file: config-ci-regression.xml
-          resources_path: testlum-tests/REGRESSION
-
-      - name: Run Regression (Mobile and Native)
-        if: ${{ inputs.launch_mobile_tests == 'Yes' }}
-        uses: ./.github/actions/run-testlum
-        with:
-          image_tag: ${{ matrix.image }}
-          config_file: config-ci-regression-mobile.xml
+          config_file: ${{ matrix.config_file }}
           resources_path: testlum-tests/REGRESSION
 
       - name: Cleanup Test Environment
@@ -100,47 +79,27 @@ jobs:
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
 
-      - name: Build Tag Badge
+      - name: Build Matrix Result
         if: always()
-        id: badge
         run: |
-          tag="${{ matrix.image }}"
-          safe_tag=$(echo "$tag" | sed 's/[^a-zA-Z0-9._-]/_/g')
-
+          safe_tag=$(echo "${{ matrix.image }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
           status="${{ job.status }}"
-          message="passing"
-          color="green"
-          if [ "$status" != "success" ]; then
-            message="failed"
-            color="red"
-          fi
-
-          mkdir -p badges
-          cat > "badges/${safe_tag}.json" <<EOF
-          {"schemaVersion":1,"label":"testlum:${tag}","message":"${message}","color":"${color}"}
+          published_at="$(date -u +%Y/%m/%d)"
+          mkdir -p results
+          cat > "results/${safe_tag}-${{ matrix.arch }}.json" <<EOF
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","arch":"${{ matrix.arch }}","status":"${status}","published_at":"${published_at}"}
           EOF
 
-          echo "safe_tag=$safe_tag" >> "$GITHUB_OUTPUT"
-
-      - name: Upload Tag Badge
+      - name: Upload Matrix Result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: badge-${{ steps.badge.outputs.safe_tag }}
-          path: badges/*.json
+          name: result-${{ matrix.image }}-${{ matrix.arch }}
+          path: results/*.json
 
-      # - name: Slack Notification Success
-      #   if: success()
-      #   uses: slackapi/slack-github-action@v1
-      #   with:
-      #     channel-id: '#jenkins-notification'
-      #     slack-message: "✔️ GITHUB | SUCCESS: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
-  update-badges:
+  update-readme:
     runs-on: ubuntu-latest
-    needs: [list-tags, run-tests]
+    needs: run-tests
     if: always()
     permissions:
       contents: write
@@ -148,70 +107,82 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download badge artifacts
+      - name: Download result artifacts
         uses: actions/download-artifact@v4
         with:
-          pattern: badge-*
-          path: badge-artifacts
+          pattern: result-*
+          path: result-artifacts
           merge-multiple: true
 
-      - name: Update badges and README
-        env:
-          REPO: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
+      - name: Update README matrix table
         run: |
-          mkdir -p badges
-          cp badge-artifacts/*.json badges/ 2>/dev/null || true
+          mkdir -p results
+          cp result-artifacts/*.json results/ 2>/dev/null || true
 
           python - <<'PY'
           import json
-          import os
           import re
           from glob import glob
 
-          repo = os.environ["REPO"]
-          branch = os.environ["BRANCH"]
-
-          badge_files = sorted(glob("badges/*.json"))
-          lines = []
-          for path in badge_files:
+          rows = {}
+          for path in sorted(glob("results/*.json")):
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
-            label = data.get("label", os.path.splitext(os.path.basename(path))[0])
-            url = f"https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/{repo}/{branch}/{path}"
-            lines.append(f"![{label}]({url})")
 
-          content = " ".join(lines) if lines else "_No tag results yet._"
+            key = data["image"]
+            item = rows.setdefault(
+              key,
+              {
+                "image": data["image"],
+                "linux_amd64": "not run",
+                "linux_arm64": "not run",
+                "tests_branch": data["tests_branch"],
+                "published_at": data["published_at"],
+              },
+            )
+            if data["arch"] == "amd64":
+              item["linux_amd64"] = "passed" if data["status"] == "success" else "failed"
+            if data["arch"] == "arm64":
+              item["linux_arm64"] = "passed" if data["status"] == "success" else "failed"
+            item["tests_branch"] = data["tests_branch"]
+            item["published_at"] = data["published_at"]
+
+          ordered = sorted(
+            rows.values(),
+            key=lambda x: (x["image"] != "latest", x["image"]),
+          )
+
+          table_lines = [
+            "| image | Linux amd64 | Linux arm64 | branch | image publish/update date |",
+            "|---|---|---|---|---|",
+          ]
+          for row in ordered:
+            table_lines.append(
+              f'| {row["image"]} | {row["linux_amd64"]} | {row["linux_arm64"]} | {row["tests_branch"]} | {row["published_at"]} |'
+            )
+
+          content = "\n".join(table_lines)
 
           with open("README.md", "r", encoding="utf-8") as f:
             readme = f.read()
 
-          pattern = r"<!-- BADGES:START -->(.*?)<!-- BADGES:END -->"
-          replacement = f"<!-- BADGES:START -->\n{content}\n<!-- BADGES:END -->"
+          pattern = r"<!-- RESULTS-TABLE:START -->(.*?)<!-- RESULTS-TABLE:END -->"
+          replacement = f"<!-- RESULTS-TABLE:START -->\n{content}\n<!-- RESULTS-TABLE:END -->"
           updated = re.sub(pattern, replacement, readme, flags=re.S)
 
           with open("README.md", "w", encoding="utf-8") as f:
             f.write(updated)
           PY
 
-      - name: Commit and push updated badges
+      - name: Commit and push README
         run: |
           if git diff --quiet; then
-            echo "No badge updates to commit."
+            echo "No README updates to commit."
             exit 0
           fi
 
           git config user.name "Testlum Regression"
           git config user.email "testlum-regression[bot]@users.noreply.github.com"
-          git add README.md badges
-          git commit -m "Update testlum tag badges"
+          git add README.md
+          git commit -m "Update regression matrix status table"
           git push
-
-      # - name: Slack Notification Failure
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v1
-      #   with:
-      #     channel-id: '#jenkins-notification'
-      #     slack-message: "✖️ GITHUB | FAILED: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
