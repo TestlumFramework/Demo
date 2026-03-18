@@ -15,26 +15,34 @@ jobs:
         include:
 
           - image: latest
-            tests_branch: main
+            tests_branch: fullregression
             config_file: config-ci-regression.xml
+            mobile_config_file: config-ci-regression-mobile.xml
+            run_mobile_tests: true
             arch: amd64
             runs_on: ubuntu-latest
 
           - image: latest
-            tests_branch: main
+            tests_branch: fullregression
             config_file: config-ci-regression.xml
+            mobile_config_file: config-ci-regression-mobile.xml
+            run_mobile_tests: true
             arch: arm64
             runs_on: ubuntu-24.04-arm
 
           - image: 1.0.2
-            tests_branch: main
+            tests_branch: fullregression
             config_file: config-ci-regression.xml
+            mobile_config_file: config-ci-regression-mobile.xml
+            run_mobile_tests: false
             arch: amd64
             runs_on: ubuntu-latest
 
           - image: 1.0.2
-            tests_branch: main
+            tests_branch: fullregression
             config_file: config-ci-regression.xml
+            mobile_config_file: config-ci-regression-mobile.xml
+            run_mobile_tests: false
             arch: arm64
             runs_on: ubuntu-24.04-arm
 
@@ -70,6 +78,14 @@ jobs:
         with:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.config_file }}
+          resources_path: testlum-tests/REGRESSION
+
+      - name: Run Regression (Mobile and Native)
+        if: ${{ matrix.run_mobile_tests == 'true' }}
+        uses: ./.github/actions/run-testlum
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.mobile_config_file }}
           resources_path: testlum-tests/REGRESSION
 
       - name: Cleanup Test Environment
@@ -141,9 +157,9 @@ jobs:
               },
             )
             if data["arch"] == "amd64":
-              item["linux_amd64"] = "passed" if data["status"] == "success" else "failed"
+              item["linux_amd64"] = "passed" if data["status"] == "✅" else "❌"
             if data["arch"] == "arm64":
-              item["linux_arm64"] = "passed" if data["status"] == "success" else "failed"
+              item["linux_arm64"] = "passed" if data["status"] == "✅" else "❌"
             item["tests_branch"] = data["tests_branch"]
             item["published_at"] = data["published_at"]
 
