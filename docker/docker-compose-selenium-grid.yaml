@@ -16,8 +16,7 @@ services:
     profiles: [ci, local]
 
   chrome:
-    platform: ${PLATFORM:-linux/amd64}
-    image: selenium/node-chrome:4.41.0-20260222
+    image: selenium/node-chromium:4.41.0-20260222
     shm_size: 4gb
     depends_on:
       selenium-hub:
