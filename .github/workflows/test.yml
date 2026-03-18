@@ -22,6 +22,7 @@ jobs:
           echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
 
   run-tests:
+    name: ${{ matrix.image }} on ${{ matrix.runs_on }} from ${{ matrix.tests_branch }} branch
     needs: prepare-matrix
     runs-on: ${{ matrix.runs_on }}
     strategy:
