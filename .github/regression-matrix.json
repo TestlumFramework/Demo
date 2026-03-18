@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "image": "latest",
+      "tests_branch": "fullregression",
+      "config_file": "config-ci-regression.xml",
+      "mobile_config_file": "config-ci-regression-mobile.xml",
+      "run_mobile_tests": true
+    },
+    {
+      "image": "1.0.2",
+      "tests_branch": "fullregression",
+      "config_file": "config-ci-regression.xml",
+      "mobile_config_file": "config-ci-regression-mobile.xml",
+      "run_mobile_tests": false
+    }
+  ],
+  "arches": [
+    {
+      "arch": "amd64",
+      "runs_on": "ubuntu-latest"
+    },
+    {
+      "arch": "arm64",
+      "runs_on": "ubuntu-24.04-arm"
+    }
+  ]
+}

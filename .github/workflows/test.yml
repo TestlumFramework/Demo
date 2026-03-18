@@ -7,44 +7,26 @@ on:
     inputs: {}
 
 jobs:
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+
+      - name: Build matrix from config
+        id: build
+        run: |
+          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | ($entry + $arch) ]}' .github/regression-matrix.json)
+          echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
+
   run-tests:
+    needs: prepare-matrix
     runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
-      matrix:
-        include:
-
-          - image: latest
-            tests_branch: fullregression
-            config_file: config-ci-regression.xml
-            mobile_config_file: config-ci-regression-mobile.xml
-            run_mobile_tests: true
-            arch: amd64
-            runs_on: ubuntu-latest
-
-          - image: latest
-            tests_branch: fullregression
-            config_file: config-ci-regression.xml
-            mobile_config_file: config-ci-regression-mobile.xml
-            run_mobile_tests: true
-            arch: arm64
-            runs_on: ubuntu-24.04-arm
-
-          - image: 1.0.2
-            tests_branch: fullregression
-            config_file: config-ci-regression.xml
-            mobile_config_file: config-ci-regression-mobile.xml
-            run_mobile_tests: false
-            arch: amd64
-            runs_on: ubuntu-latest
-
-          - image: 1.0.2
-            tests_branch: fullregression
-            config_file: config-ci-regression.xml
-            mobile_config_file: config-ci-regression-mobile.xml
-            run_mobile_tests: false
-            arch: arm64
-            runs_on: ubuntu-24.04-arm
+      matrix: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
 
     steps:
       - name: Checkout Workflow Repository
@@ -59,6 +41,7 @@ jobs:
           path: testlum-tests
 
       - name: Setup Test Environment
+        id: setup_env
         uses: ./.github/actions/setup-test-env
         with:
           working_directory: testlum-tests
@@ -71,12 +54,14 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
       - name: Pull Testlum Image
+        id: pull_image
         working-directory: testlum-tests
         run: |
           docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
       - name: Run Regression
+        id: run_regression
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
@@ -84,6 +69,7 @@ jobs:
           resources_path: testlum-tests/REGRESSION
 
       - name: Run Regression (Mobile and Native)
+        id: run_regression_mobile
         if: ${{ matrix.run_mobile_tests }}
         uses: ./.github/actions/run-testlum
         with:
@@ -105,11 +91,26 @@ jobs:
         if: always()
         run: |
           safe_tag=$(echo "${{ matrix.image }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
-          status="${{ job.status }}"
-          published_at="$(date -u +%Y/%m/%d)"
+          setup_outcome="${{ steps.setup_env.outcome }}"
+          pull_outcome="${{ steps.pull_image.outcome }}"
+          regression_outcome="${{ steps.run_regression.outcome }}"
+          mobile_outcome="${{ steps.run_regression_mobile.outcome }}"
+
+          status="passed"
+          if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${{ matrix.run_mobile_tests }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then
+            status="cancelled"
+          fi
+
+          run_date="$(date -u +%Y/%m/%d)"
           mkdir -p results
           cat > "results/${safe_tag}-${{ matrix.arch }}.json" <<EOF
-          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","arch":"${{ matrix.arch }}","status":"${status}","published_at":"${published_at}"}
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}"}
           EOF
 
       - name: Upload Matrix Result
@@ -125,6 +126,7 @@ jobs:
     if: always()
     permissions:
       contents: write
+      packages: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -136,6 +138,13 @@ jobs:
           path: result-artifacts
           merge-multiple: true
 
+      - name: Download GHCR version metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p results
+          gh api --paginate "/orgs/TestlumFramework/packages/container/testlum/versions?per_page=100" > results/ghcr_versions.json
+
       - name: Update README matrix table
         run: |
           mkdir -p results
@@ -146,8 +155,21 @@ jobs:
           import re
           from glob import glob
 
+          with open("results/ghcr_versions.json", "r", encoding="utf-8") as f:
+            versions = json.load(f)
+
+          published_by_tag = {}
+          for version in versions:
+            published = (version.get("created_at") or "")[:10].replace("-", "/")
+            tags = version.get("metadata", {}).get("container", {}).get("tags", [])
+            for tag in tags:
+              if tag not in published_by_tag:
+                published_by_tag[tag] = published
+
           rows = {}
           for path in sorted(glob("results/*.json")):
+            if path.endswith("ghcr_versions.json"):
+              continue
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
 
@@ -159,15 +181,16 @@ jobs:
                 "linux_amd64": "not run",
                 "linux_arm64": "not run",
                 "tests_branch": data["tests_branch"],
-                "published_at": data["published_at"],
+                "published_at": published_by_tag.get(data["image"], data["run_date"]),
               },
             )
+
             if data["arch"] == "amd64":
-              item["linux_amd64"] = "passed" if data["status"] == "✅" else "❌"
+              item["linux_amd64"] = data["status"]
             if data["arch"] == "arm64":
-              item["linux_arm64"] = "passed" if data["status"] == "✅" else "❌"
+              item["linux_arm64"] = data["status"]
             item["tests_branch"] = data["tests_branch"]
-            item["published_at"] = data["published_at"]
+            item["published_at"] = published_by_tag.get(data["image"], data["run_date"])
 
           ordered = sorted(
             rows.values(),
