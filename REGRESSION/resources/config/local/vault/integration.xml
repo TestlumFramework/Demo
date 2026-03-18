@@ -134,8 +134,8 @@
             <jdbcDriver>oracle.jdbc.OracleDriver</jdbcDriver>
             <username>{{secret/data/oracle/username.key}}</username>
             <password>{{secret/data/oracle/password.key}}</password>
-            <connectionUrl>jdbc:oracle:thin:@localhost:1521/xe</connectionUrl>
-            <schema>C##TESTLUM</schema>
+            <connectionUrl>jdbc:oracle:thin:@localhost:1521/TESTLUM?oracle.jdbc.timezoneAsRegion=false</connectionUrl>
+            <schema>TESTLUM</schema>
             <hikari>
                 <connectionTimeout>45000</connectionTimeout>
                 <idleTimeout>60000</idleTimeout>
