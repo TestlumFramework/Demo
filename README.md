@@ -5,8 +5,8 @@
 <!-- RESULTS-TABLE:START -->
 | image | Linux amd64 | Linux arm64 | branch | image publish/update date |
 |---|---|---|---|---|
-| latest | ❌ | ❌ | fullregression | 2026/03/18 |
-| 1.0.2 | ❌ | ❌ | fullregression | 2026/03/18 |
+| latest | failed | failed | fullregression | 2026/03/17 |
+| 1.0.2 | passed | failed | fullregression | 2026/03/17 |
 <!-- RESULTS-TABLE:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
