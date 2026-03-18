@@ -132,8 +132,7 @@ services:
     profiles: [ci, local]
 
   oracle-e2e:
-#    image: pvargacl/oracle-xe-18.4.0
-    image: container-registry.oracle.com/database/express:latest
+    image: pvargacl/oracle-xe-18.4.0
     container_name: oracle-e2e
     environment:
       - TZ=Europe/Kiev
