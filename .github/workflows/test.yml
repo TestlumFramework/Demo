@@ -63,6 +63,9 @@ jobs:
         with:
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          browserstack_binary_arch: ${{ matrix.arch }}
+          enable_browserstack: true
 
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
@@ -81,7 +84,7 @@ jobs:
           resources_path: testlum-tests/REGRESSION
 
       - name: Run Regression (Mobile and Native)
-        if: ${{ matrix.run_mobile_tests == 'true' }}
+        if: ${{ matrix.run_mobile_tests }}
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
@@ -94,6 +97,9 @@ jobs:
         with:
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          browserstack_binary_arch: ${{ matrix.arch }}
+          enable_browserstack: true
 
       - name: Build Matrix Result
         if: always()

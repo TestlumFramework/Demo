@@ -17,6 +17,16 @@ inputs:
     required: false
     default: random
 
+  browserstack_binary_arch:
+    description: BrowserStack binary architecture (`amd64` or `arm64`).
+    required: false
+    default: amd64
+
+  enable_browserstack:
+    description: Whether BrowserStackLocal should be started.
+    required: false
+    default: "true"
+
 runs:
   using: composite
   steps:
@@ -25,12 +35,29 @@ runs:
       run: docker network create e2e_network
 
     - name: Start BrowserStackLocal
-      uses: browserstack/github-actions/setup-local@master
-      with:
-        local-testing: start
-        local-identifier: ${{ inputs.browserstack_local_identifier }}
-      env:
-        BROWSERSTACK_ACCESS_KEY: ${{ inputs.browserstack_access_key }}
+      if: ${{ inputs.enable_browserstack == 'true' }}
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        if [ "${{ inputs.browserstack_binary_arch }}" = "arm64" ]; then
+          archive_url="https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-arm64.zip"
+        else
+          archive_url="https://www.browserstack.com/browserstack-local/BrowserStackLocal-linux-x64.zip"
+        fi
+
+        bs_dir="${{ github.workspace }}/.browserstack-local"
+        mkdir -p "${bs_dir}"
+        curl -fsSL "${archive_url}" -o "${bs_dir}/BrowserStackLocal.zip"
+        unzip -qo "${bs_dir}/BrowserStackLocal.zip" -d "${bs_dir}"
+        chmod +x "${bs_dir}/BrowserStackLocal"
+
+        "${bs_dir}/BrowserStackLocal" \
+          --key "${{ inputs.browserstack_access_key }}" \
+          --only-automate \
+          --ci-plugin GitHubAction \
+          --local-identifier "${{ inputs.browserstack_local_identifier }}" \
+          --daemon start
 
     - name: Run Integrations
       shell: bash
