@@ -17,6 +17,11 @@ inputs:
     required: false
     default: random
 
+  browserstack_local_tunnel_name:
+    description: BrowserStack local tunnel name for SDK/capability usage.
+    required: false
+    default: TestlumTunnel
+
   browserstack_binary_arch:
     description: BrowserStack binary architecture (`amd64` or `arm64`).
     required: false
@@ -52,12 +57,47 @@ runs:
         unzip -qo "${bs_dir}/BrowserStackLocal.zip" -d "${bs_dir}"
         chmod +x "${bs_dir}/BrowserStackLocal"
 
+        local_identifier="${{ inputs.browserstack_local_identifier }}"
+        if [ "${local_identifier}" = "random" ]; then
+          local_identifier="GitHubAction-$(date +%s)-$RANDOM"
+        fi
+
+        echo "BROWSERSTACK_LOCAL=true" >> "$GITHUB_ENV"
+        echo "BROWSERSTACK_LOCAL_IDENTIFIER=${local_identifier}" >> "$GITHUB_ENV"
+        echo "BROWSERSTACK_LOCAL_TUNNEL_NAME=${{ inputs.browserstack_local_tunnel_name }}" >> "$GITHUB_ENV"
+
+        start_log="${bs_dir}/browserstack-start.log"
+        status_log="${bs_dir}/browserstack-status.log"
+
         "${bs_dir}/BrowserStackLocal" \
           --key "${{ inputs.browserstack_access_key }}" \
           --only-automate \
           --ci-plugin GitHubAction \
-          --local-identifier "${{ inputs.browserstack_local_identifier }}" \
-          --daemon start
+          --local-identifier "${local_identifier}" \
+          --daemon start >"${start_log}" 2>&1
+
+        connected="false"
+        for _ in $(seq 1 30); do
+          if "${bs_dir}/BrowserStackLocal" \
+            --key "${{ inputs.browserstack_access_key }}" \
+            --local-identifier "${local_identifier}" \
+            --daemon status >"${status_log}" 2>&1; then
+            if grep -Eiq "connected|running|success|you can now access your local server" "${status_log}"; then
+              connected="true"
+              break
+            fi
+          fi
+          sleep 2
+        done
+
+        if [ "${connected}" != "true" ]; then
+          echo "BrowserStackLocal failed to become ready."
+          echo "--- BrowserStackLocal start output ---"
+          cat "${start_log}" || true
+          echo "--- BrowserStackLocal status output ---"
+          cat "${status_log}" || true
+          exit 1
+        fi
 
     - name: Run Integrations
       shell: bash
