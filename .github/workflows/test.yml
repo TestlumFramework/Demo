@@ -18,7 +18,7 @@ jobs:
       - name: Build matrix from config
         id: build
         run: |
-          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | ($entry + $arch) ]}' .github/regression-matrix.json)
+          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch) ]}' .github/regression-matrix.json)
           echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
 
   run-tests:
@@ -41,8 +41,9 @@ jobs:
           ssh-key: ${{ secrets.SSH_ACCESS }}
           path: testlum-tests
 
-      - name: Setup Test Environment
-        id: setup_env
+      - name: Setup Test Environment (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: setup_env_linux
         uses: ./.github/actions/setup-test-env
         with:
           working_directory: testlum-tests
@@ -51,35 +52,75 @@ jobs:
           browserstack_binary_arch: ${{ matrix.arch }}
           enable_browserstack: true
 
+      - name: Setup Test Environment (Windows)
+        if: ${{ matrix.os_family == 'windows' }}
+        id: setup_env_windows
+        uses: ./.github/actions/setup-test-env-windows
+        with:
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          enable_browserstack: true
+
       - name: Install xmlstarlet
+        if: ${{ matrix.os_family == 'linux' }}
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
-      - name: Pull Testlum Image
-        id: pull_image
+      - name: Pull Testlum Image (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: pull_image_linux
         working-directory: testlum-tests
         run: |
           docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
-      - name: Run Regression
-        id: run_regression
+      - name: Pull Testlum Image (Windows)
+        if: ${{ matrix.os_family == 'windows' }}
+        id: pull_image_windows
+        shell: pwsh
+        working-directory: testlum-tests
+        run: |
+          docker pull ghcr.io/testlumframework/testlum:${{ matrix.image }}
+          docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
+
+      - name: Run Regression (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: run_regression_linux
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.config_file }}
           resources_path: testlum-tests/REGRESSION
 
-      - name: Run Regression (Mobile and Native)
-        id: run_regression_mobile
-        if: ${{ matrix.run_mobile_tests }}
+      - name: Run Regression (Windows)
+        if: ${{ matrix.os_family == 'windows' }}
+        id: run_regression_windows
+        uses: ./.github/actions/run-testlum-windows
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.config_file }}
+          resources_path: testlum-tests/REGRESSION
+
+      - name: Run Regression (Mobile and Native Linux)
+        id: run_regression_mobile_linux
+        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests }}
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.mobile_config_file }}
           resources_path: testlum-tests/REGRESSION
 
-      - name: Cleanup Test Environment
-        if: always()
+      - name: Run Regression (Mobile and Native Windows)
+        id: run_regression_mobile_windows
+        if: ${{ matrix.os_family == 'windows' && matrix.run_mobile_tests }}
+        uses: ./.github/actions/run-testlum-windows
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.mobile_config_file }}
+          resources_path: testlum-tests/REGRESSION
+
+      - name: Cleanup Test Environment (Linux)
+        if: ${{ always() && matrix.os_family == 'linux' }}
         uses: ./.github/actions/cleanup-test-env
         with:
           working_directory: testlum-tests
@@ -88,14 +129,23 @@ jobs:
           browserstack_binary_arch: ${{ matrix.arch }}
           enable_browserstack: true
 
-      - name: Build Matrix Result
-        if: always()
+      - name: Cleanup Test Environment (Windows)
+        if: ${{ always() && matrix.os_family == 'windows' }}
+        uses: ./.github/actions/cleanup-test-env-windows
+        with:
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          enable_browserstack: true
+
+      - name: Build Matrix Result (Linux)
+        if: ${{ always() && matrix.os_family == 'linux' }}
         run: |
           safe_tag=$(echo "${{ matrix.image }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
-          setup_outcome="${{ steps.setup_env.outcome }}"
-          pull_outcome="${{ steps.pull_image.outcome }}"
-          regression_outcome="${{ steps.run_regression.outcome }}"
-          mobile_outcome="${{ steps.run_regression_mobile.outcome }}"
+          setup_outcome="${{ steps.setup_env_linux.outcome }}"
+          pull_outcome="${{ steps.pull_image_linux.outcome }}"
+          regression_outcome="${{ steps.run_regression_linux.outcome }}"
+          mobile_outcome="${{ steps.run_regression_mobile_linux.outcome }}"
 
           status="passed"
           if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
@@ -110,15 +160,41 @@ jobs:
 
           run_date="$(date -u +%Y/%m/%d)"
           mkdir -p results
-          cat > "results/${safe_tag}-${{ matrix.arch }}.json" <<EOF
-          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}"}
+          cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}"}
           EOF
+
+      - name: Build Matrix Result (Windows)
+        if: ${{ always() && matrix.os_family == 'windows' }}
+        shell: pwsh
+        run: |
+          $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
+          $setupOutcome = "${{ steps.setup_env_windows.outcome }}"
+          $pullOutcome = "${{ steps.pull_image_windows.outcome }}"
+          $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
+          $mobileOutcome = "${{ steps.run_regression_mobile_windows.outcome }}"
+
+          $status = "passed"
+          if ($setupOutcome -eq "failure" -or $pullOutcome -eq "failure" -or $regressionOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ("${{ matrix.run_mobile_tests }}" -eq "true" -and $mobileOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ($setupOutcome -eq "cancelled" -or $pullOutcome -eq "cancelled" -or $regressionOutcome -eq "cancelled" -or $mobileOutcome -eq "cancelled") {
+            $status = "cancelled"
+          }
+
+          $runDate = (Get-Date).ToUniversalTime().ToString("yyyy/MM/dd")
+          New-Item -ItemType Directory -Force -Path results | Out-Null
+          $json = '{"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"' + $status + '","run_date":"' + $runDate + '"}'
+          Set-Content -Path "results/$safeTag-${{ matrix.os_family }}-${{ matrix.arch }}.json" -Value $json -NoNewline
 
       - name: Upload Matrix Result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: result-${{ matrix.image }}-${{ matrix.arch }}
+          name: result-${{ matrix.image }}-${{ matrix.os_family }}-${{ matrix.arch }}
           path: results/*.json
 
   update-readme:
@@ -181,15 +257,18 @@ jobs:
                 "image": data["image"],
                 "linux_amd64": "not run",
                 "linux_arm64": "not run",
+                "windows_amd64": "not run",
                 "tests_branch": data["tests_branch"],
                 "published_at": published_by_tag.get(data["image"], data["run_date"]),
               },
             )
 
-            if data["arch"] == "amd64":
+            if data["os_family"] == "linux" and data["arch"] == "amd64":
               item["linux_amd64"] = data["status"]
-            if data["arch"] == "arm64":
+            if data["os_family"] == "linux" and data["arch"] == "arm64":
               item["linux_arm64"] = data["status"]
+            if data["os_family"] == "windows" and data["arch"] == "amd64":
+              item["windows_amd64"] = data["status"]
             item["tests_branch"] = data["tests_branch"]
             item["published_at"] = published_by_tag.get(data["image"], data["run_date"])
 
@@ -199,12 +278,12 @@ jobs:
           )
 
           table_lines = [
-            "| image | Linux amd64 | Linux arm64 | branch | image publish/update date |",
-            "|---|---|---|---|---|",
+            "| image | Linux amd64 | Linux arm64 | Windows amd64 | branch | image publish/update date |",
+            "|---|---|---|---|---|---|",
           ]
           for row in ordered:
             table_lines.append(
-              f'| {row["image"]} | {row["linux_amd64"]} | {row["linux_arm64"]} | {row["tests_branch"]} | {row["published_at"]} |'
+              f'| {row["image"]} | {row["linux_amd64"]} | {row["linux_arm64"]} | {row["windows_amd64"]} | {row["tests_branch"]} | {row["published_at"]} |'
             )
 
           content = "\n".join(table_lines)

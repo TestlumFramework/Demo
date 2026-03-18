@@ -1,0 +1,57 @@
+name: Run Testlum Regression Windows
+description: Runs tests from DEMO repository using Testlum docker image on Windows runners.
+
+inputs:
+  image_tag:
+    description: Testlum image tag to execute.
+    required: true
+  config_file:
+    description: Config file passed to Testlum.
+    required: true
+  resources_path:
+    description: Path to the mounted regression resources directory.
+    required: false
+    default: testlum-tests/REGRESSION
+
+runs:
+  using: composite
+  steps:
+    - name: Launch Tests
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Continue"
+
+        $resourcesDir = "/REGRESSION/resources"
+        $mountDir = Join-Path "${{ github.workspace }}" "${{ inputs.resources_path }}"
+        $image = "ghcr.io/testlumframework/testlum:${{ inputs.image_tag }}"
+
+        Write-Host "Running Testlum image: $image"
+        Write-Host "Using config: ${{ inputs.config_file }}"
+        Write-Host "Using resources: $mountDir"
+
+        docker run -t --rm `
+          --network=e2e_network `
+          -v "${mountDir}:/REGRESSION" `
+          "$image" -c="${{ inputs.config_file }}" -p="$resourcesDir"
+        $exitCode = $LASTEXITCODE
+
+        Write-Host "Regression finished with exit code $exitCode"
+
+        switch ($exitCode) {
+          0 {
+            Write-Host "BUILD STATUS [SUCCESS]"
+            exit 0
+          }
+          1 {
+            Write-Host "BUILD STATUS [FAILURE] - Tests failed"
+            exit 1
+          }
+          2 {
+            Write-Host "BUILD STATUS [FAILURE] - No tests found"
+            exit 1
+          }
+          default {
+            Write-Host "BUILD STATUS [FAILURE] - Invalid configuration or crash (Code: $exitCode)"
+            exit 1
+          }
+        }

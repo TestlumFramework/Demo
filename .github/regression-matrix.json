@@ -17,12 +17,22 @@
   ],
   "arches": [
     {
+      "os_family": "linux",
       "arch": "amd64",
-      "runs_on": "ubuntu-latest"
+      "runs_on": "ubuntu-latest",
+      "enabled": true
     },
     {
+      "os_family": "linux",
       "arch": "arm64",
-      "runs_on": "ubuntu-24.04-arm"
+      "runs_on": "ubuntu-24.04-arm",
+      "enabled": true
+    },
+    {
+      "os_family": "windows",
+      "arch": "amd64",
+      "runs_on": "windows-2025",
+      "enabled": true
     }
   ]
 }
