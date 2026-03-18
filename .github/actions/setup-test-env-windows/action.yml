@@ -24,7 +24,21 @@ runs:
     - name: Create Docker Network
       shell: pwsh
       run: |
-        docker network create e2e_network 2>$null
+        $ErrorActionPreference = "Stop"
+
+        try {
+          docker version | Out-Null
+        } catch {
+          Write-Error "Docker CLI is not available on this Windows runner."
+          throw
+        }
+
+        docker network inspect e2e_network *> $null
+        if ($LASTEXITCODE -ne 0) {
+          docker network create e2e_network | Out-Null
+        } else {
+          Write-Host "Docker network e2e_network already exists."
+        }
 
     - name: Start BrowserStackLocal
       if: ${{ inputs.enable_browserstack == 'true' }}
