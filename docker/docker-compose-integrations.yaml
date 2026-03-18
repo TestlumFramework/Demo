@@ -201,7 +201,7 @@ services:
     profiles: [ci, local]
 
   rabbitmq-e2e:
-    image: rabbitmq:3.6.6-management
+    image: rabbitmq:4.2.3-management
     container_name: rabbitmq-e2e
     hostname: rabbit
     environment:
