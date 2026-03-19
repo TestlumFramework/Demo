@@ -3,10 +3,10 @@
 ## Testlum Image Status
 
 <!-- RESULTS-TABLE:START -->
-| Image | Linux `amd64` | Linux `arm64` | Config (General) | Branch | Last Updated | Mobile Tests | Config (Mobile) |
-|---|---|---|---|---|---|---|---|
-| [`latest`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [✅ Passed](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [✅ Passed](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | `config-ci-regression.xml` | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ✅ Yes | `config-ci-regression-mobile.xml` |
-| [`1.0.2`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [✅ Passed](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [✅ Passed](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | `config-ci-regression.xml` | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ❌ No | `-` |
+| Image | Linux `amd64` | Linux `arm64` | Branch | Last Updated | Mobile Tests |
+|---|---|---|---|---|---|
+| [`latest`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ✅ |
+| [`1.0.2`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/23296581726) | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ➖ |
 <!-- RESULTS-TABLE:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
