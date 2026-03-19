@@ -31,7 +31,7 @@
     {
       "os_family": "windows",
       "arch": "amd64",
-      "runs_on": "windows-2025",
+      "runs_on": "windows-latest",
       "enabled": true
     }
   ]
