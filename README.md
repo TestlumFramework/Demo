@@ -3,10 +3,10 @@
 ## Testlum Image Status
 
 <!-- RESULTS-TABLE:START -->
-| image | Linux amd64 | Linux arm64 | branch | image publish/update date |
-|---|---|---|---|---|
-| latest | cancelled | cancelled | fullregression | 2026/03/17 |
-| 1.0.2 | cancelled | cancelled | fullregression | 2026/03/17 |
+| Image | Linux `amd64` | Linux `arm64` | Config (General) | Branch | Last Updated | Mobile Tests | Config (Mobile) |
+|---|---|---|---|---|---|---|---|
+| [`latest`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | ➖ Not run | ➖ Not run | `config-ci-regression.xml` | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ✅ Yes | `config-ci-regression-mobile.xml` |
+| [`1.0.2`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | ➖ Not run | ➖ Not run | `config-ci-regression.xml` | [`fullregression`](https://github.com/TestlumFramework/Demo/tree/fullregression) | 2026/03/17 | ❌ No | `-` |
 <!-- RESULTS-TABLE:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.

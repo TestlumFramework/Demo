@@ -113,9 +113,10 @@ jobs:
           fi
 
           run_date="$(date -u +%Y/%m/%d)"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           mkdir -p results
           cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
-          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}"}
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
           EOF
 
       - name: Upload Matrix Result
@@ -159,21 +160,23 @@ jobs:
           import json
           import re
           from glob import glob
-      
-          def get_badge(status):
-            status = status.lower()
-            colors = {
-              "success": "success-green",
-              "failed": "failed-red",
-              "cancelled": "cancelled-orange",
-              "not run": "not%20run-lightgrey"
+
+          def fmt_status(status, url):
+            normalized = (status or "not run").strip().lower()
+            labels = {
+              "passed": "✅ Passed",
+              "failed": "❌ Failed",
+              "cancelled": "⏹ Cancelled",
+              "not run": "➖ Not run",
             }
-            color = colors.get(status, "inactive-lightgrey")
-            return f"![{status}](https://img.shields.io/badge/{status}-{color}?style=flat-square)"
-      
+            text = labels.get(normalized, f"➖ {status}")
+            if url and normalized != "not run":
+              return f"[{text}]({url})"
+            return text
+
           with open("results/ghcr_versions.json", "r", encoding="utf-8") as f:
             versions = json.load(f)
-      
+
           published_by_tag = {}
           for version in versions:
             published = (version.get("created_at") or "")[:10].replace("-", "/")
@@ -181,54 +184,72 @@ jobs:
             for tag in tags:
               if tag not in published_by_tag:
                 published_by_tag[tag] = published
-      
+
           rows = {}
           for path in sorted(glob("results/*.json")):
-            if "ghcr_versions.json" in path: continue
+            if "ghcr_versions.json" in path:
+              continue
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
-      
+
+            if data.get("os_family") != "linux":
+              continue
+
             key = data["image"]
-            item = rows.setdefault(key, {
-              "image": f"**`{key}`**",
-              "linux_amd64": "not run",
-              "linux_arm64": "not run",
-              "windows_amd64": "not run",
-              "tests_branch": f"`{data['tests_branch']}`",
-              "published_at": published_by_tag.get(key, data.get("run_date", "N/A")),
-            })
-      
-            col_map = {
-              ("linux", "amd64"): "linux_amd64",
-              ("linux", "arm64"): "linux_arm64",
-              ("windows", "amd64"): "windows_amd64"
-            }
-            
-            arch_key = (data["os_family"], data["arch"])
-            if arch_key in col_map:
-              item[col_map[arch_key]] = data["status"]
-      
-          ordered = sorted(rows.values(), key=lambda x: (x["image"] != "**`latest`**", x["image"]))
-      
-          table_lines = [
-            "| Image Tag | Linux `amd64` | Linux `arm64` | Branch | Last Updated |",
-            "| :--- | :---: | :---: | :--- | :--- |",
-          ]
-          
-          for row in ordered:
-            table_lines.append(
-              f'| {row["image"]} | {get_badge(row["linux_amd64"])} | {get_badge(row["linux_arm64"])} | {get_badge(row["windows_amd64"])} | {row["tests_branch"]} | {row["published_at"]} |'
+            item = rows.setdefault(
+              key,
+              {
+                "image": key,
+                "linux_amd64_status": "not run",
+                "linux_amd64_url": "",
+                "linux_arm64_status": "not run",
+                "linux_arm64_url": "",
+                "tests_branch": data["tests_branch"],
+                "config_file": data["config_file"],
+                "run_mobile_tests": data.get("run_mobile_tests", "false"),
+                "mobile_config_file": data.get("mobile_config_file", ""),
+                "last_updated": published_by_tag.get(key, data.get("run_date", "N/A")),
+              },
             )
-      
+
+            if data["arch"] == "amd64":
+              item["linux_amd64_status"] = data["status"]
+              item["linux_amd64_url"] = data.get("run_url", "")
+            if data["arch"] == "arm64":
+              item["linux_arm64_status"] = data["status"]
+              item["linux_arm64_url"] = data.get("run_url", "")
+
+            item["tests_branch"] = data["tests_branch"]
+            item["config_file"] = data["config_file"]
+            item["run_mobile_tests"] = data.get("run_mobile_tests", "false")
+            item["mobile_config_file"] = data.get("mobile_config_file", "")
+            item["last_updated"] = published_by_tag.get(key, data.get("run_date", "N/A"))
+
+          ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
+
+          table_lines = [
+            "| Image | Linux `amd64` | Linux `arm64` | Config (General) | Branch | Last Updated | Mobile Tests | Config (Mobile) |",
+            "|---|---|---|---|---|---|---|---|",
+          ]
+
+          for row in ordered:
+            image_link = f"[`{row['image']}`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum)"
+            branch_link = f"[`{row['tests_branch']}`](https://github.com/TestlumFramework/Demo/tree/{row['tests_branch']})"
+            mobile_text = "✅ Yes" if str(row["run_mobile_tests"]).lower() == "true" else "❌ No"
+            mobile_cfg = f"`{row['mobile_config_file']}`" if str(row["run_mobile_tests"]).lower() == "true" and row["mobile_config_file"] else "`-`"
+            table_lines.append(
+              f'| {image_link} | {fmt_status(row["linux_amd64_status"], row["linux_amd64_url"])} | {fmt_status(row["linux_arm64_status"], row["linux_arm64_url"])} | `{row["config_file"]}` | {branch_link} | {row["last_updated"]} | {mobile_text} | {mobile_cfg} |'
+            )
+
           content = "\n".join(table_lines)
-      
+
           with open("README.md", "r", encoding="utf-8") as f:
             readme = f.read()
-      
-          pattern = r"(.*?)"
-          replacement = f"\n\n{content}\n\n"
+
+          pattern = r"<!-- RESULTS-TABLE:START -->(.*?)<!-- RESULTS-TABLE:END -->"
+          replacement = f"<!-- RESULTS-TABLE:START -->\n{content}\n<!-- RESULTS-TABLE:END -->"
           updated = re.sub(pattern, replacement, readme, flags=re.S)
-      
+
           with open("README.md", "w", encoding="utf-8") as f:
             f.write(updated)
           PY
