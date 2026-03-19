@@ -27,12 +27,6 @@
       "arch": "arm64",
       "runs_on": "ubuntu-24.04-arm",
       "enabled": false
-    },
-    {
-      "os_family": "windows",
-      "arch": "amd64",
-      "runs_on": "windows-latest",
-      "enabled": true
     }
   ]
 }

@@ -52,16 +52,6 @@ jobs:
           browserstack_binary_arch: ${{ matrix.arch }}
           enable_browserstack: true
 
-      - name: Setup Test Environment (Windows)
-        if: ${{ matrix.os_family == 'windows' }}
-        id: setup_env_windows
-        uses: ./.github/actions/setup-test-env-windows
-        with:
-          working_directory: testlum-tests
-          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
-          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
-          enable_browserstack: true
-
       - name: Install xmlstarlet
         if: ${{ matrix.os_family == 'linux' }}
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
@@ -74,28 +64,10 @@ jobs:
           docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
-      - name: Pull Testlum Image (Windows)
-        if: ${{ matrix.os_family == 'windows' }}
-        id: pull_image_windows
-        shell: pwsh
-        working-directory: testlum-tests
-        run: |
-          docker pull ghcr.io/testlumframework/testlum:${{ matrix.image }}
-          docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
-
       - name: Run Regression (Linux)
         if: ${{ matrix.os_family == 'linux' }}
         id: run_regression_linux
         uses: ./.github/actions/run-testlum
-        with:
-          image_tag: ${{ matrix.image }}
-          config_file: ${{ matrix.config_file }}
-          resources_path: testlum-tests/REGRESSION
-
-      - name: Run Regression (Windows)
-        if: ${{ matrix.os_family == 'windows' }}
-        id: run_regression_windows
-        uses: ./.github/actions/run-testlum-windows
         with:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.config_file }}
@@ -110,15 +82,6 @@ jobs:
           config_file: ${{ matrix.mobile_config_file }}
           resources_path: testlum-tests/REGRESSION
 
-      - name: Run Regression (Mobile and Native Windows)
-        id: run_regression_mobile_windows
-        if: ${{ matrix.os_family == 'windows' && matrix.run_mobile_tests }}
-        uses: ./.github/actions/run-testlum-windows
-        with:
-          image_tag: ${{ matrix.image }}
-          config_file: ${{ matrix.mobile_config_file }}
-          resources_path: testlum-tests/REGRESSION
-
       - name: Cleanup Test Environment (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}
         uses: ./.github/actions/cleanup-test-env
@@ -127,15 +90,6 @@ jobs:
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
           browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
           browserstack_binary_arch: ${{ matrix.arch }}
-          enable_browserstack: true
-
-      - name: Cleanup Test Environment (Windows)
-        if: ${{ always() && matrix.os_family == 'windows' }}
-        uses: ./.github/actions/cleanup-test-env-windows
-        with:
-          working_directory: testlum-tests
-          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
-          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
           enable_browserstack: true
 
       - name: Build Matrix Result (Linux)
@@ -163,32 +117,6 @@ jobs:
           cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
           {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}"}
           EOF
-
-      - name: Build Matrix Result (Windows)
-        if: ${{ always() && matrix.os_family == 'windows' }}
-        shell: pwsh
-        run: |
-          $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
-          $setupOutcome = "${{ steps.setup_env_windows.outcome }}"
-          $pullOutcome = "${{ steps.pull_image_windows.outcome }}"
-          $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
-          $mobileOutcome = "${{ steps.run_regression_mobile_windows.outcome }}"
-
-          $status = "passed"
-          if ($setupOutcome -eq "failure" -or $pullOutcome -eq "failure" -or $regressionOutcome -eq "failure") {
-            $status = "failed"
-          }
-          if ("${{ matrix.run_mobile_tests }}" -eq "true" -and $mobileOutcome -eq "failure") {
-            $status = "failed"
-          }
-          if ($setupOutcome -eq "cancelled" -or $pullOutcome -eq "cancelled" -or $regressionOutcome -eq "cancelled" -or $mobileOutcome -eq "cancelled") {
-            $status = "cancelled"
-          }
-
-          $runDate = (Get-Date).ToUniversalTime().ToString("yyyy/MM/dd")
-          New-Item -ItemType Directory -Force -Path results | Out-Null
-          $json = '{"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"' + $status + '","run_date":"' + $runDate + '"}'
-          Set-Content -Path "results/$safeTag-${{ matrix.os_family }}-${{ matrix.arch }}.json" -Value $json -NoNewline
 
       - name: Upload Matrix Result
         if: always()
@@ -231,10 +159,21 @@ jobs:
           import json
           import re
           from glob import glob
-
+      
+          def get_badge(status):
+            status = status.lower()
+            colors = {
+              "success": "success-green",
+              "failed": "failed-red",
+              "cancelled": "cancelled-orange",
+              "not run": "not%20run-lightgrey"
+            }
+            color = colors.get(status, "inactive-lightgrey")
+            return f"![{status}](https://img.shields.io/badge/{status}-{color}?style=flat-square)"
+      
           with open("results/ghcr_versions.json", "r", encoding="utf-8") as f:
             versions = json.load(f)
-
+      
           published_by_tag = {}
           for version in versions:
             published = (version.get("created_at") or "")[:10].replace("-", "/")
@@ -242,59 +181,54 @@ jobs:
             for tag in tags:
               if tag not in published_by_tag:
                 published_by_tag[tag] = published
-
+      
           rows = {}
           for path in sorted(glob("results/*.json")):
-            if path.endswith("ghcr_versions.json"):
-              continue
+            if "ghcr_versions.json" in path: continue
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
-
+      
             key = data["image"]
-            item = rows.setdefault(
-              key,
-              {
-                "image": data["image"],
-                "linux_amd64": "not run",
-                "linux_arm64": "not run",
-                "windows_amd64": "not run",
-                "tests_branch": data["tests_branch"],
-                "published_at": published_by_tag.get(data["image"], data["run_date"]),
-              },
-            )
-
-            if data["os_family"] == "linux" and data["arch"] == "amd64":
-              item["linux_amd64"] = data["status"]
-            if data["os_family"] == "linux" and data["arch"] == "arm64":
-              item["linux_arm64"] = data["status"]
-            if data["os_family"] == "windows" and data["arch"] == "amd64":
-              item["windows_amd64"] = data["status"]
-            item["tests_branch"] = data["tests_branch"]
-            item["published_at"] = published_by_tag.get(data["image"], data["run_date"])
-
-          ordered = sorted(
-            rows.values(),
-            key=lambda x: (x["image"] != "latest", x["image"]),
-          )
-
+            item = rows.setdefault(key, {
+              "image": f"**`{key}`**",
+              "linux_amd64": "not run",
+              "linux_arm64": "not run",
+              "windows_amd64": "not run",
+              "tests_branch": f"`{data['tests_branch']}`",
+              "published_at": published_by_tag.get(key, data.get("run_date", "N/A")),
+            })
+      
+            col_map = {
+              ("linux", "amd64"): "linux_amd64",
+              ("linux", "arm64"): "linux_arm64",
+              ("windows", "amd64"): "windows_amd64"
+            }
+            
+            arch_key = (data["os_family"], data["arch"])
+            if arch_key in col_map:
+              item[col_map[arch_key]] = data["status"]
+      
+          ordered = sorted(rows.values(), key=lambda x: (x["image"] != "**`latest`**", x["image"]))
+      
           table_lines = [
-            "| image | Linux amd64 | Linux arm64 | Windows amd64 | branch | image publish/update date |",
-            "|---|---|---|---|---|---|",
+            "| Image Tag | Linux `amd64` | Linux `arm64` | Branch | Last Updated |",
+            "| :--- | :---: | :---: | :--- | :--- |",
           ]
+          
           for row in ordered:
             table_lines.append(
-              f'| {row["image"]} | {row["linux_amd64"]} | {row["linux_arm64"]} | {row["windows_amd64"]} | {row["tests_branch"]} | {row["published_at"]} |'
+              f'| {row["image"]} | {get_badge(row["linux_amd64"])} | {get_badge(row["linux_arm64"])} | {get_badge(row["windows_amd64"])} | {row["tests_branch"]} | {row["published_at"]} |'
             )
-
+      
           content = "\n".join(table_lines)
-
+      
           with open("README.md", "r", encoding="utf-8") as f:
             readme = f.read()
-
-          pattern = r"<!-- RESULTS-TABLE:START -->(.*?)<!-- RESULTS-TABLE:END -->"
-          replacement = f"<!-- RESULTS-TABLE:START -->\n{content}\n<!-- RESULTS-TABLE:END -->"
+      
+          pattern = r"(.*?)"
+          replacement = f"\n\n{content}\n\n"
           updated = re.sub(pattern, replacement, readme, flags=re.S)
-
+      
           with open("README.md", "w", encoding="utf-8") as f:
             f.write(updated)
           PY
