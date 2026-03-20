@@ -215,25 +215,25 @@
     </s3Integration>
 
     <sendgridIntegration>
-        <sendgrid alias="SG_0" enabled="false">
-            <apiKey>*****************************</apiKey>
+        <sendgrid alias="SG_0" enabled="true">
+            <apiKey>${SENDGRID_API_KEY}</apiKey>
         </sendgrid>
     </sendgridIntegration>
 
     <twilioIntegration>
-        <twilio alias="TWILIO_0" enabled="false">
-            <accountSid>*****************************</accountSid>
-            <authToken>*****************************</authToken>
+        <twilio alias="TWILIO_0" enabled="true">
+            <accountSid>${TWILIO_ACCOUNT_SID}</accountSid>
+            <authToken>${TWILIO_AUTH_TOKEN}</authToken>
             <twilioNumber>+10000000000</twilioNumber>
         </twilio>
     </twilioIntegration>
 
     <smtpIntegration>
-        <smtp alias="SMTP_0" enabled="false">
+        <smtp alias="SMTP_0" enabled="true">
             <host>smtp.gmail.com</host>
             <port>587</port>
-            <username>*****************************</username>
-            <password>*****************************</password>
+            <username>${SMTP_USERNAME}</username>
+            <password>${SMTP_PASSWORD}</password>
             <smtpAuth>true</smtpAuth>
             <smtpStarttlsEnable>true</smtpStarttlsEnable>
         </smtp>

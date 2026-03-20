@@ -33,6 +33,11 @@ runs:
         set +e
         docker run -t -u "$(id -u):$(id -g)" --rm \
           --network=e2e_network \
+          -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
+          -e SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} \
+          -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
+          -e TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }} \
+          -e TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }} \
           -v "${MOUNT_DIR}:/REGRESSION" \
           "${IMAGE}" -c="${{ inputs.config_file }}" -p="${RESOURCES_DIR}"
         EXIT_CODE=$?

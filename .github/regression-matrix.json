@@ -20,13 +20,13 @@
       "os_family": "linux",
       "arch": "amd64",
       "runs_on": "ubuntu-latest",
-      "enabled": false
+      "enabled": true
     },
     {
       "os_family": "linux",
       "arch": "arm64",
       "runs_on": "ubuntu-24.04-arm",
-      "enabled": false
+      "enabled": true
     }
   ]
 }
