@@ -216,9 +216,6 @@ jobs:
             with open(path, "r", encoding="utf-8") as f:
               data = json.load(f)
 
-            if data.get("os_family") != "linux":
-              continue
-
             key = data["image"]
             item = rows.setdefault(
               key,
@@ -228,6 +225,8 @@ jobs:
                 "linux_amd64_url": "",
                 "linux_arm64_status": "not run",
                 "linux_arm64_url": "",
+                "windows_amd64_status": "not run",
+                "windows_amd64_url": "",
                 "tests_branch": data["tests_branch"],
                 "run_mobile_tests": data.get("run_mobile_tests", "false"),
                 "last_updated": published_by_tag.get(key, data.get("run_date", "N/A")),
@@ -235,8 +234,12 @@ jobs:
             )
 
             if data["arch"] == "amd64":
-              item["linux_amd64_status"] = data["status"]
-              item["linux_amd64_url"] = data.get("run_url", "")
+              if data.get("os_family") == "linux":
+                item["linux_amd64_status"] = data["status"]
+                item["linux_amd64_url"] = data.get("run_url", "")
+              if data.get("os_family") == "windows":
+                item["windows_amd64_status"] = data["status"]
+                item["windows_amd64_url"] = data.get("run_url", "")
             if data["arch"] == "arm64":
               item["linux_arm64_status"] = data["status"]
               item["linux_arm64_url"] = data.get("run_url", "")
@@ -248,8 +251,8 @@ jobs:
           ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
 
           table_lines = [
-            "| Image | Linux `amd64` | Linux `arm64` | Branch | Last Updated | Mobile Tests |",
-            "|---|---|---|---|---|---|",
+            "| Image | Linux `amd64` | Linux `arm64` | Windows `amd64` | Branch | Last Updated | Mobile Tests |",
+            "|---|---|---|---|---|---|---|",
           ]
 
           for row in ordered:
@@ -257,7 +260,7 @@ jobs:
             branch_link = f"[`{row['tests_branch']}`](https://github.com/TestlumFramework/Demo/tree/{row['tests_branch']})"
             mobile_text = "✅" if str(row["run_mobile_tests"]).lower() == "true" else "➖"
             table_lines.append(
-              f'| {image_link} | {fmt_status(row["linux_amd64_status"], row["linux_amd64_url"])} | {fmt_status(row["linux_arm64_status"], row["linux_arm64_url"])} | {branch_link} | {row["last_updated"]} | {mobile_text} |'
+              f'| {image_link} | {fmt_status(row["linux_amd64_status"], row["linux_amd64_url"])} | {fmt_status(row["linux_arm64_status"], row["linux_arm64_url"])} | {fmt_status(row["windows_amd64_status"], row["windows_amd64_url"])} | {branch_link} | {row["last_updated"]} | {mobile_text} |'
             )
 
           content = "\n".join(table_lines)

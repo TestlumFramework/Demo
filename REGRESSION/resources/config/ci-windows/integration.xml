@@ -224,7 +224,7 @@
         <twilio alias="TWILIO_0" enabled="true">
             <accountSid>${TWILIO_ACCOUNT_SID}</accountSid>
             <authToken>${TWILIO_AUTH_TOKEN}</authToken>
-            <twilioNumber>+10000000000</twilioNumber>
+            <twilioNumber>+12763267909</twilioNumber>
         </twilio>
     </twilioIntegration>
 

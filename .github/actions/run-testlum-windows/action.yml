@@ -41,6 +41,10 @@ inputs:
 runs:
   using: composite
   steps:
+
+    - name: Set up Docker Engine
+      uses: docker/setup-docker-action@v4
+
     - name: Launch Tests
       shell: pwsh
       run: |
