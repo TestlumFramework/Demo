@@ -72,6 +72,11 @@ jobs:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.config_file }}
           resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
@@ -81,6 +86,11 @@ jobs:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.windows_config_file }}
           resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
@@ -90,6 +100,11 @@ jobs:
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.mobile_config_file }}
           resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
 
       - name: Cleanup Test Environment (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}

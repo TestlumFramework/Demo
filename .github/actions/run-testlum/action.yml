@@ -16,6 +16,31 @@ inputs:
     required: false
     default: testlum-tests/REGRESSION
 
+  sendgrid_api_key:
+    description: SendGrid API key.
+    required: false
+    default: ""
+
+  smtp_username:
+    description: SMTP username.
+    required: false
+    default: ""
+
+  smtp_password:
+    description: SMTP password.
+    required: false
+    default: ""
+
+  twilio_account_sid:
+    description: Twilio account SID.
+    required: false
+    default: ""
+
+  twilio_auth_token:
+    description: Twilio auth token.
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -33,11 +58,11 @@ runs:
         set +e
         docker run -t -u "$(id -u):$(id -g)" --rm \
           --network=e2e_network \
-          -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
-          -e SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} \
-          -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} \
-          -e TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }} \
-          -e TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }} \
+          -e SENDGRID_API_KEY="${{ inputs.sendgrid_api_key }}" \
+          -e SMTP_USERNAME="${{ inputs.smtp_username }}" \
+          -e SMTP_PASSWORD="${{ inputs.smtp_password }}" \
+          -e TWILIO_ACCOUNT_SID="${{ inputs.twilio_account_sid }}" \
+          -e TWILIO_AUTH_TOKEN="${{ inputs.twilio_auth_token }}" \
           -v "${MOUNT_DIR}:/REGRESSION" \
           "${IMAGE}" -c="${{ inputs.config_file }}" -p="${RESOURCES_DIR}"
         EXIT_CODE=$?

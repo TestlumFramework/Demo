@@ -13,6 +13,31 @@ inputs:
     required: false
     default: testlum-tests/REGRESSION
 
+  sendgrid_api_key:
+    description: SendGrid API key.
+    required: false
+    default: ""
+
+  smtp_username:
+    description: SMTP username.
+    required: false
+    default: ""
+
+  smtp_password:
+    description: SMTP password.
+    required: false
+    default: ""
+
+  twilio_account_sid:
+    description: Twilio account SID.
+    required: false
+    default: ""
+
+  twilio_auth_token:
+    description: Twilio auth token.
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -21,8 +46,9 @@ runs:
       run: |
         $ErrorActionPreference = "Continue"
 
-        $resourcesDir = "/REGRESSION/resources"
-        $mountDir = Join-Path "${{ github.workspace }}" "${{ inputs.resources_path }}"
+        $containerRoot = "C:\REGRESSION"
+        $resourcesDir = "C:\REGRESSION\resources"
+        $mountDir = (Resolve-Path (Join-Path "${{ github.workspace }}" "${{ inputs.resources_path }}")).Path
         $image = "ghcr.io/testlumframework/testlum:${{ inputs.image_tag }}"
 
         Write-Host "Running Testlum image: $image"
@@ -31,12 +57,12 @@ runs:
 
         docker run -t --rm `
           --network=e2e_network `
-          -v "${mountDir}:/REGRESSION" `
-          -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} `
-          -e SMTP_USERNAME=${{ secrets.SMTP_USERNAME }} `
-          -e SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }} `
-          -e TWILIO_ACCOUNT_SID=${{ secrets.TWILIO_ACCOUNT_SID }} `
-          -e TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }} `
+          --mount "type=bind,source=$mountDir,target=$containerRoot" `
+          -e SENDGRID_API_KEY="${{ inputs.sendgrid_api_key }}" `
+          -e SMTP_USERNAME="${{ inputs.smtp_username }}" `
+          -e SMTP_PASSWORD="${{ inputs.smtp_password }}" `
+          -e TWILIO_ACCOUNT_SID="${{ inputs.twilio_account_sid }}" `
+          -e TWILIO_AUTH_TOKEN="${{ inputs.twilio_auth_token }}" `
           "$image" -c="${{ inputs.config_file }}" -p="$resourcesDir"
         $exitCode = $LASTEXITCODE
 
