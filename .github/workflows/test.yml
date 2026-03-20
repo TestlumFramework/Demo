@@ -143,6 +143,28 @@ jobs:
           {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
           EOF
 
+      - name: Build Matrix Result (Windows)
+        if: ${{ always() && matrix.os_family == 'windows' }}
+        shell: pwsh
+        run: |
+          $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
+          $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
+
+          $status = "passed"
+          if ($regressionOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ($regressionOutcome -eq "cancelled") {
+            $status = "cancelled"
+          }
+
+          $runDate = (Get-Date).ToUniversalTime().ToString("yyyy/MM/dd")
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          New-Item -ItemType Directory -Force -Path results | Out-Null
+
+          $json = '{"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.windows_config_file }}","mobile_config_file":"","run_mobile_tests":"false","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"' + $status + '","run_date":"' + $runDate + '","run_url":"' + $runUrl + '"}'
+          Set-Content -Path "results/$safeTag-${{ matrix.os_family }}-${{ matrix.arch }}.json" -Value $json -NoNewline
+
       - name: Upload Matrix Result
         if: always()
         uses: actions/upload-artifact@v4

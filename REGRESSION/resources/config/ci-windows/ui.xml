@@ -2,4 +2,54 @@
           xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
 
+    <web enabled="false">
+        <baseUrl>http://mega-test-site:80</baseUrl>
+        <browserSettings>
+            <takeScreenshots enabled="false"/>
+            <elementAutowait seconds="5"/>
+            <browsers>
+                <chrome alias="chrome_0" enabled="false" maximizedBrowserWindow="false" headlessMode="true"
+                        browserWindowSize="1536x864">
+                    <browserType>
+                        <remoteBrowser browserVersion="144.0" remoteBrowserURL="http://selenium-hub:4444/"/>
+                    </browserType>
+                </chrome>
+            </browsers>
+        </browserSettings>
+    </web>
+
+    <mobilebrowser enabled="false">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <baseUrl>http://localhost:3000</baseUrl>
+        <connection>
+            <browserStack/>
+        </connection>
+        <devices>
+            <device platformName="android" enabled="false" alias="ANDROID_0">
+                <browserStackCapabilities>
+                    <deviceName>Google Pixel 9</deviceName>
+                    <platformVersion>16.0</platformVersion>
+                </browserStackCapabilities>
+            </device>
+        </devices>
+    </mobilebrowser>
+
+    <native enabled="false">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <connection>
+            <browserStack/>
+        </connection>
+        <devices>
+            <device alias="NATIVE_0" platformName="android" enabled="false">
+                <browserStackCapabilities>
+                    <deviceName>Google Pixel 9</deviceName>
+                    <platformVersion>16.0</platformVersion>
+                    <app>bs://e4f05b18dd2053653057b02c58a70bf3dbc99582</app>
+                </browserStackCapabilities>
+            </device>
+        </devices>
+    </native>
+
 </uiConfig>

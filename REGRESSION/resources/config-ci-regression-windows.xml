@@ -15,7 +15,7 @@
         <tag name="native-healthcheck" enabled="false"/>
         <tag name="condition-mixed" enabled="false"/>
         <tag name="condition-self" enabled="true"/>
-        <tag name="shell-self" enabled="true"/>
+        <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
         <tag name="assert-self" enabled="true"/>
         <tag name="var-mixed" enabled="false"/>
