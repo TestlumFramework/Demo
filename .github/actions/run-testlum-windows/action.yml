@@ -56,7 +56,6 @@ runs:
         Write-Host "Using resources: $mountDir"
 
         docker run -t --rm `
-          --network=e2e_network `
           --mount "type=bind,source=$mountDir,target=$containerRoot" `
           -e SENDGRID_API_KEY="${{ inputs.sendgrid_api_key }}" `
           -e SMTP_USERNAME="${{ inputs.smtp_username }}" `
