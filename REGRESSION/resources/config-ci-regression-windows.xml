@@ -1,0 +1,71 @@
+<globalTestConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
+                         xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
+
+    <parallelExecution>false</parallelExecution>
+    <stopScenarioOnFailure>false</stopScenarioOnFailure>
+    <stopIfInvalidScenario>false</stopIfInvalidScenario>
+    <delayBetweenScenarioRuns seconds="1" enabled="true"/>
+
+    <runScenariosByTag enabled="true">
+        <tag name="web" enabled="false"/>
+        <tag name="mobilebrowser" enabled="false"/>
+        <tag name="mobilebrowser-healthcheck" enabled="false"/>
+        <tag name="native" enabled="false"/>
+        <tag name="native-healthcheck" enabled="false"/>
+        <tag name="condition-mixed" enabled="false"/>
+        <tag name="condition-self" enabled="true"/>
+        <tag name="shell-self" enabled="true"/>
+        <tag name="shell-mixed" enabled="false"/>
+        <tag name="assert-self" enabled="true"/>
+        <tag name="var-mixed" enabled="false"/>
+        <tag name="var-self" enabled="true"/>
+        <tag name="variations-mixed" enabled="false"/>
+        <tag name="variations-self" enabled="true"/>
+        <tag name="auth-basic-mixed" enabled="false"/>
+        <tag name="auth-jwt-mixed" enabled="false"/>
+        <tag name="elasticsearch-mixed" enabled="false"/>
+        <tag name="elasticsearch-self" enabled="false"/>
+        <tag name="api" enabled="false"/>
+        <tag name="websocket" enabled="false"/>
+        <tag name="graphql" enabled="false"/>
+        <tag name="lambda" enabled="false"/>
+        <tag name="mysql" enabled="false"/>
+        <tag name="postgresql" enabled="false"/>
+        <tag name="clickhouse" enabled="false"/>
+        <tag name="oracle" enabled="false"/>
+        <tag name="mongodb" enabled="false"/>
+        <tag name="dynamodb" enabled="false"/>
+        <tag name="kafka" enabled="false"/>
+        <tag name="rabbit" enabled="false"/>
+        <tag name="sqs" enabled="false"/>
+        <tag name="redis" enabled="false"/>
+        <tag name="s3" enabled="false"/>
+        <tag name="sendgrid" enabled="true"/>
+        <tag name="twilio" enabled="true"/>
+        <tag name="smtp" enabled="true"/>
+        <tag name="ses" enabled="false"/>
+    </runScenariosByTag>
+
+    <report>
+        <extentReports projectName="testlum-professional-subscription">
+            <htmlReportGenerator enabled="true"/>
+            <klovServerReportGenerator enabled="false">
+                <mongoDB host="192.168.0.10" port="27017"/>
+                <klovServer url="https://reports.knubisoft.com"/>
+            </klovServerReportGenerator>
+        </extentReports>
+    </report>
+
+    <environments>
+        <env folder="ci-windows" enabled="true" threads="1"/>
+    </environments>
+
+    <vault>
+        <host>vault-e2e</host>
+        <port>8200</port>
+        <scheme>http</scheme>
+        <token>myroot</token>
+    </vault>
+
+</globalTestConfiguration>

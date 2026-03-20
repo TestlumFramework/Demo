@@ -73,6 +73,15 @@ jobs:
           config_file: ${{ matrix.config_file }}
           resources_path: testlum-tests/REGRESSION
 
+      - name: Run Regression (Windows)
+        if: ${{ matrix.os_family == 'windows' }}
+        id: run_regression_windows
+        uses: ./.github/actions/run-testlum-windows
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.windows_config_file }}
+          resources_path: testlum-tests/REGRESSION
+
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
         if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests }}
