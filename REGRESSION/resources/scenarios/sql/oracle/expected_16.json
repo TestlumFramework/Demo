@@ -1,6 +1,6 @@
 [
   {
-    "query": "DROP TABLE C##TESTLUM.CITIES",
+    "query": "DROP TABLE TESTLUM.CITIES",
     "content": "Query completed successfully"
   }
 ]

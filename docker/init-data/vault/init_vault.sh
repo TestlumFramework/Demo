@@ -24,7 +24,7 @@ if $(vault status | grep Initialized | awk '{print $2}'); then
     vault kv put secret/mysql/password password=playground
     vault kv put secret/clickhouse/username key=testlum
     vault kv put secret/clickhouse/password key=testlum-clickhouse
-    vault kv put secret/oracle/username key=c##testlum
+    vault kv put secret/oracle/username key=testlum
     vault kv put secret/oracle/password key=password
     vault kv put secret/rabbit/username key=guest
     vault kv put secret/rabbit/password key=guest

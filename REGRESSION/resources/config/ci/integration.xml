@@ -104,7 +104,7 @@
             <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
             <username>{{secret/data/mysql/user.username}}</username>
             <password>{{secret/data/mysql/password.password}}</password>
-            <connectionUrl>jdbc:mysql://mysql-e2e:3306/playground_db</connectionUrl>
+            <connectionUrl>jdbc:mysql://mysql-e2e:3306/playground_db?serverTimezone=Europe/Kyiv</connectionUrl>
             <schema>playground_db</schema>
             <hikari>
                 <connectionTimeout>45000</connectionTimeout>
@@ -134,8 +134,8 @@
             <jdbcDriver>oracle.jdbc.OracleDriver</jdbcDriver>
             <username>{{secret/data/oracle/username.key}}</username>
             <password>{{secret/data/oracle/password.key}}</password>
-            <connectionUrl>jdbc:oracle:thin:@oracle-e2e:1521/xe</connectionUrl>
-            <schema>C##TESTLUM</schema>
+            <connectionUrl>jdbc:oracle:thin:@oracle-e2e:1521/TESTLUM?oracle.jdbc.timezoneAsRegion=false</connectionUrl>
+            <schema>TESTLUM</schema>
             <hikari>
                 <connectionTimeout>45000</connectionTimeout>
                 <idleTimeout>60000</idleTimeout>
@@ -215,25 +215,25 @@
     </s3Integration>
 
     <sendgridIntegration>
-        <sendgrid alias="SG_0" enabled="false">
-            <apiKey>*****************************</apiKey>
+        <sendgrid alias="SG_0" enabled="true">
+            <apiKey>${SENDGRID_API_KEY}</apiKey>
         </sendgrid>
     </sendgridIntegration>
 
     <twilioIntegration>
-        <twilio alias="TWILIO_0" enabled="false">
-            <accountSid>*****************************</accountSid>
-            <authToken>*****************************</authToken>
-            <twilioNumber>+10000000000</twilioNumber>
+        <twilio alias="TWILIO_0" enabled="true">
+            <accountSid>${TWILIO_ACCOUNT_SID}</accountSid>
+            <authToken>${TWILIO_AUTH_TOKEN}</authToken>
+            <twilioNumber>+12763267909</twilioNumber>
         </twilio>
     </twilioIntegration>
 
     <smtpIntegration>
-        <smtp alias="SMTP_0" enabled="false">
+        <smtp alias="SMTP_0" enabled="true">
             <host>smtp.gmail.com</host>
             <port>587</port>
-            <username>*****************************</username>
-            <password>*****************************</password>
+            <username>${SMTP_USERNAME}</username>
+            <password>${SMTP_PASSWORD}</password>
             <smtpAuth>true</smtpAuth>
             <smtpStarttlsEnable>true</smtpStarttlsEnable>
         </smtp>

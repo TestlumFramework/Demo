@@ -129,7 +129,7 @@
 
     <oracle comment="Execute CREATE TABLE 'oracle' command" alias="ORACLE_0" file="expected_13.json">
         <query>
-            CREATE TABLE C##TESTLUM.CITIES (
+            CREATE TABLE TESTLUM.CITIES (
             ID NUMBER(10),
             NAME VARCHAR2(255) NOT NULL,
             COUNTRY_ID NUMBER(10),
@@ -173,7 +173,7 @@
 
     <oracle comment="Execute DROP TABLE 'oracle' command" alias="ORACLE_0" file="expected_16.json">
         <query>
-            DROP TABLE C##TESTLUM.CITIES
+            DROP TABLE TESTLUM.CITIES
         </query>
     </oracle>
 

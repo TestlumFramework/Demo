@@ -4,232 +4,309 @@ on:
   schedule:
     - cron: '0 4 * * *'
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Choose branch'
-        required: true
-        type: string
-        default: 'main'
-
-      branch_site:
-        description: 'Choose site branch'
-        required: true
-        type: string
-        default: 'main'
-
-      image:
-        description: 'Choose image version'
-        required: true
-        type: choice
-        options:
-          - latest
-          - 1.0.2
-        default: latest
-
-      mobile:
-        description: 'Do You want to run mobile browser and native tests?'
-        required: true
-        type: choice
-        options:
-          - Yes
-          - No
-        default: Yes
+    inputs: {}
 
 jobs:
-  run-tests:
+  prepare-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+
+      - name: Build matrix from config
+        id: build
+        run: |
+          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch) ]}' .github/regression-matrix.json)
+          echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
+
+  run-tests:
+    name: ${{ matrix.image }} on ${{ matrix.runs_on }} from ${{ matrix.tests_branch }} branch
+    needs: prepare-matrix
+    runs-on: ${{ matrix.runs_on }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare-matrix.outputs.matrix) }}
 
     steps:
-
-      - name: Checkout Testlum Tool
+      - name: Checkout Workflow Repository
         uses: actions/checkout@v4
-        with:
-          repository: TestlumFramework/Testlum
-          ref: ${{ inputs.branch }}
-          ssh-key: ${{ secrets.SSH_ACCESS }}
-          path: tool
 
-      - name: Checkout Testlum Site
+      - name: Checkout Testlum DEMO
         uses: actions/checkout@v4
         with:
           repository: TestlumFramework/Demo
-          ref: ${{ inputs.branch_site }}
+          ref: ${{ matrix.tests_branch }}
           ssh-key: ${{ secrets.SSH_ACCESS }}
-          path: site
+          path: testlum-tests
 
-      - name: File Structure
-        run: |
-          pwd
-          tree -L 4
-
-      - name: Start BrowserStackLocal
-        uses: browserstack/github-actions/setup-local@v1
+      - name: Setup Test Environment (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: setup_env_linux
+        uses: ./.github/actions/setup-test-env
         with:
-          local-testing: start
-          local-identifier: random
-          local-tunnel-name: 'TestlumTunnel'
-        env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
-
-      - name: Run Integrations
-        working-directory: site
-        run: |
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci up -d --force-recreate
-          docker exec -t vault-e2e sh /tmp/init_vault.sh
-
-      - name: Run Selenium Grid Browsers
-        working-directory: site
-        run: |
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci up -d --force-recreate
-          sleep 30
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t || true
-
-      - name: Run Mega Test App
-        working-directory: site
-        run: docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          browserstack_binary_arch: ${{ matrix.arch }}
+          enable_browserstack: true
 
       - name: Install xmlstarlet
+        if: ${{ matrix.os_family == 'linux' }}
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
-      - name: Image TESTLUM
-        working-directory: tool
+      - name: Pull Testlum Image (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: pull_image_linux
+        working-directory: testlum-tests
         run: |
-          docker rmi testlum:${{ inputs.image }} || true
-          docker pull ghcr.io/testlumframework/testlum:${{ inputs.image }}
-          docker tag ghcr.io/testlumframework/testlum:${{ inputs.image }} testlum:${{ inputs.image }}
+          docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
+          docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
-      - name: Run Regression (General)
-        working-directory: tool
-        run: |
-          CI_CONFIG="config-ci-regression.xml"
-          PATH_TO_RESOURCES="site/REGRESSION"
-          VERSION="${{ inputs.image }}"
-          MOUNT_DIR="${{ github.workspace }}/${PATH_TO_RESOURCES}"
-          RESOURCES_DIR_INSIDE_CONTAINER="/REGRESSION/resources"
-
-          echo "CI CONFIG: ${CI_CONFIG}"
-          echo "PATH TO RESOURCES: ${PATH_TO_RESOURCES}"
-          echo "Version: ${VERSION}"
-          echo "MOUNT DIR: ${MOUNT_DIR}"
-          echo "Testlum version: ${VERSION}"
-
-          COMMAND="testlum:${VERSION} -c=${CI_CONFIG} -p=${RESOURCES_DIR_INSIDE_CONTAINER}"
-          echo "Testlum command: ${COMMAND}"
-
-          docker run -t -u $(id -u):$(id -g) --rm \
-            --network=e2e_network \
-            -e TZ=Europe/Kiev \
-            -v ${MOUNT_DIR}:/REGRESSION \
-            ${COMMAND}
-
-          EXIT_CODE=$?
-          echo "Regression finished with exit code ${EXIT_CODE}"
-          sleep 5
-
-          if [ $EXIT_CODE -eq 0 ]; then
-            echo "BUILD STATUS [SUCCESS]"
-          elif [ $EXIT_CODE -eq 1 ]; then
-            echo "BUILD STATUS [FAILURE] - Tests failed"
-            exit 1
-          elif [ $EXIT_CODE -eq 2 ]; then
-            echo "BUILD STATUS [FAILURE] - No tests found"
-            exit 1
-          else
-            echo "BUILD STATUS [FAILURE] - Invalid configuration or crash (Code: ${EXIT_CODE})"
-            exit 1
-          fi
-
-      - name: Run Regression Mobile
-        if: ${{ inputs.mobile == 'Yes' }}
-        working-directory: tool
-        run: |
-          CI_CONFIG="config-ci-regression-mobile.xml"
-          PATH_TO_RESOURCES="site/REGRESSION"
-          VERSION="${{ inputs.image }}"
-          MOUNT_DIR="${{ github.workspace }}/${PATH_TO_RESOURCES}"
-          RESOURCES_DIR_INSIDE_CONTAINER="/REGRESSION/resources"
-
-          echo "CI CONFIG: ${CI_CONFIG}"
-          echo "PATH TO RESOURCES: ${PATH_TO_RESOURCES}"
-          echo "Version: ${VERSION}"
-          echo "MOUNT DIR: ${MOUNT_DIR}"
-          echo "Testlum version: ${VERSION}"
-
-          COMMAND="testlum:${VERSION} -c=${CI_CONFIG} -p=${RESOURCES_DIR_INSIDE_CONTAINER}"
-          echo "Testlum command: ${COMMAND}"
-
-          docker run -t -u $(id -u):$(id -g) --rm \
-            --network=e2e_network \
-            -e TZ=Europe/Kiev \
-            -v ${MOUNT_DIR}:/REGRESSION \
-            ${COMMAND}
-
-          EXIT_CODE=$?
-          echo "Regression finished with exit code ${EXIT_CODE}"
-          sleep 5
-
-          if [ $EXIT_CODE -eq 0 ]; then
-            echo "BUILD STATUS [SUCCESS]"
-          elif [ $EXIT_CODE -eq 1 ]; then
-            echo "BUILD STATUS [FAILURE] - Tests failed"
-            exit 1
-          elif [ $EXIT_CODE -eq 2 ]; then
-            echo "BUILD STATUS [FAILURE] - No tests found"
-            exit 1
-          else
-            echo "BUILD STATUS [FAILURE] - Invalid configuration or crash (Code: ${EXIT_CODE})"
-            exit 1
-          fi
-
-      - name: Post Actions
-        working-directory: site
-        if: always()
-        run: |
-          echo "Post actions"
-          docker ps
-
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci logs -t --tail=400 || true
-          docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci logs -t || true
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci logs -t --tail=400 || true
-
-          docker-compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
-          docker-compose -f docker/docker-compose-selenium-grid.yaml --profile ci down -v --timeout 10 || true
-          docker-compose -f docker/docker-compose-integrations.yaml --profile ci down -v --timeout 10 || true
-
-          docker rm -f -v $(docker ps -q) || true
-          docker rmi -f $(docker images -f "dangling=true" -q) || true
-          docker volume ls -qf "dangling=true" | xargs docker volume rm || true
-          docker network rm e2e_network || true
-
-          docker ps -a
-          docker ps
-          docker image ls
-          docker volume ls
-          docker network ls
-
-      - name: Stop BrowserStackLocal
-        if: always()
-        uses: browserstack/github-actions/setup-local@v1
+      - name: Run Regression (Linux)
+        if: ${{ matrix.os_family == 'linux' }}
+        id: run_regression_linux
+        uses: ./.github/actions/run-testlum
         with:
-          local-testing: stop
-          local-tunnel-name: 'TestlumTunnel'
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.config_file }}
+          resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+
+      - name: Run Regression (Windows)
+        if: ${{ matrix.os_family == 'windows' }}
+        id: run_regression_windows
+        uses: ./.github/actions/run-testlum-windows
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.windows_config_file }}
+          resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+
+      - name: Run Regression (Mobile and Native Linux)
+        id: run_regression_mobile_linux
+        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests }}
+        uses: ./.github/actions/run-testlum
+        with:
+          image_tag: ${{ matrix.image }}
+          config_file: ${{ matrix.mobile_config_file }}
+          resources_path: testlum-tests/REGRESSION
+          sendgrid_api_key: ${{ secrets.SENDGRID_API_KEY }}
+          smtp_username: ${{ secrets.SMTP_USERNAME }}
+          smtp_password: ${{ secrets.SMTP_PASSWORD }}
+          twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+
+      - name: Cleanup Test Environment (Linux)
+        if: ${{ always() && matrix.os_family == 'linux' }}
+        uses: ./.github/actions/cleanup-test-env
+        with:
+          working_directory: testlum-tests
+          browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
+          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
+          browserstack_binary_arch: ${{ matrix.arch }}
+          enable_browserstack: true
+
+      - name: Build Matrix Result (Linux)
+        if: ${{ always() && matrix.os_family == 'linux' }}
+        run: |
+          safe_tag=$(echo "${{ matrix.image }}" | sed 's/[^a-zA-Z0-9._-]/_/g')
+          setup_outcome="${{ steps.setup_env_linux.outcome }}"
+          pull_outcome="${{ steps.pull_image_linux.outcome }}"
+          regression_outcome="${{ steps.run_regression_linux.outcome }}"
+          mobile_outcome="${{ steps.run_regression_mobile_linux.outcome }}"
+
+          status="passed"
+          if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${{ matrix.run_mobile_tests }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then
+            status="cancelled"
+          fi
+
+          run_date="$(date -u +%Y/%m/%d)"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          mkdir -p results
+          cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
+          EOF
+
+      - name: Build Matrix Result (Windows)
+        if: ${{ always() && matrix.os_family == 'windows' }}
+        shell: pwsh
+        run: |
+          $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
+          $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
+
+          $status = "passed"
+          if ($regressionOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ($regressionOutcome -eq "cancelled") {
+            $status = "cancelled"
+          }
+
+          $runDate = (Get-Date).ToUniversalTime().ToString("yyyy/MM/dd")
+          $runUrl = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          New-Item -ItemType Directory -Force -Path results | Out-Null
+
+          $json = '{"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.windows_config_file }}","mobile_config_file":"","run_mobile_tests":"false","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"' + $status + '","run_date":"' + $runDate + '","run_url":"' + $runUrl + '"}'
+          Set-Content -Path "results/$safeTag-${{ matrix.os_family }}-${{ matrix.arch }}.json" -Value $json -NoNewline
+
+      - name: Upload Matrix Result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ matrix.image }}-${{ matrix.os_family }}-${{ matrix.arch }}
+          path: results/*.json
+
+  update-readme:
+    runs-on: ubuntu-latest
+    needs: run-tests
+    if: always()
+    permissions:
+      contents: write
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download result artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: result-*
+          path: result-artifacts
+          merge-multiple: true
+
+      - name: Download GHCR version metadata
         env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p results
+          gh api --paginate "/orgs/TestlumFramework/packages/container/testlum/versions?per_page=100" > results/ghcr_versions.json
 
-      # - name: Slack Notification Success
-      #   if: success()
-      #   uses: slackapi/slack-github-action@v1
-      #   with:
-      #     channel-id: '#jenkins-notification'
-      #     slack-message: "✔️ GITHUB | SUCCESS: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      - name: Update README matrix table
+        run: |
+          mkdir -p results
+          cp result-artifacts/*.json results/ 2>/dev/null || true
 
-      # - name: Slack Notification Failure
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v1
-      #   with:
-      #     channel-id: '#jenkins-notification'
-      #     slack-message: "✖️ GITHUB | FAILED: ${{ github.workflow }} #${{ github.run_number }} | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          python - <<'PY'
+          import json
+          import re
+          from glob import glob
+
+          def fmt_status(status, url):
+            normalized = (status or "not run").strip().lower()
+            labels = {
+              "passed": "✅",
+              "failed": "❌",
+              "cancelled": "⏹",
+              "not run": "➖",
+            }
+            text = labels.get(normalized, "➖")
+            if url and normalized != "not run":
+              return f"[{text}]({url})"
+            return text
+
+          with open("results/ghcr_versions.json", "r", encoding="utf-8") as f:
+            versions = json.load(f)
+
+          published_by_tag = {}
+          for version in versions:
+            published = (version.get("created_at") or "")[:10].replace("-", "/")
+            tags = version.get("metadata", {}).get("container", {}).get("tags", [])
+            for tag in tags:
+              if tag not in published_by_tag:
+                published_by_tag[tag] = published
+
+          rows = {}
+          for path in sorted(glob("results/*.json")):
+            if "ghcr_versions.json" in path:
+              continue
+            with open(path, "r", encoding="utf-8") as f:
+              data = json.load(f)
+
+            key = data["image"]
+            item = rows.setdefault(
+              key,
+              {
+                "image": key,
+                "linux_amd64_status": "not run",
+                "linux_amd64_url": "",
+                "linux_arm64_status": "not run",
+                "linux_arm64_url": "",
+                "windows_amd64_status": "not run",
+                "windows_amd64_url": "",
+                "tests_branch": data["tests_branch"],
+                "run_mobile_tests": data.get("run_mobile_tests", "false"),
+                "last_updated": published_by_tag.get(key, data.get("run_date", "N/A")),
+              },
+            )
+
+            if data["arch"] == "amd64":
+              if data.get("os_family") == "linux":
+                item["linux_amd64_status"] = data["status"]
+                item["linux_amd64_url"] = data.get("run_url", "")
+              if data.get("os_family") == "windows":
+                item["windows_amd64_status"] = data["status"]
+                item["windows_amd64_url"] = data.get("run_url", "")
+            if data["arch"] == "arm64":
+              item["linux_arm64_status"] = data["status"]
+              item["linux_arm64_url"] = data.get("run_url", "")
+
+            item["tests_branch"] = data["tests_branch"]
+            item["run_mobile_tests"] = data.get("run_mobile_tests", "false")
+            item["last_updated"] = published_by_tag.get(key, data.get("run_date", "N/A"))
+
+          ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
+
+          table_lines = [
+            "| Image | Linux `amd64` | Linux `arm64` | Windows `amd64` | Branch | Last Updated | Mobile Tests |",
+            "|---|---|---|---|---|---|---|",
+          ]
+
+          for row in ordered:
+            image_link = f"[`{row['image']}`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum)"
+            branch_link = f"[`{row['tests_branch']}`](https://github.com/TestlumFramework/Demo/tree/{row['tests_branch']})"
+            mobile_text = "✅" if str(row["run_mobile_tests"]).lower() == "true" else "➖"
+            table_lines.append(
+              f'| {image_link} | {fmt_status(row["linux_amd64_status"], row["linux_amd64_url"])} | {fmt_status(row["linux_arm64_status"], row["linux_arm64_url"])} | {fmt_status(row["windows_amd64_status"], row["windows_amd64_url"])} | {branch_link} | {row["last_updated"]} | {mobile_text} |'
+            )
+
+          content = "\n".join(table_lines)
+
+          with open("README.md", "r", encoding="utf-8") as f:
+            readme = f.read()
+
+          pattern = r"<!-- RESULTS-TABLE:START -->(.*?)<!-- RESULTS-TABLE:END -->"
+          replacement = f"<!-- RESULTS-TABLE:START -->\n{content}\n<!-- RESULTS-TABLE:END -->"
+          updated = re.sub(pattern, replacement, readme, flags=re.S)
+
+          with open("README.md", "w", encoding="utf-8") as f:
+            f.write(updated)
+          PY
+
+      - name: Commit and push README
+        run: |
+          if git diff --quiet; then
+            echo "No README updates to commit."
+            exit 0
+          fi
+
+          git config user.name "Testlum Regression"
+          git config user.email "testlum-regression[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Update regression matrix status table"
+          git push

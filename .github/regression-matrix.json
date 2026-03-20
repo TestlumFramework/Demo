@@ -1,0 +1,42 @@
+{
+  "entries": [
+    {
+      "image": "latest",
+      "tests_branch": "fullregression",
+      "config_file": "config-ci-regression.xml",
+      "windows_config_file": "config-ci-regression-windows.xml",
+      "mobile_config_file": "config-ci-regression-mobile.xml",
+      "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
+      "run_mobile_tests": true
+    },
+    {
+      "image": "1.0.2",
+      "tests_branch": "fullregression",
+      "config_file": "config-ci-regression.xml",
+      "windows_config_file": "config-ci-regression-windows.xml",
+      "mobile_config_file": "config-ci-regression-mobile.xml",
+      "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
+      "run_mobile_tests": false
+    }
+  ],
+  "arches": [
+    {
+      "os_family": "linux",
+      "arch": "amd64",
+      "runs_on": "ubuntu-latest",
+      "enabled": true
+    },
+    {
+      "os_family": "linux",
+      "arch": "arm64",
+      "runs_on": "ubuntu-24.04-arm",
+      "enabled": true
+    },
+    {
+      "os_family": "windows",
+      "arch": "amd64",
+      "runs_on": "windows-2025",
+      "enabled": true
+    }
+  ]
+}
