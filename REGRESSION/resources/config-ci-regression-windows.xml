@@ -61,11 +61,4 @@
         <env folder="ci-windows" enabled="true" threads="1"/>
     </environments>
 
-    <vault>
-        <host>vault-e2e</host>
-        <port>8200</port>
-        <scheme>http</scheme>
-        <token>myroot</token>
-    </vault>
-
 </globalTestConfiguration>
