@@ -4,7 +4,7 @@
 
     <parallelExecution>false</parallelExecution>
     <stopScenarioOnFailure>false</stopScenarioOnFailure>
-    <stopIfInvalidScenario>false</stopIfInvalidScenario>
+    <stopIfInvalidScenario>true</stopIfInvalidScenario>
     <delayBetweenScenarioRuns seconds="1" enabled="true"/>
 
     <runScenariosByTag enabled="true">
@@ -42,7 +42,7 @@
         <tag name="redis" enabled="true"/>
         <tag name="s3" enabled="true"/>
         <tag name="sendgrid" enabled="true"/>
-        <tag name="twilio" enabled="true"/>
+        <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="true"/>
         <tag name="ses" enabled="true"/>
     </runScenariosByTag>

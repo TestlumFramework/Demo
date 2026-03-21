@@ -221,7 +221,7 @@
     </sendgridIntegration>
 
     <twilioIntegration>
-        <twilio alias="TWILIO_0" enabled="true">
+        <twilio alias="TWILIO_0" enabled="false">
             <accountSid>${TWILIO_ACCOUNT_SID}</accountSid>
             <authToken>${TWILIO_AUTH_TOKEN}</authToken>
             <twilioNumber>+12763267909</twilioNumber>

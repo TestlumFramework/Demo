@@ -2,7 +2,7 @@
   "entries": [
     {
       "image": "latest",
-      "tests_branch": "fullregression",
+      "tests_branch": "main",
       "config_file": "config-ci-regression.xml",
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
@@ -11,7 +11,7 @@
     },
     {
       "image": "1.0.2",
-      "tests_branch": "fullregression",
+      "tests_branch": "main",
       "config_file": "config-ci-regression.xml",
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
