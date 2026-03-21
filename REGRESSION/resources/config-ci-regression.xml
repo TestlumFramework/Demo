@@ -4,7 +4,7 @@
 
     <parallelExecution>false</parallelExecution>
     <stopScenarioOnFailure>false</stopScenarioOnFailure>
-    <stopIfInvalidScenario>false</stopIfInvalidScenario>
+    <stopIfInvalidScenario>true</stopIfInvalidScenario>
     <delayBetweenScenarioRuns seconds="1" enabled="true"/>
 
     <runScenariosByTag enabled="true">
