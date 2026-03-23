@@ -1,0 +1,10 @@
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+.idea
+*.iws
+*.iml
+*.ipr
+/HELP.md
+.DS_store
+.java-version
