@@ -232,7 +232,7 @@ services:
     profiles: [ci, local]
 
   localstack-e2e:
-    image: localstack/localstack:latest
+    image: localstack/localstack:4.14.0
     container_name: localstack-e2e
     environment:
       - SERVICES=lambda,sqs,s3,ses
