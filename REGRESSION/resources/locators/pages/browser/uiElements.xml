@@ -23,7 +23,8 @@
 
         <locator locatorId="play">
             <xpath>fake</xpath>
-            <cssSelector>#movie_player > div.ytp-cued-thumbnail-overlay > button</cssSelector>
+            <xpath>//button[@aria-label="Play"]</xpath>
+            <xpath>//button[@aria-label="Play video"]</xpath>
         </locator>
 
         <locator locatorId="pause">
