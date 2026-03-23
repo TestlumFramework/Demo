@@ -26,9 +26,7 @@
         <scrollTo comment="Scroll to video that is in Frame" locator="uiElements.video"/>
 
         <switchToFrame comment="Open Iframe in the site" locatorStrategy="cssSelector"
-                       locator="#app > div > div.flex-1.flex.flex-col.overflow-hidden > main > div > div > div:nth-child(7) > div > div > iframe">
-
-            <wait comment="Wait for loading YouTube video for 10 seconds" time="10"/>
+                       locator="iframe[src*='youtube.com']">
 
             <click comment="Click on 'play' button on the video" locator="uiElements.play"/>
 
