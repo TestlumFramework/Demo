@@ -28,7 +28,7 @@
         <switchToFrame comment="Open Iframe in the site" locatorStrategy="cssSelector"
                        locator="#app > div > div.flex-1.flex.flex-col.overflow-hidden > main > div > div > div:nth-child(7) > div > div > iframe">
 
-            <wait comment="Wait for loading YouTube video for 3 seconds" time="3"/>
+            <wait comment="Wait for loading YouTube video for 10 seconds" time="10"/>
 
             <click comment="Click on 'play' button on the video" locator="uiElements.play"/>
 

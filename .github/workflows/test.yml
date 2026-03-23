@@ -77,6 +77,7 @@ jobs:
           smtp_password: ${{ secrets.SMTP_PASSWORD }}
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
@@ -91,6 +92,7 @@ jobs:
           smtp_password: ${{ secrets.SMTP_PASSWORD }}
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
@@ -105,6 +107,7 @@ jobs:
           smtp_password: ${{ secrets.SMTP_PASSWORD }}
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
       - name: Cleanup Test Environment (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}

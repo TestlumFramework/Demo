@@ -42,7 +42,7 @@
         <tag name="redis" enabled="false"/>
         <tag name="s3" enabled="false"/>
         <tag name="sendgrid" enabled="true"/>
-        <tag name="twilio" enabled="false"/>
+        <tag name="twilio" enabled="true"/>
         <tag name="smtp" enabled="true"/>
         <tag name="ses" enabled="false"/>
     </runScenariosByTag>
