@@ -351,10 +351,8 @@ jobs:
       - name: Slack Notification
         uses: slackapi/slack-github-action@v2
         with:
-          channel-id: '#testlum-jenkins-notification'
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
-            {
-              "blocks": ${{ steps.build_message.outputs.payload }}
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            blocks: ${{ steps.build_message.outputs.payload }}
