@@ -21,7 +21,7 @@ By default, tests may run in headless mode (without opening a browser window).
 If you want to observe the UI and test flow visually, update your configuration to turn off headless mode before running the tests [here](REGRESSION/resources/config/local/vault/ui.xml)
 and visit http://localhost:7900 by providing `secret` as a password
 
-[![Watch the video](https://img.youtube.com/vi/WOaw2a2kQt0/0.jpg)](https://www.youtube.com/watch?v=WOaw2a2kQt0)
+[![Watch the video](.github/regression-run.png)](https://www.youtube.com/watch?v=WOaw2a2kQt0)
 
 ## Overview
 
