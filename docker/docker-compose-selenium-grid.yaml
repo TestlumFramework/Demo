@@ -18,6 +18,8 @@ services:
   chrome:
     image: selenium/node-chromium:4.41.0-20260222
     shm_size: 4gb
+    ports:
+      - "7900:7900"
     depends_on:
       selenium-hub:
         condition: service_healthy
