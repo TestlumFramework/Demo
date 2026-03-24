@@ -313,3 +313,48 @@ jobs:
           git add README.md
           git commit -m "Update regression matrix status table"
           git push
+      
+      - name: Build Slack payload
+        id: build_message
+        run: |
+          blocks='[{"type":"section","text":{"type":"mrkdwn","text":"*${{ github.workflow }} #${{ github.run_number }}* | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"}}]'
+
+          for f in results/*.json; do
+            [ -f "$f" ] || continue
+            [[ "$f" == *"ghcr_versions.json"* ]] && continue
+
+            image=$(jq -r '.image' "$f")
+            os=$(jq -r '.os_family' "$f")
+            arch=$(jq -r '.arch' "$f")
+            status=$(jq -r '.status' "$f")
+
+            case "$status" in
+              passed)    icon="✅" ;;
+              failed)    icon="❌" ;;
+              cancelled) icon="⏹" ;;
+              *) icon="➖" ;;
+            esac
+
+            block=$(jq -n \
+              --arg icon "$icon" \
+              --arg image "$image" \
+              --arg os "$os" \
+              --arg arch "$arch" \
+              --arg status "$status" \
+              '{"type":"section","text":{"type":"mrkdwn","text":($icon + " *" + $image + "* | " + $os + " / " + $arch + " | `" + $status + "`")}}')
+
+            blocks=$(echo "$blocks" | jq ". + [$block]")
+          done
+
+          echo "payload=$(echo "$blocks" | jq -c .)" >> $GITHUB_OUTPUT
+
+      - name: Slack Notification
+        uses: slackapi/slack-github-action@v2
+        with:
+          channel-id: '#testlum-jenkins-notification'
+          payload: |
+            {
+              "blocks": ${{ steps.build_message.outputs.payload }}
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
