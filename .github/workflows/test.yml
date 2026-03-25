@@ -355,4 +355,6 @@ jobs:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            unfurl_links: false
+            unfurl_media: false
             blocks: ${{ steps.build_message.outputs.payload }}
