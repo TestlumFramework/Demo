@@ -11,6 +11,18 @@
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
 
+## 🎬 How to Run Regression Tests with Testlum
+
+Learn how to execute existing regression tests using the Testlum framework and the demo repository.
+
+⚠️ To see the browser during web test execution, make sure headless mode is disabled.
+
+By default, tests may run in headless mode (without opening a browser window).  
+If you want to observe the UI and test flow visually, update your configuration to turn off headless mode before running the tests [here](REGRESSION/resources/config/local/vault/ui.xml)
+and visit http://localhost:7900 by providing `secret` as a password
+
+[![Watch the video](.github/regression-run.png)](https://www.youtube.com/watch?v=WOaw2a2kQt0)
+
 ## Overview
 
 The project consists of three main components:
