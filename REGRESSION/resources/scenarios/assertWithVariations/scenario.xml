@@ -1,0 +1,104 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual(with variations)</description>
+        <name>Assert variations test</name>
+    </overview>
+
+    <settings>
+        <variations>assert_variations.csv</variations>
+        <tags>assert-variations</tags>
+    </settings>
+
+    <var comment="var with equality expression" name="equalVar">
+        <expression value="'{{val1}}' eq '{{val2}}'"/>
+    </var>
+
+    <var comment="var with not equality expression" name="notEqualVar">
+        <expression value="'{{val1}}' ne '{{val2}}'"/>
+    </var>
+
+    <assert comment="assert equal with var and value from variations">
+        <equal comment="check equal expression from var and value from variations">
+            <content>{{equalVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="assert notEqual with var and value from variations">
+        <notEqual comment="check not equal expression from var and value from variations">
+            <content>{{notEqualVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="check assert with condition" condition="'{{expectedEqual}}' eq 'true'">
+        <equal comment="assert values with expectedEqual true">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="check assert with condition" condition="'{{expectedEqual}}' eq 'false'">
+        <notEqual comment="assert values with expectedEqual false">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="check equal/notEqual with condition">
+        <equal comment="assert values with expectedEqual true" condition="'{{expectedEqual}}' eq 'true'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+        <notEqual comment="assert values with expectedEqual false" condition="'{{expectedEqual}}' eq 'false'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="check assert with condition from variations (equal)" condition="{{condition}}">
+        <equal comment="assert equal values">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="check assert with condition from variations (not equal)" condition="({{condition}}) eq 'false'">
+        <notEqual comment="assert notEqual values">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="condition for equal values from variations" name="equalCondition" spel="'{{val1}}' eq '{{val2}}'"/>
+
+    <condition comment="condition for not equal values from variations" name="notEqualCondition" spel="'{{val1}}' ne '{{val2}}'"/>
+
+    <assert comment="check assert with conditions">
+        <equal comment="assert equal values" condition="equalCondition">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+        <notEqual comment="assert not equal values" condition="notEqualCondition">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+    
+    <assert comment="Assert with var and condition as content">
+        <equal comment="Check equal condition/var inside content">
+            <content>{{equalVar}}</content>
+            <content>{{equalCondition}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Assert with var and condition as content">
+        <notEqual comment="Check equal condition/var inside content">
+            <content>{{equalVar}}</content>
+            <content>{{notEqualCondition}}</content>
+        </notEqual>
+    </assert>
+</scenario>

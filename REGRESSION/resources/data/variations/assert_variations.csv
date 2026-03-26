@@ -1,0 +1,7 @@
+val1,val2,expectedEqual,condition
+Testlum,Testlum,true,'{{val1}}' eq '{{val2}}'
+Recorder,otherTool,false,'{{val1}}' eq '{{val2}}'
+1,2,false,'{{val1}}' eq '{{val2}}'
+7,7,true,'{{val1}}' eq '{{val2}}'
+test!,red#,false,'{{val1}}' eq '{{val2}}'
+$,$,true,'{{val1}}' eq '{{val2}}'
