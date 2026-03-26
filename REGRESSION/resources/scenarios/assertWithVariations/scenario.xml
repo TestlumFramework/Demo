@@ -9,7 +9,7 @@
 
     <settings>
         <variations>assert_variations.csv</variations>
-        <tags>assert-variations</tags>
+        <tags>assert-self</tags>
     </settings>
 
     <var comment="var with equality expression" name="equalVar">
@@ -88,17 +88,26 @@
         </notEqual>
     </assert>
     
-    <assert comment="Assert with var and condition as content">
-        <equal comment="Check equal condition/var inside content">
+    <assert comment="assert with var and condition as content">
+        <equal comment="check equal condition/var inside content">
             <content>{{equalVar}}</content>
             <content>{{equalCondition}}</content>
         </equal>
-    </assert>
-
-    <assert comment="Assert with var and condition as content">
-        <notEqual comment="Check equal condition/var inside content">
+        <notEqual comment="check notEqual condition/var inside content">
             <content>{{equalVar}}</content>
             <content>{{notEqualCondition}}</content>
         </notEqual>
     </assert>
+    
+    <assert comment="Assert with combination of condition/var/value">
+        <equal comment="equal with condition and var" condition="equalCondition">
+            <content>{{equalVar}}</content>
+            <content>true</content>
+        </equal>
+        <notEqual comment="notEqual with condition and var" condition="equalCondition">
+            <content>{{notEqualVar}}</content>
+            <content>true</content>
+        </notEqual>
+    </assert>
+
 </scenario>
