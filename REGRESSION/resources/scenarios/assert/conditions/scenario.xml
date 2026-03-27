@@ -1,0 +1,77 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual(with conditions)</description>
+        <name>Assert conditions test</name>
+    </overview>
+
+    <settings>
+        <variations>assert_variations.csv</variations>
+        <tags>assert-self</tags>
+    </settings>
+
+    <condition comment="condition with equal values from variations" name="equalCondition" spel="'{{val1}}' eq '{{val2}}'"/>
+
+    <condition comment="condition with notEqual values from variations" name="notEqualCondition" spel="'{{val1}}' ne '{{val2}}'"/>
+
+    <condition comment="Create condition with spell from variation" name="variationCondition" spel="{{condition}}"/>
+
+    <var comment="Create var with condition with spell from variation" name="evaluatedVariationCondition">
+        <expression value="{{condition}}"/>
+    </var>
+
+    <assert comment="assert with condition spell from variations!">
+        <equal comment="check equal condition from variations in content as var and condition">
+            <content>{{variationCondition}}</content>
+            <content>{{evaluatedVariationCondition}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="assert with equal condition" condition="'{{val1}}' eq '{{val2}}'">
+        <equal comment="check equal for values from variations">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="assert with notEqual condition" condition="'{{val1}}' ne '{{val2}}'">
+        <notEqual comment="check notEqual for values from variations">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="assert with conditions inside equal/notEqual">
+        <equal comment="check equal with condition" condition="equalCondition">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+        <notEqual comment="check notEqual with condition" condition="notEqualCondition">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="assert with conditions inside equal/notEqual and condition as content">
+        <equal comment="check equal with equal condition" condition="equalCondition">
+            <content>{{equalCondition}}</content>
+            <content>true</content>
+        </equal>
+        <notEqual comment="check equal with notEqual condition" condition="(notEqualCondition) eq false">
+            <content>{{notEqualCondition}}</content>
+            <content>true</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="Create condition from variation" name="{{conditionName}}" spel="'{{firstValue}}' {{operation}} '{{secondValue}}'"/>
+
+    <assert comment="assert with condition from variations" condition="{{conditionName}}">
+        <equal comment="check equal values from variations">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+    </assert>
+
+</scenario>
