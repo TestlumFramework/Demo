@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Condition file test: remove file only if condition is true, verify other files in bucket remain unchanged if condition is false</description>
+        <name>S3 Condition File scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="Step 1 - create new bucket testlum-cond-file-bucket" alias="S3_0">
+        <bucket comment="Check ability to create new bucket testlum-cond-file-bucket">
+            <create>testlum-cond-file-bucket</create>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 2 - upload upload_1.json to testlum-cond-file-bucket" alias="S3_0">
+        <file comment="Check ability to upload upload_1.json, targeted for conditional removal"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 2b - upload upload_2.json to testlum-cond-file-bucket" alias="S3_0">
+        <file comment="Check ability to upload upload_2.json, expected to remain after condition check"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_2.json">
+            <upload>upload_2.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3 - verify upload_1.json upload via file comparison" alias="S3_0">
+        <file comment="Check that downloaded upload_1.json matches expected_1.json"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3b - verify upload_2.json upload via file comparison" alias="S3_0">
+        <file comment="Check that downloaded upload_2.json matches expected_2.json"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_2.json">
+            <download>
+                <file>expected_2.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <condition comment="Step 4 - create condition that evaluates to true, file removal must execute"
+               name="removeFile"
+               spel="true"/>
+
+    <s3 comment="Step 5 - remove upload_1.json only if removeFile condition is true - must execute" alias="S3_0" condition="removeFile">
+        <file comment="Check that upload_1.json is removed when condition is true"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_1.json">
+            <remove/>
+        </file>
+    </s3>
+
+    <condition comment="Step 4b - create condition that evaluates to false, file removal must be skipped"
+               name="keepFile"
+               spel="false"/>
+
+    <s3 comment="Step 5b - remove upload_2.json only if keepFile condition is true - must be skipped" alias="S3_0" condition="keepFile">
+        <file comment="Check that upload_2.json is not removed when condition is false"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_2.json">
+            <remove/>
+        </file>
+    </s3>
+
+    <s3 comment="Step 6 - verify upload_2.json still exists and content is unchanged after skipped removal" alias="S3_0">
+        <file comment="Check that upload_2.json remains unchanged in bucket after condition false"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_2.json">
+            <download>
+                <file>expected_2.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 6b - verify upload_2.json content via inline value as additional assertion" alias="S3_0">
+        <file comment="Check upload_2.json content matches inline value after skipped removal"
+              bucket="testlum-cond-file-bucket"
+              key="/testlum/upload_2.json">
+            <download>
+                <value>{"Testlum": "The Best"}</value>
+            </download>
+        </file>
+    </s3>
+
+</scenario>

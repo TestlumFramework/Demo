@@ -1,0 +1,108 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Condition bucket test: remove bucket only if condition is true, verify bucket still exists if condition is false</description>
+        <name>S3 Condition Bucket scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="Step 1 - create new bucket testlum-cond-true-bucket" alias="S3_0">
+        <bucket comment="Check ability to create new bucket testlum-cond-true-bucket">
+            <create>testlum-cond-true-bucket</create>
+        </bucket>
+    </s3>
+
+    <condition comment="Step 2 - create condition that evaluates to true for bucket removal"
+               name="removeBucket"
+               spel="true"/>
+
+    <s3 comment="Step 3 - remove testlum-cond-true-bucket only if removeBucket condition is true" alias="S3_0" condition="removeBucket">
+        <bucket comment="Check that bucket remove executes when condition is true">
+            <remove>testlum-cond-true-bucket</remove>
+        </bucket>
+    </s3>
+
+    <!-- Test Case 2: condition = false → bucket remove is skipped, bucket still exists -->
+
+    <s3 comment="Step 1 - create new bucket testlum-cond-false-bucket" alias="S3_0">
+        <bucket comment="Check ability to create new bucket testlum-cond-false-bucket">
+            <create>testlum-cond-false-bucket</create>
+        </bucket>
+    </s3>
+
+    <condition comment="Step 2 - create condition that evaluates to false, bucket removal must be skipped"
+               name="keepBucket"
+               spel="false"/>
+
+    <s3 comment="Step 3 - remove testlum-cond-false-bucket only if keepBucket condition is true - must be skipped" alias="S3_0" condition="keepBucket">
+        <bucket comment="Check that bucket remove is skipped when condition is false">
+            <remove>testlum-cond-false-bucket</remove>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 4 - verify testlum-cond-false-bucket still exists by uploading a file" alias="S3_0">
+        <file comment="Check ability to upload upload_1.json to confirm bucket still exists"
+              bucket="testlum-cond-false-bucket"
+              key="/testlum/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4b - verify uploaded file to confirm bucket is accessible after skipped removal" alias="S3_0">
+        <file comment="Check that upload_1.json in testlum-cond-false-bucket matches expected_1.json"
+              bucket="testlum-cond-false-bucket"
+              key="/testlum/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 1 - create new bucket testlum-cond-and-bucket" alias="S3_0">
+        <bucket comment="Check ability to create new bucket testlum-cond-and-bucket">
+            <create>testlum-cond-and-bucket</create>
+        </bucket>
+    </s3>
+
+    <condition comment="Step 2a - create first partial condition for AND combination"
+               name="conditionA"
+               spel="true"/>
+
+    <condition comment="Step 2b - create second partial condition for AND combination"
+               name="conditionB"
+               spel="false"/>
+
+    <condition comment="Step 2c - combine conditions with AND - result is always false"
+               name="combinedFalseCondition"
+               spel="conditionA and conditionB"/>
+
+    <s3 comment="Step 3 - remove testlum-cond-and-bucket using combined false condition - must be skipped" alias="S3_0" condition="combinedFalseCondition">
+        <bucket comment="Check that bucket remove is skipped when combined AND condition is false">
+            <remove>testlum-cond-and-bucket</remove>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 4 - verify testlum-cond-and-bucket still exists after skipped combined condition" alias="S3_0">
+        <file comment="Check ability to upload upload_1.json to confirm bucket still exists after skipped removal"
+              bucket="testlum-cond-and-bucket"
+              key="/testlum/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4b - verify file in testlum-cond-and-bucket to confirm bucket is intact" alias="S3_0">
+        <file comment="Check that upload_1.json in testlum-cond-and-bucket matches expected_1.json"
+              bucket="testlum-cond-and-bucket"
+              key="/testlum/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+    </s3>
+
+</scenario>
