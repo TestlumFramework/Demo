@@ -9,11 +9,12 @@
   },
   "headers": {
     "host": "postman-echo.com",
+    "content-length": "p(any)",
     "content-type": "multipart/form-data; boundary=p(any)",
     "accept-encoding": "gzip, br",
-    "user-agent": "p(any)",
     "x-forwarded-proto": "https",
-    "content-length": "p(any)"
+    "user-agent": "p(any)",
+    "cookie": "p(any)"
   },
   "json": null,
   "url": "https://postman-echo.com/post"
