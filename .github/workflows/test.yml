@@ -78,6 +78,7 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          browser_stack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
