@@ -97,7 +97,7 @@ jobs:
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
-        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests }}
+        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests_on_image && matrix.run_mobile_tests_on_arch }}
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
@@ -133,7 +133,7 @@ jobs:
           if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
             status="failed"
           fi
-          if [ "${{ matrix.run_mobile_tests }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+          if [ "${{ matrix.run_mobile_tests_on_image }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then
@@ -144,7 +144,7 @@ jobs:
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           mkdir -p results
           cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
-          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests_on_image }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
           EOF
 
       - name: Build Matrix Result (Windows)

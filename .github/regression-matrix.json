@@ -7,7 +7,7 @@
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
       "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
-      "run_mobile_tests": true
+      "run_mobile_tests_on_image": true
     },
     {
       "image": "1.0.2",
@@ -16,7 +16,7 @@
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
       "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
-      "run_mobile_tests": false
+      "run_mobile_tests_on_image": false
     }
   ],
   "arches": [
@@ -24,18 +24,21 @@
       "os_family": "linux",
       "arch": "amd64",
       "runs_on": "ubuntu-latest",
+      "run_mobile_tests_on_arch": true,
       "enabled": true
     },
     {
       "os_family": "linux",
       "arch": "arm64",
       "runs_on": "ubuntu-24.04-arm",
+      "run_mobile_tests_on_arch": false,
       "enabled": true
     },
     {
       "os_family": "windows",
       "arch": "amd64",
       "runs_on": "windows-2025",
+      "run_mobile_tests_on_arch": false,
       "enabled": true
     }
   ]
