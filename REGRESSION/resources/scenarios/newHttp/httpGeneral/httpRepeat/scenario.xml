@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Repeat Http</name>
+        <description>
+            This scenario verifies repeated execution of HTTP requests.
+
+            Test flow includes:
+            1. Execute POST request inside repeat block.
+            2. Repeat request execution multiple times using variation file.
+            3. Validate POST response for each iteration.
+            4. Extract created entity ID for each iteration.
+            5. Send GET request for each created entity.
+            6. Validate GET response for each iteration.
+
+            This scenario validates:
+            - Repeat command execution
+            - Multiple HTTP request executions
+            - Data-driven repeated POST/GET flow
+            - Response validation for each iteration
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpGeneral</tags>
+    </settings>
+
+    <repeat comment="Execute HTTP create/get flow multiple times" variations="httpRepeat.csv">
+
+        <http comment="Step 1-2. Execute POST request within repeat"
+              alias="MEGA_APP">
+            <post endpoint="/api/test/entities">
+                <response code="201" file="{{expectedPost}}.json"/>
+                <header name="Content-Type" data="application/json"/>
+                <body>
+                    <raw>
+                        {
+                        "name": "{{name}}",
+                        "description": "{{description}}",
+                        "status": "{{status}}",
+                        "category": "{{category}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <var comment="Extract created entity id for current iteration" name="entityId">
+            <path value="$.id"/>
+        </var>
+
+        <http comment="Step 3. Validate response for each iteration"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/entities/{{entityId}}">
+                <response code="200" file="{{expectedGet}}.json"/>
+            </get>
+        </http>
+
+    </repeat>
+
+</scenario>

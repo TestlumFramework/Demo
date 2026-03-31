@@ -1,0 +1,4 @@
+name,description,status,category,expectedPost,expectedGet
+VarEntity1,Description 1,NEW,VAR,expected_1_1,expected_3_1
+VarEntity2,Description 2,ACTIVE,VAR,expected_1_2,expected_3_2
+VarEntity3,Description 3,INACTIVE,VAR,expected_1_3,expected_3_3

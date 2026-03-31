@@ -1,0 +1,82 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Manual</name>
+        <description>
+            This scenario verifies JWT authentication flow manually without using auth command.
+
+            Test flow includes:
+            1. Reset JWT auth state before test.
+            2. Send POST login request with valid credentials.
+            3. Verify login response = 200.
+            4. Extract access token from response.
+            5. Send GET request with Authorization: Bearer accessToken.
+            6. Verify protected response = 200.
+            7. Validate protected response body.
+            8. Send GET request without token.
+            9. Verify unauthorized response = 401.
+            10. Reset JWT auth state after test.
+
+            This scenario validates:
+            - Manual JWT login flow
+            - Token extraction via var
+            - Bearer token usage in headers
+            - Protected endpoint access
+            - Unauthorized access without token
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpAuth</tags>
+    </settings>
+
+    <http comment="Login and get JWT access token"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/auth/jwt/login">
+            <response code="200" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "username": "testlum",
+                    "password": "123456"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Extract JWT access token from login response" name="token">
+        <path value="$.token"/>
+    </var>
+
+    <http comment="Access protected resource with valid JWT token"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/auth/jwt/resource">
+            <response code="200" file="expected_3.json"/>
+            <header name="Authorization" data="Bearer {{token}}"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </get>
+    </http>
+
+    <http comment="Access protected resource without token should fail"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/auth/jwt/resource">
+            <response code="401" file="expected_4.json"/>
+            <header name="Authorization" data="Bearer aaa"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </get>
+    </http>
+
+    <http comment="Reset JWT auth state after test"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </delete>
+    </http>
+
+</scenario>

@@ -1,0 +1,8 @@
+{
+  "id" : "p(any)",
+  "name" : "Condition Entity",
+  "description" : "Entity for condition test",
+  "status" : "NEW",
+  "category" : "CONDITION",
+  "uploadedFile" : null
+}

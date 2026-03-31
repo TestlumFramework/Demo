@@ -1,0 +1,4 @@
+name,description,status,category,expectedPost,expectedGet
+RepeatEntity1,Repeat Description 1,NEW,REPEAT,expected_1_1,expected_3_1
+RepeatEntity2,Repeat Description 2,ACTIVE,REPEAT,expected_1_2,expected_3_2
+RepeatEntity3,Repeat Description 3,INACTIVE,REPEAT,expected_1_3,expected_3_3

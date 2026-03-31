@@ -11,6 +11,11 @@
         </api>
         <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="false"/>
         <api alias="MULTIPART" url="https://postman-echo.com" enabled="false"/>
+        <api alias="MEGA_APP_CUSTOM" url="http://mega-test-api:8080/api/v1" enabled="true">
+            <auth authStrategy="custom"
+                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  autoLogout="true"/>
+        </api>
     </apis>
 
     <websockets>

@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth Custom</name>
+        <description>
+            This scenario verifies custom authentication flow using custom auth strategy.
+
+            Test flow includes:
+            1. Authenticate via auth command using custom auth class.
+            2. Send GET request to protected custom resource.
+            3. Verify response status = 200.
+            4. Validate protected response body.
+            5. Exit auth block.
+            6. Send GET request without authorization.
+            7. Verify response status = 401.
+            8. Reset custom auth state.
+
+            This scenario validates:
+            - Custom auth login flow
+            - Custom token extraction
+            - Authorization header injection
+            - Protected endpoint access
+            - Unauthorized access without token
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpAuth</tags>
+    </settings>
+
+    <auth comment="Authenticate via custom auth command"
+          apiAlias="MEGA_APP_CUSTOM"
+          credentials="http-auth-user-custom.json"
+          loginEndpoint="/api/test/auth/custom/login">
+
+        <http comment="Access protected custom resource with valid auth"
+              alias="MEGA_APP_CUSTOM">
+            <get endpoint="/api/test/auth/custom/resource">
+                <response code="200" file="expected_2.json"/>
+                <header name="X-Auth-Type" data="CUSTOM"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Access protected custom resource without auth should fail"
+          alias="MEGA_APP_CUSTOM">
+        <get endpoint="/api/test/auth/custom/resource">
+            <response code="401" file="expected_4.json"/>
+        </get>
+    </http>
+
+    <http comment="Reset custom auth state after test"
+          alias="MEGA_APP_CUSTOM">
+        <delete endpoint="/api/test/auth/custom/reset">
+            <response code="200"/>
+            <header name="X-Auth-Type" data="CUSTOM"/>
+        </delete>
+    </http>
+
+</scenario>

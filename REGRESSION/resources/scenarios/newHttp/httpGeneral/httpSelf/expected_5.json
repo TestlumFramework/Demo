@@ -1,0 +1,8 @@
+{
+  "id": "p(any)",
+  "name": "Entity One Updated",
+  "description": "Updated entity after put request",
+  "status": "ACTIVE",
+  "category": "UPDATED_GROUP",
+  "uploadedFile": null
+}

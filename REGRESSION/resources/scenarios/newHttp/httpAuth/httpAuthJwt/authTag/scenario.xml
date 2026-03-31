@@ -1,0 +1,65 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Self</name>
+        <description>
+            This scenario verifies JWT authentication flow without database.
+
+            Test flow includes:
+            1. Authenticate using auth command and credentials file.
+            2. Send GET request with automatically injected Bearer token.
+            3. Verify response status = 200.
+            4. Validate protected response body.
+            5. Exit auth block.
+            6. Reset JWT auth test state.
+            7. Send GET request without token.
+            8. Verify response status = 401.
+
+            This scenario validates:
+            - JWT login flow
+            - Bearer token propagation via auth command
+            - Protected endpoint access
+            - Unauthorized access without token
+            - Reset of in-memory auth state
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpAuth</tags>
+    </settings>
+
+    <auth comment="Authenticate via JWT auth command"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login">
+
+        <http comment="Access protected resource with valid JWT token"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resource">
+                <response code="200" file="expected_2.json"/>
+                <header name="X-Auth-Type" data="JWT"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Reset JWT auth test data after auth block"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </delete>
+    </http>
+
+    <http comment="Access protected resource without token should fail"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/auth/jwt/resource">
+            <response code="401" file="expected_5.json"/>
+            <header name="Authorization" data="Bearer 123"/>
+        </get>
+    </http>
+
+</scenario>

@@ -1,0 +1,3 @@
+TRACE /api/test/entities/trace
+Content-Type: text/plain
+Body: trace-self-http-body

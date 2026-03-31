@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>File Payload</name>
+        <description>
+            This scenario verifies API support for file-based request payload.
+
+            Test flow includes:
+            1. Send POST request with request body loaded from external file and verify response status = 201.
+            2. Extract created entity ID from response.
+            3. Send GET request by ID and verify response status = 200.
+            4. Validate response body matches created entity.
+
+            This scenario validates:
+            - Request body loading from external file
+            - JSON payload processing from file
+            - Entity creation from file-based payload
+            - Entity retrieval by ID
+            - Response body consistency
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpGeneral</tags>
+    </settings>
+
+    <http comment="Step 1. Send POST request with payload from file and verify response = 201"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Step 2. Extract created entity id" name="entityId">
+        <path value="$.id"/>
+    </var>
+
+    <http comment="Step 3-4. Send GET request and validate created entity from file payload"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities/{{entityId}}">
+            <response code="200" file="expected_3.json"/>
+        </get>
+    </http>
+
+</scenario>

@@ -1,0 +1,74 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Multipart Payload</name>
+        <description>
+            This scenario verifies API support for multipart payload enrichment.
+
+            Test flow includes:
+            1. Send POST request with JSON payload and create entity.
+            2. Extract created entity ID from response.
+            3. Send multipart request with file and optional text to enrich existing entity.
+            4. Verify multipart response status = 200.
+            5. Send GET request by ID and verify response status = 200.
+            6. Validate response body contains uploaded file metadata and updated values.
+
+            This scenario validates:
+            - Entity creation before multipart processing
+            - Multipart file upload to existing entity
+            - File metadata extraction
+            - Entity enrichment flow
+            - Response body consistency
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpGeneral</tags>
+    </settings>
+
+    <http comment="Step 1. Create base entity before multipart upload"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Multipart Entity",
+                    "description": "Initial entity before multipart upload",
+                    "status": "NEW",
+                    "category": "MULTIPART_BASE"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Step 2. Extract created entity id" name="entityId">
+        <path value="$.id"/>
+    </var>
+
+    <http comment="Step 3-4. Send multipart request to enrich existing entity"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/{{entityId}}/multipart">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <multipart>
+                    <param name="text" data="Updated from multipart request"/>
+                    <file name="file" fileName="testData.txt"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 5-6. Send GET request and validate multipart-enriched entity"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities/{{entityId}}">
+            <response code="200" file="expected_4.json"/>
+        </get>
+    </http>
+
+</scenario>

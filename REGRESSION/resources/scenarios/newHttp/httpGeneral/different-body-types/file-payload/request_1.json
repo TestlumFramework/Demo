@@ -1,0 +1,6 @@
+{
+  "name": "Entity From File",
+  "description": "Created using request body from file",
+  "status": "NEW",
+  "category": "FILE_INPUT"
+}

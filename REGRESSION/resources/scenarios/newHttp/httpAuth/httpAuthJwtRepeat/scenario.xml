@@ -1,0 +1,73 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Repeat</name>
+        <description>
+            This scenario verifies JWT authentication flow inside repeat block.
+
+            Test flow includes:
+            1. Execute JWT login inside repeat block.
+            2. Verify login response = 200 for each iteration.
+            3. Extract token for each iteration.
+            4. Access protected resource using extracted token.
+            5. Verify response = 200 for each iteration.
+            6. Reset JWT auth state after each iteration.
+
+            This scenario validates:
+            - JWT authentication inside repeat command
+            - Repeated token generation
+            - Protected resource access for each iteration
+            - Stability of auth flow across repeated executions
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpAuth</tags>
+    </settings>
+
+    <repeat comment="Execute JWT auth flow multiple times" variations="jwtVariations.csv">
+
+        <http comment="Step 1-2. Login and get JWT token"
+              alias="MEGA_APP">
+            <post endpoint="/api/test/auth/jwt/login">
+                <response code="200" file="{{expectedLogin}}.json"/>
+                <header name="Content-Type" data="application/json"/>
+                <body>
+                    <raw>
+                        {
+                        "username": "{{username}}",
+                        "password": "{{password}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <var comment="Step 3. Extract JWT token from login response"
+             name="jwtToken">
+            <path value="$.token"/>
+        </var>
+
+        <http comment="Step 4-5. Access protected resource with JWT token"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resource">
+                <response code="200" file="{{expectedResource}}.json"/>
+                <header name="Authorization" data="Bearer {{jwtToken}}"/>
+                <header name="X-Auth-Type" data="JWT"/>
+            </get>
+        </http>
+
+        <http comment="Step 6. Reset JWT auth state after iteration"
+              alias="MEGA_APP">
+            <delete endpoint="/api/test/auth/jwt/reset">
+                <response code="200"/>
+                <header name="X-Auth-Type" data="JWT"/>
+            </delete>
+        </http>
+
+    </repeat>
+
+</scenario>

@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Condition</name>
+        <description>
+            This scenario verifies interaction between JWT authentication flow and condition command.
+
+            Test flow includes:
+            1. Send POST login request with valid credentials.
+            2. Verify login response = 200.
+            3. Extract JWT token from response.
+            4. Create condition based on extracted token.
+            5. Send GET request to protected resource only if condition is true.
+            6. Verify protected response = 200.
+            7. Create false condition.
+            8. Send GET request with false condition (should be skipped).
+            9. Reset JWT auth state after test.
+
+            This scenario validates:
+            - JWT login flow
+            - Token extraction
+            - Condition creation based on auth result
+            - Conditional execution of protected requests
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpAuth</tags>
+    </settings>
+
+    <http comment="Step 1-2. Login and get JWT token"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/auth/jwt/login">
+            <response code="200" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "username": "testlum",
+                    "password": "123456"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Step 3. Extract JWT token from login response"
+         name="token">
+        <path value="$.token"/>
+    </var>
+
+    <condition comment="Step 4. Verify token is not empty"
+               name="tokenExists"
+               spel="'{{token}}' != null and '{{token}}' != ''"/>
+
+    <http comment="Step 5-6. Access protected resource only if token exists"
+          alias="MEGA_APP"
+          condition="tokenExists">
+        <get endpoint="/api/test/auth/jwt/resource">
+            <response code="200" file="expected_4.json"/>
+            <header name="Authorization" data="Bearer {{token}}"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </get>
+    </http>
+
+    <condition comment="Step 7. Create false condition"
+               name="neverExecute"
+               spel="'1' == '2'"/>
+
+    <http comment="Step 8. This request should not execute because condition is false"
+          alias="MEGA_APP"
+          condition="neverExecute">
+        <get endpoint="/api/test/auth/jwt/resource">
+            <response code="200" file="expected_6.json"/>
+            <header name="Authorization" data="Bearer {{token}}"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </get>
+    </http>
+
+    <http comment="Step 9. Reset JWT auth state after test"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+            <header name="X-Auth-Type" data="JWT"/>
+        </delete>
+    </http>
+
+</scenario>

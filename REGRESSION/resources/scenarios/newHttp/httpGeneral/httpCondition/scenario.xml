@@ -1,0 +1,76 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Condition Http</name>
+        <description>
+            This scenario verifies conditional execution of HTTP requests.
+
+            Test flow includes:
+            1. Send POST request and create entity.
+            2. Extract entity ID.
+            3. Send GET request and validate entity exists.
+            4. Create condition that evaluates to false.
+            5. Attempt DELETE request with condition (should NOT execute).
+            6. Send GET request again and verify entity still exists.
+
+            This scenario validates:
+            - Condition evaluation
+            - Conditional execution of HTTP requests
+            - Protection from unwanted DELETE operations
+            - Entity persistence when condition is false
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>httpGeneral</tags>
+    </settings>
+
+    <http comment="Step 1-2. Create entity" alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Condition Entity",
+                    "description": "Entity for condition test",
+                    "status": "NEW",
+                    "category": "CONDITION"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <var comment="Extract entity id" name="entityId">
+        <path value="$.id"/>
+    </var>
+
+    <http comment="Step 3-4. Verify entity exists" alias="MEGA_APP">
+        <get endpoint="/api/test/entities/{{entityId}}">
+            <response code="200" file="expected_3.json"/>
+        </get>
+    </http>
+
+    <condition comment="Create false condition"
+               name="deleteCondition"
+               spel="false"/>
+
+    <http comment="Step 5-6. Attempt DELETE with condition (should NOT execute)"
+          alias="MEGA_APP"
+          condition="deleteCondition">
+        <delete endpoint="/api/test/entities/{{entityId}}">
+            <response code="200"/>
+        </delete>
+    </http>
+
+    <http comment="Step 7. Verify entity still exists after skipped DELETE" alias="MEGA_APP">
+        <get endpoint="/api/test/entities/{{entityId}}">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+</scenario>
