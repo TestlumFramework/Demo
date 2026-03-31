@@ -46,6 +46,11 @@ inputs:
     required: false
     default: ""
 
+  browser_stack_local_identifier:
+    description: Browser Stack Local Idenrifier
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -69,6 +74,7 @@ runs:
           -e TWILIO_ACCOUNT_SID="${{ inputs.twilio_account_sid }}" \
           -e TWILIO_AUTH_TOKEN="${{ inputs.twilio_auth_token }}" \
           -e TWILIO_PHONE_NUMBER="${{ inputs.twilio_phone_number }}" \
+          -e BROWSER_STACK_LOCAL_IDENTIFIER="${{ inputs.browser_stack_local_identifier }} \
           -v "${MOUNT_DIR}:/REGRESSION" \
           "${IMAGE}" -c="${{ inputs.config_file }}" -p="${RESOURCES_DIR}"
         EXIT_CODE=$?
