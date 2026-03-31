@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for student-scores-python lambda: student score processor - calculates average,pass/fail status
+        </description>
+        <name>AWS Lambda Self scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>lambda</tags>
+    </settings>
+
+    <lambda comment="Invoke student-scores-python with passing student scores - average 88.75"
+            alias="LAMBDA"
+            functionName="student-scores-python">
+        <body>
+            <from file="body_1.json"/>
+        </body>
+        <response file="expected_1.json">
+            <header name="X-Amz-Executed-Version" data="$LATEST"/>
+        </response>
+    </lambda>
+
+    <lambda comment="Invoke student-scores-python with failing student scores - average 47.5"
+            alias="LAMBDA"
+            functionName="student-scores-python">
+        <body>
+            <raw>
+                {
+                "name": "Bob",
+                "subject": "Physics",
+                "scores": [40, 55, 50, 45]
+                }
+            </raw>
+        </body>
+        <response file="expected_2.json">
+            <header name="X-Amz-Executed-Version" data="$LATEST"/>
+        </response>
+    </lambda>
+
+</scenario>

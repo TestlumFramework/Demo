@@ -23,7 +23,7 @@ services:
       context: ../TEST-API
       dockerfile: Dockerfile.jenkins
     image: mega-test-api
-    container_name: maga-test-api
+    container_name: mega-test-api
     ports:
       - "8080:8080"
     networks:
@@ -41,7 +41,7 @@ services:
       context: ../TEST-API
       dockerfile: Dockerfile.local
     image: mega-test-api
-    container_name: maga-test-api
+    container_name: mega-test-api
     ports:
       - "8080:8080"
     networks:

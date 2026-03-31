@@ -1,0 +1,33 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Variations test for student-scores lambda: student score processor - calculates average, pass/fail status
+        </description>
+        <name>AWS Lambda Variations scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>variations_lambda.csv</variations>
+        <tags>lambda</tags>
+    </settings>
+
+    <lambda comment="Use variations and invoke student-scores-python with different failing student scores - average {{average}}"
+            alias="LAMBDA"
+            functionName="student-scores-python">
+        <body>
+            <raw>
+                {
+                "name": "{{name}}",
+                "subject": "{{subject}}",
+                "scores": [{{marks}}]
+                }
+            </raw>
+        </body>
+        <response file="{{expected}}.json">
+            <header name="{{header}}" data="{{headerValue}}"/>
+        </response>
+    </lambda>
+
+</scenario>
