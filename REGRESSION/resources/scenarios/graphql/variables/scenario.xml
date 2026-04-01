@@ -1,0 +1,90 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Variables</name>
+        <description>
+            This scenario verifies GraphQL request execution using variables.
+
+            Test flow includes:
+            1. Create variables for endpoint, title, author, number and expected files.
+            2. Execute GraphQL mutation using variable values.
+            3. Verify create response = 200.
+            4. Execute GraphQL query by title using variable value.
+            5. Verify returned book matches expected response.
+            6. Execute GraphQL query to retrieve all books.
+            7. Verify created book exists in storage.
+            8. Reset GraphQL storage after test.
+
+            This scenario validates:
+            - Variable interpolation inside GraphQL request body
+            - Variable interpolation inside GraphQL query params
+            - Variable reuse across mutation and query flow
+            - Stable GraphQL execution with reusable values
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphQL</tags>
+    </settings>
+
+    <var comment="Step 1. Create GraphQL endpoint variable"
+         name="graphqlEndpoint">
+        <constant value="graphql"/>
+    </var>
+
+    <var comment="Step 1. Create title variable"
+         name="bookTitle">
+        <constant value="Variable GraphQL Book"/>
+    </var>
+
+    <var comment="Step 1. Create author variable"
+         name="bookAuthor">
+        <constant value="Vadym Kostenko"/>
+    </var>
+
+    <var comment="Step 1. Create number variable"
+         name="bookNumber">
+        <constant value="77"/>
+    </var>
+
+    <graphql comment="Step 2-3. Create GraphQL book using variable values"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_5.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"{{bookTitle}}\", author: \"{{bookAuthor}}\",
+                    number: {{bookNumber}} }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 6-7. Retrieve all GraphQL books and verify created book exists"
+             alias="MEGA_GQL_APP">
+        <get endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_6.json"/>
+            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
+        </get>
+    </graphql>
+
+    <graphql comment="Step 8. Reset GraphQL storage after variables test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_7.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

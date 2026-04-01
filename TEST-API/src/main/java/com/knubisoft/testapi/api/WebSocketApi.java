@@ -1,5 +1,6 @@
 package com.knubisoft.testapi.api;
 
+import com.knubisoft.testapi.dto.websocket.stomp.StompSelfMessage;
 import com.knubisoft.testapi.exception.ErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 })
 public interface WebSocketApi {
 
-    //todo swagger docs
-
     @MessageMapping("/ping")
     void somePing(@RequestBody final String arg);
 
@@ -28,4 +27,16 @@ public interface WebSocketApi {
 
     @MessageMapping("/server")
     void somePeriodicMessages();
+
+    @MessageMapping("/self/create")
+    void createSelf(@RequestBody final StompSelfMessage message);
+
+    @MessageMapping("/self/get")
+    void getSelf(@RequestBody final StompSelfMessage message);
+
+    @MessageMapping("/self/delete")
+    void deleteSelf(@RequestBody final StompSelfMessage message);
+
+    @MessageMapping("/self/reset")
+    void resetSelf();
 }

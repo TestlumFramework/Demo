@@ -1,5 +1,0 @@
-{
-  "status" : "UNAUTHORIZED",
-  "message" : "Invalid or expired token",
-  "timestamp" : "p(any)"
-}

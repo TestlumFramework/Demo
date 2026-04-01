@@ -1,0 +1,35 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP OPTIONS</name>
+        <description>
+            This scenario verifies HTTP OPTIONS method behavior.
+
+            Test flow includes:
+            1. Send OPTIONS request to entities endpoint.
+            2. Verify response status = 200.
+            3. Validate Allow response header contains supported HTTP methods.
+
+            This scenario validates:
+            - Supported HTTP methods discovery via OPTIONS request
+            - Correct Allow response header
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1-3. Send OPTIONS request and validate allowed methods"
+          alias="MEGA_APP">
+        <options endpoint="/api/test/entities">
+            <response code="200">
+                <header name="Allow" data="GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"/>
+            </response>
+        </options>
+    </http>
+
+</scenario>

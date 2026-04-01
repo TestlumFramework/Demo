@@ -1,0 +1,103 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Condition</name>
+        <description>
+            This scenario verifies GraphQL command execution together with condition logic.
+
+            Test flow includes:
+            1. Create true condition.
+            2. Execute valid GraphQL mutation when condition is true.
+            3. Verify created book exists in storage.
+            4. Create false condition.
+            5. Attempt to execute invalid GraphQL mutation when condition is false.
+            6. Verify invalid step was skipped and storage was not changed.
+            7. Reset in-memory GraphQL storage after test.
+
+            This scenario validates:
+            - Conditional execution when condition is true
+            - Skipped execution when condition is false
+            - Stable storage state after skipped step
+            - GraphQL command interaction with condition logic
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphQL</tags>
+    </settings>
+
+    <condition comment="Step 1. Create true condition"
+               name="shouldCreate"
+               spel="true"/>
+
+    <graphql comment="Step 2. Create book when condition is true"
+             alias="MEGA_GQL_APP"
+             condition="shouldCreate">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Condition Book\", author: \"Vadym\", number: 1
+                    }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 3. Verify created book exists after successful conditional execution"
+             alias="MEGA_GQL_APP">
+        <get endpoint="/graphql">
+            <response code="200" file="expected_3.json"/>
+            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
+        </get>
+    </graphql>
+
+    <condition comment="Step 4. Create false condition"
+               name="shouldSkip"
+               spel="false"/>
+
+    <graphql
+            comment="Step 5. This invalid mutation should be skipped because condition is false. If it is executed unexpectedly, the step must fail due to invalid GraphQL input"
+            alias="MEGA_GQL_APP"
+            condition="shouldSkip">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_5.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"\", author: \"\", number: -1 }) { title author
+                    number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 6. Verify storage was not changed after skipped step"
+             alias="MEGA_GQL_APP">
+        <get endpoint="/graphql">
+            <response code="200" file="expected_6.json"/>
+            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
+        </get>
+    </graphql>
+
+    <graphql comment="Step 7. Reset GraphQL storage after condition test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_7.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

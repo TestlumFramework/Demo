@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL UPDATE</name>
+        <description>
+            This scenario verifies GraphQL mutation for updating a book by title.
+
+            Test flow includes:
+            1. Create initial book using GraphQL mutation.
+            2. Send GraphQL mutation to update existing book by title.
+            3. Verify response status = 200.
+            4. Validate updated book in response.
+            5. Send GraphQL query to retrieve updated book by title.
+            6. Verify response status = 200.
+            7. Validate retrieved updated book.
+            8. Reset in-memory GraphQL storage after test.
+
+            This scenario validates:
+            - GraphQL update mutation execution
+            - Book update by title
+            - Updated state persistence
+            - Response body correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphQL</tags>
+    </settings>
+
+    <graphql comment="Step 1. Create initial book before update"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Original Book\", author: \"Original Author\",
+                    number: 1 }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 2-4. Update existing book by title"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { updateSelfBookByTitle(title: \"Original Book\", updatedBook: { title: \"Updated
+                    Book\", author: \"Updated Author\", number: 2 }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 5-7. Retrieve updated book by new title"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "{ getSelfBookByTitle(title: \"Updated Book\") { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 8. Reset GraphQL storage after update test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_4.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

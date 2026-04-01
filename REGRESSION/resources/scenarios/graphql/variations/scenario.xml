@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Variations</name>
+        <description>
+            This scenario verifies GraphQL request execution using variation data.
+
+            Test flow includes:
+            1. Load test data from variations CSV file.
+            2. Send GraphQL mutation for each variation row using request file.
+            3. Verify response status = 200 for each iteration.
+            4. Validate created book using variation-based expected file.
+            5. Send GraphQL query to retrieve book by title for each variation row using request file.
+            6. Verify response status = 200 for each iteration.
+            7. Validate retrieved book using variation-based expected file.
+            8. Reset in-memory GraphQL storage after all variation iterations.
+
+            This scenario validates:
+            - Variation value injection into GraphQL request files
+            - Variation value injection into expected file names
+            - Stable repeated GraphQL execution using multiple variation rows
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>graphqlVariations.csv</variations>
+        <tags>graphQL</tags>
+    </settings>
+
+    <graphql comment="Step 1-4. Create book using variation data"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="{{expectedCreate}}.json"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 8. Reset GraphQL storage after all variation iterations"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

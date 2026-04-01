@@ -14,18 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -59,16 +48,6 @@ public interface ApiTestEntityApi {
             @RequestBody @Valid ApiTestEntityDto dto
     );
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get entity by id", description = "Get API test entity by id")
-    @ApiResponse(responseCode = "200", description = "Success", content = {
-            @Content(
-                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = ApiTestEntity.class)
-            )
-    })
-    ResponseEntity<ApiTestEntity> getById(@PathVariable Long id);
-
     @GetMapping
     @Operation(summary = "Get all entities", description = "Return all API test entities")
     @ApiResponse(responseCode = "200", description = "Success", content = {
@@ -79,51 +58,44 @@ public interface ApiTestEntityApi {
     })
     ResponseEntity<List<ApiTestEntity>> getAll();
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update entity", description = "Full update of API test entity")
+    @PutMapping
+    @Operation(summary = "Replace last entity", description = "Replace last created entity")
     @ApiResponse(responseCode = "200", description = "Success", content = {
             @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiTestEntity.class)
             )
     })
-    ResponseEntity<ApiTestEntity> update(
-            @PathVariable Long id,
+    ResponseEntity<ApiTestEntity> updateLast(
             @RequestBody @Valid ApiTestEntityDto dto
     );
 
-    @PatchMapping("/{id}")
-    @Operation(summary = "Patch entity", description = "Partial update of API test entity")
+    @PatchMapping
+    @Operation(summary = "Patch last entity", description = "Partially update last created entity")
     @ApiResponse(responseCode = "200", description = "Success", content = {
             @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiTestEntity.class)
             )
     })
-    ResponseEntity<ApiTestEntity> patch(
-            @PathVariable Long id,
+    ResponseEntity<ApiTestEntity> patchLast(
             @RequestBody @Valid ApiTestEntityPatchDto dto
     );
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete entity", description = "Delete API test entity by id")
-    @ApiResponse(responseCode = "200", description = "Success")
-    ResponseEntity<Void> delete(@PathVariable Long id);
 
     @DeleteMapping
     @Operation(summary = "Delete all entities", description = "Delete all API test entities")
     @ApiResponse(responseCode = "200", description = "Success")
     ResponseEntity<Void> deleteAll();
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.HEAD)
-    @Operation(summary = "HEAD entity", description = "Return only headers for entity")
+    @RequestMapping(method = RequestMethod.HEAD)
+    @Operation(summary = "HEAD last entity", description = "Return only headers for last entity")
     @ApiResponse(responseCode = "200", description = "Success")
-    ResponseEntity<Void> head(@PathVariable Long id);
+    ResponseEntity<Void> head();
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.OPTIONS)
-    @Operation(summary = "OPTIONS entity", description = "Return allowed methods")
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    @Operation(summary = "OPTIONS entities", description = "Return allowed methods")
     @ApiResponse(responseCode = "200", description = "Success")
-    ResponseEntity<Void> options(@PathVariable Long id);
+    ResponseEntity<Void> options();
 
     @PostMapping(value = "/trace", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     @Operation(summary = "TRACE-like request", description = "Echo raw request body")
@@ -140,16 +112,15 @@ public interface ApiTestEntityApi {
     })
     ResponseEntity<ApiTestEntity> createFromParams(@RequestParam("value") String value);
 
-    @PostMapping(value = "/{id}/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Enrich entity with multipart", description = "Attach multipart data to existing entity")
+    @PostMapping(value = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Create entity with multipart", description = "Create entity using multipart form data")
     @ApiResponse(responseCode = "200", description = "Updated", content = {
             @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiTestEntity.class)
             )
     })
-    ResponseEntity<ApiTestEntity> enrichWithMultipart(
-            @PathVariable Long id,
+    ResponseEntity<ApiTestEntity> createWithMultipart(
             @RequestPart(value = "text", required = false) String text,
             @RequestPart(value = "file", required = false) MultipartFile file
     ) throws IOException;
@@ -160,14 +131,17 @@ public interface ApiTestEntityApi {
     ResponseEntity<String> health();
 
     @PostMapping(value = "/headers", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Validate request headers", description = "Validate required request headers and return response headers")
+    @Operation(summary = "Validate single request header", description = "Validate one request header and return one response header")
     @ApiResponse(responseCode = "200", description = "Headers validated successfully", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = HeaderValidationResponse.class))
     })
     ResponseEntity<HeaderValidationResponse> validateHeaders(
-            @RequestHeader(value = "X-Test-Request-Id") String requestId,
-            @RequestHeader(value = "X-Test-Client") String client,
-            @RequestHeader(value = "X-Test-Mode") String mode
+            @RequestHeader(value = "X-Test-Header") String testHeader
     );
+
+    @PostMapping("/reset")
+    @Operation(summary = "Reset entities", description = "Reset all in-memory entities")
+    @ApiResponse(responseCode = "200", description = "Success")
+    ResponseEntity<Void> reset();
 }

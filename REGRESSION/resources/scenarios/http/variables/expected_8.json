@@ -1,0 +1,7 @@
+{
+  "name": "{{entityName}}",
+  "description": "{{entityDescription}}",
+  "status": "{{entityStatus}}",
+  "category": "{{entityCategory}}",
+  "uploadedFile": null
+}

@@ -1,4 +1,0 @@
-username,password,expectedLogin,expectedResource
-testlum1,123456,expected_1_1,expected_3_1
-testlum2,123456,expected_1_2,expected_3_2
-testlum3,123456,expected_1_3,expected_3_3

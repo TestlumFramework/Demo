@@ -1,0 +1,21 @@
+{
+  "data": {
+    "getAllSelfBooks": [
+      {
+        "title": "Repeat Book One",
+        "author": "Vadym",
+        "number": 1
+      },
+      {
+        "title": "Repeat Book Two",
+        "author": "Taras",
+        "number": 2
+      },
+      {
+        "title": "Repeat Book Three",
+        "author": "Knubisoft",
+        "number": 3
+      }
+    ]
+  }
+}

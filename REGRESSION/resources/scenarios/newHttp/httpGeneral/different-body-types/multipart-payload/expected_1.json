@@ -1,8 +1,0 @@
-{
-  "id": "p(any)",
-  "name": "Multipart Entity",
-  "description": "Initial entity before multipart upload",
-  "status": "NEW",
-  "category": "MULTIPART_BASE",
-  "uploadedFile": null
-}

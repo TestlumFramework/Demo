@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL ADD</name>
+        <description>
+            This scenario verifies GraphQL mutation for adding a book.
+
+            Test flow includes:
+            1. Send GraphQL mutation to create a new book.
+            2. Verify response status = 200.
+            3. Validate created book in response.
+            4. Reset in-memory GraphQL storage after test.
+
+            This scenario validates:
+            - GraphQL mutation execution
+            - Book creation in memory
+            - Response body correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphQL</tags>
+    </settings>
+
+    <graphql comment="Step 1-3. Create book via GraphQL mutation"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"GraphQL Book\", author: \"Vadym\", number: 1 })
+                    { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 4. Reset GraphQL storage after add test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+
+</scenario>

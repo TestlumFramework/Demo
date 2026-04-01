@@ -1,0 +1,3 @@
+{
+  "query": "mutation { addSelfBook(newBook: { title: \"{{title}}\", author: \"{{author}}\", number: {{number}} }) { title author number } }"
+}

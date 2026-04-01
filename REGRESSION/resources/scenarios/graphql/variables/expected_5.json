@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Variable GraphQL Book",
+      "author" : "Vadym Kostenko",
+      "number" : 77
+    }
+  }
+}

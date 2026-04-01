@@ -3,16 +3,15 @@ package com.knubisoft.testapi.api.impl;
 import com.knubisoft.testapi.api.ApiTestJwtAuthApi;
 import com.knubisoft.testapi.dto.auth.jwt.JwtLoginRequest;
 import com.knubisoft.testapi.dto.auth.jwt.JwtLoginResponse;
-import com.knubisoft.testapi.dto.auth.jwt.JwtUsernameResponse;
+import com.knubisoft.testapi.dto.auth.jwt.JwtProtectedCreateRequest;
+import com.knubisoft.testapi.dto.auth.jwt.JwtProtectedResourceResponse;
 import com.knubisoft.testapi.exception.ApiTestAuthException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
@@ -21,64 +20,64 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
     private static final String BEARER_PREFIX = "Bearer ";
 
     private final Map<String, String> users = new ConcurrentHashMap<>();
-    private final Map<String, String> tokenStore = new ConcurrentHashMap<>();
+    private final Map<String, String> tokens = new ConcurrentHashMap<>();
+    private final List<String> protectedStorage = new ArrayList<>();
 
     @PostConstruct
     public void init() {
-        users.clear();
-        users.put("testlum", "123456");
-        users.put("testlum1", "123456");
-        users.put("testlum2", "123456");
-        users.put("testlum3", "123456");
-        tokenStore.clear();
+        resetState();
     }
 
     @Override
     public ResponseEntity<JwtLoginResponse> login(final JwtLoginRequest request) {
-        final String username = request.getUsername();
-        final String password = request.getPassword();
+        final String expectedPassword = users.get(request.getUsername());
 
-        if (!users.containsKey(username) || !users.get(username).equals(password)) {
-            throw new ApiTestAuthException("Invalid credentials");
+        if (expectedPassword == null || !expectedPassword.equals(request.getPassword())) {
+            throw new ApiTestAuthException("Invalid username or password");
         }
 
-        final String raw = username + ":" + System.currentTimeMillis();
-        final String token = Base64.getEncoder()
-                .encodeToString(raw.getBytes(StandardCharsets.UTF_8));
-
-        tokenStore.put(token, username);
-
-        return ResponseEntity.ok(new JwtLoginResponse(token));
-    }
-
-    @Override
-    public ResponseEntity<JwtUsernameResponse> getProtected(final String authorizationHeader) {
-        final String token = extractToken(authorizationHeader);
-
-        final String username = tokenStore.get(token);
-        if (username == null) {
-            throw new ApiTestAuthException("Invalid or expired token");
-        }
+        final String token = "jwt-token-" + UUID.randomUUID();
+        tokens.put(token, request.getUsername());
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
-                .body(new JwtUsernameResponse(username));
+                .body(new JwtLoginResponse(token));
     }
+
+    @Override
+    public ResponseEntity<JwtProtectedResourceResponse> createProtected(
+            final String authorizationHeader,
+            final JwtProtectedCreateRequest request) {
+
+        validateJwt(authorizationHeader);
+
+        protectedStorage.add(request.getValue());
+
+        return ResponseEntity.ok()
+                .header("X-Auth-Type", "JWT")
+                .body(new JwtProtectedResourceResponse(new ArrayList<String>(protectedStorage)));
+    }
+
+    @Override
+    public ResponseEntity<JwtProtectedResourceResponse> getAllProtected(
+            final String authorizationHeader) {
+
+        validateJwt(authorizationHeader);
+
+        return ResponseEntity.ok()
+                .header("X-Auth-Type", "JWT")
+                .body(new JwtProtectedResourceResponse(new ArrayList<String>(protectedStorage)));
+    }
+
     @Override
     public ResponseEntity<Void> reset() {
-        users.clear();
-        users.put("testlum", "123456");
-        users.put("testlum1", "123456");
-        users.put("testlum2", "123456");
-        users.put("testlum3", "123456");
-        tokenStore.clear();
-
+        resetState();
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
                 .build();
     }
 
-    private String extractToken(final String authorizationHeader) {
+    private String validateJwt(final String authorizationHeader) {
         if (StringUtils.isBlank(authorizationHeader)) {
             throw new ApiTestAuthException("Missing Authorization header");
         }
@@ -87,6 +86,20 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
             throw new ApiTestAuthException("Authorization header must start with Bearer");
         }
 
-        return authorizationHeader.substring(BEARER_PREFIX.length());
+        final String token = authorizationHeader.substring(BEARER_PREFIX.length());
+
+        if (!tokens.containsKey(token)) {
+            throw new ApiTestAuthException("Invalid or expired token");
+        }
+
+        return token;
+    }
+
+    private void resetState() {
+        users.clear();
+        tokens.clear();
+        protectedStorage.clear();
+
+        users.put("testlum", "123456");
     }
 }

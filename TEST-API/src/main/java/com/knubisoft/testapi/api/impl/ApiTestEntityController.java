@@ -15,48 +15,34 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 public class ApiTestEntityController implements ApiTestEntityApi {
 
-    private final Map<Long, ApiTestEntity> storage = new ConcurrentHashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final List<ApiTestEntity> storage = new CopyOnWriteArrayList<>();
 
     @Override
     public ResponseEntity<ApiTestEntity> create(final ApiTestEntityDto dto) {
-        final Long id = idGenerator.getAndIncrement();
-
         final ApiTestEntity entity = new ApiTestEntity();
-        entity.setId(id);
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setStatus(dto.getStatus());
         entity.setCategory(dto.getCategory());
 
-        storage.put(id, entity);
+        storage.add(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     @Override
-    public ResponseEntity<ApiTestEntity> getById(final Long id) {
-        return ResponseEntity.ok(getExistingEntity(id));
-    }
-
-    @Override
     public ResponseEntity<List<ApiTestEntity>> getAll() {
-        final List<ApiTestEntity> entities = new ArrayList<>(storage.values());
-        entities.sort(Comparator.comparing(ApiTestEntity::getId));
-        return ResponseEntity.ok(entities);
+        return ResponseEntity.ok(new ArrayList<>(storage));
     }
 
     @Override
-    public ResponseEntity<ApiTestEntity> update(final Long id, final ApiTestEntityDto dto) {
-        final ApiTestEntity entity = getExistingEntity(id);
+    public ResponseEntity<ApiTestEntity> updateLast(final ApiTestEntityDto dto) {
+        final ApiTestEntity entity = getLastEntity();
 
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
@@ -67,8 +53,8 @@ public class ApiTestEntityController implements ApiTestEntityApi {
     }
 
     @Override
-    public ResponseEntity<ApiTestEntity> patch(final Long id, final ApiTestEntityPatchDto dto) {
-        final ApiTestEntity entity = getExistingEntity(id);
+    public ResponseEntity<ApiTestEntity> patchLast(final ApiTestEntityPatchDto dto) {
+        final ApiTestEntity entity = getLastEntity();
 
         if (dto.getName() != null) {
             entity.setName(dto.getName());
@@ -87,35 +73,24 @@ public class ApiTestEntityController implements ApiTestEntityApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(final Long id) {
-        getExistingEntity(id);
-        storage.remove(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @Override
     public ResponseEntity<Void> deleteAll() {
         storage.clear();
-        idGenerator.set(1);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Void> head(final Long id) {
-        final ApiTestEntity entity = getExistingEntity(id);
+    public ResponseEntity<Void> head() {
+        final ApiTestEntity entity = getLastEntity();
 
         return ResponseEntity.ok()
-                .header("X-Entity-Id", String.valueOf(entity.getId()))
-                .header("X-Entity-Name", entity.getName() == null ? "" : entity.getName())
-                .header("X-Entity-Status", entity.getStatus() == null ? "" : entity.getStatus())
-                .header("X-Entity-Category", entity.getCategory() == null ? "" : entity.getCategory())
+                .header("X-Entity-Name", safe(entity.getName()))
+                .header("X-Entity-Status", safe(entity.getStatus()))
+                .header("X-Entity-Category", safe(entity.getCategory()))
                 .build();
     }
 
     @Override
-    public ResponseEntity<Void> options(final Long id) {
-        getExistingEntity(id);
-
+    public ResponseEntity<Void> options() {
         return ResponseEntity.ok()
                 .allow(
                         HttpMethod.GET,
@@ -124,8 +99,7 @@ public class ApiTestEntityController implements ApiTestEntityApi {
                         HttpMethod.PATCH,
                         HttpMethod.DELETE,
                         HttpMethod.HEAD,
-                        HttpMethod.OPTIONS,
-                        HttpMethod.TRACE
+                        HttpMethod.OPTIONS
                 )
                 .build();
     }
@@ -141,30 +115,25 @@ public class ApiTestEntityController implements ApiTestEntityApi {
 
     @Override
     public ResponseEntity<ApiTestEntity> createFromParams(final String value) {
-        final Long id = idGenerator.getAndIncrement();
-
         final ApiTestEntity entity = new ApiTestEntity();
-        entity.setId(id);
         entity.setName(value);
         entity.setDescription("Created from params");
         entity.setStatus("PARAM");
         entity.setCategory("REQUEST_PARAM");
 
-        storage.put(id, entity);
+        storage.add(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 
     @Override
-    public ResponseEntity<ApiTestEntity> enrichWithMultipart(final Long id,
-                                                             final String text,
+    public ResponseEntity<ApiTestEntity> createWithMultipart(final String text,
                                                              final MultipartFile file) throws IOException {
-        final ApiTestEntity entity = getExistingEntity(id);
-        entity.setDescription("Updated with multipart body");
+        final ApiTestEntity entity = new ApiTestEntity();
+        entity.setName(text != null ? text : "Multipart Entity");
+        entity.setDescription("Created with multipart body");
         entity.setStatus("MULTIPART");
         entity.setCategory("FORM");
-        if (text != null) {
-            entity.setName(text);
-        }
+
         if (file != null) {
             entity.setUploadedFile(new UploadedFileInfo(
                     file.getOriginalFilename(),
@@ -173,6 +142,7 @@ public class ApiTestEntityController implements ApiTestEntityApi {
             ));
         }
 
+        storage.add(entity);
         return ResponseEntity.ok(entity);
     }
 
@@ -182,31 +152,30 @@ public class ApiTestEntityController implements ApiTestEntityApi {
     }
 
     @Override
-    public ResponseEntity<HeaderValidationResponse> validateHeaders(final String requestId,
-                                                                    final String client,
-                                                                    final String mode) {
-        if (requestId == null || requestId.trim().isEmpty()) {
-            throw new ApiTestEntityException("Missing required header: X-Test-Request-Id");
+    public ResponseEntity<HeaderValidationResponse> validateHeaders(final String testHeader) {
+        if (testHeader == null || testHeader.trim().isEmpty()) {
+            throw new ApiTestEntityException("Missing required header: X-Test-Header");
         }
-        if (client == null || client.trim().isEmpty()) {
-            throw new ApiTestEntityException("Missing required header: X-Test-Client");
-        }
-        if (mode == null || mode.trim().isEmpty()) {
-            throw new ApiTestEntityException("Missing required header: X-Test-Mode");
-        }
+
         return ResponseEntity.ok()
-                .header("X-Validated-Request-Id", requestId)
-                .header("X-Validated-Client", client)
-                .header("X-Validated-Mode", mode)
-                .header("X-Header-Validation", "SUCCESS")
-                .body(new HeaderValidationResponse("Headers validated successfully"));
+                .header("X-Validated-Header", testHeader)
+                .body(new HeaderValidationResponse("Header validated successfully"));
     }
 
-    private ApiTestEntity getExistingEntity(final Long id) {
-        final ApiTestEntity entity = storage.get(id);
-        if (entity == null) {
-            throw new ApiTestEntityException("ApiTestEntity with id " + id + " not found");
+    @Override
+    public ResponseEntity<Void> reset() {
+        storage.clear();
+        return ResponseEntity.ok().build();
+    }
+
+    private ApiTestEntity getLastEntity() {
+        if (storage.isEmpty()) {
+            throw new ApiTestEntityException("No entities found");
         }
-        return entity;
+        return storage.get(storage.size() - 1);
+    }
+
+    private String safe(final String value) {
+        return value == null ? "" : value;
     }
 }

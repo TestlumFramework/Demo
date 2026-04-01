@@ -1,0 +1,101 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Condition</name>
+        <description>
+            This scenario verifies interaction between JWT authentication flow and condition command using auth tag.
+
+            Test flow includes:
+            1. Authenticate using auth command.
+            2. Create true condition.
+            3. Send POST request to create protected resource.
+            4. Verify created resource.
+            5. Retrieve all resources and validate result.
+            6. Create false condition.
+            7. Send invalid request with false condition (should be skipped).
+            8. Verify data remains unchanged.
+            9. Exit auth block.
+            10. Reset JWT auth state.
+
+            This scenario validates:
+            - JWT auth integration via auth tag
+            - Condition-based execution
+            - Skipped execution for false condition
+            - Data consistency
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <condition comment="Create true condition"
+               name="shouldCreate"
+               spel="true"/>
+
+    <condition comment="Create false condition"
+               name="neverExecute"
+               spel="false"/>
+
+    <auth comment="Authenticate via JWT auth command"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login">
+
+        <http comment="Create protected resource when condition is true"
+              alias="MEGA_APP"
+              condition="shouldCreate">
+            <post endpoint="/api/test/auth/jwt/resource">
+                <response code="200" file="expected_4.json"/>
+                <body>
+                    <raw>
+                        {
+                        "value": "secure-resource"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <http comment="Verify created resource exists"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resources">
+                <response code="200" file="expected_5.json"/>
+            </get>
+        </http>
+
+        <http comment="This invalid request should be skipped because condition is false"
+              alias="MEGA_APP"
+              condition="neverExecute">
+            <post endpoint="/api/test/auth/jwt/resource">
+                <response code="200" file="expected_6.json"/>
+                <body>
+                    <raw>
+                        {
+                        "invalidField": "this-step-must-never-run"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <http comment="Verify only original resource still exists"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resources">
+                <response code="200" file="expected_7.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Reset JWT auth state after test"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

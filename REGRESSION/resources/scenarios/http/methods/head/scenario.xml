@@ -1,0 +1,63 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP HEAD</name>
+        <description>
+            This scenario verifies HTTP HEAD method behavior.
+
+            Test flow includes:
+            1. Create entity in memory.
+            2. Send HEAD request to retrieve metadata headers.
+            3. Verify response status = 200.
+            4. Validate returned custom headers.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Header-only metadata retrieval via HEAD method
+            - Custom response header correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create entity before HEAD request"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Head Entity",
+                    "description": "Entity for HEAD test",
+                    "status": "ACTIVE",
+                    "category": "TEST"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-4. Retrieve custom metadata headers via HEAD request"
+          alias="MEGA_APP">
+        <head endpoint="/api/test/entities">
+            <response code="200" file="expected_2.json">
+                <header name="X-Entity-Name" data="Head Entity"/>
+                <header name="X-Entity-Status" data="ACTIVE"/>
+                <header name="X-Entity-Category" data="TEST"/>
+            </response>
+        </head>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after HEAD test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

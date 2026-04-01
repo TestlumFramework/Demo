@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Variations</name>
+        <description>
+            This scenario verifies JWT authentication flow using variation data.
+
+            Test flow includes:
+            1. Load variation data from CSV file.
+            2. Authenticate via auth tag using JWT login flow.
+            3. Create protected resource using variation value.
+            4. Verify create response = 200.
+            5. Retrieve all protected resources.
+            6. Verify that created variation resource exists.
+            7. Reset JWT auth state after each variation execution.
+
+            This scenario validates:
+            - Variation value injection into authenticated requests
+            - JWT auth flow wrapped by auth tag
+            - Protected resource creation using variation data
+            - Retrieval of created resources
+            - Stable repeated auth execution with multiple variation rows
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>authVariations.csv</variations>
+        <tags>auth</tags>
+    </settings>
+
+    <auth comment="Authenticate via JWT auth command"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login">
+
+        <http comment="Create protected resource using variation value"
+              alias="MEGA_APP">
+            <post endpoint="/api/test/auth/jwt/resource">
+                <response code="200" file="{{expectedCreate}}.json"/>
+                <body>
+                    <raw>
+                        {
+                        "value": "{{value}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+        <http comment="Verify that variation resource exists"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resources">
+                <response code="200" file="{{expectedResources}}.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Reset JWT auth state after variation"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

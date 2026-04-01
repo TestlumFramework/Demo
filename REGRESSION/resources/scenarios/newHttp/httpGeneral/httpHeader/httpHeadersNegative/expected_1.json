@@ -1,5 +1,0 @@
-{
-  "status" : "INTERNAL_SERVER_ERROR",
-  "message" : "Required request header 'X-Test-Client' for method parameter type String is not present",
-  "timestamp" : "p(any)"
-}
