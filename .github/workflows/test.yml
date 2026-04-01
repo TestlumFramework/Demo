@@ -271,7 +271,8 @@ jobs:
               item["linux_arm64_url"] = data.get("run_url", "")
 
             item["tests_branch"] = data["tests_branch"]
-            item["run_mobile_tests"] = data.get("run_mobile_tests", "false")
+            if data.get("run_mobile_tests", "false").lower() == "true":
+              item["run_mobile_tests"] = "true"
             item["last_updated"] = published_by_tag.get(key, data.get("run_date", "N/A"))
 
           ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
