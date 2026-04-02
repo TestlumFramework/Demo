@@ -75,14 +75,14 @@
 
         <receive comment="Check ability to receive response from the subscription"
                  limit="1" timeoutMillis="1000">
-            <file>expected_14.json</file>
+            <file>expected_13.json</file>
         </receive>
     </websocket>
 
     <http comment="Some api request to check websocket is not disconnected"
           alias="CAT_FACTS">
         <get endpoint="/facts">
-            <response file="expected_15.json" code="200"/>
+            <response file="expected_14.json" code="200"/>
         </get>
     </http>
 
@@ -105,13 +105,13 @@
             <receive comment="Check ability to receive json response"
                      topic="/topic/test"
                      limit="2" timeoutMillis="3000">
-                <file>expected_18.json</file>
+                <file>expected_17.json</file>
             </receive>
 
             <receive comment="Check ability to receive periodic message from the server"
                      topic="/topic/server"
                      limit="3" timeoutMillis="4000">
-                <file>expected_19.json</file>
+                <file>expected_18.json</file>
             </receive>
         </stomp>
     </websocket>
