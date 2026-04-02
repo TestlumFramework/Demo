@@ -15,7 +15,7 @@
 
     <websockets>
         <api alias="MEGA_WS_APP" url="ws://mega-test-api:8080/api/v1/ws-app" protocol="stomp" enabled="true"/>
-        <api alias="ECHO" url="wss://echo.websocket.org" protocol="standard" enabled="true"/>
+        <api alias="ECHO" url="wss://ws.postman-echo.com/raw" protocol="standard" enabled="true"/>
     </websockets>
 
     <graphqlIntegration>
