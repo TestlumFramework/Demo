@@ -41,7 +41,7 @@
         <tag name="sqs" enabled="false"/>
         <tag name="redis" enabled="false"/>
         <tag name="s3" enabled="false"/>
-        <tag name="sendgrid" enabled="true"/>
+        <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="true"/>
         <tag name="ses" enabled="false"/>
