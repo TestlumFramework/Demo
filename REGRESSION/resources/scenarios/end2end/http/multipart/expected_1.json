@@ -10,11 +10,11 @@
   },
   "headers": {
     "host": "postman-echo.com",
+    "content-length": "p(any)",
     "content-type": "p(any)",
     "accept-encoding": "gzip, br",
     "user-agent": "p(any)",
-    "x-forwarded-proto": "https",
-    "content-length": "p(any)"
+    "x-forwarded-proto": "https"
   },
   "json": null,
   "url": "https://postman-echo.com/post"

@@ -5,10 +5,11 @@
   },
   "headers": {
     "host": "postman-echo.com",
-    "accept-encoding": "gzip, br",
     "user-agent": "p(any)",
+    "content-type": "application/json",
+    "accept-encoding": "gzip, br",
     "x-forwarded-proto": "https",
-    "content-type": "application/json"
+    "cookie": "p(any)"
   },
   "url": "https://postman-echo.com/get?testParam12!=Hello%20World%2112%40&testParam13!=Hello%20World%2113%40"
 }
