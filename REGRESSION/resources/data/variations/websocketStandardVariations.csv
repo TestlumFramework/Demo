@@ -1,0 +1,4 @@
+message,expectedFile
+hello websocket,expected_1
+ping,expected_2
+Testlum WS,expected_3

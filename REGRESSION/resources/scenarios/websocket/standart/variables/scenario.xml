@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket Standard Text Variables</name>
+        <description>
+            This scenario verifies standard WebSocket text execution using variables.
+
+            Test flow includes:
+            1. Create variables for outgoing messages and expected file names.
+            2. Connect to standard WebSocket.
+            3. Send first text message using variable.
+            4. Receive echoed response.
+            5. Send second text message using variable.
+            6. Receive echoed response.
+
+            This scenario validates:
+            - Variable injection into websocket text messages
+            - Variable reuse across send steps
+            - Stable text send/receive flow
+            - Correct echoed responses
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <var comment="Create variable for first text message"
+         name="firstMessage">
+        <constant value="hello from variable"/>
+    </var>
+
+    <websocket comment="Step 1-6. Execute standard websocket text flow using variables"
+               alias="MEGA_WS_STANDARD"
+               disconnect="true">
+
+        <send comment="Step 3. Send first text message using variable">
+            <message>{{firstMessage}}</message>
+        </send>
+
+        <receive comment="Step 6. Receive second echoed response"
+                 limit="1"
+                 timeoutMillis="3000">
+            <file>expected_4.json</file>
+        </receive>
+
+    </websocket>
+
+</scenario>

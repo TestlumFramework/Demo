@@ -26,7 +26,7 @@
     </overview>
 
     <settings>
-        <tags>graphQL</tags>
+        <tags>graphql</tags>
     </settings>
 
     <condition comment="Step 1. Create true condition"

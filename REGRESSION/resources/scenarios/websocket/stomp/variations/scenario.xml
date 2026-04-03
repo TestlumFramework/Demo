@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket STOMP Variations</name>
+        <description>
+            This scenario verifies STOMP WebSocket execution using variations file.
+
+            Test flow includes:
+            1. Load test data from variations CSV file.
+            2. Connect to STOMP WebSocket for each variation row.
+            3. Subscribe to /topic/ping.
+            4. Send message to /app/ping using variation value.
+            5. Receive and verify response using expected file from variation.
+
+            This scenario validates:
+            - Variation value injection into websocket message
+            - Variation value injection into expected file names
+            - Repeated STOMP execution using multiple variation rows
+            - Stable websocket send/receive flow for different input values
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>websocketVariations.csv</variations>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="Step 1-5. Execute STOMP ping flow using variation-based message"
+               alias="MEGA_WS_APP"
+               disconnect="true">
+
+        <stomp>
+
+            <subscribe comment="Subscribe to ping topic"
+                       topic="/topic/ping"/>
+
+            <send comment="Send ping message using variation value"
+                  endpoint="/app/ping">
+                <message>{{message}}</message>
+            </send>
+
+            <receive comment="Receive and verify ping response using variation-based expected file"
+                     topic="/topic/ping"
+                     limit="1"
+                     timeoutMillis="1000">
+                <file>{{expectedFile}}.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+</scenario>

@@ -28,7 +28,7 @@
     </overview>
 
     <settings>
-        <tags>graphQL</tags>
+        <tags>graphql</tags>
     </settings>
 
     <graphql comment="Step 1. Create first book before delete"

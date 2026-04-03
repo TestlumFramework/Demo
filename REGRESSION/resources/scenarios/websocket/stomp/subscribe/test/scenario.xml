@@ -1,0 +1,65 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket STOMP General - Topic Isolation</name>
+        <description>
+            This scenario verifies that messages are delivered only to the correct subscribed topic.
+
+            Test flow includes:
+            1. Connect to STOMP WebSocket.
+            2. Subscribe to /topic/ping.
+            3. Subscribe to /topic/test.
+            4. Send message to /app/ping.
+            5. Receive message from /topic/ping.
+            6. Verify that /topic/test remains empty.
+
+            This scenario validates:
+            - STOMP multiple subscriptions
+            - Correct topic routing
+            - No unexpected message delivery to unrelated topic
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="Verify message isolation between topics"
+               alias="MEGA_WS_APP"
+               disconnect="true">
+
+        <stomp>
+
+            <subscribe comment="Subscribe to ping topic"
+                       topic="/topic/ping"/>
+
+            <subscribe comment="Subscribe to test topic"
+                       topic="/topic/test"/>
+
+            <send comment="Send message to ping endpoint"
+                  endpoint="/app/ping">
+                <message>ping isolation check</message>
+            </send>
+
+            <receive comment="Receive message from ping topic"
+                     topic="/topic/ping"
+                     limit="1"
+                     timeoutMillis="1000">
+                <file>expected_5.json</file>
+            </receive>
+
+            <receive comment="Verify test topic remains empty"
+                     topic="/topic/test"
+                     limit="1"
+                     timeoutMillis="1000">
+                <file>expected_6.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+</scenario>

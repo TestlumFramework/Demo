@@ -27,7 +27,7 @@
 
     <settings>
         <variations>graphqlVariations.csv</variations>
-        <tags>graphQL</tags>
+        <tags>graphql</tags>
     </settings>
 
     <graphql comment="Step 1-4. Create book using variation data"

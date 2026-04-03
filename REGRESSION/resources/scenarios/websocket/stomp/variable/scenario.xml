@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket STOMP Variables</name>
+        <description>
+            This scenario verifies STOMP WebSocket execution using variables.
+
+            Test flow includes:
+            1. Create variables for endpoints, message content and expected file.
+            2. Connect to STOMP WebSocket.
+            3. Subscribe to topic using variable.
+            4. Send message using variables in endpoint and body.
+            5. Receive and verify response using expected file variable.
+
+            This scenario validates:
+            - Variable injection into websocket endpoint
+            - Variable injection into message body
+            - Variable injection into topic
+            - Variable injection into expected file
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <var comment="Endpoint for ping"
+         name="pingEndpoint">
+        <constant value="app/ping"/>
+    </var>
+
+    <var comment="Topic for ping"
+         name="pingTopic">
+        <constant value="topic/ping"/>
+    </var>
+
+    <var comment="Message value"
+         name="pingMessage">
+        <constant value="hello from variable"/>
+    </var>
+
+    <websocket comment="Execute STOMP flow using variables"
+               alias="MEGA_WS_APP">
+
+        <stomp>
+
+            <subscribe comment="Subscribe using variable"
+                       topic="/{{pingTopic}}"/>
+
+            <send comment="Send message using variables"
+                  endpoint="/{{pingEndpoint}}">
+                <message>{{pingMessage}}</message>
+            </send>
+
+            <receive comment="Receive and verify using variable file"
+                     topic="/{{pingTopic}}"
+                     limit="1"
+                     timeoutMillis="3000">
+                <file>expected_7.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+</scenario>

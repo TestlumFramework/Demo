@@ -10,7 +10,6 @@
     <runScenariosByTag enabled="true">
         <tag name="auth" enabled="true"/>
         <tag name="http" enabled="true"/>
-        <tag name="graphQL" enabled="true"/>
 
         <tag name="web" enabled="true"/>
         <tag name="mobilebrowser" enabled="false"/>
