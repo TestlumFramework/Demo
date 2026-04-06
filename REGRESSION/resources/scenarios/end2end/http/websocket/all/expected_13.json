@@ -1,0 +1,3 @@
+[
+  "\n                {\n                \"event\": \"subscribe\",\n                \"pair\": [\n                \"XBT/USD\",\n                \"XBT/EUR\"\n                ],\n                \"subscription\": {\n                \"name\": \"ticker\"\n                }\n                }\n            "
+]

@@ -1,0 +1,49 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Multipart Payload</name>
+        <description>
+            This scenario verifies API support for multipart payload processing.
+
+            Test flow includes:
+            1. Send multipart request with text and file.
+            2. Verify response status = 200.
+            3. Validate created entity contains multipart values and uploaded file metadata.
+            4. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Multipart request body handling
+            - Text field processing from multipart form
+            - File upload metadata extraction
+            - Entity creation from multipart payload
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1-3. Send multipart request with text and file"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/multipart">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <multipart>
+                    <param name="text" data="Updated from multipart request"/>
+                    <file name="file" fileName="testData.txt"/>
+                </multipart>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 4. Reset entity storage after multipart payload test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>
