@@ -1,5 +1,5 @@
 [
   {
-    "value": "hello from variable"
+    "value": "{{pingMessage}}"
   }
 ]

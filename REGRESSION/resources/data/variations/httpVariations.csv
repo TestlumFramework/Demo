@@ -1,3 +1,0 @@
-name,description,status,category,expectedFile
-Variation Entity One,Created from first variation,NEW,VARIATION_ONE,expected_1
-Variation Entity Two,Created from second variation,ACTIVE,VARIATION_TWO,expected_2

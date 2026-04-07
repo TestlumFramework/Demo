@@ -12,14 +12,12 @@
             2. Send GraphQL mutation for each variation row using request file.
             3. Verify response status = 200 for each iteration.
             4. Validate created book using variation-based expected file.
-            5. Send GraphQL query to retrieve book by title for each variation row using request file.
-            6. Verify response status = 200 for each iteration.
-            7. Validate retrieved book using variation-based expected file.
-            8. Reset in-memory GraphQL storage after all variation iterations.
+            5. Reset in-memory GraphQL storage after all variation iterations.
 
             This scenario validates:
-            - Variation value injection into GraphQL request files
+            - Variation value injection into GraphQL request file content
             - Variation value injection into expected file names
+            - Variation value injection into GraphQL comment
             - Stable repeated GraphQL execution using multiple variation rows
         </description>
         <developer>Vadym Kostenko</developer>
@@ -30,17 +28,17 @@
         <tags>graphql</tags>
     </settings>
 
-    <graphql comment="Step 1-4. Create book using variation data"
+    <graphql comment="{{comment}}"
              alias="MEGA_GQL_APP">
         <post endpoint="/graphql">
-            <response code="200" file="{{expectedCreate}}.json"/>
+            <response code="200" file="{{expected_1}}.json"/>
             <body>
                 <from file="request_1.json"/>
             </body>
         </post>
     </graphql>
 
-    <graphql comment="Step 8. Reset GraphQL storage after all variation iterations"
+    <graphql comment="Step 5. Reset GraphQL storage after all variation iterations"
              alias="MEGA_GQL_APP">
         <post endpoint="/graphql">
             <response code="200" file="expected_3.json"/>

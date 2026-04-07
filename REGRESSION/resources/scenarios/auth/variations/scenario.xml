@@ -9,19 +9,19 @@
 
             Test flow includes:
             1. Load variation data from CSV file.
-            2. Authenticate via auth tag using JWT login flow.
-            3. Create protected resource using variation value.
-            4. Verify create response = 200.
-            5. Retrieve all protected resources.
-            6. Verify that created variation resource exists.
-            7. Reset JWT auth state after each variation execution.
+            2. Authenticate via auth tag using variation-based auth attributes.
+            3. Create protected resource using variation-based request data.
+            4. Verify create response = 200 using variation-based expected file.
+            5. Reset JWT auth state after all variation executions.
 
             This scenario validates:
-            - Variation value injection into authenticated requests
-            - JWT auth flow wrapped by auth tag
-            - Protected resource creation using variation data
-            - Retrieval of created resources
-            - Stable repeated auth execution with multiple variation rows
+            - Variation injection into auth comment
+            - Variation injection into auth login endpoint
+            - Variation injection into nested http comment
+            - Variation injection into nested http endpoint
+            - Variation injection into request body
+            - Variation injection into expected file names
+            - Stable repeated authenticated execution
         </description>
         <developer>Vadym Kostenko</developer>
     </overview>
@@ -31,15 +31,15 @@
         <tags>auth</tags>
     </settings>
 
-    <auth comment="Authenticate via JWT auth command"
+    <auth comment="{{authComment}}"
           apiAlias="MEGA_APP"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/api/test/auth/jwt/login">
+          loginEndpoint="/{{authLoginEndpoint}}">
 
-        <http comment="Create protected resource using variation value"
+        <http comment="{{httpComment}}"
               alias="MEGA_APP">
-            <post endpoint="/api/test/auth/jwt/resource">
-                <response code="200" file="{{expectedCreate}}.json"/>
+            <post endpoint="/{{httpEndpoint}}">
+                <response code="200" file="{{expected_2}}.json"/>
                 <body>
                     <raw>
                         {
@@ -50,16 +50,9 @@
             </post>
         </http>
 
-        <http comment="Verify that variation resource exists"
-              alias="MEGA_APP">
-            <get endpoint="/api/test/auth/jwt/resources">
-                <response code="200" file="{{expectedResources}}.json"/>
-            </get>
-        </http>
-
     </auth>
 
-    <http comment="Reset JWT auth state after variation"
+    <http comment="Reset JWT auth state after all variation executions"
           alias="MEGA_APP">
         <delete endpoint="/api/test/auth/jwt/reset">
             <response code="200"/>

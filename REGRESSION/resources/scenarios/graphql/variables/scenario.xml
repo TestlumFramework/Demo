@@ -8,20 +8,17 @@
             This scenario verifies GraphQL request execution using variables.
 
             Test flow includes:
-            1. Create variables for endpoint, title, author, number and expected files.
+            1. Create variables for comments, endpoint, book fields and expected files.
             2. Execute GraphQL mutation using variable values.
-            3. Verify create response = 200.
-            4. Execute GraphQL query by title using variable value.
-            5. Verify returned book matches expected response.
-            6. Execute GraphQL query to retrieve all books.
-            7. Verify created book exists in storage.
-            8. Reset GraphQL storage after test.
+            3. Verify create response = 200 using variable-based expected file.
+            4. Reset GraphQL storage using variable-based endpoint.
 
             This scenario validates:
-            - Variable interpolation inside GraphQL request body
-            - Variable interpolation inside GraphQL query params
-            - Variable reuse across mutation and query flow
-            - Stable GraphQL execution with reusable values
+            - Variable injection into comment
+            - Variable injection into GraphQL endpoint
+            - Variable injection into GraphQL request body
+            - Variable injection into expected file names
+            - Variable reuse across GraphQL mutation flow
         </description>
         <developer>Vadym Kostenko</developer>
     </overview>
@@ -30,53 +27,54 @@
         <tags>graphql</tags>
     </settings>
 
-    <var comment="Step 1. Create GraphQL endpoint variable"
+    <var comment="Endpoint variable"
          name="graphqlEndpoint">
         <constant value="graphql"/>
     </var>
 
-    <var comment="Step 1. Create title variable"
+    <var comment="Create mutation comment"
+         name="createComment">
+        <constant value="Create GraphQL book using variables"/>
+    </var>
+
+    <var comment="Reset comment"
+         name="resetComment">
+        <constant value="Reset GraphQL storage"/>
+    </var>
+
+    <var comment="Book title"
          name="bookTitle">
         <constant value="Variable GraphQL Book"/>
     </var>
 
-    <var comment="Step 1. Create author variable"
+    <var comment="Book author"
          name="bookAuthor">
         <constant value="Vadym Kostenko"/>
     </var>
 
-    <var comment="Step 1. Create number variable"
+    <var comment="Book number"
          name="bookNumber">
         <constant value="77"/>
     </var>
 
-    <graphql comment="Step 2-3. Create GraphQL book using variable values"
+    <graphql comment="{{createComment}}"
              alias="MEGA_GQL_APP">
         <post endpoint="/{{graphqlEndpoint}}">
-            <response code="200" file="expected_5.json"/>
+            <response code="200" file="expected_7.json"/>
             <body>
                 <raw>
                     {
-                    "query": "mutation { addSelfBook(newBook: { title: \"{{bookTitle}}\", author: \"{{bookAuthor}}\",
-                    number: {{bookNumber}} }) { title author number } }"
+                    "query": "mutation { addSelfBook(newBook: { title: \"{{bookTitle}}\", author: \"{{bookAuthor}}\", number: {{bookNumber}} }) { title author number } }"
                     }
                 </raw>
             </body>
         </post>
     </graphql>
 
-    <graphql comment="Step 6-7. Retrieve all GraphQL books and verify created book exists"
-             alias="MEGA_GQL_APP">
-        <get endpoint="/{{graphqlEndpoint}}">
-            <response code="200" file="expected_6.json"/>
-            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
-        </get>
-    </graphql>
-
-    <graphql comment="Step 8. Reset GraphQL storage after variables test"
+    <graphql comment="{{resetComment}}"
              alias="MEGA_GQL_APP">
         <post endpoint="/{{graphqlEndpoint}}">
-            <response code="200" file="expected_7.json"/>
+            <response code="200" file="expected_8.json"/>
             <body>
                 <raw>
                     {

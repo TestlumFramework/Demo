@@ -1,5 +1,9 @@
 {
   "data" : {
-    "resetSelfBooks" : true
+    "addSelfBook" : {
+      "title" : "{{bookTitle}}",
+      "author" : "{{bookAuthor}}",
+      "number" : "{{bookNumber}}"
+    }
   }
 }

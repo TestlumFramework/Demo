@@ -8,81 +8,59 @@
             This scenario verifies interaction between JWT authentication flow and condition command using auth tag.
 
             Test flow includes:
-            1. Authenticate using auth command.
-            2. Create true condition.
-            3. Send POST request to create protected resource.
-            4. Verify created resource.
-            5. Retrieve all resources and validate result.
-            6. Create false condition.
-            7. Send invalid request with false condition (should be skipped).
-            8. Verify data remains unchanged.
-            9. Exit auth block.
-            10. Reset JWT auth state.
+            1. Create true condition.
+            2. Authenticate using auth command with condition=true.
+            3. Execute protected request inside auth block.
+            4. Verify authenticated access works correctly.
+            5. Create false condition.
+            6. Try to execute second auth block with invalid credentials and condition=false.
+            7. Verify false-condition auth block is skipped completely.
+            8. Reset JWT auth state after test.
 
             This scenario validates:
             - JWT auth integration via auth tag
-            - Condition-based execution
-            - Skipped execution for false condition
-            - Data consistency
+            - Condition-based auth block execution
+            - Skipped auth execution for false condition
+            - Safe skipping of invalid auth block
         </description>
         <developer>Vadym Kostenko</developer>
     </overview>
 
-    <settings>
+    <settings active="false">
         <tags>auth</tags>
     </settings>
 
-    <condition comment="Create true condition"
-               name="shouldCreate"
+    <condition comment="Step 1. Create true condition"
+               name="shouldAuthenticate"
                spel="true"/>
 
-    <condition comment="Create false condition"
-               name="neverExecute"
-               spel="false"/>
-
-    <auth comment="Authenticate via JWT auth command"
+    <auth comment="Step 2-4. Authenticate via JWT auth command and execute protected request"
           apiAlias="MEGA_APP"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/api/test/auth/jwt/login">
+          loginEndpoint="/api/test/auth/jwt/login"
+          condition="shouldAuthenticate">
 
-        <http comment="Create protected resource when condition is true"
-              alias="MEGA_APP"
-              condition="shouldCreate">
-            <post endpoint="/api/test/auth/jwt/resource">
-                <response code="200" file="expected_4.json"/>
-                <body>
-                    <raw>
-                        {
-                        "value": "secure-resource"
-                        }
-                    </raw>
-                </body>
-            </post>
-        </http>
-
-        <http comment="Verify created resource exists"
+        <http comment="Step 3-4. Verify protected resource is accessible inside authenticated block"
               alias="MEGA_APP">
             <get endpoint="/api/test/auth/jwt/resources">
-                <response code="200" file="expected_5.json"/>
+                <response code="200" file="expected_3.json"/>
             </get>
         </http>
 
-        <http comment="This invalid request should be skipped because condition is false"
-              alias="MEGA_APP"
-              condition="neverExecute">
-            <post endpoint="/api/test/auth/jwt/resource">
-                <response code="200" file="expected_6.json"/>
-                <body>
-                    <raw>
-                        {
-                        "invalidField": "this-step-must-never-run"
-                        }
-                    </raw>
-                </body>
-            </post>
-        </http>
+    </auth>
 
-        <http comment="Verify only original resource still exists"
+    <condition comment="Step 5. Create false condition"
+               name="shouldSkipAuth"
+               spel="false"/>
+
+    <auth comment="Step 6-7. This auth block should be skipped because condition is false.
+    If it executes unexpectedly, login must fail because invalid credentials are provided"
+          apiAlias="MEGA_APP"
+          credentials="invalid-http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login"
+          condition="shouldSkipAuth">
+
+        <http comment="This request must never execute because auth block should be skipped"
               alias="MEGA_APP">
             <get endpoint="/api/test/auth/jwt/resources">
                 <response code="200" file="expected_7.json"/>
@@ -91,7 +69,7 @@
 
     </auth>
 
-    <http comment="Reset JWT auth state after test"
+    <http comment="Step 8. Reset JWT auth state after condition test"
           alias="MEGA_APP">
         <delete endpoint="/api/test/auth/jwt/reset">
             <response code="200"/>

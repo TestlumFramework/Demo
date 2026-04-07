@@ -1,0 +1,6 @@
+{
+  "name": "{{fileEntityName}}",
+  "description": "{{fileEntityDescription}}",
+  "status": "{{fileEntityStatus}}",
+  "category": "{{fileEntityCategory}}"
+}

@@ -15,6 +15,8 @@
             5. Reset in-memory storage after all iterations.
 
             This scenario validates:
+            - Variation value injection into comment
+            - Variation value injection into endpoint
             - Variation value injection into request body
             - Variation value injection into expected file names
             - Repeated HTTP execution using multiple variation rows
@@ -28,10 +30,10 @@
         <tags>http</tags>
     </settings>
 
-    <http comment="Step 1-4. Create entity using variation-based request body"
+    <http comment="{{comment}}"
           alias="MEGA_APP">
-        <post endpoint="/api/test/entities">
-            <response code="201" file="{{expectedFile}}.json"/>
+        <post endpoint="/{{endpoint}}">
+            <response code="201" file="{{expected_1}}.json"/>
             <body>
                 <raw>
                     {

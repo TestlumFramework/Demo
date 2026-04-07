@@ -5,48 +5,48 @@
     <overview>
         <name>WebSocket STOMP Variations</name>
         <description>
-            This scenario verifies STOMP WebSocket execution using variations file.
+            This scenario verifies STOMP WebSocket execution using variation data.
 
             Test flow includes:
-            1. Load test data from variations CSV file.
-            2. Connect to STOMP WebSocket for each variation row.
-            3. Subscribe to /topic/ping.
-            4. Send message to /app/ping using variation value.
-            5. Receive and verify response using expected file from variation.
+            1. Load websocket configuration from variations CSV file.
+            2. Connect to STOMP WebSocket.
+            3. Subscribe to topic using variation value.
+            4. Send message using variation endpoint and payload.
+            5. Receive and verify response using variation expected file.
 
             This scenario validates:
-            - Variation value injection into websocket message
-            - Variation value injection into expected file names
-            - Repeated STOMP execution using multiple variation rows
-            - Stable websocket send/receive flow for different input values
+            - Variation injection into websocket endpoint
+            - Variation injection into message body
+            - Variation injection into topic
+            - Variation injection into expected file
+            - Stable STOMP execution across multiple variation rows
         </description>
         <developer>Vadym Kostenko</developer>
     </overview>
 
     <settings>
-        <variations>websocketVariations.csv</variations>
+        <variations>websocketStompVariations.csv</variations>
         <tags>websocket</tags>
     </settings>
 
-    <websocket comment="Step 1-5. Execute STOMP ping flow using variation-based message"
-               alias="MEGA_WS_APP"
-               disconnect="true">
+    <websocket comment="{{comment}}"
+               alias="MEGA_WS_APP">
 
         <stomp>
 
-            <subscribe comment="Subscribe to ping topic"
-                       topic="/topic/ping"/>
+            <subscribe comment="{{subscribeComment}}"
+                       topic="/{{topic}}"/>
 
-            <send comment="Send ping message using variation value"
-                  endpoint="/app/ping">
+            <send comment="{{sendComment}}"
+                  endpoint="/{{endpoint}}">
                 <message>{{message}}</message>
             </send>
 
-            <receive comment="Receive and verify ping response using variation-based expected file"
-                     topic="/topic/ping"
+            <receive comment="{{receiveComment}}"
+                     topic="/{{topic}}"
                      limit="1"
                      timeoutMillis="1000">
-                <file>{{expectedFile}}.json</file>
+                <file>{{expected_2}}.json</file>
             </receive>
 
         </stomp>

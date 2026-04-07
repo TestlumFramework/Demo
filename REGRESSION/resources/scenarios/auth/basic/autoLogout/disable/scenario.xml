@@ -30,6 +30,7 @@
         <tags>auth</tags>
     </settings>
 
+<!--  move http-auth-user-basic.json to data/credentials/http/basic  -->
     <http comment="Unauthorized request should return 401 before auth"
           alias="MEGA_APP_BASIC_NO_LOGOUT">
         <get endpoint="/api/test/auth/basic/users">

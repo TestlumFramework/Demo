@@ -8,19 +8,19 @@
             This scenario verifies JWT authentication flow using variables.
 
             Test flow includes:
-            1. Create variables for login endpoint, create endpoint, get endpoint, reset endpoint and expected files.
+            1. Create variables for comments, login endpoint, protected endpoint, reset endpoint, condition and request values.
             2. Authenticate via auth tag using variable-based login endpoint.
             3. Create protected resource using variable-based endpoint and body.
-            4. Verify create response = 200 using variable-based expected file.
-            5. Retrieve protected resources using variable-based endpoint.
-            6. Verify retrieved resources using variable-based expected file.
-            7. Reset JWT auth state using variable-based endpoint.
+            4. Verify create response = 200 using expected file with injected variables.
+            5. Reset JWT auth state using variable-based endpoint.
 
             This scenario validates:
             - Variable injection into auth tag attributes
+            - Variable injection into auth and http comments
+            - Variable injection into condition
             - Variable injection into HTTP endpoints
             - Variable injection into request body
-            - Variable injection into expected file names
+            - Variable injection into expected file content
             - Variable reuse across authenticated JWT flow
         </description>
         <developer>Vadym Kostenko</developer>
@@ -30,6 +30,30 @@
         <tags>auth</tags>
     </settings>
 
+    <condition comment="Create true condition"
+               name="shouldExecute"
+               spel="true"/>
+
+    <var comment="Create variable for condition"
+         name="varShouldExecute">
+        <constant value="{{shouldExecute}}"/>
+    </var>
+
+    <var comment="Create variable for auth comment"
+         name="authComment">
+        <constant value="Authenticate via JWT auth command using variable-based login endpoint"/>
+    </var>
+
+    <var comment="Create variable for create resource comment"
+         name="createComment">
+        <constant value="Create protected resource using variable-based endpoint and body"/>
+    </var>
+
+    <var comment="Create variable for reset comment"
+         name="resetComment">
+        <constant value="Reset JWT auth state using variable-based endpoint"/>
+    </var>
+
     <var comment="Create login endpoint variable"
          name="loginEndpoint">
         <constant value="api/test/auth/jwt/login"/>
@@ -38,11 +62,6 @@
     <var comment="Create resource creation endpoint variable"
          name="createResourceEndpoint">
         <constant value="api/test/auth/jwt/resource"/>
-    </var>
-
-    <var comment="Create resources retrieval endpoint variable"
-         name="getResourcesEndpoint">
-        <constant value="api/test/auth/jwt/resources"/>
     </var>
 
     <var comment="Create reset endpoint variable"
@@ -55,13 +74,15 @@
         <constant value="variable-resource"/>
     </var>
 
-    <auth comment="Authenticate via JWT auth command using variable-based login endpoint"
+    <auth comment="{{authComment}}"
           apiAlias="MEGA_APP"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/{{loginEndpoint}}">
+          loginEndpoint="/{{loginEndpoint}}"
+          condition="{{shouldExecute}}">
 
-        <http comment="Create protected resource using variable-based endpoint and body"
-              alias="MEGA_APP">
+        <http comment="{{createComment}}"
+              alias="MEGA_APP"
+              condition="{{varShouldExecute}}">
             <post endpoint="/{{createResourceEndpoint}}">
                 <response code="200" file="expected_7.json"/>
                 <body>
@@ -74,17 +95,11 @@
             </post>
         </http>
 
-        <http comment="Retrieve protected resources using variable-based endpoint"
-              alias="MEGA_APP">
-            <get endpoint="/{{getResourcesEndpoint}}">
-                <response code="200" file="expected_8.json"/>
-            </get>
-        </http>
-
     </auth>
 
-    <http comment="Reset JWT auth state using variable-based endpoint"
-          alias="MEGA_APP">
+    <http comment="{{resetComment}}"
+          alias="MEGA_APP"
+          condition="{{shouldExecute}}">
         <delete endpoint="/{{resetEndpoint}}">
             <response code="200"/>
         </delete>

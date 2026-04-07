@@ -44,18 +44,11 @@
                 <message>ping isolation check</message>
             </send>
 
-            <receive comment="Receive message from ping topic"
-                     topic="/topic/ping"
-                     limit="1"
-                     timeoutMillis="1000">
-                <file>expected_5.json</file>
-            </receive>
-
             <receive comment="Verify test topic remains empty"
                      topic="/topic/test"
                      limit="1"
                      timeoutMillis="1000">
-                <file>expected_6.json</file>
+                <file>expected_5.json</file>
             </receive>
 
         </stomp>

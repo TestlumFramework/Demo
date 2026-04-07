@@ -8,17 +8,20 @@
             This scenario verifies standard WebSocket text execution using variations file.
 
             Test flow includes:
-            1. Load websocket messages from variations CSV file.
+            1. Load websocket messages and attributes from variations CSV file.
             2. Connect to standard WebSocket.
             3. Send text message for each variation row.
             4. Receive echoed response for each iteration.
             5. Validate echoed response using expected file from variation.
 
             This scenario validates:
-            - Variation value injection into websocket text messages
-            - Variation value injection into expected file names
-            - Repeated websocket execution using multiple variation rows
-            - Stable text echo flow for different input values
+            - Variation injection into websocket comment
+            - Variation injection into send comment
+            - Variation injection into receive comment
+            - Variation injection into message
+            - Variation injection into timeout and limit
+            - Variation injection into expected file names
+            - Stable execution across variation rows
         </description>
         <developer>Vadym Kostenko</developer>
     </overview>
@@ -28,18 +31,18 @@
         <tags>websocket</tags>
     </settings>
 
-    <websocket comment="Step 1-5. Execute standard websocket text flow using variations"
+    <websocket comment="{{wsComment}}"
                alias="MEGA_WS_STANDARD"
                disconnect="true">
 
-        <send comment="Step 3. Send text message from variation row">
+        <send comment="{{sendComment}}">
             <message>{{message}}</message>
         </send>
 
-        <receive comment="Step 4-5. Receive echoed response and validate it"
+        <receive comment="{{receiveComment}}"
                  limit="1"
-                 timeoutMillis="3000">
-            <file>{{expectedFile}}.json</file>
+                 timeoutMillis="1000">
+            <file>{{expected_2}}.json</file>
         </receive>
 
     </websocket>

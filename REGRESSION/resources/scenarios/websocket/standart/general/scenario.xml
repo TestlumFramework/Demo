@@ -24,7 +24,7 @@
     </overview>
 
     <settings>
-        <tags>websocket2</tags>
+        <tags>websocket</tags>
     </settings>
 
     <websocket comment="Step 1-6. Execute standard websocket text flow"
