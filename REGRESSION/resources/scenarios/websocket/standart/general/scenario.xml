@@ -1,0 +1,44 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket Standard Text General</name>
+        <description>
+            This scenario verifies basic standard WebSocket text flow.
+
+            Test flow includes:
+            1. Connect to standard WebSocket.
+            2. Receive initial CONNECTED message.
+            3. Send ping text message.
+            4. Receive PONG response.
+            5. Send custom text message.
+            6. Receive ECHO response.
+
+            This scenario validates:
+            - Standard websocket connection lifecycle
+            - Text message send/receive flow
+            - Correct response handling for different message types
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="Step 1-6. Execute standard websocket text flow"
+               alias="MEGA_WS_STANDARD">
+
+        <send comment="Step 3. Send ping text message">
+            <message>ping</message>
+        </send>
+
+        <receive comment="Step 4. Receive PONG response"
+                 timeoutMillis="1000">
+            <file>expected_3.json</file>
+        </receive>
+
+    </websocket>
+
+</scenario>

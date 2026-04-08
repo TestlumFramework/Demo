@@ -8,6 +8,11 @@
     <delayBetweenScenarioRuns seconds="1" enabled="false"/>
 
     <runScenariosByTag enabled="true">
+        <tag name="auth" enabled="true"/>
+        <tag name="http" enabled="true"/>
+        <tag name="websocket" enabled="true"/>
+        <tag name="graphql" enabled="true"/>
+
         <tag name="web" enabled="true"/>
         <tag name="mobilebrowser" enabled="false"/>
         <tag name="mobilebrowser-healthcheck" enabled="false"/>
@@ -34,8 +39,6 @@
         <tag name="elasticsearch-self" enabled="true"/>
 
         <tag name="api" enabled="true"/>
-        <tag name="websocket" enabled="true"/>
-        <tag name="graphql" enabled="true"/>
         <tag name="lambda" enabled="false"/>
         <tag name="mysql" enabled="true"/>
         <tag name="postgresql" enabled="true"/>
@@ -66,9 +69,9 @@
 
     <environments>
         <!--   No need to launch vault to use this env     -->
-        <env folder="static" enabled="false" threads="1"/>
+        <env folder="static" enabled="true" threads="1"/>
         <!--   Vault is must have to use this env     -->
-        <env folder="vault" enabled="true" threads="1"/>
+        <env folder="vault" enabled="false" threads="1"/>
     </environments>
 
     <vault>

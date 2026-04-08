@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL DELETE</name>
+        <description>
+            This scenario verifies GraphQL mutation for deleting a book by title.
+
+            Test flow includes:
+            1. Create first book using GraphQL mutation.
+            2. Create second book using GraphQL mutation.
+            3. Send GraphQL mutation to delete one book by title.
+            4. Verify response status = 200.
+            5. Validate delete result.
+            6. Send GraphQL query to retrieve all books.
+            7. Verify response status = 200.
+            8. Validate that only remaining book exists.
+            9. Reset in-memory GraphQL storage after test.
+
+            This scenario validates:
+            - GraphQL delete mutation execution
+            - Book deletion by title
+            - Storage state after deletion
+            - Response body correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphql</tags>
+    </settings>
+
+    <graphql comment="Step 1. Create first book before delete"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Delete Me\", author: \"Author One\", number: 1
+                    }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 2. Create second book before delete"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Keep Me\", author: \"Author Two\", number: 2 })
+                    { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 3-5. Delete book by title"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { deleteSelfBookByTitle(title: \"Delete Me\") }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 6-8. Retrieve all books after deletion"
+             alias="MEGA_GQL_APP">
+        <get endpoint="/graphql">
+            <response code="200" file="expected_4.json"/>
+            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
+        </get>
+    </graphql>
+
+    <graphql comment="Step 9. Reset GraphQL storage after delete test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_5.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

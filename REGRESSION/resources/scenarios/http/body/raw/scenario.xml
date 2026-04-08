@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Raw Payload</name>
+        <description>
+            This scenario verifies API support for inline raw request payload.
+
+            Test flow includes:
+            1. Send POST request with inline raw JSON body.
+            2. Verify response status = 201.
+            3. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Inline raw JSON request body processing
+            - Entity creation from raw payload
+            - Stored entity retrieval
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1-2. Send POST request with raw JSON body"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Entity From Raw",
+                    "description": "Created using inline raw body",
+                    "status": "ACTIVE",
+                    "category": "RAW_INPUT"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 3. Reset entity storage after raw payload test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

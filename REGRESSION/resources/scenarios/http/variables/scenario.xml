@@ -1,0 +1,203 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Variables</name>
+        <description>
+            This scenario verifies HTTP request execution using variables.
+
+            Test flow includes:
+            1. Create variables for comments, endpoints, headers, condition, request body values and expected values.
+            2. Send POST request using variables in comment, endpoint, condition and raw request body.
+            3. Verify response status = 201 using expected file with injected variables.
+            4. Send second POST request using body file with injected variables.
+            5. Verify second entity creation using expected file with injected variables.
+            6. Send request with variable-based request and response headers.
+            7. Verify response status, body and headers.
+            8. Reset in-memory storage using variable-based endpoint.
+
+            This scenario validates:
+            - Variable injection into comment
+            - Variable injection into condition
+            - Variable injection into HTTP endpoints
+            - Variable injection into raw request body
+            - Variable injection into request body file content
+            - Variable injection into expected file content
+            - Variable injection into request headers
+            - Variable injection into response headers
+            - Variable reuse across HTTP steps
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <condition comment="Create true condition"
+               name="shouldExecute"
+               spel="true"/>
+
+    <var comment="Create variable for condition"
+         name="varShouldExecute">
+        <constant value="{{shouldExecute}}"/>
+    </var>
+
+    <var comment="Create variable for create endpoint"
+         name="createEndpoint">
+        <constant value="api/test/entities"/>
+    </var>
+
+    <var comment="Create variable for headers endpoint"
+         name="headersEndpoint">
+        <constant value="api/test/entities/headers"/>
+    </var>
+
+    <var comment="Create variable for reset endpoint"
+         name="resetEndpoint">
+        <constant value="api/test/entities/reset"/>
+    </var>
+
+    <var comment="Create variable for first step comment"
+         name="createComment">
+        <constant value="Step 1-3. Create entity using variables in comment, endpoint and raw body"/>
+    </var>
+
+    <var comment="Create variable for second step comment"
+         name="createFromFileComment">
+        <constant value="Step 4-5. Create second entity using variables in body file"/>
+    </var>
+
+    <var comment="Create variable for headers step comment"
+         name="headersComment">
+        <constant value="Step 6-7. Validate variable injection into request and response headers"/>
+    </var>
+
+    <var comment="Create variable for reset comment"
+         name="resetComment">
+        <constant value="Step 8. Reset entity storage using variable-based endpoint"/>
+    </var>
+
+    <var comment="Create variable for first entity name"
+         name="entityName">
+        <constant value="Variable Entity"/>
+    </var>
+
+    <var comment="Create variable for first entity description"
+         name="entityDescription">
+        <constant value="Created using variables"/>
+    </var>
+
+    <var comment="Create variable for first entity status"
+         name="entityStatus">
+        <constant value="ACTIVE"/>
+    </var>
+
+    <var comment="Create variable for first entity category"
+         name="entityCategory">
+        <constant value="VARIABLE_TEST"/>
+    </var>
+
+    <var comment="Create variable for second entity name"
+         name="fileEntityName">
+        <constant value="Variable File Entity"/>
+    </var>
+
+    <var comment="Create variable for second entity description"
+         name="fileEntityDescription">
+        <constant value="Created from file using variables"/>
+    </var>
+
+    <var comment="Create variable for second entity status"
+         name="fileEntityStatus">
+        <constant value="ACTIVE"/>
+    </var>
+
+    <var comment="Create variable for second entity category"
+         name="fileEntityCategory">
+        <constant value="VARIABLE_FILE"/>
+    </var>
+
+    <var comment="Create variable for request header name"
+         name="requestHeaderName">
+        <constant value="X-Test-Header"/>
+    </var>
+
+    <var comment="Create variable for request header value"
+         name="requestHeaderValue">
+        <constant value="header-test-value"/>
+    </var>
+
+    <var comment="Create variable for response header name"
+         name="responseHeaderName">
+        <constant value="X-Validated-Header"/>
+    </var>
+
+    <var comment="Create variable for response header value"
+         name="responseHeaderValue">
+        <constant value="header-test-value"/>
+    </var>
+
+    <var comment="Create variable for header response"
+         name="headerResponse">
+        <constant value="Header validated successfully"/>
+    </var>
+
+    <var comment="Create variable for request body file"
+         name="bodyFile">
+        <constant value="body_9"/>
+    </var>
+
+    <http comment="{{createComment}}"
+          alias="MEGA_APP"
+          condition="{{shouldExecute}}">
+        <post endpoint="/{{createEndpoint}}">
+            <response code="201"
+                      file="expected_23.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{entityName}}",
+                    "description": "{{entityDescription}}",
+                    "status": "{{entityStatus}}",
+                    "category": "{{entityCategory}}"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="{{createFromFileComment}}"
+          alias="MEGA_APP"
+          condition="{{varShouldExecute}}">
+        <post endpoint="/{{createEndpoint}}">
+            <response code="201"
+                      file="expected_24.json"/>
+            <body>
+                <from file="{{bodyFile}}.json"/>
+            </body>
+        </post>
+    </http>
+
+    <http comment="{{headersComment}}"
+          alias="MEGA_APP"
+          condition="{{shouldExecute}}">
+        <post endpoint="/{{headersEndpoint}}">
+            <response code="200"
+                      file="expected_25.json">
+                <header name="{{responseHeaderName}}" data="{{responseHeaderValue}}"/>
+            </response>
+            <header name="{{requestHeaderName}}" data="{{requestHeaderValue}}"/>
+        </post>
+    </http>
+
+    <http comment="{{resetComment}}"
+          alias="MEGA_APP"
+          condition="{{shouldExecute}}">
+        <post endpoint="/{{resetEndpoint}}">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

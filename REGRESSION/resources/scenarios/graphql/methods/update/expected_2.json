@@ -1,0 +1,9 @@
+{
+  "data": {
+    "updateSelfBookByTitle": {
+      "title": "Updated Book",
+      "author": "Updated Author",
+      "number": 2
+    }
+  }
+}

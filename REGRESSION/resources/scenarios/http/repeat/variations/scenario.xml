@@ -1,0 +1,66 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Repeat Variations</name>
+        <description>
+            This scenario verifies HTTP request execution inside repeat block using variations.
+
+            Test flow includes:
+            1. Execute POST request inside repeat block using variation rows.
+            2. Create one entity for each variation.
+            3. Send GET request after repeat block.
+            4. Verify that all variation-based entities were created.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Repeat execution using variations attribute
+            - Stable repeated HTTP execution with CSV-based input
+            - Correct interpolation of variation values
+            - Final storage consistency after repeated execution
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <repeat comment="Repeat entity creation using variation rows"
+            variations="httpRepeatVariations.csv">
+
+        <http comment="Step 1-2. Create entity from variation row"
+              alias="MEGA_APP">
+            <post endpoint="/api/test/entities">
+                <response code="201"/>
+                <body>
+                    <raw>
+                        {
+                        "name": "{{name}}",
+                        "description": "{{description}}",
+                        "status": "{{status}}",
+                        "category": "{{category}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+    </repeat>
+
+    <http comment="Step 3-4. Verify all repeated variation entities were created"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after repeat variations test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

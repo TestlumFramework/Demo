@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Raw Book",
+      "author" : "Raw Author",
+      "number" : 1
+    }
+  }
+}

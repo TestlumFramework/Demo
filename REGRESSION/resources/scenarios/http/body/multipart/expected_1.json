@@ -1,0 +1,11 @@
+{
+  "name" : "Updated from multipart request",
+  "description" : "Created with multipart body",
+  "status" : "MULTIPART",
+  "category" : "FORM",
+  "uploadedFile" : {
+    "uploadedFileName" : "testData.txt",
+    "uploadedFileSize" : 9,
+    "uploadedFileContentType" : "application/octet-stream"
+  }
+}

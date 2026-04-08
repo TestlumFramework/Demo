@@ -1,0 +1,125 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Variables</name>
+        <description>
+            This scenario verifies GraphQL request execution using variables.
+
+            Test flow includes:
+            1. Create variables for comments, endpoint, book fields and expected files.
+            2. Execute GraphQL mutation using variable values.
+            3. Verify create response = 200 using variable-based expected file.
+            4. Reset GraphQL storage using variable-based endpoint.
+
+            This scenario validates:
+            - Variable injection into comment
+            - Variable injection into GraphQL endpoint
+            - Variable injection into GraphQL request body
+            - Variable injection into expected file names
+            - Variable reuse across GraphQL mutation flow
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphql</tags>
+    </settings>
+
+    <var comment="Endpoint variable"
+         name="graphqlEndpoint">
+        <constant value="graphql"/>
+    </var>
+
+    <var comment="Create mutation comment"
+         name="createComment">
+        <constant value="Create GraphQL book using variables"/>
+    </var>
+
+    <var comment="Reset comment"
+         name="resetComment">
+        <constant value="Reset GraphQL storage"/>
+    </var>
+
+    <var comment="Book title"
+         name="bookTitle">
+        <constant value="Variable GraphQL Book"/>
+    </var>
+
+    <var comment="Book author"
+         name="bookAuthor">
+        <constant value="Vadym Kostenko"/>
+    </var>
+
+    <var comment="Book number"
+         name="bookNumber">
+        <constant value="77"/>
+    </var>
+
+    <graphql comment="{{createComment}}"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_7.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"{{bookTitle}}\", author: \"{{bookAuthor}}\", number: {{bookNumber}} }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <condition comment="Create condition"
+               name="shouldExecuteFile"
+               spel="true"/>
+
+    <var comment="Condition variable"
+         name="varCondition">
+        <constant value="{{shouldExecuteFile}}"/>
+    </var>
+
+    <var comment="File Book Title" name="fileBookTitle">
+        <constant value="File GraphQL Book"/>
+    </var>
+
+    <var comment="File Book Author" name="fileBookAuthor">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="File Book Number" name="fileBookNumber">
+        <constant value="99"/>
+    </var>
+
+
+    <var comment="Create mutation comment"
+         name="createUsingFileComment">
+        <constant value="Create GraphQL book using variables and body from file"/>
+    </var>
+
+    <graphql comment="{{createUsingFileComment}}"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_13.json"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="{{resetComment}}"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_14.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "getAllSelfBooks" : [ {
+      "title" : "Condition Book",
+      "author" : "Vadym",
+      "number" : 1
+    } ]
+  }
+}

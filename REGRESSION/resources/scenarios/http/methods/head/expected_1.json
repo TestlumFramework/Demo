@@ -1,0 +1,7 @@
+{
+  "name" : "Head Entity",
+  "description" : "Entity for HEAD test",
+  "status" : "ACTIVE",
+  "category" : "TEST",
+  "uploadedFile" : null
+}

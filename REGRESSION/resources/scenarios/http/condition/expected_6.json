@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Condition Entity",
+    "description": "Created when condition is true",
+    "status": "ACTIVE",
+    "category": "CONDITION_TRUE",
+    "uploadedFile": null
+  }
+]

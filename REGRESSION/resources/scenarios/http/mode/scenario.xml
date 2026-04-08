@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Response Mode</name>
+        <description>
+            This scenario verifies difference between strict and lenient response comparison modes.
+
+            Test flow includes:
+            1. Create entity in memory.
+            2. Retrieve all entities using lenient mode and validate response with partial expected JSON.
+            3. Verify response status = 200 and ensure comparison passes even though expected file contains only part of the response.
+            4. Retrieve all entities using strict mode and validate response with full expected JSON.
+            5. Verify response status = 200 and ensure comparison passes only because expected file contains the full response structure.
+            6. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Lenient mode allows partial response validation
+            - Strict mode requires full response match
+            - Same response can be validated differently depending on comparison mode
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create entity for response comparison mode testing"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Mode Entity",
+                    "description": "Testing comparison mode",
+                    "status": "ACTIVE",
+                    "category": "MODE"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-3. Validate response using lenient mode where partial expected JSON is enough"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" mode="lenient" file="expected_2.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 4-5. Validate response using strict mode where full expected JSON is required"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" mode="strict" file="expected_3.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 6. Reset storage after response comparison mode test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>
