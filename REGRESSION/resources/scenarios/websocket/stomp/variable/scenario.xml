@@ -42,8 +42,14 @@
         <constant value="hello from variable"/>
     </var>
 
+    <condition comment="Create true condition" name="trueCondition" spel="true"/>
+
+    <var comment="Create variable for condition" name="varCondition">
+        <constant value="{{trueCondition}}"/>
+    </var>
+
     <websocket comment="Execute STOMP flow using variables"
-               alias="MEGA_WS_APP">
+               alias="MEGA_WS_APP" condition="{{varCondition}}">
 
         <stomp>
 

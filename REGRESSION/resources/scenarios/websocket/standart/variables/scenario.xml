@@ -47,9 +47,16 @@
         <constant value="hello from variable"/>
     </var>
 
+    <condition comment="Create true condition" name="trueCondition" spel="true"/>
+
+    <var comment="Create variable for condition" name="varCondition">
+        <constant value="{{trueCondition}}"/>
+    </var>
+
     <websocket comment="{{wsComment}}"
                alias="MEGA_WS_STANDARD"
-               disconnect="true">
+               disconnect="true"
+               condition="{{varCondition}}">
 
         <send comment="{{firstSendComment}}">
             <message>{{firstMessage}}</message>

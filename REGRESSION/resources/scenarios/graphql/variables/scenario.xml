@@ -71,10 +71,47 @@
         </post>
     </graphql>
 
+    <condition comment="Create condition"
+               name="shouldExecuteFile"
+               spel="true"/>
+
+    <var comment="Condition variable"
+         name="varCondition">
+        <constant value="{{shouldExecuteFile}}"/>
+    </var>
+
+    <var comment="File Book Title" name="fileBookTitle">
+        <constant value="File GraphQL Book"/>
+    </var>
+
+    <var comment="File Book Author" name="fileBookAuthor">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="File Book Number" name="fileBookNumber">
+        <constant value="99"/>
+    </var>
+
+
+    <var comment="Create mutation comment"
+         name="createUsingFileComment">
+        <constant value="Create GraphQL book using variables and body from file"/>
+    </var>
+
+    <graphql comment="{{createUsingFileComment}}"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/{{graphqlEndpoint}}">
+            <response code="200" file="expected_13.json"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+        </post>
+    </graphql>
+
     <graphql comment="{{resetComment}}"
              alias="MEGA_GQL_APP">
         <post endpoint="/{{graphqlEndpoint}}">
-            <response code="200" file="expected_8.json"/>
+            <response code="200" file="expected_14.json"/>
             <body>
                 <raw>
                     {
