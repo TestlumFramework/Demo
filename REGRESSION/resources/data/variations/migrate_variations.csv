@@ -1,0 +1,3 @@
+comment,dataset,postgresComment,query,expected_2
+Migrate Postgres dataset,postgres_patch.sql,Check it is possible to get data from postgres_patch dataset,SELECT newsnumber FROM news WHERE newsname = 'News1',expected_2_1
+Migrate Postgres dataset_1,postgres_patch_1.sql,Check it is possible to get data from postgres_patch_1 dataset,SELECT newsname FROM news WHERE newsnumber = 225,expected_2_2

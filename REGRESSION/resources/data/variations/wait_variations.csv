@@ -1,0 +1,3 @@
+seconds,comment,waitSkipped
+1,wait 1 second,false
+2,wait 2 seconds,true

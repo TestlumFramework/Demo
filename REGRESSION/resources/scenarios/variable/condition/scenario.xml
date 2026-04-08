@@ -1,0 +1,41 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test variable creation and usage (with conditions)</description>
+        <name>Variable Test with conditions</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings active="false">
+        <tags>var-self</tags>
+    </settings>
+
+    <var comment="Check var with false condition won't be generated" name="notInitializedVar" condition="false">
+        <expression value="asd123!!-3;s] and III213#"/>
+    </var>
+
+    <var comment="Create var with constant value as expression (to use later in expression var)" name="constExpressionVar">
+        <constant value="1 != 2"/>
+    </var>
+
+    <assert comment="Check var was actually saved as constant">
+        <equal comment="Check var was saved as constant">
+            <content>{{constExpressionVar}}</content>
+            <content>1 != 2</content>
+        </equal>
+    </assert>
+
+    <var comment="Use constant var in expression var" name="expressionVar">
+        <expression value="{{constExpressionVar}}"/>
+    </var>
+
+    <assert comment="Check expressionVar executed as expression and can be used in condition" condition="{{expressionVar}}">
+        <equal comment="Check expressionVar value is true" condition="{{expressionVar}}">
+            <content>{{expressionVar}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

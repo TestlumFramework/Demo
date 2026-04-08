@@ -1,0 +1,18 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test scenario for including in test</description>
+        <name>Variables Include Scenario</name>
+    </overview>
+
+    <settings active="true">
+        <tags>include-self</tags>
+    </settings>
+
+    <var comment="Some var that can be used later" name="bestTool">
+        <constant value="Testlum"/>
+    </var>
+
+</scenario>

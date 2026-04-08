@@ -1,0 +1,22 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test scenario for including in test</description>
+        <name>Variables Include Scenario</name>
+    </overview>
+
+    <settings active="false">
+        <tags>include-self</tags>
+    </settings>
+
+    <var comment="Create constant var for using in main scenario" name="bestTool">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Create expression var for using in main scenario" name="time">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd').format(new java.util.Date())"/>
+    </var>
+
+</scenario>
