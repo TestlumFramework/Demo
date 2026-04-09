@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat S3 test: execute storage upload and verify operation multiple times, validate operation
+            result for each execution
+        </description>
+        <name>S3 Repeat scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <repeat comment="Repeat s3 storage operations with content verification for N number of times" times="4">
+
+        <s3 comment="Precondition - create testlum-repeat-bucket-one before repeat block" alias="S3_0">
+            <bucket comment="Check ability to create testlum-repeat-bucket-one for repeat test">
+                <create>testlum-repeat-bucket-one</create>
+            </bucket>
+        </s3>
+
+        <s3 comment="Execute upload_1.json storage operation within repeat" alias="S3_0">
+            <file comment="Check ability to upload upload_1.json to testlum-repeat-bucket-one on each iteration"
+                  bucket="testlum-repeat-bucket-one"
+                  key="/testlum/upload_1.json">
+                <upload>upload_1.json</upload>
+            </file>
+        </s3>
+
+        <s3 comment="Execute file download on each repeat iteration to check content" alias="S3_0">
+            <file comment="Verify file content matches expected file on each repeat iteration"
+                  bucket="testlum-repeat-bucket-one" key="/testlum/upload_1.json">
+                <download>
+                    <file>expected_1.json</file>
+                </download>
+            </file>
+        </s3>
+
+        <s3 comment="Execute file download on each repeat iteration to check inline content" alias="S3_0">
+            <file comment="Verify file content matches inline on each repeat iteration"
+                  bucket="testlum-repeat-bucket-one" key="/testlum/upload_1.json">
+                <download>
+                    <value>{"Testlum": "TOP"}</value>
+                </download>
+            </file>
+        </s3>
+
+        <s3 comment="Remove testlum-repeat-bucket-one to proceed next iteration" alias="S3_0">
+            <bucket comment="Removing bucket">
+              <remove>testlum-repeat-bucket-one</remove>
+            </bucket>
+        </s3>
+    </repeat>
+
+</scenario>

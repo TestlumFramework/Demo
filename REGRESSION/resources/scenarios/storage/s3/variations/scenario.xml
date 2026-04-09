@@ -1,0 +1,63 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Variations S3 test: create bucket, upload file, verify upload, remove file and bucket using variation variables - runs once per CSV row</description>
+        <name>S3 Variations scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>variations_s3.csv</variations>
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="Step 1 - create bucket using variation variable_bucket" alias="S3_0">
+        <bucket comment="Check ability to create bucket using variation variable {{variable_bucket}}">
+            <create>{{variable_bucket}}</create>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 2 - upload file using variation variable_file to variation bucket" alias="S3_0">
+        <file comment="Check ability to upload {{variable_file}} to {{variable_bucket}}"
+              bucket="{{variable_bucket}}"
+              key="/testlum/{{variable_file}}">
+            <upload>{{variable_file}}</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3 - verify upload via file comparison using variation variable_expected" alias="S3_0">
+        <file comment="Check that downloaded {{variable_file}} matches expected_{{variable_expected}}.json"
+              bucket="{{variable_bucket}}"
+              key="/testlum/{{variable_file}}">
+            <download>
+                <file>expected_{{variable_expected}}.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4 - verify upload via file inline comparison using variation variable_expected" alias="S3_0">
+        <file comment="Check that downloaded {{variable_file}} matches expected_{{variable_expected}}.json"
+              bucket="{{variable_bucket}}"
+              key="/testlum/{{variable_file}}">
+            <download>
+                <value>{{content_expected}}</value>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4 - remove file using variation variable_file from variation bucket" alias="S3_0">
+        <file comment="Check ability to remove {{variable_file}} from {{variable_bucket}}"
+              bucket="{{variable_bucket}}"
+              key="/testlum/{{variable_file}}">
+            <remove/>
+        </file>
+    </s3>
+
+    <s3 comment="Step 5 - remove bucket using variation variable_bucket after file cleanup" alias="S3_0">
+        <bucket comment="Check ability to remove {{variable_bucket}} after all files are cleaned up">
+            <remove>{{variable_bucket}}</remove>
+        </bucket>
+    </s3>
+
+</scenario>

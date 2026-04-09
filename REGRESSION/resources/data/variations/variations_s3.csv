@@ -1,0 +1,3 @@
+variable_bucket,variable_file,variable_expected,content_expected
+testlum-var-bucket-1,upload_1.json,1,{"Testlum": "TOP"}
+testlum-var-bucket-2,upload_2.json,2,{"Testlum": "The Best"}
