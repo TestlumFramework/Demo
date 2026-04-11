@@ -1,0 +1,47 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Repeat</description>
+        <name>Repeat general test</name>
+    </overview>
+
+    <settings>
+        <tags>repeat-self</tags>
+    </settings>
+
+    <var comment="Initialize result accumulator with constant value 0 before repeat starts" name="result">
+        <constant value="0"/>
+    </var>
+
+    <repeat comment="Iterate over variation values and accumulate their sum into result" variations="repeat_variations.csv">
+        <var comment="Add current variation value {{a}} to accumulated result" name="result">
+            <expression value="{{result}} + {{a}}"/>
+        </var>
+    </repeat>
+
+    <condition comment="Verify final result equals the expected sum of all variation values"
+               name="resultIsExpectedSum"
+               spel="{{result}} == 6"/>
+
+    <assert comment="Verify that result equals the sum of all variation values after repeat completes">
+        <equal comment="result should equal 6">
+            <content>{{result}}</content>
+            <content>6</content>
+        </equal>
+        <equal comment="resultIsExpectedSum condition should be true">
+            <content>{{resultIsExpectedSum}}</content>
+            <content>true</content>
+        </equal>
+        <notEqual comment="result should not equal 0">
+            <content>{{result}}</content>
+            <content>0</content>
+        </notEqual>
+        <notEqual comment="result should not equal an incorrect sum of 7">
+            <content>{{result}}</content>
+            <content>7</content>
+        </notEqual>
+    </assert>
+
+</scenario>

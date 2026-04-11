@@ -26,6 +26,10 @@
         <tag name="auth-jwt-mixed" enabled="false"/>
         <tag name="elasticsearch-mixed" enabled="false"/>
         <tag name="elasticsearch-self" enabled="false"/>
+        <tag name="repeat-self" enabled="true"/>
+        <tag name="migrate-self" enabled="true"/>
+        <tag name="include-self" enabled="true"/>
+        <tag name="wait-self" enabled="true"/>
         <tag name="api" enabled="false"/>
         <tag name="websocket" enabled="false"/>
         <tag name="graphql" enabled="false"/>

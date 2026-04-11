@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual(with variations)</description>
+        <name>Assert variations test</name>
+    </overview>
+
+    <settings>
+        <variations>assert_variations.csv</variations>
+        <tags>assert-self</tags>
+    </settings>
+
+    <var comment="var with equal expression for variations" name="equalVar">
+        <expression value="'{{val1}}' eq '{{val2}}'"/>
+    </var>
+
+    <var comment="var with notEqual expression for variations" name="notEqualVar">
+        <expression value="'{{val1}}' ne '{{val2}}'"/>
+    </var>
+
+    <assert comment="assert equal">
+        <equal comment="equal with var and expected value from variations">
+            <content>{{equalVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="assert notEqual">
+        <notEqual comment="notEqual with var and expected value from variations">
+            <content>{{notEqualVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="condition for variation values equality" name="equalCondition" spel="'{{val1}}' eq '{{val2}}'"/>
+
+    <condition comment="condition for variation values unequality" name="notEqualCondition" spel="'{{val1}}' ne '{{val2}}'"/>
+
+    <assert comment="check correct assert with vars and conditions">
+        <equal comment="equal var and condition">
+            <content>{{equalVar}}</content>
+            <content>{{equalCondition}}</content>
+        </equal>
+        <notEqual comment="notEqual var and condition">
+            <content>{{equalVar}}</content>
+            <content>{{notEqualCondition}}</content>
+        </notEqual>
+    </assert>
+
+</scenario>

@@ -1,0 +1,252 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for migrate command</description>
+        <name>Migrate self test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings active="false" truncateStorages="true">
+        <tags>migrate-self</tags>
+    </settings>
+
+    <migrate comment="Migrate Postgres dataset" alias="POSTGRES_0">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="Migrate NEWS data to Oracle"
+             alias="ORACLE_0" name="ORACLE">
+        <dataset>oracle_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="Migrate single dataset to MySQL"
+             alias="MYSQL_0" name="MYSQL">
+        <dataset>mysql_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="Migrate NEWS data to ClickHouse"
+             alias="CLICKHOUSE_0" name="CLICKHOUSE">
+        <dataset>clickhouse_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="Migrate NEWS data to MongoDB" alias="MONGO_0" name="MONGODB">
+        <dataset>mongo_patch.bson</dataset>
+    </migrate>
+
+    <postgres comment="Check ability to get Postgres data"
+              alias="POSTGRES_0"
+              file="expected_6.json">
+        <query>
+            SELECT newsnumber
+            FROM news
+            WHERE newsname = 'News2'
+        </query>
+    </postgres>
+
+    <oracle comment="Check NEWS data migration from Oracle DB"
+            alias="ORACLE_0"
+            file="expected_7.json">
+        <query>
+            SELECT NEWSNAME
+            FROM NEWS
+            WHERE NEWSNUMBER = 38005238
+        </query>
+    </oracle>
+
+    <mysql comment="Check ability to get mySQL data"
+           alias="MYSQL_0"
+           file="expected_8.json">
+        <query>
+            SELECT newsname
+            FROM news
+            WHERE id = 3
+        </query>
+    </mysql>
+
+    <clickhouse comment="Check ability to get ClickHouse data"
+                alias="CLICKHOUSE_0"
+                file="expected_9.json">
+        <query>
+            SELECT newsNumber
+            FROM news
+            WHERE newsName = 'Brazil'
+        </query>
+    </clickhouse>
+
+    <mongo comment="Check ability to get MongoDB data"
+           alias="MONGO_0"
+           file="expected_10.json">
+        <query>
+            {
+            find: "mongo_news",
+            filter: {
+            active: true,
+            number: { "$eq": 17 }
+            } }
+        </query>
+    </mongo>
+
+    <migrate comment="Check ability to migrate test dataset to DynamoDB"
+             alias="DYNAMO_0" name="DYNAMO">
+        <dataset>dynamo_patch.partiql</dataset>
+    </migrate>
+
+    <dynamo comment="Check ability to get new DynamoDB data"
+            alias="DYNAMO_0"
+            file="expected_12.json">
+        <query>
+            SELECT *
+            FROM dynamodb_news
+            WHERE name = 'News1';
+        </query>
+    </dynamo>
+
+<!--    <migrate comment="Check ability to migrate test dataset to SQLDatabase"-->
+<!--             alias="SQLDATABASE_0" name="SQLDATABASE">-->
+<!--        <dataset>sql_patch.sql</dataset>-->
+<!--    </migrate>-->
+
+<!--    <sqlDatabase comment="Check ability to get new SQL data"-->
+<!--                 alias="SQLDATABASE_0"-->
+<!--                 file="expected_14.json">-->
+<!--        <query>-->
+<!--            SELECT * FROM news WHERE active = true;-->
+<!--        </query>-->
+<!--    </sqlDatabase>-->
+
+<!--    <migrate comment="Check ability to migrate test dataset to Redis"-->
+<!--             name="REDIS"-->
+<!--             alias="REDIS_0">-->
+<!--        <dataset>redis_patch.sql</dataset>-->
+<!--    </migrate>-->
+
+    <redis comment=" Check ability to add single key-value pair to redis using SET command; check impossibility to add
+    the same key-value using SETNX" alias="REDIS_0" file="expected_16.json">
+        <query>
+            <command>SET</command>
+            <arg>name</arg>
+            <arg>John</arg>
+        </query>
+        <query>
+            <command>SETNX</command>
+            <arg>name</arg>
+            <arg>Andrew</arg>
+        </query>
+    </redis>
+
+    <redis comment="Check ability to get key-value pair using GET command" alias="REDIS_0" file="expected_17.json">
+        <query>
+            <command>GET</command>
+            <arg>name</arg>
+        </query>
+    </redis>
+
+<!--    MULTIPLE-->
+    <migrate comment="Migrate single dataset to Postgres"
+             alias="POSTGRES_0" name="POSTGRES">
+        <dataset>postgres_patch_1.sql</dataset>
+    </migrate>
+
+    <postgres comment="Check Postgres data after migration"
+              alias="POSTGRES_0"
+              file="expected_19.json">
+        <query>
+            SELECT newsnumber
+            FROM news
+            WHERE newsname = 'News1'
+        </query>
+    </postgres>
+
+    <migrate comment="Migrate single dataset to Oracle"
+             alias="ORACLE_0" name="ORACLE">
+        <dataset>oracle_patch_1.sql</dataset>
+    </migrate>
+
+    <oracle comment="Check Oracle data after migration"
+            alias="ORACLE_0"
+            file="expected_21.json">
+        <query>
+            SELECT newsname
+            FROM news
+            WHERE newsnumber = 331449281
+        </query>
+    </oracle>
+
+    <migrate comment="Migrate single dataset to MySQL"
+             alias="MYSQL_0" name="MYSQL">
+        <dataset>mysql_patch_1.sql</dataset>
+    </migrate>
+
+    <mysql comment="Check MySQL data after migration"
+           alias="MYSQL_0"
+           file="expected_23.json">
+        <query>
+            SELECT newsname
+            FROM news
+            WHERE id = 1
+        </query>
+    </mysql>
+
+    <migrate comment="Migrate dataset to ClickHouse"
+             alias="CLICKHOUSE_0" name="CLICKHOUSE">
+        <dataset>clickhouse_patch_1.sql</dataset>
+    </migrate>
+
+    <clickhouse comment="Check ClickHouse data after migration"
+                alias="CLICKHOUSE_0"
+                file="expected_25.json">
+        <query>
+            SELECT newsNumber
+            FROM news
+            WHERE newsName = 'Uganda'
+        </query>
+    </clickhouse>
+
+    <migrate comment="Migrate single dataset to MongoDB"
+             alias="MONGO_0" name="MONGODB">
+        <dataset>mongo_patch_1.bson</dataset>
+    </migrate>
+
+    <mongo comment="Check MongoDB data after migration"
+           alias="MONGO_0"
+           file="expected_27.json">
+        <query>
+            {
+            find: "mongo_news",
+            filter: { "active": true, "number": 10 }
+            }
+        </query>
+    </mongo>
+
+    <migrate comment="Migrate single dataset to DynamoDB"
+             alias="DYNAMO_0" name="DYNAMO">
+        <dataset>dynamo_patch_1.partiql</dataset>
+    </migrate>
+
+    <dynamo comment="Check DynamoDB data after migration"
+            alias="DYNAMO_0"
+            file="expected_29.json">
+        <query>
+            SELECT *
+            FROM dynamodb_news
+            WHERE name = 'Uganda'
+        </query>
+    </dynamo>
+
+<!--    <migrate comment="Migrate single dataset to Redis"-->
+<!--             alias="REDIS_0" name="REDIS">-->
+<!--        <dataset>redis_patch_1.sql</dataset>-->
+<!--    </migrate>-->
+
+<!--    <redis comment="Check Redis data after migration"-->
+<!--           alias="REDIS_0"-->
+<!--           file="expected_31.json">-->
+<!--        <query>-->
+<!--            <command>GET</command>-->
+<!--            <arg>news1</arg>-->
+<!--        </query>-->
+<!--    </redis>-->
+
+</scenario>

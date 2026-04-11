@@ -1,0 +1,32 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for migrate with condition</description>
+        <name>Migrate with condition test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings truncateStorages="true" active="false">
+        <tags>migrate-self</tags>
+    </settings>
+
+    <condition comment="Create false condition" name="falseCondition" spel="false"/>
+
+    <migrate comment="Migrate Postgres dataset with false condition" alias="POSTGRES_0" condition="falseCondition">
+        <dataset>postgres_patch.sql</dataset>
+        <dataset>notused.csv</dataset>
+    </migrate>
+
+    <postgres comment="Check that patch wasn't applied"
+              alias="POSTGRES_0"
+              file="expected_3.json">
+        <query>
+            SELECT newsnumber
+            FROM news
+            WHERE id > 0
+        </query>
+    </postgres>
+
+</scenario>

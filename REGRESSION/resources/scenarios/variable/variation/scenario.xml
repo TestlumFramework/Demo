@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test variable creation and usage (with variations)</description>
+        <name>Variable Test with variations</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <variations>var_variations.csv</variations>
+        <tags>var-self</tags>
+    </settings>
+
+    <var comment="Create constant var" name="constVar">
+        <constant value="5"/>
+    </var>
+
+    <var comment="Create var with expression from variations" name="conditionVar">
+        <expression value="{{condition}}"/>
+    </var>
+
+    <var comment="Create var to check usage from var and variations" name="result" condition="{{conditionVar}}">
+        <expression value="{{expression}}"/>
+    </var>
+
+    <assert comment="Check var calculated correctly" condition="{{conditionVar}}">
+        <equal comment="Check result is equal expected" condition="{{conditionVar}}">
+            <content>{{result}}</content>
+            <content>{{expected}}</content>
+        </equal>
+    </assert>
+    
+    <var comment="{{comment}}" name="{{name}}" condition="{{conditionVar}}">
+        <expression value="{{value}} {{operator}} {{constVar}}"/>
+    </var>
+
+    <assert comment="Check var constructed from variations and var" condition="{{value}} eq 1">
+        <equal comment="Assert total(from combined expression var) is correct">
+            <content>{{sum}}</content>
+            <content>{{expected}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Check var constructed from variations and var" condition="{{value}} eq 2">
+        <equal comment="Assert total(from combined expression var) is correct">
+            <content>{{diff}}</content>
+            <content>{{expected}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Check var constructed from variations and var" condition="{{value}} eq 3">
+        <equal comment="Assert total(from combined expression var) is correct">
+            <content>{{multiplication}}</content>
+            <content>{{expected}}</content>
+        </equal>
+    </assert>
+</scenario>

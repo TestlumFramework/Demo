@@ -1,0 +1,5 @@
+value,expression,condition,expected,comment,name,operator
+1,{{value}} + {{constVar}},{{value}} eq 1,6,check injection from variations and var,sum,+
+2,{{value}} - {{constVar}},{{value}} == 2,-3,check injection from variations and var,diff,-
+3,{{value}} * {{constVar}},{{constVar}} eq 5,15,check injection from variations and var,multiplication,*
+4,{{value}} / ""{{constVar}}"",{{value}} < 1,404,check injection from variations and var,div,/
