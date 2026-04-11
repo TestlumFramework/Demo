@@ -1,0 +1,4 @@
+contactEmail,userEmail,subject,messageText,type
+contact@testlum.com,test1@gmail.com,Hello 1,Message 1,text/plain
+contact@testlum.com,test2@gmail.com,Hello 2,Message 2,text/plain
+contact@testlum.com,test3@gmail.com,Hello 3,Message 3,text/plain

@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Twilio Variable Test</name>
+        <description>
+            This scenario verifies variable injection in Twilio request.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>twilio</tags>
+    </settings>
+
+    <var comment="Phone number variable" name="phoneNumber">
+        <constant value="+380500387639"/>
+    </var>
+
+    <var comment="Text variable" name="messageText">
+        <constant value="Hello from VARIABLE"/>
+    </var>
+
+    <var comment="Twilio comment" name="twilioComment">
+        <constant value="Send SMS using variables"/>
+    </var>
+
+    <condition comment="Test condition" name="twilioCondition" spel="true"/>
+
+    <var comment="Condition Variable" name="varCondition">
+        <constant value="{{twilioCondition}}"/>
+    </var>
+
+    <twilio comment="{{twilioComment}}"
+            alias="TWILIO_0"
+            condition="{{varCondition}}"
+            destinationPhoneNumber="{{phoneNumber}}">
+
+        <message>{{messageText}}</message>
+
+    </twilio>
+
+</scenario>
