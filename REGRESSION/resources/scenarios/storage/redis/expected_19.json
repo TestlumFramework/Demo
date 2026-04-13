@@ -1,10 +1,10 @@
 [
   {
-    "query": "{\"command\":\"HSET\",\"arg\":[\"user:1\",\"age\",\"35\"]}",
+    "query": "{\"arg\":[\"user:1\",\"age\",\"35\"],\"command\":\"HSET\"}",
     "content": "0"
   },
   {
-    "query": "{\"command\":\"HGET\",\"arg\":[\"user:1\",\"age\"]}",
+    "query": "{\"arg\":[\"user:1\",\"age\"],\"command\":\"HGET\"}",
     "content": "35"
   }
 ]

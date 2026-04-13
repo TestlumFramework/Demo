@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"MGET\",\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"]}",
+    "query": "{\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"],\"command\":\"MGET\"}",
     "content": "[John, 25, New York, john@example.com, 123-456-7890]"
   }
 ]

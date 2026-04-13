@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"MSET\",\"arg\":[\"name\",\"John\",\"age\",\"25\",\"city\",\"New York\",\"email\",\"john@example.com\",\"phone\",\"123-456-7890\"]}",
+    "query": "{\"arg\":[\"name\",\"John\",\"age\",\"25\",\"city\",\"New York\",\"email\",\"john@example.com\",\"phone\",\"123-456-7890\"],\"command\":\"MSET\"}",
     "content": "OK"
   }
 ]

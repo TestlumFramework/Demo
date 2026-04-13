@@ -1,7 +1,7 @@
 [ {
-  "query" : "{\"command\":\"SET\",\"arg\":[\"name\",\"John\"]}",
+  "query" : "{\"arg\":[\"name\",\"John\"],\"command\":\"SET\"}",
   "content" : "OK"
 }, {
-  "query" : "{\"command\":\"GET\",\"arg\":[\"name\"]}",
+  "query" : "{\"arg\":[\"name\"],\"command\":\"GET\"}",
   "content" : "John"
 } ]
