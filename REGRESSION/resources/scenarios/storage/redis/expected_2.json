@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"GET\",\"arg\":[\"name\"]}",
+    "query": "{\"arg\":[\"name\"],\"command\":\"GET\"}",
     "content": "John"
   }
 ]
