@@ -182,7 +182,7 @@
 
     <http comment="{{headersComment}}"
           alias="MEGA_APP"
-          condition="{{shouldExecute}}">
+          condition="{{varShouldExecute}}">
         <post endpoint="/{{headersEndpoint}}">
             <response code="200"
                       file="expected_25.json">
