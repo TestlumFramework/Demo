@@ -1,18 +1,18 @@
 [
   {
-    "query": "{\"command\":\"MSET\",\"arg\":[\"name\",\"Andrew\",\"email\",\"new@example.com\"]}",
+    "query": "{\"arg\":[\"name\",\"Andrew\",\"email\",\"new@example.com\"],\"command\":\"MSET\"}",
     "content": "OK"
   },
   {
-    "query": "{\"command\":\"GET\",\"arg\":[\"name\"]}",
+    "query": "{\"arg\":[\"name\"],\"command\":\"GET\"}",
     "content": "Andrew"
   },
   {
-    "query": "{\"command\":\"GET\",\"arg\":[\"email\"]}",
+    "query": "{\"arg\":[\"email\"],\"command\":\"GET\"}",
     "content": "new@example.com"
   },
   {
-    "query": "{\"command\":\"DEL\",\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"]}",
+    "query": "{\"arg\":[\"name\",\"age\",\"city\",\"email\",\"phone\"],\"command\":\"DEL\"}",
     "content": "5"
   }
 ]
