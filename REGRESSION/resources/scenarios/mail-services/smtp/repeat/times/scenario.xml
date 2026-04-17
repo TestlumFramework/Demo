@@ -1,0 +1,30 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SMTP Repeat Times Test</name>
+        <description>
+            This scenario verifies repeated email sending using times.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <repeat comment="Send email 3 times"
+            times="3">
+
+        <smtp comment="Repeat email sending"
+              alias="SMTP_0"
+              recipientEmail="testlum.test.acc@gmail.com">
+
+            <subject>Repeat Subject</subject>
+            <text>Repeat Message</text>
+
+        </smtp>
+
+    </repeat>
+
+</scenario>

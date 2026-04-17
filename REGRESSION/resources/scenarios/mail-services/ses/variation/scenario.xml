@@ -1,0 +1,33 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SES Variation Test</name>
+        <description>
+            This scenario verifies CSV-driven SES execution.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>ses_variations.csv</variations>
+        <tags>ses</tags>
+    </settings>
+
+    <ses comment="{{comment}}"
+         alias="SES_0">
+
+        <destination>{{destinationEmail}}</destination>
+        <source>{{sourceEmail}}</source>
+
+        <message>
+            <body>
+                <html>HTML {{subjectText}}</html>
+                <text>{{textBody}}</text>
+            </body>
+            <subject>{{subjectText}}</subject>
+        </message>
+
+    </ses>
+
+</scenario>

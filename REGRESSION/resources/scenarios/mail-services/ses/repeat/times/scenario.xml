@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SES Repeat Times Test</name>
+        <description>
+            This scenario verifies repeated SES execution.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>ses</tags>
+    </settings>
+
+    <repeat comment="Send SES email 3 times"
+            times="3">
+
+        <ses comment="Repeat SES email"
+             alias="SES_0">
+
+            <destination>testlum.test.acc@gmail.com</destination>
+            <source>testlum@gmail.com</source>
+
+            <message>
+                <body>
+                    <html>Repeat HTML</html>
+                    <text>Repeat Text</text>
+                </body>
+                <subject>Repeat</subject>
+            </message>
+
+        </ses>
+
+    </repeat>
+
+</scenario>
