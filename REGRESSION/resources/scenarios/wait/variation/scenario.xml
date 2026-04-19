@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Wait with variations</description>
+        <name>Wait with variations</name>
+    </overview>
+
+    <settings>
+        <variations>wait_variations.csv</variations>
+        <tags>wait-self</tags>
+    </settings>
+
+    <var comment="Create var with current time" name="currentTime">
+        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+    </var>
+
+    <wait comment="{{comment}}" time="{{seconds}}"/>
+
+    <var comment="Create var with updated time" name="updatedTime">
+        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+    </var>
+
+    <var comment="Create var with diff between two times" name="diff">
+        <expression value="{{updatedTime}} - {{currentTime}}"/>
+    </var>
+
+    <assert comment="Check actual diff between times">
+        <equal comment="Ensure wait worked for exact seconds">
+            <content>{{diff}}</content>
+            <content>{{seconds}}</content>
+        </equal>
+    </assert>
+
+    <wait comment="Execute wait with condition" time="{{seconds}}" condition="{{diff}} == 1"/>
+
+    <var comment="Create var with secondly updated time" name="secondlyUpdatedTime">
+        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+    </var>
+
+    <var comment="Create var with expression to check if time changed" name="timeChangedCheck">
+        <expression value="{{secondlyUpdatedTime}} == {{updatedTime}}"/>
+    </var>
+
+    <assert comment="Check if wait with condition worked">
+        <equal comment="Assert timeChangedCheck is equal to expected value">
+            <content>{{timeChangedCheck}}</content>
+            <content>{{waitSkipped}}</content>
+        </equal>
+    </assert>
+
+</scenario>

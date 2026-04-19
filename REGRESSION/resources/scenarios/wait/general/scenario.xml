@@ -1,0 +1,33 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Wait</description>
+        <name>Wait</name>
+    </overview>
+
+    <settings>
+        <tags>wait-self</tags>
+    </settings>
+
+    <var comment="Create variable for current datetime"
+         name="currentDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <wait comment="wait for 2 second" time="2"/>
+
+    <var comment="Create variable for updated datetime"
+         name="updatedDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <assert comment="Check that two 'now' dateTimes are not equal">
+        <notEqual comment="Ensure wait command worked">
+            <content>{{currentDateTime}}</content>
+            <content>{{updatedDateTime}}</content>
+        </notEqual>
+    </assert>
+
+</scenario>

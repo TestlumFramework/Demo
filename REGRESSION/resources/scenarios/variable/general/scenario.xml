@@ -1,0 +1,312 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test variable creation and usage</description>
+        <name>Variable Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings active="false">
+        <tags>var-self</tags>
+    </settings>
+
+<!--    constant-->
+    <var comment="Create constant variable" name="testVar">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Create constant variable for comment" name="commentVar">
+        <constant value="Check if the constant variable equals to 'Testlum'"/>
+    </var>
+
+    <var comment="Check that variable can be used in other variable" name="updatedCommentVar">
+        <constant value="{{commentVar}} and var can be used as comment"/>
+    </var>
+
+    <assert comment="{{updatedCommentVar}}">
+        <equal comment="{{updatedCommentVar}}">
+            <content>{{testVar}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+<!--    date-->
+    <var comment="Create constant date variable" name="dateConstant">
+        <constant value="2026-04-01"/>
+    </var>
+
+    <assert comment="Check if the dateConstant variable is equal to '2026-04-01'">
+        <equal comment="Assert equal value from constant">
+            <content>{{dateConstant}}</content>
+            <content>2026-04-01</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date variable with current date" name="dateNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <condition comment="Check if the current date matches pattern yyyy-MM-dd HH:mm:ss" name="dateNowCondition" spel="'{{dateNow}}'.matches('\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')"/>
+
+    <assert comment="Check if the condition for current date format is true">
+        <equal comment="Check that  dateNowCondition is equal to true">
+            <content>{{dateNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date before now" name="dateBeforeNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().minusDays(5).toDate())"/>
+    </var>
+
+    <condition comment="create condition to check dateBeforeNow is before dateNow" name="dateBeforeNowCondition" spel="T(java.time.LocalDateTime).parse('{{dateBeforeNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')).isBefore(T(java.time.LocalDateTime).parse('{{dateNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')))"/>
+
+    <assert comment="Check if the condition for dateBeforeNow is true">
+        <equal comment="assert condition is equal true">
+            <content>{{dateBeforeNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date after now" name="dateAfterNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().plusHours(5).toDate())"/>
+    </var>
+
+    <condition comment="Check if dateAfterNow is after dateNow" name="dateAfterNowCondition" spel="T(java.time.LocalDateTime).parse('{{dateAfterNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')).isAfter(T(java.time.LocalDateTime).parse('{{dateNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')))"/>
+
+    <assert comment="Check if the condition for dateAfterNow is true">
+        <equal comment="assert condition is equal true">
+            <content>{{dateAfterNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <assert comment="Ensure that now, beforeNow, and afterNow dates are not equal">
+        <notEqual comment="Check now and before dates not equal">
+            <content>{{dateNow}}</content>
+            <content>{{dateBeforeNow}}</content>
+        </notEqual>
+        <notEqual comment="Check now and after dates not equal">
+            <content>{{dateNow}}</content>
+            <content>{{dateAfterNow}}</content>
+        </notEqual>
+        <notEqual comment="Check before and after dates not equal">
+            <content>{{dateBeforeNow}}</content>
+            <content>{{dateAfterNow}}</content>
+        </notEqual>
+    </assert>
+
+<!--    expression-->
+    <var comment="Create expression variable with repeat method" name="expressionVar">
+        <expression value="'Testlum'.repeat(3)"/>
+    </var>
+
+    <assert comment="Check if the expression result equals 'TestlumTestlumTestlum'">
+        <equal comment="Check expressionVar value equal expected">
+            <content>{{expressionVar}}</content>
+            <content>TestlumTestlumTestlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create expression variable with reserved symbols" name="expressionWithSymbols">
+        <expression value="'$Test@[]{}();.=||'.repeat(2)"/>
+    </var>
+
+    <assert comment="Check if the expression with reserved symbols equals '$Test@$Test@'">
+        <equal comment="Check expressionWithSymbols var equal expected">
+            <content>{{expressionWithSymbols}}</content>
+            <content>$Test@[]{}();.=||$Test@[]{}();.=||</content>
+        </equal>
+    </assert>
+
+    <!--file-->
+
+    <var comment="Create variable from file" name="fileVar">
+        <file fileName="file.txt"/>
+    </var>
+
+    <assert comment="Check if the content of file matches expected">
+        <equal comment="Check content equals expected">
+            <content>{{fileVar}}</content>
+            <content>Testlum is the best tool ever!</content>
+        </equal>
+    </assert>
+
+    <!--generate-->
+
+    <var comment="Create random numeric variable of length 10" name="generateNumeric">
+        <generate length="10">
+            <numeric/>
+        </generate>
+    </var>
+    
+    <var comment="Create var for condition" name="conditionVar">
+        <expression value="'{{generateNumeric}}'.length() == 10 and '{{generateNumeric}}'.matches('^[0-9]+$')"/>
+    </var>
+
+    <condition comment="Check if the numeric variable is exactly 10 digits" name="generateNumericCondition" spel="{{conditionVar}}"/>
+    
+    <assert comment="Check if the condition for numeric variable is true">
+        <equal comment="Check if the condition for numeric variable is true">
+            <content>{{generateNumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random alphabetic variable of length 8" name="generateAlphabetic">
+        <generate length="8">
+            <alphabetic/>
+        </generate>
+    </var>
+
+    <condition comment="Check if the alphabetic variable contains only letters and has length 8" name="generateAlphabeticCondition" spel="'{{generateAlphabetic}}'.length() == 8 and '{{generateAlphabetic}}'.matches('^[a-zA-Z]+$')"/>
+
+    <assert comment="Check if the condition for alphabetic variable is true">
+        <equal comment="Check if the condition for alphabetic variable is true">
+            <content>{{generateAlphabeticCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random alphanumeric variable of length 12" name="generateAlphanumeric">
+        <generate length="12">
+            <alphanumeric/>
+        </generate>
+    </var>
+
+    <condition comment="Check if alphanumeric variable is 12 characters letters+digits" name="generateAlphanumericCondition"
+               spel="'{{generateAlphanumeric}}'.length() == 12 and '{{generateAlphanumeric}}'.matches('[a-zA-Z0-9]+')"/>
+
+    <assert comment="Assert alphanumeric variable condition is true">
+        <equal comment="Assert alphanumeric variable condition is true">
+            <content>{{generateAlphanumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random variable from regex pattern of length 6" name="generateRegexVar">
+        <generate length="6">
+            <randomRegexp pattern="[A-Z]{2}[0-9]{4}"/>
+        </generate>
+    </var>
+
+    <condition comment="Check if regex variable matches pattern" name="generateRegexCondition"
+               spel="'{{generateRegexVar}}'.length() == 6 and '{{generateRegexVar}}'.matches('[A-Z]{2}[0-9]{4}')"/>
+
+    <assert comment="Assert regex variable condition is true">
+        <equal comment="Assert regex variable condition is true">
+            <content>{{generateRegexCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+<!--    path-->
+    <var comment="Create variable with constant value" name="constantVar">
+        <constant value="{&quot;name&quot;:&quot;HelloWorld&quot;, &quot;someField&quot;:&quot;test&quot;}"/>
+    </var>
+
+    <assert comment="Assert constant variable value">
+        <equal comment="Check constantVar equals expected">
+            <content>{{constantVar}}</content>
+            <content>{&quot;name&quot;:&quot;HelloWorld&quot;, &quot;someField&quot;:&quot;test&quot;}</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable using path from existing variable" name="pathFromVar">
+        <path value="$.someField" fromVar="constantVar"/>
+    </var>
+
+    <assert comment="Assert pathFromVar value">
+        <equal comment="Check pathFromVar equals constantVar value">
+            <content>{{pathFromVar}}</content>
+            <content>test</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable using path from JSON file" name="pathFromFile">
+        <path value="$.description" fromFile="data.json"/>
+    </var>
+
+    <var comment="Create variable using path from JSON file" name="nameFromPath">
+        <path value="$.name" fromFile="data.json"/>
+    </var>
+
+    <assert comment="Assert pathFromFile value">
+        <equal comment="Check pathFromFile equals expected file value">
+            <content>{{pathFromFile}}</content>
+            <content>The best tool you can imagine!</content>
+        </equal>
+        <notEqual comment="Check that the name from path is not equal expected value">
+            <content>{{nameFromPath}}</content>
+            <content>TestRail</content>
+        </notEqual>
+    </assert>
+
+<!--    SQL-->
+
+<!--    <migrate comment="Migrate test dataset (postgres)"-->
+<!--             alias="POSTGRES_0">-->
+<!--        <dataset>postgres_patch.sql</dataset>-->
+<!--    </migrate>-->
+
+<!--    <migrate comment="Migrate test dataset (mysql)"-->
+<!--             alias="MYSQL_0" name="MYSQL">-->
+<!--        <dataset>mysql_patch.sql</dataset>-->
+<!--    </migrate>-->
+<!---->
+<!--    <migrate comment="Migrate test dataset (oracle)"-->
+<!--             alias="ORACLE_0"-->
+<!--             name="ORACLE">-->
+<!--        <dataset>oracle_patch.sql</dataset>-->
+<!--    </migrate>-->
+
+<!--    <migrate comment="Migrate test dataset (clickhouse)"-->
+<!--             alias="CLICKHOUSE_0"-->
+<!--             name="CLICKHOUSE">-->
+<!--        <dataset>clickhouse_patch.sql</dataset>-->
+<!--    </migrate>-->
+
+
+    <var comment="PostgreSQL query with single column" name="postgresQuery">
+        <sql dbType="POSTGRES" alias="POSTGRES_0">
+            <query>
+                SELECT id
+                FROM news
+                WHERE newsname='News1';
+            </query>
+        </sql>
+    </var>
+
+    <var comment="MySQL query with single column" name="mysqlQuery">
+        <sql dbType="MYSQL" alias="MYSQL_0">
+            <query>
+                SELECT id
+                FROM news
+                WHERE newsname='News1';
+            </query>
+        </sql>
+    </var>
+
+    <var comment="Oracle query with single column" name="oracleQuery">
+        <sql dbType="ORACLE" alias="ORACLE_0">
+            <query>
+                SELECT newsnumber
+                FROM news
+                WHERE newsname = 'Ukraine'
+            </query>
+        </sql>
+    </var>
+
+    <var comment="Clickhouse query with single column" name="clickhouseQuery">
+        <sql dbType="CLICKHOUSE" alias="CLICKHOUSE_0">
+            <query>
+                SELECT database
+                FROM system.parts
+                WHERE table = 'news'
+            </query>
+        </sql>
+    </var>
+
+</scenario>

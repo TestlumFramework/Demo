@@ -1,0 +1,38 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Repeat with times — verifies that commands inside repeat are executed on each iteration</description>
+        <name>Repeat with times</name>
+    </overview>
+
+    <settings>
+        <tags>repeat-self</tags>
+    </settings>
+
+    <var comment="Current date" name="current">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <var comment="Create date in future"
+         name="date_in_future">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().plusSeconds(2).toDate())"/>
+    </var>
+
+    <repeat comment="Repeat 2 times wait one second" times="2">
+        <wait comment="wait one second" time="1"/>
+    </repeat>
+
+    <var comment="Update current date" name="current">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <assert comment="Verify that the command inside repeat was executed — value changed">
+        <equal comment="date was updated">
+            <content>{{current}}</content>
+            <content>{{date_in_future}}</content>
+        </equal>
+    </assert>
+
+</scenario>

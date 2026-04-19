@@ -1,0 +1,7 @@
+val1,val2,expectedEqual,conditionName,firstValue,operation,secondValue,condition
+Testlum,Testlum,true,first,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
+Recorder,otherTool,false,second,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
+1,2,false,third,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
+7,7,true,fourth,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
+test!,red#,false,fifth,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
+$,$,true,sixth,{{val1}},eq,{{val2}},"""{{val1}}"" eq ""{{val2}}"""
