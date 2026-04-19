@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Repeat Book One",
+      "author" : "Vadym",
+      "number" : 1
+    }
+  }
+}

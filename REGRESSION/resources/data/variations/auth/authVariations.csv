@@ -1,0 +1,3 @@
+authComment,authLoginEndpoint,httpComment,httpEndpoint,expected_2,value
+Authenticate first JWT variation,api/test/auth/jwt/login,Create first protected variation resource,api/test/auth/jwt/resource,expected_2_1,repeat-resource-1
+Authenticate second JWT variation,api/test/auth/jwt/login,Create second protected variation resource,api/test/auth/jwt/resource,expected_2_2,repeat-resource-2

@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            This scenario verifies Basic Authentication behavior when autoLogout is enabled.
+
+            Test flow includes:
+            1. Send request without Authorization header → expect 401.
+            2. Apply Basic Auth via auth tag.
+            3. Send GET request → expect 200.
+            4. Create new user → expect 200.
+            5. Verify updated user list.
+            6. Exit auth block.
+            7. Send request again without Authorization header → expect 401 because autoLogout=true.
+            8. Reset test data.
+
+            This scenario validates:
+            - Basic Auth header injection inside auth block
+            - Protected endpoint access with valid credentials
+            - Automatic Authorization header cleanup after auth block
+            - Unauthorized access after leaving auth block when autoLogout is enabled
+        </description>
+        <name>Auth Basic AutoLogout Enabled</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <http comment="Unauthorized request should return 401 before auth"
+          alias="MEGA_APP_BASIC">
+        <get endpoint="/api/test/auth/basic/users">
+            <response code="401" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <auth comment="Apply Basic Auth header"
+          apiAlias="MEGA_APP_BASIC"
+          credentials="http-auth-user-basic.json"
+          loginEndpoint="/ignore">
+
+        <http comment="Get users inside auth block"
+              alias="MEGA_APP_BASIC">
+            <get endpoint="/api/test/auth/basic/users">
+                <response code="200" file="expected_3.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Unauthorized request should return 401 after auth block because autoLogout is enabled"
+          alias="MEGA_APP_BASIC">
+        <get endpoint="/api/test/auth/basic/users">
+            <response code="401" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <http comment="Reset basic auth test data" alias="MEGA_APP_BASIC">
+        <delete endpoint="/api/test/auth/basic/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

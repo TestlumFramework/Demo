@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP File Payload</name>
+        <description>
+            This scenario verifies API support for file-based request payload.
+
+            Test flow includes:
+            1. Send POST request with request body loaded from external file.
+            2. Verify response status = 201.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Request body loading from external file
+            - JSON payload processing from file
+            - Entity creation from file-based payload
+            - Stored entity retrieval
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1-2. Send POST request with JSON payload from external file"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <header name="Content-Type" data="application/json"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after file payload test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

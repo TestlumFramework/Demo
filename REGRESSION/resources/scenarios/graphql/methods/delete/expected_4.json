@@ -1,0 +1,11 @@
+{
+  "data": {
+    "getAllSelfBooks": [
+      {
+        "title": "Keep Me",
+        "author": "Author Two",
+        "number": 2
+      }
+    ]
+  }
+}

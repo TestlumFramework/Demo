@@ -1,0 +1,72 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket Standard Text Variables</name>
+        <description>
+            This scenario verifies standard WebSocket text execution using variables.
+
+            Test flow includes:
+            1. Create variables for websocket comments, messages and expected files.
+            2. Connect to standard WebSocket.
+            3. Send first text message using variable.
+            4. Receive first echoed response.
+
+            This scenario validates:
+            - Variable injection into websocket comments
+            - Variable injection into websocket text messages
+            - Variable injection into expected file names
+            - Variable reuse across send/receive steps
+            - Stable standard websocket text flow
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <var comment="Create websocket block comment variable"
+         name="wsComment">
+        <constant value="Step 1-6. Execute standard websocket text flow using variables"/>
+    </var>
+
+    <var comment="Create variable for first send comment"
+         name="firstSendComment">
+        <constant value="Step 3. Send first text message using variable"/>
+    </var>
+
+    <var comment="Create variable for first receive comment"
+         name="firstReceiveComment">
+        <constant value="Step 4. Receive first echoed response"/>
+    </var>
+
+    <var comment="Create variable for first text message"
+         name="firstMessage">
+        <constant value="hello from variable"/>
+    </var>
+
+    <condition comment="Create true condition" name="trueCondition" spel="true"/>
+
+    <var comment="Create variable for condition" name="varCondition">
+        <constant value="{{trueCondition}}"/>
+    </var>
+
+    <websocket comment="{{wsComment}}"
+               alias="MEGA_WS_STANDARD"
+               disconnect="true"
+               condition="{{varCondition}}">
+
+        <send comment="{{firstSendComment}}">
+            <message>{{firstMessage}}</message>
+        </send>
+
+        <receive comment="{{firstReceiveComment}}"
+                 limit="1"
+                 timeoutMillis="3000">
+            <file>expected_4.json</file>
+        </receive>
+    </websocket>
+
+</scenario>
