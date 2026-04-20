@@ -1,0 +1,34 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell execution within repeat loop check</description>
+        <name>Shell Repeat Test</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self</tags>
+    </settings>
+
+    <repeat comment="Run the shell command 5 times"
+            times="5">
+
+        <shell comment="Execute simple inline command and validate exit code"
+               file="expected_2.json">
+            <shellCommand>echo "Running iteration inside loop"</shellCommand>
+        </shell>
+
+    </repeat>
+
+    <repeat comment="Run the shell command in repeat with variations"
+            variations="shell_repeat_variations.csv">
+
+        <shell comment="Execute simple inline command and validate exit code for word {{full_word}}"
+               file="{{expected_8}}.json">
+            <shellCommand>echo "Running iteration inside loop for word {{full_word}}"</shellCommand>
+        </shell>
+
+    </repeat>
+
+</scenario>

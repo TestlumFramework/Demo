@@ -1,0 +1,49 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell Variable Test</description>
+        <name>Shell Simple Variable</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self</tags>
+    </settings>
+
+    <var comment="Variable for expected 1 file"
+         name="expected_1">
+        <constant value="expected_1"/>
+    </var>
+
+    <var comment="Variable for full word"
+         name="full_word">
+        <constant value="hello_world"/>
+    </var>
+
+    <var comment="Variable for search part"
+         name="search_part">
+        <constant value="hello"/>
+    </var>
+    
+    <shell comment="Verify dynamic variables in inline command for word {{full_word}}"
+           file="{{expected_1}}.json">
+        <shellCommand>echo {{full_word}} | grep -q {{search_part}}</shellCommand>
+    </shell>
+
+    <var comment="Variable for expected 2 file"
+         name="expected_2">
+        <constant value="expected_2"/>
+    </var>
+
+    <var comment="Variable for body 2 file"
+         name="body_2_file">
+        <constant value="check_substring.sh"/>
+    </var>
+
+    <shell comment="Verify passing dynamic arguments to a script for word {{full_word}}"
+           file="{{expected_2}}.json">
+        <shellFile>{{body_2_file}} {{full_word}} {{search_part}}</shellFile>
+    </shell>
+
+</scenario>
