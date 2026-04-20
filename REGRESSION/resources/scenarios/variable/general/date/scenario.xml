@@ -37,7 +37,7 @@
     </assert>
 
     <var comment="Create date before now" name="dateBeforeNow">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().minusDays(5).toDate())"/>
+        <expression value="T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(T(java.time.LocalDateTime).now().minusDays(5))"/>
     </var>
 
     <condition comment="create condition to check dateBeforeNow is before dateNow" name="dateBeforeNowCondition" spel="T(java.time.LocalDateTime).parse('{{dateBeforeNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')).isBefore(T(java.time.LocalDateTime).parse('{{dateNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')))"/>
@@ -50,7 +50,7 @@
     </assert>
 
     <var comment="Create date after now" name="dateAfterNow">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().plusHours(5).toDate())"/>
+        <expression value="T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss').format(T(java.time.LocalDateTime).now().plusHours(5))"/>
     </var>
 
     <var comment="Create var for dateAfterNow condition" name="dateAfterNowVar">
