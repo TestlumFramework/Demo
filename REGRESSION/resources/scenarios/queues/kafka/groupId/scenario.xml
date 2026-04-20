@@ -1,0 +1,64 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Group ID Broadcast Test</description>
+        <name>Kafka Multiple Consumer Groups</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="QUEUE"
+           comment="Publish a single broadcast message to the topic">
+        <send topic="weather-broadcast-test">
+            <value>
+                [ {
+                "city": "Sumy",
+                "temperature": 15
+                } ]
+            </value>
+        </send>
+    </kafka>
+
+    <kafka alias="QUEUE"
+           comment="Verify that Consumer Group 1 successfully consumes the message">
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather-broadcast-test">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city": "Sumy",
+                "temperature": 15
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
+           comment="Verify that Consumer Group 2 receives the exact same broadcast message">
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather-broadcast-test">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city": "Sumy",
+                "temperature": 15
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+</scenario>

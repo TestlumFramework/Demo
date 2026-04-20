@@ -1,0 +1,3 @@
+topicName,testDescription,city,city2,temp,body_4,expected_5
+weather,"First iteration comment with injected variation",Kyiv,London,15,body_4_1.json,expected_5_1
+weather,"Second iteration comment with injected variation",Lviv,New York,20,body_4_1.json,expected_5_2
