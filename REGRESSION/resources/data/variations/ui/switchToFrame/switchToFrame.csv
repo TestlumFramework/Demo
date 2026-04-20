@@ -1,0 +1,3 @@
+webComment,navigateComment,path,waitComment,waitTime,scrollComment,switchComment,clickComment,assertComment,attributeComment,frameLocator,buttonLocator,resultLocator,expected
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,2,Scroll to iframe,Switch to iframe,Click button inside frame,Verify result,Check text,uiElements.testFrame,uiElements.frameButton,uiElements.frameResult,Clicked!
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,2,Scroll to iframe again,Switch again,Click again,Verify again,Check text again,uiElements.testFrame,uiElements.frameButton,uiElements.frameResult,Clicked!

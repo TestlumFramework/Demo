@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DoubleClick - General</name>
+        <description>
+            This scenario verifies doubleClick command functionality.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Verify result text is NOT present.
+            3. Execute doubleClick on button.
+            4. Verify result text is displayed.
+
+            This scenario validates:
+            - Double click execution
+            - UI reaction after double click
+            - Element visibility change
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <assert comment="Verify result is NOT present before double click">
+            <present comment="Result should not be visible"
+                     locator="uiElements.doubleClickResult"
+                     negative="true"/>
+        </assert>
+
+        <doubleClick comment="Perform double click on button"
+                     locator="uiElements.doubleClickBtn"/>
+
+        <wait comment="Wait after double click" time="1"/>
+
+        <assert comment="Verify result is visible after double click">
+            <present comment="Result should be visible"
+                     locator="uiElements.doubleClickResult"/>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - Variable</name>
+        <description>
+            This scenario verifies input command using variables.
+
+            This scenario validates:
+            - locator injection
+            - value injection
+            - highlight injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="WEB section comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Input command comment"
+             name="inputComment">
+            <constant value="Input value using variables"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify input value"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check input value"/>
+        </var>
+
+        <var comment="Locator for input"
+             name="locator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Input value"
+             name="value">
+            <constant value="VARIABLE_TEST"/>
+        </var>
+
+        <var comment="Highlight flag"
+             name="highlight">
+            <constant value="true"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="2"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{locator}}"
+               value="{{value}}"
+               highlight="true"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,2 @@
+webComment,clickComment,clickLocator,waitComment,waitTime,dragComment,dropLocator,fileName,assertComment,attributeComment,attributeName,resultLocator,expected
+Start WEB script,Open Developer Board,sideBar.developerBoard1,Wait page load,1,Upload file via drop zone,developerBoard.selectFileDropZone,upload_dropZone.png,Verify uploaded file,Check uploaded file name,innerHTML,developerBoard.fileDropZone,File: upload_dropZone.png

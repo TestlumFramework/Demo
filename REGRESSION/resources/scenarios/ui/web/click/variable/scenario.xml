@@ -1,0 +1,82 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Click - Variable</name>
+        <description>
+            This scenario verifies click command using variables.
+
+            This scenario validates:
+            - Locator injection
+            - Comment injection
+            - Click execution via variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <var comment="Store locator" name="locator">
+            <constant value="login.signIn"/>
+        </var>
+
+        <var comment="Store highlight flag" name="highlight">
+            <constant value="true"/>
+        </var>
+
+        <var comment="Store click comment" name="clickComment">
+            <constant value="Click using variable"/>
+        </var>
+
+        <var comment="Store assert comment" name="assertComment">
+            <constant value="Verify navigation"/>
+        </var>
+
+        <var comment="Wait Comment variable" name="waitComment">
+            <constant value="Wait after click"/>
+        </var>
+
+        <var comment="Time Variable" name="time">
+            <constant value="1"/>
+        </var>
+
+        <click comment="{{clickComment}}"
+               locator="{{locator}}"
+               highlight="true"/>
+
+        <wait comment="{{waitComment}}" time="{{time}}"/>
+
+        <var comment="Title Variable" name="title">
+            <constant value="V-Dashboard"/>
+        </var>
+
+        <var comment="Check that Dashboard is present" name="attributeComment">
+            <constant value="Check that Dashboard is present"/>
+        </var>
+
+        <var comment="Content Variable" name="content">
+            <constant value="Dashboard"/>
+        </var>
+
+        <var comment="Dashboard locator variable" name="dashboardLocator">
+            <constant value="dashboard.title"/>
+        </var>
+
+        <var comment="Attribute locator name" name="locatorName">
+            <constant value="innerText"/>
+        </var>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="attributeComment" name="{{locatorName}}"
+                       locator="{{dashboardLocator}}">
+                <content>{{content}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

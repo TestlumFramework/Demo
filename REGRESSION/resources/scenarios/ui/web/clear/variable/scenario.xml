@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Variable</name>
+        <description>
+            This scenario verifies clear command using variables.
+
+            Test flow:
+            1. Inject path, locator, value, and comments via variables.
+            2. Navigate to forms page.
+            3. Input value into field.
+            4. Execute clear command using variable.
+            5. Verify clear execution using assertion.
+
+            This scenario validates:
+            - Locator injection
+            - Value injection
+            - Comment injection
+            - Clear execution via variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Store navigation path" name="path">
+            <constant value="/forms"/>
+        </var>
+
+        <var comment="Store input locator" name="locator">
+            <constant value="forms.username"/>
+        </var>
+
+        <var comment="Store input value" name="value">
+            <constant value="TestUser"/>
+        </var>
+
+        <var comment="Store navigate comment" name="navigateComment">
+            <constant value="Navigate to forms page"/>
+        </var>
+
+        <var comment="Store input comment" name="inputComment">
+            <constant value="Enter value into input field"/>
+        </var>
+
+        <var comment="Store clear comment" name="clearComment">
+            <constant value="Clear field using variable"/>
+        </var>
+
+        <var comment="Store assert comment" name="assertComment">
+            <constant value="Verify clear execution"/>
+        </var>
+
+        <var comment="Store notEqual comment" name="notEqualComment">
+            <constant value="Value should not equal predefined string"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{locator}}"
+               value="{{value}}"/>
+
+        <clear comment="{{clearComment}}"
+               locator="{{locator}}"
+               highlight="true"/>
+
+        <assert comment="{{assertComment}}">
+            <notEqual comment="{{notEqualComment}}">
+                <content>{{value}}</content>
+                <content>TestUsers</content>
+            </notEqual>
+        </assert>
+
+    </web>
+
+</scenario>

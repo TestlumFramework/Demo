@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Highlight</name>
+        <description>
+            This scenario verifies hotKey highlight command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input text into source field.
+            3. Highlight text.
+            4. Copy highlighted text.
+            5. Paste into another field.
+            6. Verify highlighted text was copied correctly.
+
+            This scenario validates:
+            - highlight execution
+            - text selection behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <input comment="Fill source input"
+               locator="uiElements.hotKeyInput1"
+               value="HIGHLIGHT_TEST"/>
+
+        <hotKey comment="Highlight text in input">
+            <highlight comment="Select all text"
+                       locator="uiElements.hotKeyInput1"/>
+        </hotKey>
+
+        <wait comment="Wait for page load" time="1"/>
+    </web>
+
+</scenario>

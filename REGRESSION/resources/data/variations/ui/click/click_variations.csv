@@ -1,0 +1,2 @@
+webComment,navigateComment,path,clickComment,locator,waitAfterClickComment,waitAfterClick,assertDashboardComment,dashboardAttributeComment,dashboardLocator,dashboardText
+Start WEB script,Navigate to login page,/,Click Sign In,login.signIn,Wait after click,1,Verify dashboard,Check dashboard header,dashboard.title,Dashboard

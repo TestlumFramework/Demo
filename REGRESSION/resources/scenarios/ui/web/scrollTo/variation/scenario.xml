@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>ScrollTo - Variation</name>
+        <description>
+            This scenario verifies scrollTo command using CSV variations.
+
+            Test flow:
+            1. Navigate to page using variation.
+            2. Scroll to element using variation locator.
+            3. Verify that element is reached.
+
+            This scenario validates:
+            - CSV-based locator injection
+            - multiple scrollTo executions
+            - dynamic expected behavior
+        </description>
+    </overview>
+
+    <settings>
+        <variations>scrollTo.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <scrollTo comment="{{scrollToComment}}"
+                  locator="{{locator}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{attributeComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Copy</name>
+        <description>
+            This scenario verifies hotKey copy command execution.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input text into field.
+            3. Execute highlight.
+            4. Execute copy command.
+            5. Verify command execution without failure.
+
+            This scenario validates:
+            - highlight execution
+            - copy execution stability
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <input comment="Fill source input field"
+               locator="uiElements.hotKeyInput1"
+               value="HELLO"/>
+
+        <hotKey comment="Highlight text">
+            <highlight comment="Select text"
+                       locator="uiElements.hotKeyInput1"/>
+        </hotKey>
+
+        <hotKey comment="Execute copy command">
+            <copy comment="Copy selected text"/>
+        </hotKey>
+
+        <assert comment="Verify input is still present (command executed)">
+            <present comment="Input still exists"
+                     locator="uiElements.hotKeyInput1"/>
+        </assert>
+
+    </web>
+
+</scenario>

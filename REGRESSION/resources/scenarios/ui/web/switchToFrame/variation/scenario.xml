@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Variations</name>
+        <description>
+            This scenario verifies switchToFrame command using CSV variations.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Scroll to iframe.
+            3. Switch to iframe.
+            4. Click button inside iframe.
+            5. Verify result using expected value from CSV.
+
+            This scenario validates:
+            - CSV-based locator injection
+            - multiple iterations
+            - iframe interaction per variation
+        </description>
+    </overview>
+
+    <settings>
+        <variations>switchToFrame.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{frameLocator}}"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <switchToFrame comment="{{switchComment}}"
+                       locator="{{frameLocator}}">
+
+            <click comment="{{clickComment}}"
+                   locator="{{buttonLocator}}"/>
+
+            <wait comment="Wait after click"
+                  time="1"/>
+
+            <assert comment="{{assertComment}}">
+                <attribute comment="{{attributeComment}}"
+                           name="innerText"
+                           locator="{{resultLocator}}">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+    </web>
+
+</scenario>

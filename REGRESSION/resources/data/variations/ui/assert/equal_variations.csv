@@ -1,0 +1,2 @@
+requestComment,varComment,attributeName,equalComment,locator,value1
+Check dashboard title,Get title from UI,innerText,Compare dashboard values,//h3,Dashboard

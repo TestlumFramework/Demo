@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Title - Variable</name>
+        <description>
+            This scenario verifies title assertion using variables.
+
+            Test flow:
+            1. Store expected title in variable.
+            2. Execute title assertion using variable.
+
+            This scenario validates:
+            - Variable injection
+            - Title assertion using variable
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Expected Title " name="expectedTitle">
+            <constant value="V-Dashboard"/>
+        </var>
+
+        <var comment="Assert Comment" name="assertComment">
+            <constant value="Check title via variable"/>
+        </var>
+
+        <var comment="Title Comment" name="titleComment">
+            <constant value="Compare title"/>
+        </var>
+
+        <assert comment="{{assertComment}}">
+            <title comment="{{titleComment}}">
+                <content>{{expectedTitle}}</content>
+            </title>
+        </assert>
+
+    </web>
+
+</scenario>

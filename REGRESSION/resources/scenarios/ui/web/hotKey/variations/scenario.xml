@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Variation</name>
+        <description>
+            This scenario verifies hotKey commands using CSV-driven variations.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input dynamic value.
+            3. Execute highlight + copy + paste.
+            4. Verify pasted result.
+
+            This scenario validates:
+            - CSV variation usage
+            - dynamic value injection
+            - hotKey reusable flow
+        </description>
+    </overview>
+
+    <settings active="false">
+        <variations>hotkey.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="{{waitTime}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{input1}}"
+               value="{{value}}"/>
+
+        <hotKey comment="{{highlightComment}}">
+            <highlight comment="Highlight text"
+                       locator="{{input1}}"/>
+        </hotKey>
+
+        <hotKey comment="{{copyComment}}">
+            <copy comment="{{copyComment}}"/>
+        </hotKey>
+
+        <hotKey comment="{{pasteComment}}">
+            <paste comment="Paste text"
+                   locator="{{input2}}"/>
+        </hotKey>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{input2}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

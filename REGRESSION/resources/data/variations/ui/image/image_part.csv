@@ -1,0 +1,3 @@
+webComment,navigateComment,waitComment,waitTime,scrollComment,imageComment,locator,file,percentage
+Start WEB script,Navigate to UI Elements page,Wait for page load,2,Scroll to image block,Compare image part 99.9,uiElements.testImage,image_part.png,99.9
+Start WEB script,Navigate to UI Elements page,Wait for page load,2,Scroll to image block,Compare image part 99.5,uiElements.testImage,image_part.png,99.5

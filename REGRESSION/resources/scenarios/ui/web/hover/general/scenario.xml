@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Hover - General</name>
+        <description>
+            This scenario verifies hover command functionality.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Verify initial hover state is false.
+            3. Execute hover command.
+            4. Verify hover state becomes true.
+
+            This scenario validates:
+            - hover execution
+            - UI reaction on hover
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <assert comment="Verify initial hover state">
+            <attribute comment="Check hover is false"
+                       name="innerText"
+                       locator="uiElements.hoverResult">
+                <content>Hover status: false</content>
+            </attribute>
+        </assert>
+
+        <hover comment="Hover over target element"
+               locator="uiElements.hoverTarget"/>
+
+        <wait comment="Wait after hover" time="1"/>
+
+        <assert comment="Verify hover state after hover action">
+            <attribute comment="Check hover is true"
+                       name="innerText"
+                       locator="uiElements.hoverResult">
+                <content>Hover status: true</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

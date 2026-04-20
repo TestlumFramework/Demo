@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Navigate - Repeat Variations</name>
+        <description>
+            This scenario verifies repeated navigation using variations.
+
+            Test flow:
+            1. Repeat navigation for each variation row.
+            2. Open different pages.
+            3. Verify correct page header.
+
+            This scenario validates:
+            - repeat with variations
+            - dynamic navigation
+            - correct page rendering
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <repeat comment="Navigate through different pages"
+                variations="navigateRepeat.csv">
+
+            <navigate comment="{{navigateComment}}"
+                      command="to"
+                      path="{{path}}"/>
+
+            <wait comment="{{waitComment}}"
+                  time="{{waitTime}}"/>
+
+            <assert comment="{{assertComment}}">
+                <attribute comment="{{attributeComment}}"
+                           name="innerText"
+                           locator="{{locator}}">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

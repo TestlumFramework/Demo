@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Title - General</name>
+        <description>
+            This scenario verifies basic title assertion.
+
+            Test flow:
+            1. Navigate to page.
+            2. Execute title assertion.
+            3. Verify page title equals expected value.
+
+            This scenario validates:
+            - Correct title extraction
+            - Title comparison logic
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB SCRIPT">
+
+        <assert comment="Check page title">
+            <title comment="Check title equals expected">
+                <content>V-Dashboard</content>
+            </title>
+        </assert>
+
+    </web>
+
+</scenario>

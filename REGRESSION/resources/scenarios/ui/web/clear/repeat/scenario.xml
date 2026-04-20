@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Repeat Times</name>
+        <description>
+            This scenario verifies repeated execution of clear command.
+
+            Test flow:
+            1. Navigate to forms page.
+            2. Repeat input and clear actions multiple times.
+            3. Verify clear command execution on each iteration.
+
+            This scenario validates:
+            - Stable repeated execution of clear
+            - Consistent field reset behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <repeat comment="Repeat clear test 2 times" times="2">
+
+            <input comment="Enter value into input field"
+                   locator="forms.username"
+                   value="TestUser"/>
+
+            <clear comment="Clear input field"
+                   locator="forms.username"
+                   highlight="true"/>
+
+            <assert comment="Verify clear execution">
+                <notEqual comment="Value should not equal predefined string">
+                    <content>TestUser</content>
+                    <content>TestUsers</content>
+                </notEqual>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>
