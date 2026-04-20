@@ -14,12 +14,12 @@
         <tag name="native" enabled="false"/>
         <tag name="native-healthcheck" enabled="false"/>
         <tag name="condition-mixed" enabled="true"/>
-        <tag name="condition-self" enabled="true"/>
+        <tag name="condition" enabled="true"/>
 
         <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
 
-        <tag name="assert-self" enabled="true"/>
+        <tag name="assert" enabled="true"/>
 
         <tag name="var-mixed" enabled="true"/>
         <tag name="var" enabled="true"/>
@@ -33,9 +33,9 @@
         <tag name="elasticsearch-mixed" enabled="true"/>
         <tag name="elasticsearch-self" enabled="true"/>
 
-        <tag name="repeat-self" enabled="true"/>
-        <tag name="migrate-self" enabled="true"/>
-        <tag name="include-self" enabled="true"/>
+        <tag name="repeat" enabled="true"/>
+        <tag name="migrate" enabled="true"/>
+        <tag name="include" enabled="true"/>
         <tag name="wait" enabled="true"/>
 
         <tag name="api" enabled="true"/>
