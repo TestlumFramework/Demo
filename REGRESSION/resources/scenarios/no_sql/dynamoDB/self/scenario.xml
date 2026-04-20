@@ -1,0 +1,84 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>DynamoDB PartiQL CRUD Operations Test</description>
+        <name>DynamoDB Basic CRUD Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>dynamodb</tags>
+    </settings>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Clean up specific item before test"
+            file="expected_1.json">
+        <query>
+            DELETE FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Insert data to table"
+            file="expected_2.json">
+        <query>
+            INSERT INTO dynamodb_news VALUE {
+            'name': 'News4',
+            'number': 4,
+            'active': true,
+            'createdAt': '2023-04-17T12:34:20.367',
+            'id': '4'
+            }
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Read data from table - verify inserted data"
+            file="expected_3.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Update data in table"
+            file="expected_4.json">
+        <query>
+            UPDATE dynamodb_news
+            SET name = 'UpdatedNews4'
+            SET active = false
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Verify updated data"
+            file="expected_5.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Delete from table"
+            file="expected_6.json">
+        <query>
+            DELETE FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Read data from table - verify data is deleted"
+            file="expected_7.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE id = '4'
+        </query>
+    </dynamo>
+
+</scenario>

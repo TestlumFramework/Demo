@@ -1,0 +1,21 @@
+[ {
+  "query" : "SELECT * FROM dynamodb_news WHERE id = '10'",
+  "content" : [ {
+    "name" : {
+      "s" : "Global Tech Update",
+      "type" : "S"
+    },
+    "number" : {
+      "n" : "10",
+      "type" : "N"
+    },
+    "active" : {
+      "bool" : true,
+      "type" : "BOOL"
+    },
+    "id" : {
+      "s" : "10",
+      "type" : "S"
+    }
+  } ]
+} ]

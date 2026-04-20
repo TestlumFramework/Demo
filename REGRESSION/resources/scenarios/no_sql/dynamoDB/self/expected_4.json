@@ -1,0 +1,3 @@
+[ {
+  "query" : "             UPDATE dynamodb_news             SET name = 'UpdatedNews4'             SET active = false             WHERE id = '4'         "
+} ]

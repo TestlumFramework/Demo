@@ -1,0 +1,21 @@
+[ {
+  "query" : "SELECT * FROM dynamodb_news WHERE id = '20'",
+  "content" : [ {
+    "name" : {
+      "s" : "Local Sports Events",
+      "type" : "S"
+    },
+    "number" : {
+      "n" : "20",
+      "type" : "N"
+    },
+    "active" : {
+      "bool" : true,
+      "type" : "BOOL"
+    },
+    "id" : {
+      "s" : "20",
+      "type" : "S"
+    }
+  } ]
+} ]
