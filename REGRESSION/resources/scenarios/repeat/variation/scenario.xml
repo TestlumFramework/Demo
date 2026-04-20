@@ -8,7 +8,8 @@
     </overview>
 
     <settings>
-        <tags>repeat-self</tags>
+        <variations>repeat_inject_variations.csv</variations>
+        <tags>repeat</tags>
     </settings>
 
     <var comment="Initialize result accumulator with constant value 0 before repeat starts" name="result">
@@ -21,18 +22,10 @@
         </var>
     </repeat>
 
-    <condition comment="Verify final result equals the expected sum of all variation values"
-               name="resultIsExpectedSum"
-               spel="{{result}} == 6"/>
-
     <assert comment="Verify that result equals the sum of all variation values after repeat completes">
         <equal comment="result should equal 6">
             <content>{{result}}</content>
             <content>6</content>
-        </equal>
-        <equal comment="resultIsExpectedSum condition should be true">
-            <content>{{resultIsExpectedSum}}</content>
-            <content>true</content>
         </equal>
         <notEqual comment="result should not equal 0">
             <content>{{result}}</content>
@@ -44,4 +37,23 @@
         </notEqual>
     </assert>
 
+    <repeat comment="{{comment}}" times="1" condition="{{condition}}">
+        <var comment="Add value to accumulated result" name="result">
+            <expression value="{{result}} + 1"/>
+        </var>
+    </repeat>
+
+    <var comment="Create variable for comment injecting" name="commentVar">
+        <constant value="Variable comment for injecting in repeat"/>
+    </var>
+
+    <var comment="Create variable for condition injecting" name="conditionVar">
+        <expression value="1 eq 1"/>
+    </var>
+
+    <repeat comment="{{commentVar}}" times="1" condition="{{conditionVar}}">
+        <var comment="Add value to accumulated result" name="result">
+            <expression value="{{result}} +1"/>
+        </var>
+    </repeat>
 </scenario>

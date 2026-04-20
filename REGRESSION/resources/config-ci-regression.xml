@@ -26,7 +26,7 @@
         <tag name="auth-jwt-mixed" enabled="true"/>
         <tag name="elasticsearch-mixed" enabled="true"/>
         <tag name="elasticsearch-self" enabled="true"/>
-        <tag name="repeat-self" enabled="true"/>
+        <tag name="repeat" enabled="true"/>
         <tag name="migrate-self" enabled="true"/>
         <tag name="include-self" enabled="true"/>
         <tag name="wait" enabled="true"/>

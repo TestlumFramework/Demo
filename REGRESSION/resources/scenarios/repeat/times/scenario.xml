@@ -8,30 +8,38 @@
     </overview>
 
     <settings>
-        <tags>repeat-self</tags>
+        <tags>repeat</tags>
     </settings>
 
-    <var comment="Current date" name="current">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    <var comment="Variable for result" name="result">
+        <constant value="0"/>
     </var>
 
-    <var comment="Create date in future"
-         name="date_in_future">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().plusSeconds(2).toDate())"/>
-    </var>
-
-    <repeat comment="Repeat 2 times wait one second" times="2">
-        <wait comment="wait one second" time="1"/>
+    <repeat comment="Increase result by 1 - two times" times="2">
+        <var comment="Increase 'result' variable" name="result">
+            <expression value="{{result}} + 1"/>
+        </var>
     </repeat>
 
-    <var comment="Update current date" name="current">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
-    </var>
+    <assert comment="Check result increased by 2">
+        <equal comment="Check result increased by 2">
+            <content>{{result}}</content>
+            <content>2</content>
+        </equal>
+    </assert>
 
-    <assert comment="Verify that the command inside repeat was executed — value changed">
-        <equal comment="date was updated">
-            <content>{{current}}</content>
-            <content>{{date_in_future}}</content>
+    <repeat comment="Execute repeat inside repeat two times" times="2">
+        <repeat comment="Increase result by 1 - two times" times="2">
+            <var comment="Increase 'result' variable" name="result">
+                <expression value="{{result}} + 1"/>
+            </var>
+        </repeat>
+    </repeat>
+
+    <assert comment="Check result increased by 4">
+        <equal comment="Check result increased by 4">
+            <content>{{result}}</content>
+            <content>6</content>
         </equal>
     </assert>
 

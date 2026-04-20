@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>repeat-self</tags>
+        <tags>repeat</tags>
     </settings>
 
     <condition comment="Define a condition that always evaluates to false — used to trigger repeat skip"
@@ -23,8 +23,8 @@
         <constant value="initial"/>
     </var>
 
-    <repeat comment="This repeat must be skipped entirely because alwaysFalseCondition is false" times="3">
-        <var comment="This var must never be executed — value must not be overwritten" name="value" condition="alwaysFalseCondition">
+    <repeat comment="This repeat must be skipped entirely because alwaysFalseCondition is false" times="3" condition="alwaysFalseCondition">
+        <var comment="This var must never be executed — value must not be overwritten" name="value">
             <expression value="incorrectExpressionValue"/>
         </var>
     </repeat>
@@ -42,31 +42,11 @@
         </var>
     </repeat>
 
-    <condition comment="Verify value was overwritten by the true-condition repeat"
-               name="valueWasOverwritten"
-               spel="'{{value}}' == 'overwritten'"/>
-
-    <condition comment="Verify value is no longer initial after true-condition repeat executed"
-               name="valueIsNotInitial"
-               spel="'{{value}}' != 'initial'"/>
-
     <assert comment="Verify the true-condition repeat did execute and value was overwritten">
         <equal comment="value should equal 'overwritten' after true-condition repeat ran">
             <content>{{value}}</content>
             <content>overwritten</content>
         </equal>
-        <equal comment="valueWasOverwritten condition must be true">
-            <content>{{valueWasOverwritten}}</content>
-            <content>true</content>
-        </equal>
-        <equal comment="valueIsNotInitial condition must be true">
-            <content>{{valueIsNotInitial}}</content>
-            <content>true</content>
-        </equal>
-        <notEqual comment="value must not remain 'initial' after true-condition repeat executed">
-            <content>{{value}}</content>
-            <content>initial</content>
-        </notEqual>
     </assert>
 
 </scenario>
