@@ -8,70 +8,51 @@
     </overview>
 
     <settings>
-        <variations>assert_variations.csv</variations>
-        <tags>assert-self</tags>
+        <tags>assert</tags>
     </settings>
 
-    <condition comment="condition with equal values from variations" name="equalCondition" spel="'{{val1}}' eq '{{val2}}'"/>
+    <condition comment="Create true condition" name="trueCondition" spel="1 eq 1"/>
 
-    <condition comment="condition with notEqual values from variations" name="notEqualCondition" spel="'{{val1}}' ne '{{val2}}'"/>
-
-    <condition comment="Create condition with spell from variation" name="variationCondition" spel="{{condition}}"/>
-
-    <var comment="Create var with condition with spell from variation" name="evaluatedVariationCondition">
-        <expression value="{{condition}}"/>
-    </var>
-
-    <assert comment="assert with condition spell from variations!">
-        <equal comment="check equal condition from variations in content as var and condition">
-            <content>{{variationCondition}}</content>
-            <content>{{evaluatedVariationCondition}}</content>
+    <assert comment="Assert with true condition" condition="{{trueCondition}}">
+        <equal comment="Valid equal check">
+            <content>2</content>
+            <content>2</content>
         </equal>
-    </assert>
-
-    <assert comment="assert with equal condition" condition="'{{val1}}' eq '{{val2}}'">
-        <equal comment="check equal for values from variations">
-            <content>{{val1}}</content>
-            <content>{{val2}}</content>
-        </equal>
-    </assert>
-
-    <assert comment="assert with notEqual condition" condition="'{{val1}}' ne '{{val2}}'">
-        <notEqual comment="check notEqual for values from variations">
-            <content>{{val1}}</content>
-            <content>{{val2}}</content>
+        <notEqual comment="Valid notEqual check">
+            <content>2</content>
+            <content>3</content>
         </notEqual>
     </assert>
 
-    <assert comment="assert with conditions inside equal/notEqual">
-        <equal comment="check equal with condition" condition="equalCondition">
-            <content>{{val1}}</content>
-            <content>{{val2}}</content>
+    <assert comment="Assert with true condition in equal/notEqual">
+        <equal comment="Valid equal check" condition="{{trueCondition}}">
+            <content>2</content>
+            <content>2</content>
         </equal>
-        <notEqual comment="check notEqual with condition" condition="notEqualCondition">
-            <content>{{val1}}</content>
-            <content>{{val2}}</content>
+        <notEqual comment="Valid notEqual check" condition="{{trueCondition}}">
+            <content>1</content>
+            <content>2</content>
         </notEqual>
     </assert>
 
-    <assert comment="assert with conditions inside equal/notEqual and condition as content">
-        <equal comment="check equal with equal condition" condition="equalCondition">
-            <content>{{equalCondition}}</content>
-            <content>true</content>
+    <condition comment="Create false condition" name="falseCondition" spel="1 eq 2"/>
+
+    <assert comment="Assert with false condition" condition="{{falseCondition}}">
+        <equal comment="Invalid equal check">
+            <content>1</content>
+            <content>2</content>
         </equal>
-        <notEqual comment="check equal with notEqual condition" condition="(notEqualCondition) eq false">
-            <content>{{notEqualCondition}}</content>
-            <content>true</content>
-        </notEqual>
     </assert>
 
-    <condition comment="Create condition from variation" name="{{conditionName}}" spel="'{{firstValue}}' {{operation}} '{{secondValue}}'"/>
-
-    <assert comment="assert with condition from variations" condition="{{conditionName}}">
-        <equal comment="check equal values from variations">
-            <content>{{val1}}</content>
-            <content>{{val2}}</content>
+    <assert comment="Assert with false condition in equal/notEqual">
+        <equal comment="Invalid equal check" condition="{{falseCondition}}">
+            <content>1</content>
+            <content>2</content>
         </equal>
+        <notEqual comment="Invalid unequal check" condition="{{falseCondition}}">
+            <content>1</content>
+            <content>1</content>
+        </notEqual>
     </assert>
 
 </scenario>

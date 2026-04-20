@@ -17,7 +17,7 @@
         <tag name="condition-self" enabled="false"/>
         <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
-        <tag name="assert-self" enabled="false"/>
+        <tag name="assert" enabled="false"/>
         <tag name="var-mixed" enabled="false"/>
         <tag name="var" enabled="false"/>
         <tag name="variations-mixed" enabled="false"/>

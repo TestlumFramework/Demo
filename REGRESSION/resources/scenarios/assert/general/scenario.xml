@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>assert-self</tags>
+        <tags>assert</tags>
     </settings>
 
     <var comment="Check new assert by inject expected result" name="BestTool">

@@ -9,7 +9,7 @@
 
     <settings>
         <variations>assert_variations.csv</variations>
-        <tags>assert-self</tags>
+        <tags>assert</tags>
     </settings>
 
     <var comment="var with equal expression for variations" name="equalVar">
@@ -46,6 +46,47 @@
         <notEqual comment="notEqual var and condition">
             <content>{{equalVar}}</content>
             <content>{{notEqualCondition}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="{{comment}}">
+        <equal comment="{{comment}}" condition="'{{val1}}' eq '{{val2}}'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+        <notEqual comment="{{comment}}" condition="'{{val1}}' ne '{{val2}}'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+<!--    <assert comment="Create assert with condition from variations" condition="{{condition}}">-->
+<!--        <equal comment="Check equal with condition from variations" condition="{{condition}}">-->
+<!--            <content>{{val1}}</content>-->
+<!--            <content>{{val2}}</content>-->
+<!--        </equal>-->
+<!--    </assert>-->
+
+    <var comment="Create variable for comment injecting" name="commentVar">
+        <constant value="Check injecting vars in assert/equal/notEqual attributes"/>
+    </var>
+
+    <var comment="Create variable for content injecting" name="testVar">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Create variable for condition injecting" name="conditionVar">
+        <expression value="1 eq 1"/>
+    </var>
+
+    <assert comment="{{commentVar}}" condition="{{conditionVar}}">
+        <equal comment="{{commentVar}}" condition="{{conditionVar}}">
+            <content>{{testVar}}</content>
+            <content>Testlum</content>
+        </equal>
+        <notEqual comment="{{commentVar}}" condition="{{conditionVar}}">
+            <content>{{testVar}}</content>
+            <content>Google</content>
         </notEqual>
     </assert>
 
