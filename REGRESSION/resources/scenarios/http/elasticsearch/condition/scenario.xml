@@ -61,9 +61,11 @@
         </get>
     </elasticsearch>
 
+    <condition comment="True condition to delete from message" name="CONDITION_TRUE" spel="true"/>
+
     <elasticsearch alias="ELASTIC_0"
                    comment="Attempt DELETE with condition=true (should execute)"
-                   condition="true">
+                   condition="{{CONDITION_TRUE}}">
         <delete endpoint="/test-condition-index/_doc/1">
             <response code="200"/>
         </delete>
