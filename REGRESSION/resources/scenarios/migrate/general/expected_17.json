@@ -1,4 +1,0 @@
-[ {
-  "query" : "{\"command\":\"GET\",\"arg\":[\"name\"]}",
-  "content" : "John"
-} ]

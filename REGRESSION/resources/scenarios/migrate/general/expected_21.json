@@ -1,6 +1,0 @@
-[ {
-  "query" : "SELECT newsname FROM news WHERE newsnumber = 331449281",
-  "content" : [ {
-    "NEWSNAME" : "United States"
-  } ]
-} ]

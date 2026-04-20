@@ -10,7 +10,7 @@
 
     <settings truncateStorages="true">
         <variations>migrate_variations.csv</variations>
-        <tags>migrate-self</tags>
+        <tags>migrate</tags>
     </settings>
 
     <migrate comment="{{comment}}" alias="POSTGRES_0" name="POSTGRES">

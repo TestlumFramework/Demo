@@ -1,6 +1,6 @@
 [ {
-  "query" : "SELECT newsNumber FROM news WHERE newsName = 'Uganda'",
-  "content" : [ {
-    "newsNumber" : 225
-  } ]
+  "query" : "DELETE FROM news",
+  "content" : {
+    "count" : 4
+  }
 } ]

@@ -8,8 +8,8 @@
         <developer>Kamaletdinov Anatoliy</developer>
     </overview>
 
-    <settings truncateStorages="true" active="false">
-        <tags>migrate-self</tags>
+    <settings truncateStorages="true">
+        <tags>migrate</tags>
     </settings>
 
     <condition comment="Create false condition" name="falseCondition" spel="false"/>

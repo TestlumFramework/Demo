@@ -8,9 +8,11 @@
         <developer>Kamaletdinov Anatoliy</developer>
     </overview>
 
-    <settings active="false" truncateStorages="true">
-        <tags>migrate-self</tags>
+    <settings truncateStorages="true">
+        <tags>migrate</tags>
     </settings>
+
+    <!-- TODO: update validation on dataset names, to allow .json format (for redis patches)  -->
 
     <migrate comment="Migrate Postgres dataset" alias="POSTGRES_0">
         <dataset>postgres_patch.sql</dataset>
@@ -65,6 +67,7 @@
         </query>
     </mysql>
 
+    <!-- TODO: remove test for clickHouse later -->
     <clickhouse comment="Check ability to get ClickHouse data"
                 alias="CLICKHOUSE_0"
                 file="expected_9.json">
@@ -103,46 +106,6 @@
         </query>
     </dynamo>
 
-<!--    <migrate comment="Check ability to migrate test dataset to SQLDatabase"-->
-<!--             alias="SQLDATABASE_0" name="SQLDATABASE">-->
-<!--        <dataset>sql_patch.sql</dataset>-->
-<!--    </migrate>-->
-
-<!--    <sqlDatabase comment="Check ability to get new SQL data"-->
-<!--                 alias="SQLDATABASE_0"-->
-<!--                 file="expected_14.json">-->
-<!--        <query>-->
-<!--            SELECT * FROM news WHERE active = true;-->
-<!--        </query>-->
-<!--    </sqlDatabase>-->
-
-<!--    <migrate comment="Check ability to migrate test dataset to Redis"-->
-<!--             name="REDIS"-->
-<!--             alias="REDIS_0">-->
-<!--        <dataset>redis_patch.sql</dataset>-->
-<!--    </migrate>-->
-
-    <redis comment=" Check ability to add single key-value pair to redis using SET command; check impossibility to add
-    the same key-value using SETNX" alias="REDIS_0" file="expected_16.json">
-        <query>
-            <command>SET</command>
-            <arg>name</arg>
-            <arg>John</arg>
-        </query>
-        <query>
-            <command>SETNX</command>
-            <arg>name</arg>
-            <arg>Andrew</arg>
-        </query>
-    </redis>
-
-    <redis comment="Check ability to get key-value pair using GET command" alias="REDIS_0" file="expected_17.json">
-        <query>
-            <command>GET</command>
-            <arg>name</arg>
-        </query>
-    </redis>
-
 <!--    MULTIPLE-->
     <migrate comment="Migrate single dataset to Postgres"
              alias="POSTGRES_0" name="POSTGRES">
@@ -151,7 +114,7 @@
 
     <postgres comment="Check Postgres data after migration"
               alias="POSTGRES_0"
-              file="expected_19.json">
+              file="expected_14.json">
         <query>
             SELECT newsnumber
             FROM news
@@ -166,7 +129,7 @@
 
     <oracle comment="Check Oracle data after migration"
             alias="ORACLE_0"
-            file="expected_21.json">
+            file="expected_16.json">
         <query>
             SELECT newsname
             FROM news
@@ -181,7 +144,7 @@
 
     <mysql comment="Check MySQL data after migration"
            alias="MYSQL_0"
-           file="expected_23.json">
+           file="expected_18.json">
         <query>
             SELECT newsname
             FROM news
@@ -196,7 +159,7 @@
 
     <clickhouse comment="Check ClickHouse data after migration"
                 alias="CLICKHOUSE_0"
-                file="expected_25.json">
+                file="expected_20.json">
         <query>
             SELECT newsNumber
             FROM news
@@ -211,7 +174,7 @@
 
     <mongo comment="Check MongoDB data after migration"
            alias="MONGO_0"
-           file="expected_27.json">
+           file="expected_22.json">
         <query>
             {
             find: "mongo_news",
@@ -227,7 +190,7 @@
 
     <dynamo comment="Check DynamoDB data after migration"
             alias="DYNAMO_0"
-            file="expected_29.json">
+            file="expected_24.json">
         <query>
             SELECT *
             FROM dynamodb_news
@@ -235,18 +198,27 @@
         </query>
     </dynamo>
 
-<!--    <migrate comment="Migrate single dataset to Redis"-->
-<!--             alias="REDIS_0" name="REDIS">-->
-<!--        <dataset>redis_patch_1.sql</dataset>-->
-<!--    </migrate>-->
+    <postgres comment="Clear postgres DB" file="expected_25.json" alias="POSTGRES_0">
+        <query>
+            DELETE
+            FROM news
+        </query>
+    </postgres>
 
-<!--    <redis comment="Check Redis data after migration"-->
-<!--           alias="REDIS_0"-->
-<!--           file="expected_31.json">-->
-<!--        <query>-->
-<!--            <command>GET</command>-->
-<!--            <arg>news1</arg>-->
-<!--        </query>-->
-<!--    </redis>-->
+    <migrate comment="Migrate multiple datasets to PostgreSQL"
+             alias="POSTGRES_0" name="POSTGRES">
+        <dataset>postgres_patch.sql</dataset>
+        <dataset>postgres_patch_1.sql</dataset>
+    </migrate>
+
+    <postgres comment="Check Postgres data after migration"
+            alias="POSTGRES_0"
+            file="expected_27.json">
+        <query>
+            SELECT newsnumber
+            FROM news
+            WHERE newsname != ''
+        </query>
+    </postgres>
 
 </scenario>

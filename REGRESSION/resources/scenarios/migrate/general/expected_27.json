@@ -1,6 +1,12 @@
-[
-  {
-    "query": "             {             find: \"mongo_news\",             filter: { \"active\": true, \"number\": 10 } }         ",
-    "content": "\\{\"cursor\":\\{\"firstBatch\":\\[\\{\"_id\":p(any),\"name\":\"Lionel Messi\",\"number\":10,\"active\":true,\"createdAt\":\"p(any)\"},\\{\"_id\":p(any),\"name\":\"Sadio Mané\",\"number\":10,\"active\":true,\"createdAt\":\"p(any)\"},\\{\"_id\":p(any),\"name\":\"Harry Kane\",\"number\":10,\"active\":true,\"createdAt\":\"p(any)\"}],\"id\":0,\"ns\":\"mongo_db.mongo_news\"},\"ok\":1.0}"
-  }
-]
+[ {
+  "query" : "SELECT newsnumber FROM news WHERE newsname != ''",
+  "content" : [ {
+    "newsnumber" : 1
+  }, {
+    "newsnumber" : 2
+  }, {
+    "newsnumber" : 3
+  }, {
+    "newsnumber" : 225
+  } ]
+} ]

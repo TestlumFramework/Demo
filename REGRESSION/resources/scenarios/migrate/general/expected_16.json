@@ -1,7 +1,6 @@
 [ {
-  "query" : "{\"command\":\"SET\",\"arg\":[\"name\",\"John\"]}",
-  "content" : "OK"
-}, {
-  "query" : "{\"command\":\"SETNX\",\"arg\":[\"name\",\"Andrew\"]}",
-  "content" : "0"
+  "query" : "SELECT newsname FROM news WHERE newsnumber = 331449281",
+  "content" : [ {
+    "NEWSNAME" : "United States"
+  } ]
 } ]
