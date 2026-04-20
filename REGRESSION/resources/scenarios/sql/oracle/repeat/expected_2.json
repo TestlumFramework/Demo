@@ -1,0 +1,6 @@
+[ {
+  "query" : "INSERT ALL INTO repeat_news (id, title) VALUES (10, 'Global Tech Update') INTO repeat_news (id, title) VALUES (20, 'Local Sports Events') INTO repeat_news (id, title) VALUES (30, 'Weather Forecast 2026') SELECT * FROM dual",
+  "content" : {
+    "count" : 3
+  }
+} ]
