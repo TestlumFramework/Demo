@@ -4,11 +4,11 @@
 
     <overview>
         <description>Self test for Include command with condition</description>
-        <name>Variables Include with condition</name>
+        <name>Include with condition</name>
     </overview>
 
-    <settings active="true">
-        <tags>include-self</tags>
+    <settings>
+        <tags>include</tags>
     </settings>
 
     <condition comment="Create false condition" name="falseCondition" spel="1 eq 2"/>
@@ -17,7 +17,7 @@
 
     <assert comment="Check variable from included scenario value">
         <equal comment="Ensure variable has correct value">
-            <content>{{bestTool}}</content>
+            <content>{{theBestTool}}</content>
             <content>Testlum</content>
         </equal>
     </assert>
@@ -27,7 +27,7 @@
 <!--  WRONG! - include should not work with the false condition-->
     <assert comment="Check WRONG variable from included scenario value">
         <equal comment="Currently variable has incorrect value">
-            <content>{{bestTool}}</content>
+            <content>{{theBestTool}}</content>
             <content>ShouldNotBeIncluded</content>
         </equal>
     </assert>

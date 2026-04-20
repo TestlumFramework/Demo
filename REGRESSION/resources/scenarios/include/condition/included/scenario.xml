@@ -4,14 +4,14 @@
 
     <overview>
         <description>Test scenario for including in test</description>
-        <name>Variables Include Scenario</name>
+        <name>Include Scenario</name>
     </overview>
 
-    <settings active="true">
-        <tags>include-self</tags>
+    <settings>
+        <tags>include</tags>
     </settings>
 
-    <var comment="Some var that can be used later" name="bestTool">
+    <var comment="Some var that can be used later" name="theBestTool">
         <constant value="Testlum"/>
     </var>
 

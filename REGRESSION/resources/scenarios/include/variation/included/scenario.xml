@@ -8,11 +8,16 @@
     </overview>
 
     <settings>
+        <variations>include_variations.csv</variations>
         <tags>include</tags>
     </settings>
 
-    <var comment="Some var that can be used later" name="theBestTool">
-        <constant value="ShouldNotBeIncluded"/>
-    </var>
+    <assert comment="Assert value from variations" condition="{{value}} eq 1">
+        <equal comment="Check value from variations">
+            <content>{{value}}</content>
+            <content>1</content>
+        </equal>
+    </assert>
 
+    <include comment="{{comment}}" scenario="include/variation/included2/scenario.xml"/>
 </scenario>

@@ -11,8 +11,5 @@
         <tags>include</tags>
     </settings>
 
-    <var comment="Some var that can be used later" name="theBestTool">
-        <constant value="ShouldNotBeIncluded"/>
-    </var>
-
+    <wait comment="Stub wait for scenario" time="1" unit="millis"/>
 </scenario>

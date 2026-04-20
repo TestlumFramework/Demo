@@ -4,31 +4,26 @@
 
     <overview>
         <description>Self test for Include command</description>
-        <name>Variables Include</name>
+        <name>Include</name>
     </overview>
 
-    <settings active="false">
-        <tags>include-self</tags>
+    <settings>
+        <tags>include</tags>
     </settings>
 
     <include comment="Include test scenario with variable" scenario="include/general/included/scenario.xml"/>
 
-    <assert comment="Assert value from var">
+    <assert comment="Assert var from another scenario">
         <equal comment="Check constant variable value from included scenario">
             <content>{{bestTool}}</content>
             <content>Testlum</content>
         </equal>
     </assert>
 
-    <var comment="Create var for currentTime to compare with variable 'time' from included scenario" name="currentTime">
-        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd').format(new java.util.Date())"/>
+    <var comment="Create variable for comment injecting" name="commentVar">
+        <constant value="Check inject in include command"/>
     </var>
 
-    <assert comment="Assert value from expression var">
-        <equal comment="Check expression variable value from included scenario">
-            <content>{{time}}</content>
-            <content>{{currentTime}}</content>
-        </equal>
-    </assert>
+    <include comment="{{commentVar}}" scenario="include/variation/included2/scenario.xml"/>
 
 </scenario>

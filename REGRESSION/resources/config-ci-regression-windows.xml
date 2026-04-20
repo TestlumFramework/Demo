@@ -28,7 +28,7 @@
         <tag name="elasticsearch-self" enabled="false"/>
         <tag name="repeat" enabled="true"/>
         <tag name="migrate" enabled="true"/>
-        <tag name="include-self" enabled="true"/>
+        <tag name="include" enabled="true"/>
         <tag name="wait" enabled="true"/>
         <tag name="api" enabled="false"/>
         <tag name="websocket" enabled="false"/>
