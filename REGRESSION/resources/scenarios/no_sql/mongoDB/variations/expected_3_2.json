@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"find\": \"test_news\",             \"filter\": { \"_id\": 20 }             }         ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":20,\"title\":\"Cloud Security Trends\",\"category\":\"Security\"}],\"id\":0,\"ns\":\"mongo_db.test_news\"},\"ok\":1.0}"
+} ]

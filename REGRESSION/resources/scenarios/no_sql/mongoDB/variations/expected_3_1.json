@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"find\": \"test_news\",             \"filter\": { \"_id\": {{id}} }             }         ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":10,\"title\":\"Mongo 7.0 Released\",\"category\":\"Tech\"}],\"id\":0,\"ns\":\"mongo_db.test_news\"},\"ok\":1.0}"
+} ]
