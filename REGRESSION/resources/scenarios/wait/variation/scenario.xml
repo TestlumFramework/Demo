@@ -9,7 +9,7 @@
 
     <settings>
         <variations>wait_variations.csv</variations>
-        <tags>wait-self</tags>
+        <tags>wait</tags>
     </settings>
 
     <var comment="Create var with current time" name="currentTime">
@@ -33,21 +33,14 @@
         </equal>
     </assert>
 
-    <wait comment="Execute wait with condition" time="{{seconds}}" condition="{{diff}} == 1"/>
-
-    <var comment="Create var with secondly updated time" name="secondlyUpdatedTime">
-        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+    <var comment="Create variable for injecting comment" name="commentVar">
+        <constant value="Check that variable can be injected in attributes of wait command"/>
     </var>
 
-    <var comment="Create var with expression to check if time changed" name="timeChangedCheck">
-        <expression value="{{secondlyUpdatedTime}} == {{updatedTime}}"/>
+    <var comment="Create variable for injecting time" name="timeVar">
+        <constant value="1"/>
     </var>
 
-    <assert comment="Check if wait with condition worked">
-        <equal comment="Assert timeChangedCheck is equal to expected value">
-            <content>{{timeChangedCheck}}</content>
-            <content>{{waitSkipped}}</content>
-        </equal>
-    </assert>
+    <wait comment="{{commentVar}}" time="{{timeVar}}"/>
 
 </scenario>

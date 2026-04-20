@@ -36,7 +36,7 @@
         <tag name="repeat-self" enabled="true"/>
         <tag name="migrate-self" enabled="true"/>
         <tag name="include-self" enabled="true"/>
-        <tag name="wait-self" enabled="true"/>
+        <tag name="wait" enabled="true"/>
 
         <tag name="api" enabled="true"/>
         <tag name="websocket" enabled="true"/>
