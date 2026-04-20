@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"DEL\",\"arg\":[\"test_news:30\"]}",
+  "content" : "0"
+} ]

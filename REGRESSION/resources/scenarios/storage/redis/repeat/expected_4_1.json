@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:10\"]}",
+  "content" : "[title, Global Tech Update]"
+} ]

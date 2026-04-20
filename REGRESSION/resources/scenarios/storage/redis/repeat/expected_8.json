@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"RPUSH\",\"arg\":[\"repeat_simple_log\",\"Loop iteration executed\"]}",
+  "content" : "p(digit)"
+} ]

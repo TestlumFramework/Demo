@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"test_user:101\"]}",
+  "content" : "[]"
+} ]

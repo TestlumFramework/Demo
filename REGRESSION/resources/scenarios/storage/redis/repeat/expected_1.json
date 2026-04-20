@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"DEL\",\"arg\":[\"repeat_news:10\",\"repeat_news:20\",\"repeat_news:30\",\"repeat_simple_log\"]}",
+  "content" : "0"
+} ]

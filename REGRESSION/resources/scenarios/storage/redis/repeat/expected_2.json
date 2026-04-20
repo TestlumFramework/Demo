@@ -1,0 +1,10 @@
+[ {
+  "query" : "{\"command\":\"HSET\",\"arg\":[\"repeat_news:10\",\"title\",\"Global Tech Update\"]}",
+  "content" : "1"
+}, {
+  "query" : "{\"command\":\"HSET\",\"arg\":[\"repeat_news:20\",\"title\",\"Local Sports Events\"]}",
+  "content" : "1"
+}, {
+  "query" : "{\"command\":\"HSET\",\"arg\":[\"repeat_news:30\",\"title\",\"Weather Forecast 2026\"]}",
+  "content" : "1"
+} ]

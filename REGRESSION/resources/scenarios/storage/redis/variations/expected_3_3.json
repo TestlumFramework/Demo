@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"test_news:30\"]}",
+  "content" : "[title, Concurrency on Redis, category, Core]"
+} ]

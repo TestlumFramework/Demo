@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HSET\",\"arg\":[\"test_news:30\",\"title\",\"Concurrency on Redis\",\"category\",\"Core\"]}",
+  "content" : "2"
+} ]
