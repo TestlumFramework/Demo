@@ -1,0 +1,6 @@
+[ {
+  "query" : "DELETE FROM test_news WHERE id = {{id}}",
+  "content" : {
+    "count" : 1
+  }
+} ]

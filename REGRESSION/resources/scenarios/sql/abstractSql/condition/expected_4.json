@@ -1,0 +1,7 @@
+[ {
+  "query" : "SELECT id, data_value FROM condition_test WHERE id = 99",
+  "content" : [ {
+    "id" : 99,
+    "data_value" : "INITIAL_DATA"
+  } ]
+} ]

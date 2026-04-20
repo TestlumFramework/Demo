@@ -150,6 +150,31 @@
         </oracle>
     </oracleIntegration>
 
+    <sqlDatabaseIntegration>
+        <sqlDatabase alias="MARIADB_0"
+                     enabled="true"
+                     truncate="true">
+            <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
+            <username>root</username>
+            <password>root_password</password>
+            <connectionUrl>jdbc:mariadb://localhost:3316/testlum_db</connectionUrl>
+            <hikari>
+                <connectionTimeout>30000</connectionTimeout>
+                <idleTimeout>600000</idleTimeout>
+                <maxLifetime>1800000</maxLifetime>
+                <maximumPoolSize>10</maximumPoolSize>
+                <minimumIdle>2</minimumIdle>
+                <connectionInitSql>SELECT 1</connectionInitSql>
+                <connectionTestQuery>SELECT 1</connectionTestQuery>
+                <poolName>MariaDbTestlumPool</poolName>
+                <autoCommit>true</autoCommit>
+            </hikari>
+            <customTruncate>
+                <truncateFile>mariadb_truncate.sql</truncateFile>
+            </customTruncate>
+        </sqlDatabase>
+    </sqlDatabaseIntegration>
+
     <redisIntegration>
         <redis alias="REDIS_0" enabled="true" truncate="true">
             <host>localhost</host>
