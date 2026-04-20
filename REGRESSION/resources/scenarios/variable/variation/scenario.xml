@@ -10,7 +10,7 @@
 
     <settings>
         <variations>var_variations.csv</variations>
-        <tags>var-self</tags>
+        <tags>var</tags>
     </settings>
 
     <var comment="Create constant var" name="constVar">

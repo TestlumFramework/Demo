@@ -1,0 +1,80 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test variable creation and usage (with variables)</description>
+        <name>Variable Test with variables inject</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create variable for comment inject" name="commentVar">
+        <constant value="Check variable can be injected in var attributes"/>
+    </var>
+
+    <var comment="Create variable for name inject" name="nameVar">
+        <constant value="injectedName"/>
+    </var>
+
+    <var comment="Create variable for constant value inject" name="valueVar">
+        <constant value="injectedValue"/>
+    </var>
+
+    <var comment="Create variable for condition inject" name="conditionVar">
+        <constant value="true"/>
+    </var>
+
+    <var comment="{{commentVar}}" name="{{nameVar}}" condition="{{conditionVar}}">
+        <constant value="{{valueVar}}"/>
+    </var>
+
+    <assert comment="Check that constant var injected successfully">
+        <equal comment="Check variable value equal">
+            <content>{{injectedName}}</content>
+            <content>injectedValue</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable for expression value inject" name="expressionVar">
+        <expression value="1 eq 1"/>
+    </var>
+
+    <var comment="{{commentVar}}" name="{{nameVar}}" condition="{{conditionVar}}">
+        <expression value="{{expressionVar}}"/>
+    </var>
+
+    <assert comment="Check that expression var injected successfully">
+        <equal comment="Check variable value equal">
+            <content>{{injectedName}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable with constant value" name="constantVar">
+        <constant value="{&quot;name&quot;:&quot;HelloWorld&quot;, &quot;someField&quot;:&quot;test&quot;}"/>
+    </var>
+
+    <var comment="Create variable for path value inject" name="pathPropertyValue">
+        <constant value=".someField"/>
+    </var>
+
+    <var comment="Create veriable for fromVar value inject" name="fromVarValue">
+        <constant value="constantVar"/>
+    </var>
+
+    <var comment="{{commentVar}}" name="{{nameVar}}">
+        <path value="$.{{pathPropertyValue}}" fromVar="{{fromVarValue}}"/>
+    </var>
+
+    <assert comment="Check that path var injected successfully">
+        <equal comment="Check variable value equal">
+            <content>{{injectedName}}</content>
+            <content>["test"]</content>
+        </equal>
+    </assert>
+
+</scenario>

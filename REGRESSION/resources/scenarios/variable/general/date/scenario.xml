@@ -1,0 +1,92 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test date variable creation and usage</description>
+        <name>Variable(constant - date) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create constant date variable" name="dateConstant">
+        <constant value="2026-04-01"/>
+    </var>
+
+    <assert comment="Check if the dateConstant variable is equal to '2026-04-01'">
+        <equal comment="Assert equal value from constant">
+            <content>{{dateConstant}}</content>
+            <content>2026-04-01</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date variable with current date" name="dateNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <condition comment="Check if the current date matches pattern yyyy-MM-dd HH:mm:ss" name="dateNowCondition" spel="'{{dateNow}}'.matches('\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')"/>
+
+    <assert comment="Check if the condition for current date format is true">
+        <equal comment="Check that  dateNowCondition is equal to true">
+            <content>{{dateNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date before now" name="dateBeforeNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().minusDays(5).toDate())"/>
+    </var>
+
+    <condition comment="create condition to check dateBeforeNow is before dateNow" name="dateBeforeNowCondition" spel="T(java.time.LocalDateTime).parse('{{dateBeforeNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')).isBefore(T(java.time.LocalDateTime).parse('{{dateNow}}', T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')))"/>
+
+    <assert comment="Check if the condition for dateBeforeNow is true">
+        <equal comment="assert condition is equal true">
+            <content>{{dateBeforeNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create date after now" name="dateAfterNow">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new org.joda.time.DateTime().plusHours(5).toDate())"/>
+    </var>
+
+    <var comment="Create var for dateAfterNow condition" name="dateAfterNowVar">
+        <expression value="T(java.time.LocalDateTime).parse(
+            '{{dateAfterNow}}'.substring(0, 19),
+            T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+        ).isAfter(
+            T(java.time.LocalDateTime).parse(
+                '{{dateNow}}'.substring(0, 19),
+                T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+            )
+        )"/>
+    </var>
+
+    <condition comment="Check if dateAfterNow is after dateNow" name="dateAfterNowCondition" spel="{{dateAfterNowVar}}"/>
+
+    <assert comment="Check if the condition for dateAfterNow is true">
+        <equal comment="assert condition is equal true">
+            <content>{{dateAfterNowCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <assert comment="Ensure that now, beforeNow, and afterNow dates are not equal">
+        <notEqual comment="Check now and before dates not equal">
+            <content>{{dateNow}}</content>
+            <content>{{dateBeforeNow}}</content>
+        </notEqual>
+        <notEqual comment="Check now and after dates not equal">
+            <content>{{dateNow}}</content>
+            <content>{{dateAfterNow}}</content>
+        </notEqual>
+        <notEqual comment="Check before and after dates not equal">
+            <content>{{dateBeforeNow}}</content>
+            <content>{{dateAfterNow}}</content>
+        </notEqual>
+    </assert>
+
+</scenario>

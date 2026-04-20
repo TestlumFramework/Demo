@@ -9,7 +9,7 @@
     </overview>
 
     <settings>
-        <tags>var-self</tags>
+        <tags>var</tags>
     </settings>
 
     <var comment="Create constant variable with value - Testlum" name="constant">

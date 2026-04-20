@@ -22,7 +22,7 @@
         <tag name="assert-self" enabled="true"/>
 
         <tag name="var-mixed" enabled="true"/>
-        <tag name="var-self" enabled="true"/>
+        <tag name="var" enabled="true"/>
 
         <tag name="variations-mixed" enabled="true"/>
         <tag name="variations-self" enabled="true"/>

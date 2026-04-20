@@ -19,7 +19,7 @@
         <tag name="shell-mixed" enabled="false"/>
         <tag name="assert-self" enabled="true"/>
         <tag name="var-mixed" enabled="false"/>
-        <tag name="var-self" enabled="true"/>
+        <tag name="var" enabled="true"/>
         <tag name="variations-mixed" enabled="false"/>
         <tag name="variations-self" enabled="true"/>
         <tag name="auth-basic-mixed" enabled="false"/>
