@@ -1,0 +1,98 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch PUT with different body types</description>
+        <name>Elasticsearch PUT Body Types Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send PUT request with file body (create/replace resource)">
+        <put endpoint="/test-put-index/_doc/file-doc">
+            <response code="201"/>
+            <body>
+                <from file="body_1.json"/>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate file payload response">
+        <get endpoint="/test-put-index/_doc/file-doc">
+            <response code="200" file="expected_2.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send PUT request with raw body">
+        <put endpoint="/test-put-index/_doc/raw-doc">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "type": "raw_put",
+                    "description": "This is raw JSON body via PUT request"
+                    }
+</raw>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate raw payload response">
+        <get endpoint="/test-put-index/_doc/raw-doc">
+            <response code="200" file="expected_4.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send PUT request with multipart body">
+        <put endpoint="/test-put-index/_doc/multipart-doc">
+            <response code="201"/>
+            <body>
+                <multipart>
+                    <param data="value1" name="field1"/>
+                    <param data="value2" name="field2"/>
+                </multipart>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate multipart payload response">
+        <get endpoint="/test-put-index/_doc/multipart-doc">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send PUT request with valid query parameters">
+        <put endpoint="/test-put-param-index/_doc/param-doc-1">
+            <param data="true" name="refresh"/>
+            <param data="tenant_1" name="routing"/>
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "type": "param_test_put",
+                    "description": "Document replaced with refresh and routing parameters via PUT"
+                    }
+</raw>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate param payload response">
+        <get endpoint="/test-put-param-index/_doc/param-doc-1">
+            <param data="tenant_1" name="routing"/>
+            <response code="200" file="expected_8.json"/>
+        </get>
+    </elasticsearch>
+
+</scenario>

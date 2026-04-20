@@ -1,0 +1,14 @@
+{
+  "_index" : "test-put-param-index",
+  "_type" : "_doc",
+  "_id" : "param-doc-1",
+  "_version" : "p(any)",
+  "_seq_no" : "p(any)",
+  "_primary_term" : "p(any)",
+  "_routing" : "tenant_1",
+  "found" : true,
+  "_source" : {
+    "type" : "param_test_put",
+    "description" : "Document replaced with refresh and routing parameters via PUT"
+  }
+}

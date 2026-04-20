@@ -1,0 +1,101 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch Data-Driven Test with Variables</description>
+        <name>Elasticsearch Variables Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <var comment="Document id variable"
+         name="doc_id">
+        <constant value="variable-1"/>
+    </var>
+
+    <var comment="Variable with product name"
+         name="product_name">
+        <constant value="Laptop Pro"/>
+    </var>
+
+    <var comment="Variable with product category"
+         name="product_category">
+        <constant value="Electronics"/>
+    </var>
+
+    <var comment="Variable with product price"
+         name="product_price">
+        <constant value="1500"/>
+    </var>
+
+    <var comment="Variable with expected 8"
+         name="expected_8">
+        <constant value="expected_8"/>
+    </var>
+
+    <var comment="Variable with status code"
+         name="status">
+        <constant value="201"/>
+    </var>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with variable payload for product {{product_name}}">
+        <post endpoint="/test-var-index/_doc/{{doc_id}}">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "productName": "{{product_name}}",
+                    "category": "{{product_category}}",
+                    "price": {{product_price}}
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and verify response contains the variable data">
+        <get endpoint="/test-var-index/_doc/{{doc_id}}">
+            <!--            <response code="200" file="{{expected_8}}.json"/>-->
+            <response code="200" file="expected_8.json"/>
+        </get>
+    </elasticsearch>
+
+    <var comment="Document id variable for file command"
+         name="doc_id_from_file">
+        <constant value="variable-file-1"/>
+    </var>
+
+    <var comment="Variable with body 12"
+         name="body_12">
+        <constant value="body_12"/>
+    </var>
+    
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with variable payload for product {{product_name}}">
+        <post endpoint="/test-var-index/_doc/{{doc_id_from_file}}">
+            <response code="201"/>
+            <body>
+                <from file="{{body_12}}.json"/>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <var comment="Variable with expected 13"
+         name="expected_13">
+        <constant value="expected_13"/>
+    </var>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and verify response contains the variable data">
+        <get endpoint="/test-var-index/_doc/{{doc_id_from_file}}">
+            <!--            <response code="200" file="{{expected_13}}.json"/>-->
+            <response code="200" file="expected_13.json"/>
+        </get>
+    </elasticsearch>
+
+</scenario>

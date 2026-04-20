@@ -1,0 +1,90 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+    <overview>
+        <description>Elasticsearch full CRUD operations check</description>
+        <name>Elasticsearch CRUD Test</name>
+    </overview>
+
+    <settings>
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Execute elasticsearch command get before post method">
+        <get endpoint="/test-index/_doc/1">
+            <response code="404"
+                      file="expected_1.json">
+                <warning name="null"/>
+            </response>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with payload (create resource)">
+        <post endpoint="/test-index/_doc/1">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "title": "E2E Testing with Testlum",
+                    "status": "ACTIVE"
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <wait comment="Wait 1 second for retrieve info" time="1"/>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request to retrieve resource">
+        <get endpoint="/test-index/_doc/1">
+            <response code="200" file="expected_4.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="6. Send PUT request with updated payload">
+        <put endpoint="/test-index/_doc/1">
+            <response code="200"/>
+            <body>
+                <raw>
+                    {
+                    "title": "E2E Testing with Testlum",
+                    "status": "COMPLETED",
+                    "updated": true
+                    }
+</raw>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request to confirm updated resource">
+        <get endpoint="/test-index/_doc/1">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send DELETE request to remove resource">
+        <delete endpoint="/test-index/_doc/1">
+            <response code="200"/>
+        </delete>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request to confirm resource was deleted">
+        <get endpoint="/test-index/_doc/1">
+            <response code="404"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send HEAD request to verify resource existence">
+        <head endpoint="/test-index/_doc/1">
+            <response code="404"/>
+        </head>
+    </elasticsearch>
+</scenario>

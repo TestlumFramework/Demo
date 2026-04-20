@@ -1,0 +1,6 @@
+{
+  "_index" : "test-body-index",
+  "_type" : "_doc",
+  "_id" : "multipart-doc",
+  "found" : false
+}

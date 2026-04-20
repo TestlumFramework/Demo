@@ -1,0 +1,14 @@
+{
+  "_index" : "test-param-index",
+  "_type" : "_doc",
+  "_id" : "param-doc-1",
+  "_version" : "p(digit)",
+  "_seq_no" : "p(digit)",
+  "_primary_term" : "p(digit)",
+  "_routing" : "tenant_1",
+  "found" : true,
+  "_source" : {
+    "type" : "param_test",
+    "description" : "Document created with refresh and routing parameters"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "_index" : "test-put-index",
+  "_type" : "_doc",
+  "_id" : "file-doc",
+  "_version" : "p(digit)",
+  "_seq_no" : "p(digit)",
+  "_primary_term" : "p(digit)",
+  "found" : true,
+  "_source" : {
+    "title" : "E2E Testing with Testlum",
+    "status" : "ACTIVE"
+  }
+}
