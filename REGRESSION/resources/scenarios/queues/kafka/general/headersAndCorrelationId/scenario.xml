@@ -1,0 +1,48 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Self Testing: Headers</description>
+        <name>Kafka Headers Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive verifying correlationId and headers">
+
+        <send correlationId="98765-abcde"
+              topic="weather">
+            <file>body_2.json</file>
+            <headers>
+                <header name="X-Request-Source" value="testlum-e2e"/>
+                <header name="Event-Type" value="weather-update"/>
+            </headers>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city": "Kyiv",
+                "temperature": 15,
+                "condition": "cloudy",
+                "timestamp" : 1650762955
+                } ],
+                "correlationId" : "98765-abcde",
+                "headers" : {
+                "X-Request-Source": "testlum-e2e",
+                "Event-Type": "weather-update"
+                }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+</scenario>

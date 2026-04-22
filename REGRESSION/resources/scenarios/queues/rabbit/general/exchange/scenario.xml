@@ -1,0 +1,65 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ Exchange Testing</description>
+        <name>RabbitMQ Exchange Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http alias="MEGA_APP"
+          comment="Check ability to receive a message">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <rabbit alias="RABBIT_0"
+            comment="Test message delivery depending on exchange validity">
+
+        <send correlationId="valid-exchange-msg"
+              exchange="directExchange"
+              routingKey="out">
+            <value>
+                [ {
+                "entityId": 501,
+                "payload": "Message with VALID exchange"
+                } ]
+            </value>
+        </send>
+
+        <!--        Exception here !!! -->
+        <send correlationId="invalid-exchange-msg"
+              exchange="wrongExchange"
+              routingKey="out">
+            <value>
+                [ {
+                "entityId": 502,
+                "payload": "Message with INVALID exchange"
+                } ]
+            </value>
+        </send>
+
+        <receive headers="true"
+                 queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [
+                {
+                "message" : [ {
+                "entityId" : 501,
+                "payload" : "Message with VALID exchange"
+                } ],
+                "correlationId" : "valid-exchange-msg",
+                "headers" : { }
+                }
+                ]
+            </value>
+        </receive>
+
+    </rabbit>
+</scenario>

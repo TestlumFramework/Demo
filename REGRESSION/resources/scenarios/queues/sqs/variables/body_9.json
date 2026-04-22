@@ -1,0 +1,5 @@
+[ {
+  "entityId": 707,
+  "event": "USER_REGISTERED",
+  "source": "{{source}}"
+} ]

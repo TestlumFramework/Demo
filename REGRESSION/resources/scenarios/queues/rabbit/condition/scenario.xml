@@ -1,0 +1,84 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ with Condition Testing</description>
+        <name>RabbitMQ Condition Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http alias="MEGA_APP"
+          comment="Check ability to receive a message via HTTP endpoint">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <rabbit alias="RABBIT_0"
+            comment="Check that out queue is completely empty initially">
+        <receive queue="out"
+                 timeoutMillis="4000">
+            <value>[]</value>
+        </receive>
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="Test conditional execution: message should NOT be sent if condition is false"
+            condition="false">
+        <send correlationId="cond-skip-123"
+              routingKey="out">
+            <value>
+                [ {
+                "entityId": 999,
+                "status": "SKIPPED",
+                "payload": "This should not be in the queue"
+                } ]
+            </value>
+            <headers>
+                <header name="X-Test-Condition" value="false"/>
+            </headers>
+        </send>
+    </rabbit>
+
+    <var comment="True condition to test injecting var into condition attribute"
+         name="TRUE_CONDITION">
+        <constant value="true"/>
+    </var>
+
+    <rabbit alias="RABBIT_0"
+            comment="Send valid message with true condition injected from variable"
+            condition="{{TRUE_CONDITION}}">
+        <send correlationId="cond-pass-456"
+              routingKey="out">
+            <value>
+                [ {
+                "entityId": 1000,
+                "status": "PROCESSED",
+                "payload": "This SHOULD be in the queue"
+                } ]
+            </value>
+            <headers>
+                <header name="X-Test-Condition" value="true"/>
+            </headers>
+        </send>
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="Unconditionally verify that ONLY the true condition message was actually sent">
+        <receive queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [ {
+                "entityId": 1000,
+                "status": "PROCESSED",
+                "payload": "This SHOULD be in the queue"
+                } ]
+            </value>
+        </receive>
+    </rabbit>
+
+</scenario>

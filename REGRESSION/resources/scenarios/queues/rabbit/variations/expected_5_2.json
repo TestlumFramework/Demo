@@ -1,0 +1,8 @@
+[ {
+  "message" : [ {
+    "city" : "{{city2}}",
+    "temperature" : "{{temp}}"
+  } ],
+  "correlationId" : "null",
+  "headers" : { }
+} ]
