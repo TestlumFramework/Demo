@@ -13,7 +13,7 @@
     <native comment="Executing native automation sequence">
         <click comment="Navigate to Wait screen" locator="testApp.waitPage"/>
         <click comment="Reset state" locator="testApp.resetButtonWait"/>
-        <click comment="Start long task" locator="testApp.startTaskButton"/>
+        <click comment="Start long task (3 seconds)" locator="testApp.startTaskButton"/>
 
         <wait comment="Wait 4000 millis for task to complete" time="4000" unit="millis"/>
         <assert comment="Assert wait status is Complete">

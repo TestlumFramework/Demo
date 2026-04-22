@@ -17,10 +17,6 @@
         <click comment="Clicking on button"
                condition="true"
                locator="testApp.clickButton"/>
-        
-        <click comment="Clicking on non-exist button"
-               condition="false"
-               locator="non-exist-locator"/>
 
         <assert comment="Validating expected UI state">
             <attribute comment="Retrieving element text attribute for validation"
@@ -29,6 +25,10 @@
                 <content>Counter: 1</content>
             </attribute>
         </assert>
+
+        <click comment="Clicking on non-exist button"
+               condition="false"
+               locator="non-exist-locator"/>
     </native>
 
 </scenario>
