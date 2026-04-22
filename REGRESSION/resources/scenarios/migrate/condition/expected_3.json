@@ -1,0 +1,4 @@
+[ {
+  "query" : "SELECT newsnumber FROM news WHERE id > 0",
+  "content" : [ ]
+} ]

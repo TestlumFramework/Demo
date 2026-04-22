@@ -8,50 +8,55 @@
     <delayBetweenScenarioRuns seconds="1" enabled="false"/>
 
     <runScenariosByTag enabled="true">
-        <tag name="web" enabled="true"/>
+        <tag name="web" enabled="false"/>
         <tag name="mobilebrowser" enabled="false"/>
         <tag name="mobilebrowser-healthcheck" enabled="false"/>
         <tag name="native" enabled="false"/>
         <tag name="native-healthcheck" enabled="false"/>
-        <tag name="condition-mixed" enabled="true"/>
-        <tag name="condition-self" enabled="true"/>
+        <tag name="condition-mixed" enabled="false"/>
+        <tag name="condition" enabled="true"/>
 
         <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
 
-        <tag name="assert-self" enabled="true"/>
+        <tag name="assert" enabled="true"/>
 
-        <tag name="var-mixed" enabled="true"/>
-        <tag name="var-self" enabled="true"/>
+        <tag name="var-mixed" enabled="false"/>
+        <tag name="var" enabled="true"/>
 
-        <tag name="variations-mixed" enabled="true"/>
-        <tag name="variations-self" enabled="true"/>
+        <tag name="variations-mixed" enabled="false"/>
+        <tag name="variations-self" enabled="false"/>
 
-        <tag name="auth-basic-mixed" enabled="true"/>
-        <tag name="auth-jwt-mixed" enabled="true"/>
+        <tag name="auth-basic-mixed" enabled="false"/>
+        <tag name="auth-jwt-mixed" enabled="false"/>
 
-        <tag name="elasticsearch-mixed" enabled="true"/>
-        <tag name="elasticsearch-self" enabled="true"/>
+        <tag name="elasticsearch-mixed" enabled="false"/>
+        <tag name="elasticsearch-self" enabled="false"/>
 
-        <tag name="api" enabled="true"/>
-        <tag name="websocket" enabled="true"/>
-        <tag name="graphql" enabled="true"/>
+        <tag name="repeat" enabled="true"/>
+        <tag name="migrate" enabled="true"/>
+        <tag name="include" enabled="true"/>
+        <tag name="wait" enabled="true"/>
+
+        <tag name="api" enabled="false"/>
+        <tag name="websocket" enabled="false"/>
+        <tag name="graphql" enabled="false"/>
         <tag name="lambda" enabled="false"/>
-        <tag name="mysql" enabled="true"/>
-        <tag name="postgresql" enabled="true"/>
+        <tag name="mysql" enabled="false"/>
+        <tag name="postgresql" enabled="false"/>
         <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="false"/>
-        <tag name="mongodb" enabled="true"/>
-        <tag name="dynamodb" enabled="true"/>
-        <tag name="kafka" enabled="true"/>
-        <tag name="rabbit" enabled="true"/>
-        <tag name="sqs" enabled="true"/>
-        <tag name="redis" enabled="true"/>
-        <tag name="s3" enabled="true"/>
+        <tag name="mongodb" enabled="false"/>
+        <tag name="dynamodb" enabled="false"/>
+        <tag name="kafka" enabled="false"/>
+        <tag name="rabbit" enabled="false"/>
+        <tag name="sqs" enabled="false"/>
+        <tag name="redis" enabled="false"/>
+        <tag name="s3" enabled="false"/>
         <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="false"/>
-        <tag name="ses" enabled="true"/>
+        <tag name="ses" enabled="false"/>
     </runScenariosByTag>
 
     <report>
@@ -66,9 +71,9 @@
 
     <environments>
         <!--   No need to launch vault to use this env     -->
-        <env folder="static" enabled="false" threads="1"/>
+        <env folder="static" enabled="true" threads="1"/>
         <!--   Vault is must have to use this env     -->
-        <env folder="vault" enabled="true" threads="1"/>
+        <env folder="vault" enabled="false" threads="1"/>
     </environments>
 
     <vault>

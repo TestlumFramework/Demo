@@ -1,0 +1,81 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test generate variable creation and usage</description>
+        <name>Variable(generate) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create random numeric variable of length 10" name="generateNumeric">
+        <generate length="10">
+            <numeric/>
+        </generate>
+    </var>
+
+    <var comment="Create var for condition" name="conditionVar">
+        <expression value="'{{generateNumeric}}'.length() == 10 and '{{generateNumeric}}'.matches('^[0-9]+$')"/>
+    </var>
+
+    <condition comment="Check if the numeric variable is exactly 10 digits" name="generateNumericCondition" spel="{{conditionVar}}"/>
+
+    <assert comment="Check if the condition for numeric variable is true">
+        <equal comment="Check if the condition for numeric variable is true">
+            <content>{{generateNumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random alphabetic variable of length 8" name="generateAlphabetic">
+        <generate length="8">
+            <alphabetic/>
+        </generate>
+    </var>
+
+    <condition comment="Check if the alphabetic variable contains only letters and has length 8" name="generateAlphabeticCondition" spel="'{{generateAlphabetic}}'.length() == 8 and '{{generateAlphabetic}}'.matches('^[a-zA-Z]+$')"/>
+
+    <assert comment="Check if the condition for alphabetic variable is true">
+        <equal comment="Check if the condition for alphabetic variable is true">
+            <content>{{generateAlphabeticCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random alphanumeric variable of length 12" name="generateAlphanumeric">
+        <generate length="12">
+            <alphanumeric/>
+        </generate>
+    </var>
+
+    <condition comment="Check if alphanumeric variable is 12 characters letters+digits" name="generateAlphanumericCondition"
+               spel="'{{generateAlphanumeric}}'.length() == 12 and '{{generateAlphanumeric}}'.matches('[a-zA-Z0-9]+')"/>
+
+    <assert comment="Assert alphanumeric variable condition is true">
+        <equal comment="Assert alphanumeric variable condition is true">
+            <content>{{generateAlphanumericCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create random variable from regex pattern of length 6" name="generateRegexVar">
+        <generate length="6">
+            <randomRegexp pattern="[A-Z]{2}[0-9]{4}"/>
+        </generate>
+    </var>
+
+    <condition comment="Check if regex variable matches pattern" name="generateRegexCondition"
+               spel="'{{generateRegexVar}}'.length() == 6 and '{{generateRegexVar}}'.matches('[A-Z]{2}[0-9]{4}')"/>
+
+    <assert comment="Assert regex variable condition is true">
+        <equal comment="Assert regex variable condition is true">
+            <content>{{generateRegexCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

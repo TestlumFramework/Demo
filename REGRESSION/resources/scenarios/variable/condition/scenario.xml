@@ -1,0 +1,30 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test variable creation and usage (with conditions)</description>
+        <name>Variable Test with conditions</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Check var with false condition won't be initialized" name="notInitializedVar" condition="false">
+        <expression value="asd123!!-3;s] and III213#"/>
+    </var>
+
+    <var comment="Create var with true condition" name="testVar" condition="true">
+        <constant value="Testlum"/>
+    </var>
+
+    <assert comment="Check var with true condition initialized">
+        <equal comment="Check var was saved successfully">
+            <content>{{testVar}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+</scenario>

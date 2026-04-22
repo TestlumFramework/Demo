@@ -1,0 +1,12 @@
+[ {
+  "query" : "SELECT newsnumber FROM news WHERE newsname != ''",
+  "content" : [ {
+    "newsnumber" : 1
+  }, {
+    "newsnumber" : 2
+  }, {
+    "newsnumber" : 3
+  }, {
+    "newsnumber" : 225
+  } ]
+} ]

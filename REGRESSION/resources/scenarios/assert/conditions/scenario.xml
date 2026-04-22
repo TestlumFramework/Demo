@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual(with conditions)</description>
+        <name>Assert conditions test</name>
+    </overview>
+
+    <settings>
+        <tags>assert</tags>
+    </settings>
+
+    <condition comment="Create true condition" name="trueCondition" spel="1 eq 1"/>
+
+    <assert comment="Assert with true condition" condition="{{trueCondition}}">
+        <equal comment="Valid equal check">
+            <content>2</content>
+            <content>2</content>
+        </equal>
+        <notEqual comment="Valid notEqual check">
+            <content>2</content>
+            <content>3</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="Assert with true condition in equal/notEqual">
+        <equal comment="Valid equal check" condition="{{trueCondition}}">
+            <content>2</content>
+            <content>2</content>
+        </equal>
+        <notEqual comment="Valid notEqual check" condition="{{trueCondition}}">
+            <content>1</content>
+            <content>2</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="Create false condition" name="falseCondition" spel="1 eq 2"/>
+
+    <assert comment="Assert with false condition" condition="{{falseCondition}}">
+        <equal comment="Invalid equal check">
+            <content>1</content>
+            <content>2</content>
+        </equal>
+    </assert>
+
+    <assert comment="Assert with false condition in equal/notEqual">
+        <equal comment="Invalid equal check" condition="{{falseCondition}}">
+            <content>1</content>
+            <content>2</content>
+        </equal>
+        <notEqual comment="Invalid unequal check" condition="{{falseCondition}}">
+            <content>1</content>
+            <content>1</content>
+        </notEqual>
+    </assert>
+
+</scenario>

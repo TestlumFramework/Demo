@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test constant variable creation and usage</description>
+        <name>Variable(constant) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create constant variable" name="testVar">
+        <constant value="Testlum"/>
+    </var>
+
+    <assert comment="Check actual var value">
+        <equal comment="Ensure var created successfully">
+            <content>{{testVar}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+</scenario>
