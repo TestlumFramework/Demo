@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"find\": \"condition_test\",             \"filter\": { \"_id\": 99 }             }         ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":99,\"data_value\":\"INITIAL_DATA\"}],\"id\":0,\"ns\":\"mongo_db.condition_test\"},\"ok\":1.0}"
+} ]

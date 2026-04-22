@@ -1,0 +1,6 @@
+[ {
+  "query" : "SELECT COUNT(*) AS \"total_runs\" FROM repeat_simple_log",
+  "content" : [ {
+    "total_runs" : 5
+  } ]
+} ]

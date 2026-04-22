@@ -1,0 +1,3 @@
+[ {
+  "query" : "UPDATE dynamodb_news SET number = number + 1 WHERE id = 'log_1'"
+} ]

@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HSET\",\"arg\":[\"test_user:101\",\"role\",\"SUPER_ADMIN\"]}",
+  "content" : "0"
+} ]

@@ -1,0 +1,4 @@
+id,title,category,expected_1,expected_2,expected_3
+10,Mongo 7.0 Released,Tech,expected_1_1,expected_2_1,expected_3_1
+20,Cloud Security Trends,Security,expected_1_2,expected_2_2,expected_3_2
+30,Replication in Mongo,Resilience,expected_1_3,expected_2_3,expected_3_3

@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:30\"]}",
+  "content" : "[title, Weather Forecast 2026]"
+} ]

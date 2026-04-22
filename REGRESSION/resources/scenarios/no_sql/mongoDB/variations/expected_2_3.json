@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"test_news\",             \"documents\": [             {             \"_id\": 30,             \"title\": \"Replication in Mongo\",             \"category\": \"Resilience\"             }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

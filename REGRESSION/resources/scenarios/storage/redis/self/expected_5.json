@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"DEL\",\"arg\":[\"test_user:101\"]}",
+  "content" : "1"
+} ]

@@ -1,0 +1,7 @@
+[ {
+  "query" : "DROP TABLE IF EXISTS repeat_news",
+  "content" : "Query completed successfully"
+}, {
+  "query" : "DROP TABLE IF EXISTS repeat_simple_log",
+  "content" : "Query completed successfully"
+} ]

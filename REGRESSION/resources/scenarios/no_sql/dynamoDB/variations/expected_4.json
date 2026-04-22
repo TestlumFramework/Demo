@@ -1,0 +1,3 @@
+[ {
+  "query" : "             DELETE FROM dynamodb_news             WHERE id = '{{id}}'         "
+} ]

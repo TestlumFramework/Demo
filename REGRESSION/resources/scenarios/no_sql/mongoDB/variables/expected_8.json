@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"find\": \"test_news\",             \"filter\": { \"_id\": 10 }             }         ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":10,\"title\":\"{{title}}\",\"category\":\"{{category}}\"}],\"id\":0,\"ns\":\"mongo_db.test_news\"},\"ok\":1.0}"
+} ]

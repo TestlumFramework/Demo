@@ -1,0 +1,54 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>MongoDB Data-Driven Test with dynamic expected files</description>
+        <name>Mongo Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>mongo_variations.csv</variations>
+        <tags>mongo</tags>
+    </settings>
+
+    <mongo alias="MONGO_0"
+           comment="Clear previous data for the current ID"
+           file="{{expected_1}}.json">
+        <query>
+            {
+            "delete": "test_news",
+            "deletes": [ { "q": { "_id": {{id}} }, "limit": 0 } ]
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Insert dynamic data to collection for user id {{id}}"
+           file="{{expected_2}}.json">
+        <query>
+            {
+            "insert": "test_news",
+            "documents": [
+            {
+            "_id": {{id}},
+            "title": "{{title}}",
+            "category": "{{category}}"
+            }
+            ]
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Read data from collection using variations"
+           file="{{expected_3}}.json">
+        <query>
+            {
+            "find": "test_news",
+            "filter": { "_id": {{id}} }
+            }
+        </query>
+    </mongo>
+
+</scenario>

@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"count\": \"repeat_simple_log\"             }         ",
+  "content" : "{\"n\":5,\"ok\":1.0}"
+} ]

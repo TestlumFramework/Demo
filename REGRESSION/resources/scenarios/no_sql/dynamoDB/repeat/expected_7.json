@@ -1,0 +1,5 @@
+[ {
+  "query" : "DELETE FROM dynamodb_news WHERE id = 'log_1'"
+}, {
+  "query" : "             INSERT INTO dynamodb_news VALUE {             'id': 'log_1',             'name': 'LoopExecutionLog',             'number': 0,             'active': true             }         "
+} ]

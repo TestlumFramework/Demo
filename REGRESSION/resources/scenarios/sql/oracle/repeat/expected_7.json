@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE repeat_simple_log ( run_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, message VARCHAR2(50) )",
+  "content" : "Query completed successfully"
+} ]

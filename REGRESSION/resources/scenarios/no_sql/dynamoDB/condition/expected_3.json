@@ -1,0 +1,3 @@
+[ {
+  "query" : "             INSERT INTO dynamodb_news VALUE {             'id': '99',             'name': 'INITIAL_DATA',             'number': 99,             'active': true             }         "
+} ]

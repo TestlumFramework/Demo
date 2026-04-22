@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE repeat_news ( id NUMBER(10) PRIMARY KEY, title VARCHAR2(100) )",
+  "content" : "Query completed successfully"
+} ]

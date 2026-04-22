@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"condition_test:99\"]}",
+  "content" : "[data_value, INITIAL_DATA]"
+} ]

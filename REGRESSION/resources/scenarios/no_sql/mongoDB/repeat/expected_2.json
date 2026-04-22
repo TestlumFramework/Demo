@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"repeat_news\",             \"documents\": [             { \"_id\": 10, \"title\": \"Global Tech Update\" },             { \"_id\": 20, \"title\": \"Local Sports Events\" },             { \"_id\": 30, \"title\": \"Weather Forecast 2026\" }             ]             }         ",
+  "content" : "{\"n\":3,\"ok\":1.0}"
+} ]

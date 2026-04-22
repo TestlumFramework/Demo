@@ -1,0 +1,74 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Redis Basic CRUD Operations Test</description>
+        <name>Redis Basic CRUD Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>redis</tags>
+    </settings>
+
+    <redis alias="REDIS_0"
+           comment="Insert data to hash"
+           file="expected_1.json">
+        <query>
+            <command>HSET</command>
+            <arg>test_user:101</arg>
+            <arg>username</arg>
+            <arg>john_doe</arg>
+            <arg>role</arg>
+            <arg>ADMIN</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Read data from hash - verify inserted data"
+           file="expected_2.json">
+        <query>
+            <command>HGETALL</command>
+            <arg>test_user:101</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Update data in hash"
+           file="expected_3.json">
+        <query>
+            <command>HSET</command>
+            <arg>test_user:101</arg>
+            <arg>role</arg>
+            <arg>SUPER_ADMIN</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Verify updated data"
+           file="expected_4.json">
+        <query>
+            <command>HGETALL</command>
+            <arg>test_user:101</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Delete hash from Redis"
+           file="expected_5.json">
+        <query>
+            <command>DEL</command>
+            <arg>test_user:101</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Read data from hash - verify data is deleted"
+           file="expected_6.json">
+        <query>
+            <command>HGETALL</command>
+            <arg>test_user:101</arg>
+        </query>
+    </redis>
+
+</scenario>

@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"test_users\",             \"documents\": [             { \"_id\": 101, \"username\": \"john_doe\", \"role\": \"ADMIN\" }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

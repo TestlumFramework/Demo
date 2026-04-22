@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:20\"]}",
+  "content" : "[title, Local Sports Events]"
+} ]
