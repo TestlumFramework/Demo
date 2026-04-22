@@ -1,0 +1,56 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Functional testing of input clearing operations and field state reset mechanisms.</description>
+        <name>Input Field Reset Validation</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button clear page" locator="testApp.clearPage"/>
+
+        <repeat comment="Repeat typing and clearing 2 times"
+                times="2">
+
+            <clear comment="Clear input value" locator="testApp.clearInputText"/>
+
+            <assert comment="Assertion: Final status is Empty">
+                <attribute comment="Check status text"
+                           locator="testApp.statusInput"
+                           name="text">
+                    <content>Status: Empty</content>
+                </attribute>
+            </assert>
+
+            <input comment="Type text to make input NotEmpty"
+                   locator="testApp.clearInputText"
+                   locatorStrategy="locatorId"
+                   value="Test text"/>
+
+            <assert comment="Assertion: Final status is Empty">
+                <attribute comment="Check status text"
+                           locator="testApp.statusInput"
+                           name="text">
+                    <content>Status: NotEmpty</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+        <assert comment="Assertion: Clear triggered 2 times">
+            <attribute comment="Check clear counter"
+                       locator="//android.widget.TextView[@resource-id='clearCounter']"
+                       locatorStrategy="xpath"
+                       name="text">
+                <content>Clear count: 2</content>
+            </attribute>
+        </assert>
+    </native>
+
+
+</scenario>

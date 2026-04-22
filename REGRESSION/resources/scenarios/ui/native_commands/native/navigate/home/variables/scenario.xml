@@ -1,0 +1,30 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Variables test navigate home command</description>
+        <name>Navigate home variables</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <var comment="Added comment to command assert by variable"
+             name="comment">
+            <constant value="comment"/>
+        </var>
+        <navigate comment="Test navigate home {{comment}}" destination="home"/>
+        <wait comment="Waiting 1 seconds" time="1"/>
+        <image comment="Verify visual destination"
+               file="assert_navigate.png">
+            <part locator="//android.widget.TextView[@content-desc='Predicted app: My Application']"
+                  locatorStrategy="xpath"/>
+        </image>
+    </native>
+
+</scenario>

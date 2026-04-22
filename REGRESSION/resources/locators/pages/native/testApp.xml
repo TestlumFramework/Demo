@@ -1,0 +1,261 @@
+<page xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>Test App Locators</name>
+        <url>myapplication</url>
+        <description>Locators for testing commands in test app</description>
+    </details>
+
+    <locators>
+        <locator locatorId="title">
+            <className>android.widget.TextView</className>
+            <xpath>//android.widget.TextView[@text="Test App"]</xpath>
+            <text>Test App</text>
+        </locator>
+
+        <locator locatorId="clickPage">
+            <xpath>//android.widget.ScrollView/android.view.View[1]/android.widget.Button</xpath>
+            <className>android.widget.Button</className>
+            <id>btn_click_page</id>
+        </locator>
+        
+        <locator locatorId="counter">
+            <xpath>//android.widget.TextView[@resource-id="click_counter"]</xpath>
+            <id>click_counter</id>
+            <className>android.widget.TextView</className>
+            <text>Counter: 0</text>
+        </locator>
+        
+        <locator locatorId="clickButton">
+            <xpath>//android.view.View[@resource-id="click_button"]/android.widget.Button</xpath>
+            <id>click_button</id>
+        </locator>
+
+        <locator locatorId="resetClick">
+            <xpath>//android.view.View[@resource-id="reset_click"]/android.widget.Button</xpath>
+            <id>reset_click</id>
+        </locator>
+        
+        <locator locatorId="backButton">
+            <id>back_button</id>
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]/android.view.View/android.widget.Button</xpath>
+            <className>android.widget.Button</className>
+        </locator>
+
+        <locator locatorId="clearPage">
+            <id>btn_clear_page</id>
+            <xpath>//android.widget.ScrollView/android.view.View[2]/android.widget.Button</xpath>
+            <className>android.widget.Button</className>
+        </locator>
+        
+        <locator locatorId="clearInputText">
+            <id>clearInputText</id>
+            <xpath>//android.widget.EditText[@resource-id="clearInputText"]</xpath>
+            <className>android.widget.EditText</className>
+            <text>Initial text to clear</text>
+        </locator>
+        
+        <locator locatorId="statusInput">
+            <xpath>//android.widget.TextView[@resource-id="statusInput"]</xpath>
+            <id>statusInput</id>
+        </locator>
+
+        <locator locatorId="dragAndDropPage">
+            <xpath>//android.widget.ScrollView/android.view.View[3]/android.widget.Button</xpath>
+            <className>android.widget.Button</className>
+            <id>btn_drag_drop_page</id>
+        </locator>
+        
+        <locator locatorId="elementToBeFlipped">
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]</xpath>
+            <className>android.view.View</className>
+        </locator>
+        
+        <locator locatorId="placeWhereElementWillBe">
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]</xpath>
+            <className>android.view.View</className>
+        </locator>
+        
+        <locator locatorId="inputPage">
+            <xpath>//android.widget.ScrollView/android.view.View[4]/android.widget.Button</xpath>
+            <className>android.widget.Button</className>
+        </locator>
+        
+        <locator locatorId="inputArea">
+            <xpath>//android.widget.EditText[@resource-id="input_text_field"]</xpath>
+        </locator>
+
+        <locator locatorId="inputResult">
+            <xpath>//android.widget.TextView[@resource-id="input_result"]</xpath>
+        </locator>
+
+        <locator locatorId="imagePage">
+            <xpath>//android.widget.ScrollView/android.view.View[5]/android.widget.Button</xpath>
+        </locator>
+        
+        <locator locatorId="setFullScreenButton">
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="image">
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[2]</xpath>
+        </locator>
+
+        <locator locatorId="navigatePage">
+            <xpath>//android.widget.ScrollView/android.view.View[6]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="refreshPage">
+            <xpath>//android.widget.ScrollView/android.view.View[7]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="refreshCount">
+            <id>refresh_counter</id>
+            <xpath>//android.widget.TextView[@resource-id="refresh_counter"]</xpath>
+        </locator>
+
+        <locator locatorId="resetButtonRefresh">
+            <xpath>//androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="swipePage">
+            <xpath>//android.widget.ScrollView/android.view.View[8]/android.widget.Button</xpath>
+        </locator>
+        
+        <locator locatorId="swipeElement">
+            <xpath>//android.widget.TextView[@resource-id="swipe_page_direction"]</xpath>
+            <id>swipeable_element</id>
+        </locator>
+
+        <locator locatorId="swipeElementCounter">
+            <xpath>//android.widget.TextView[@resource-id="swipe_element_counter"]</xpath>
+            <id>swipe_element_counter</id>
+        </locator>
+
+        <locator locatorId="swipePageZone">
+            <xpath>//android.view.View[@resource-id="swipe_page_zone"]</xpath>
+            <id>swipe_page_zone</id>
+        </locator>
+
+        <locator locatorId="swipePageVerticalZone">
+            <xpath>//android.view.View[@resource-id="swipe_page_vertical_zone"]</xpath>
+            <id>swipe_page_vertical_zone</id>
+        </locator>
+
+        <locator locatorId="swipePageCounter">
+            <xpath>//android.widget.TextView[@resource-id="swipe_page_counter"]</xpath>
+            <id>swipe_page_counter</id>
+        </locator>
+
+        <locator locatorId="swipePageDirection">
+            <xpath>//android.widget.TextView[@resource-id="swipe_page_direction"]</xpath>
+            <id>swipe_page_direction</id>
+        </locator>
+
+        <locator locatorId="swipeMode">
+            <xpath>//android.widget.TextView[@resource-id="swipe_mode"]</xpath>
+            <id>swipe_mode</id>
+        </locator>
+
+        <locator locatorId="resetButtonSwipe">
+            <xpath>//android.view.View[@resource-id="reset_swipe"]/android.widget.Button</xpath>
+            <id>reset_swipe</id>
+        </locator>
+
+        <locator locatorId="enableElementMode">
+            <xpath>//android.view.View[@resource-id="enable_element_mode"]/android.widget.Button</xpath>
+            <id>enable_element_mode</id>
+        </locator>
+
+        <locator locatorId="enablePageMode">
+            <xpath>//android.view.View[@resource-id="enable_page_mode"]/android.widget.Button</xpath>
+            <id>enable_page_mode</id>
+        </locator>
+
+        <locator locatorId="waitPage">
+            <xpath>//android.view.View[@resource-id="btn_wait_page"]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="startTaskButton">
+            <xpath>//android.view.View[@resource-id="btn_start_wait"]/android.widget.Button</xpath>
+            <id>btn_start_wait</id>
+        </locator>
+
+        <locator locatorId="waitSpinner">
+            <xpath>//android.widget.ProgressBar[@resource-id="wait_spinner"]</xpath>
+            <id>wait_spinner</id>
+        </locator>
+
+        <locator locatorId="waitResult">
+            <xpath>//android.widget.TextView[@resource-id="wait_result"]</xpath>
+            <id>wait_result</id>
+        </locator>
+
+        <locator locatorId="resetButtonWait">
+            <xpath>//android.view.View[@resource-id="btn_reset_wait"]/android.widget.Button</xpath>
+            <id>btn_reset_wait</id>
+        </locator>
+
+        <locator locatorId="waitStatus">
+            <xpath>//android.widget.TextView[@resource-id="wait_status"]</xpath>
+            <id>wait_status</id>
+        </locator>
+
+        <locator locatorId="webViewPage">
+            <xpath>//android.view.View[@resource-id="btn_webview_page"]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="webViewContainer">
+            <id>webview_container</id>
+        </locator>
+
+        <locator locatorId="webViewBtn">
+            <cssSelector>#webview_btn</cssSelector>
+        </locator>
+
+        <locator locatorId="webViewText">
+            <cssSelector>#webview_text</cssSelector>
+        </locator>
+
+        <locator locatorId="webViewCounter">
+            <cssSelector>#webview_count</cssSelector>
+        </locator>
+        
+        <locator locatorId="varPage">
+            <xpath>//android.view.View[@resource-id="btn_var_page"]/android.widget.Button</xpath>
+        </locator>
+
+        <locator locatorId="varInputField">
+            <xpath>//android.widget.EditText[@resource-id="var_input_field"]</xpath>
+            <id>var_input_field</id>
+        </locator>
+
+        <locator locatorId="varInjectedResult">
+            <xpath>//android.widget.TextView[@resource-id="var_injected_result"]</xpath>
+            <id>var_injected_result</id>
+        </locator>
+
+        <locator locatorId="varExtractableText">
+            <xpath>//android.widget.TextView[@resource-id="var_injected_result"]</xpath>
+            <id>var_extractable_text</id>
+        </locator>
+
+        <locator locatorId="btnToggleHidden">
+            <xpath>//android.view.View[@resource-id="btn_toggle_hidden"]/android.widget.Button</xpath>
+            <id>btn_toggle_hidden</id>
+        </locator>
+
+        <locator locatorId="varHiddenElement">
+            <xpath>//android.widget.TextView[@resource-id="var_hidden_element"]</xpath>
+            <id>var_hidden_element</id>
+        </locator>
+
+        <locator locatorId="navTitle">
+            <xpath>//android.widget.TextView[@resource-id="nav_title"]</xpath>
+            <id>nav_deeper</id>
+        </locator>
+    </locators>
+
+</page>

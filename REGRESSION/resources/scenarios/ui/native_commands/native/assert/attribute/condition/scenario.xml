@@ -1,0 +1,37 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert attribute - condition: false skipped, true executed</description>
+        <name>Assert attribute condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <assert comment="Assert condition false - skipped"
+                condition="false">
+            <attribute comment="This assert is skipped"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 999</content>
+            </attribute>
+        </assert>
+
+        <assert comment="Assert condition true - executes"
+                condition="true">
+            <attribute comment="This assert runs and passes"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 0</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

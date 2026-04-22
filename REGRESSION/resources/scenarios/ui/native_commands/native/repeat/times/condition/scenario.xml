@@ -1,0 +1,46 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test repeat command - times condition</description>
+        <name>Repeat times condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+
+        <repeat comment="Repeat condition false - skipped"
+                condition="false"
+                times="3">
+            <click comment="Click should not execute" locator="testApp.clickButton"/>
+        </repeat>
+        <assert comment="Assert counter is 0">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 0</content>
+            </attribute>
+        </assert>
+
+        <repeat comment="Repeat condition true - executes"
+                condition="true"
+                times="3">
+            <click comment="Click executes" locator="testApp.clickButton"/>
+        </repeat>
+        <assert comment="Assert counter is 3">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 3</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

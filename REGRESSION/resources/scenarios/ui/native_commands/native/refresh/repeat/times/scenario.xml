@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat/times test refresh command</description>
+        <name>Refresh repeat times</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Refresh screen" locator="testApp.refreshPage"/>
+
+        <repeat comment="Repeat 3 times"
+                times="3">
+            <refresh comment="Test refresh repeat times"/>
+        </repeat>
+        <assert comment="Verify refresh execution">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.refreshCount"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>3</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

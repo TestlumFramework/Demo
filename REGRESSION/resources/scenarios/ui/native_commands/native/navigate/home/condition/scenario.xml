@@ -1,0 +1,30 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Condition test navigate home command</description>
+        <name>Navigate home condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+        <navigate comment="Test navigate home with condition true"
+                  condition="true"
+                  destination="home"/>
+        <navigate comment="Test navigate home with condition false"
+                  condition="false"
+                  destination="home"/>
+        <wait comment="Waiting 1 seconds" time="1"/>
+        <image comment="Verify visual destination"
+               file="assert_navigate.png">
+            <part locator="//android.widget.TextView[@content-desc='Predicted app: My Application']"
+                  locatorStrategy="xpath"/>
+        </image>
+    </native>
+
+</scenario>

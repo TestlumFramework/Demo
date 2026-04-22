@@ -1,0 +1,25 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>General test image part command</description>
+        <name>Image part command</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
+
+        <image comment="Test general part image command"
+               file="test_image.png">
+            <part locator="testApp.image" locatorStrategy="locatorId"/>
+        </image>
+
+    </native>
+
+</scenario>

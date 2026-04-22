@@ -1,0 +1,42 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test swipe page - repeat variations</description>
+        <name>Swipe page repeat variations</name>
+    </overview>
+
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Test native swipe page command">
+
+        <click comment="Navigate to Swipe screen" locator="testApp.swipePage"/>
+        <click comment="Reset state before test" locator="testApp.resetButtonSwipe"/>
+        <click comment="Activate page mode" locator="testApp.enablePageMode"/>
+
+        <repeat comment="Repeat page swipe across CSV rows"
+                variations="variations_native_command.csv">
+            <swipeNative comment="Page swipe {{comment}}"
+                         condition="{{flag}}">
+                <page comment="CSV driven page swipe"
+                      direction="right"
+                      percent="80"/>
+            </swipeNative>
+        </repeat>
+
+        <assert comment="Verify page swipe count">
+            <attribute comment="Check page counter text"
+                       locator="testApp.swipePageCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Page swipes: 2</content>
+            </attribute>
+        </assert>
+
+    </native>
+
+</scenario>

@@ -1,0 +1,33 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat/variations test navigate back command</description>
+        <name>Navigate back repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <repeat comment="Repeat 2 times with variations"
+                variations="variations_native_command.csv">
+            <navigate comment="Test navigate back {comment}"
+                      condition="{{flag}}"
+                      destination="back"/>
+        </repeat>
+        <assert comment="Verify depth text">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.navTitle"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Navigate Page 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

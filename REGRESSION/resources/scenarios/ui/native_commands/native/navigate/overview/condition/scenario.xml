@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Condition test navigate overview command</description>
+        <name>Navigate overview condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <navigate comment="Test navigate overview with condition true"
+                  condition="true"
+                  destination="overview"/>
+        <navigate comment="Test navigate overview with condition false"
+                  condition="false"
+                  destination="overview"/>
+        <wait comment="Waiting 1 second" time="1"/>
+        <image comment="Verify visual destination"
+               file="assert_navigate.png">
+            <part locator="//android.view.View[@resource-id='com.google.android.apps.nexuslauncher:id/icon']"
+                  locatorStrategy="xpath"/>
+        </image>
+    </native>
+
+</scenario>

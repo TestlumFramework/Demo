@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat/variations test refresh command</description>
+        <name>Refresh repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Refresh screen" locator="testApp.refreshPage"/>
+
+        <repeat comment="Repeat across CSV rows"
+                variations="variations_native_command.csv">
+            <refresh comment="Test refresh {comment}" condition="{{flag}}"/>
+        </repeat>
+        <assert comment="Verify refresh execution">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.refreshCount"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>2</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

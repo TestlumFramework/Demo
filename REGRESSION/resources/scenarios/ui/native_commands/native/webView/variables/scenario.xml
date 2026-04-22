@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test webView command - variables</description>
+        <name>WebView variables</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to WebView screen" locator="testApp.webViewPage"/>
+
+        <wait comment="Waiting 1 second" time="1"/>
+
+        <var comment="Store expected initial text"
+             name="initialText">
+            <constant value="This is an embedded web view."/>
+        </var>
+
+        <webView comment="Test webView with variable">
+            <assert comment="Assert initial text via variable">
+                <attribute comment="Verify text matches variable"
+                           locator="testApp.webViewText"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>{{initialText}}</content>
+                </attribute>
+            </assert>
+        </webView>
+
+    </native>
+
+</scenario>

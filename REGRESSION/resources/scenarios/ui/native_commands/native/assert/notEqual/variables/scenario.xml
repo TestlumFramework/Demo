@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert notEqual - variables: two different vars</description>
+        <name>Assert notEqual variables</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+        <var comment="Store first value"
+             name="var1">
+            <constant value="Apple"/>
+        </var>
+        <var comment="Store second different value"
+             name="var2">
+            <constant value="Orange"/>
+        </var>
+
+        <assert comment="Assert two variables are NOT equal">
+            <notEqual comment="Apple and Orange are different">
+                <content>{{var1}}</content>
+                <content>{{var2}}</content>
+            </notEqual>
+        </assert>
+    </native>
+
+</scenario>

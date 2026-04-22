@@ -1,0 +1,20 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Validation of generic native command processing and element interaction.</description>
+        <name>Native Command Execution</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+  
+    <native comment="Executing native automation sequence">
+        <wait comment="Waiting 1 second"
+              time="1"
+              unit="millis"/>
+    </native>
+
+</scenario>

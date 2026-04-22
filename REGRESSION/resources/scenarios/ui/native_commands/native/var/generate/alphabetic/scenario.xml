@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - generate alphabetic</description>
+        <name>Var generate alphabetic</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Generate random alphabetic string of length 8"
+             name="genAlpha">
+            <generate length="8">
+                <alphabetic/>
+            </generate>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{genAlpha}}"/>
+        <assert comment="Assert generated alphabetic value injected">
+            <attribute comment="Check injected result is not empty"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text"
+                       negative="false">
+                <content>Injected value: {{genAlpha}}</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

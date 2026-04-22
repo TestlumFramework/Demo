@@ -88,14 +88,18 @@ check_node_appium() {
 # Finds the first available APK in the project and installs it on the device
 # -----------------------------------------------------------------------------
 install_apk() {
-    log "Searching for APK file..."
-    APK_FILE=$(find . -name "*.apk" | head -n 1)
+    log "Searching for APK files..."
+    APK_FILES=$(find . -name "*.apk")
 
-    if [ -n "$APK_FILE" ]; then
-        log "Installing $APK_FILE on emulator..."
-        adb install -r -t -g "$APK_FILE" || log "⚠️ APK installation failed, but proceeding to Appium."
+    if [ -n "$APK_FILES" ]; then
+        echo "$APK_FILES" | while IFS= read -r APK_FILE; do
+            if [ -n "$APK_FILE" ]; then
+                log "Installing $APK_FILE on emulator..."
+                adb install -r -t -g "$APK_FILE" || log "⚠️ APK installation failed for $APK_FILE, continuing..."
+            fi
+        done
     else
-        log "⚠️ No APK file found in the project. Skipping installation."
+        log "⚠️ No APK files found in the project. Skipping installation."
     fi
 }
 

@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test swipe element - variations</description>
+        <name>Swipe element variations</name>
+    </overview>
+
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Test native swipe element command">
+
+        <click comment="Navigate to Swipe screen" locator="testApp.swipePage"/>
+        <click comment="Reset state before test" locator="testApp.resetButtonSwipe"/>
+        <click comment="Activate element mode" locator="testApp.enableElementMode"/>
+
+        <swipe comment="Swipe element {{comment}}"
+               condition="{{flag}}">
+            <element comment="Variation swipe"
+                     direction="right"
+                     locator="{{locatorSwipeElement}}"
+                     percent="80"/>
+        </swipe>
+
+    </native>
+
+</scenario>

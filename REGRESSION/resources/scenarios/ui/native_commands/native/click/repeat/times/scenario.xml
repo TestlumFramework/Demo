@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing click tag with repeat (times)</description>
+        <name>Interactive Click Validation</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+  
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button clickPage" locator="testApp.clickPage"/>
+
+        <repeat comment="Repeat 3 times"
+                times="3">
+            <click comment="Clicking on button to increase counter" locator="testApp.clickButton"/>
+        </repeat>
+        
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.counter"
+                       name="text">
+                <content>Counter: 3</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>
