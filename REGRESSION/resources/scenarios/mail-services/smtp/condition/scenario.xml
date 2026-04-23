@@ -1,0 +1,39 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SMTP Condition Test</name>
+        <description>
+            This scenario verifies condition-based execution control.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <condition comment="First condition" name="executeEmail" spel="true"/>
+    <condition comment="Second condition" name="skipEmail" spel="false"/>
+
+    <smtp comment="Should be sent"
+          alias="SMTP_0"
+          condition="executeEmail"
+          recipientEmail="testlum.test.acc@gmail.com">
+
+        <subject>Condition TRUE</subject>
+        <text>Email should be sent</text>
+
+    </smtp>
+
+    <smtp comment="Should NOT be sent"
+          alias="SMTP_0"
+          condition="skipEmail"
+          recipientEmail="INVALID">
+
+        <subject>Condition FALSE</subject>
+        <text>This should NOT be executed</text>
+
+    </smtp>
+
+</scenario>
