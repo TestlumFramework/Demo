@@ -1,0 +1,113 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Repeat - Times</name>
+        <description>
+            This scenario verifies repeat execution using the times attribute in mobile browser.
+
+            Test flow:
+            1. Navigate to the UI Elements page.
+            2. Clear the input field.
+            3. Execute the repeat block 3 times.
+            4. Verify the increment result.
+
+            This scenario validates:
+            - repeat execution using times
+            - correct iteration count
+            - state persistence between iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Clear command comment"
+             name="clearComment">
+            <constant value="Clear input before repeat"/>
+        </var>
+
+        <var comment="Repeat command comment"
+             name="repeatComment">
+            <constant value="Repeat increment 3 times"/>
+        </var>
+
+        <var comment="Javascript command comment"
+             name="jsComment">
+            <constant value="Increment value via JS"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify repeat execution result"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check final value equals 3"/>
+        </var>
+
+        <var comment="Path variable"
+             name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Locator variable"
+             name="locator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Expected value"
+             name="expected">
+            <constant value="3"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="2"/>
+
+        <clear comment="{{clearComment}}"
+               locator="{{locator}}"/>
+
+        <repeat comment="{{repeatComment}}"
+                times="3">
+
+            <javascript comment="{{jsComment}}"
+                        file="increment.js"/>
+
+            <wait comment="Stabilize after JS execution"
+                  time="1"/>
+
+        </repeat>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

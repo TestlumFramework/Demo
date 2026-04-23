@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Click - Repeat Times</name>
+        <description>
+            This scenario verifies repeated execution of click command with full login/logout cycle in mobile browser.
+
+            Test flow:
+            1. Repeat login action multiple times.
+            2. Verify Dashboard is displayed after login.
+            3. Perform logout to reset state.
+            4. Repeat the cycle.
+
+            This scenario validates:
+            - Stable repeated click execution
+            - Correct navigation behavior
+            - Proper state reset between iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <repeat comment="Repeat login/logout flow 2 times" times="2">
+
+            <click comment="Click Sign In button"
+                   locator="login.signIn"/>
+
+            <wait comment="Wait after login click" time="1"/>
+
+            <assert comment="Verify Dashboard is displayed">
+                <attribute comment="Check dashboard header"
+                           name="innerText"
+                           locator="dashboard.title">
+                    <content>Dashboard</content>
+                </attribute>
+            </assert>
+
+            <hover comment="Hover menu icon"
+                   locator="dashboard.menuIcon"/>
+
+            <hover comment="Hover logout button"
+                   locator="dashboard.logout"/>
+
+            <wait comment="Wait before logout click" time="1"/>
+
+            <click comment="Click logout button"
+                   locator="dashboard.logout"/>
+
+            <wait comment="Wait after logout" time="1"/>
+
+            <assert comment="Verify Login button is visible again">
+                <attribute comment="Check Sign In button"
+                           name="innerText"
+                           locator="login.signIn">
+                    <content>Sign in</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>

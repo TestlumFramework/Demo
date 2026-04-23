@@ -1,0 +1,62 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Variations</name>
+        <description>
+            This scenario verifies clear command using CSV-driven variations in mobile browser.
+
+            Test flow:
+            1. Load data from CSV file.
+            2. Navigate to page using injected path.
+            3. Input value using injected data.
+            4. Execute clear command using injected locator and highlight.
+            5. Verify clear execution using assertion.
+
+            This scenario validates:
+            - CSV-based variable injection
+            - Dynamic locator and value usage
+            - Clear command execution with different data sets
+        </description>
+    </overview>
+
+    <settings>
+        <variations>clear_variations.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="{{inputLocator}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{inputLocator}}"
+               value="{{value}}"/>
+
+        <clear comment="{{clearComment}}"
+               locator="{{inputLocator}}"
+               highlight="true"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{assertComment}}"
+                       name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: empty</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,86 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Alert - Variable</name>
+        <description>
+            This scenario verifies alert assertion using variables in mobile browser.
+
+            Test flow:
+            1. Store navigation path, locator, comments, and expected text in variables.
+            2. Navigate to modal page.
+            3. Trigger alert using variable locator.
+            4. Verify alert text using variable.
+            5. Close alert.
+
+            This scenario validates:
+            - Full variable injection
+            - Dynamic locator and comment usage
+            - Alert text validation via variables
+            - Alert lifecycle handling
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Store navigation path" name="path">
+            <constant value="/modal"/>
+        </var>
+
+        <var comment="Store alert button locator" name="buttonLocator">
+            <constant value="modal.alertBtn"/>
+        </var>
+
+        <var comment="Store expected alert text" name="expectedText">
+            <constant value="Alert! You are not Nazar"/>
+        </var>
+
+        <var comment="Store assert block comment" name="assertComment">
+            <constant value="Verify alert using variables"/>
+        </var>
+
+        <var comment="Store alert assertion comment" name="alertComment">
+            <constant value="Check alert text"/>
+        </var>
+
+        <var comment="Store navigate comment" name="navigateComment">
+            <constant value="Navigate to modal page using variable"/>
+        </var>
+
+        <var comment="Store click comment" name="clickComment">
+            <constant value="Click alert button using variable locator"/>
+        </var>
+
+        <var comment="Store wait comment" name="waitComment">
+            <constant value="Wait for alert to appear"/>
+        </var>
+
+        <var comment="Store cleanup comment" name="cleanupComment">
+            <constant value="Accept alert to close it"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <click comment="{{clickComment}}"
+               locator="{{buttonLocator}}"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <alert comment="{{alertComment}}">
+                <text>{{expectedText}}</text>
+            </alert>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

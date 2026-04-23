@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Repeat - Condition</name>
+        <description>
+            This scenario verifies conditional execution of repeat command in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute repeat with true condition.
+            3. Verify execution result.
+            4. Execute repeat with false condition.
+            5. Verify repeat was NOT executed.
+
+            This scenario validates:
+            - repeat execution with true condition
+            - repeat skipping with false condition
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Always true"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Always false"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Reset input"
+               locator="uiElements.hotKeyInput1"/>
+
+        <repeat comment="Execute repeat with true condition"
+                times="3"
+                condition="trueCondition">
+
+            <javascript comment="Increment value"
+                        file="increment.js"/>
+
+            <wait comment="Stabilize after JS" time="1"/>
+
+        </repeat>
+
+        <assert comment="Verify repeat executed">
+            <attribute comment="Verify repeat executed"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>3</content>
+            </attribute>
+        </assert>
+
+        <repeat comment="Try repeat with false condition"
+                times="3"
+                condition="falseCondition">
+
+            <javascript comment="Should NOT execute"
+                        file="increment.js"/>
+
+        </repeat>
+
+        <assert comment="Verify repeat was skipped">
+            <attribute comment="Verify repeat was skipped"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>3</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

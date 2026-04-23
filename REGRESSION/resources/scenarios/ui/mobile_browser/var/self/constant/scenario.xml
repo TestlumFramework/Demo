@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Constant</name>
+        <description>
+            This scenario verifies var constant functionality in mobile browser.
+
+            Test flow:
+            1. Create constant variable for path.
+            2. Navigate using constant variable.
+            3. Verify page content.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Create constant for page path"
+             name="page">
+            <constant value="ui-elements"/>
+        </var>
+
+        <wait comment="Wait before navigation"
+              time="1"/>
+
+        <navigate comment="Navigate using constant var"
+                  command="to"
+                  path="/{{page}}"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <assert comment="Verify UI Elements page">
+            <attribute comment="Verify UI Elements page"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

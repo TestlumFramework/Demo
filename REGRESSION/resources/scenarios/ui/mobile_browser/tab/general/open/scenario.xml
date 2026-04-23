@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Open</name>
+        <description>
+            This scenario verifies opening a new tab in mobile browser.
+
+            Test flow:
+            1. Navigate to Forms page.
+            2. Open new tab with UI Elements page.
+            3. Switch to new tab.
+            4. Verify that new tab content is loaded.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <tab comment="Open new tab with UI Elements page">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait for tab creation"
+              time="2"/>
+
+        <tab comment="Switch to new tab">
+            <switch index="2"/>
+        </tab>
+
+        <wait comment="Wait for page load in new tab"
+              time="2"/>
+
+        <assert comment="Verify UI Elements page is opened in new tab">
+            <attribute comment="Check page title"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Part - Variations</name>
+        <description>
+            This scenario verifies image part comparison using CSV variations in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Scroll to image block.
+            3. Execute image comparison with different parameters.
+
+            This scenario validates:
+            - CSV-based injection
+            - dynamic locator usage
+            - dynamic file usage
+            - dynamic percentage usage
+        </description>
+    </overview>
+
+    <settings>
+        <variations>image_part.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{locator}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <image comment="{{imageComment}}"
+               file="image_part.png">
+            <part locator="{{locator}}"
+                  percentage="99.9"/>
+        </image>
+
+    </mobilebrowser>
+
+</scenario>

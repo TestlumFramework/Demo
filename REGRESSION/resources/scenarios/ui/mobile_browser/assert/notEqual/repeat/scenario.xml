@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert NotEqual - Repeat Times</name>
+        <description>
+            This scenario verifies notEqual assertion execution inside repeat block using times in mobile browser.
+
+            Test flow:
+            1. Extract value from UI.
+            2. Execute notEqual assertion inside repeat block 3 times.
+            3. Verify values remain different on each iteration.
+
+            This scenario validates:
+            - Stable repeated execution of assert
+            - NotEqual assertion reliability across iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Get Dashboard title" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="/html/body/div/div/div[2]/main/div/div/h3"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <repeat comment="Execute assert notEqual multiple times" times="3">
+
+            <assert comment="Check notEqual inside repeat">
+                <notEqual comment="Compare different values">
+                    <content>{{dashboardTitle}}</content>
+                    <content>INVALID</content>
+                </notEqual>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>
