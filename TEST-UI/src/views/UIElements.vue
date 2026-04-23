@@ -335,6 +335,29 @@
       </div>
     </div>
 
+    <!-- CLEAR TEST BLOCK -->
+    <div class="mt-8">
+      <h4 class="text-gray-600">Clear Test</h4>
+
+      <div class="mt-4 bg-white p-4 rounded-md space-y-4">
+
+        <input
+            ref="clearInput"
+            data-test="clear-input"
+            type="text"
+            :value="clearValue"
+            @input="onClearInput"
+            class="border p-2 w-64"
+            placeholder="Type something"
+        />
+
+        <p data-test="clear-result" class="text-gray-700">
+          Value: {{ clearValue || 'empty' }}
+        </p>
+
+      </div>
+    </div>
+
     <div class="mt-8">
       <h4 class="text-gray-600">HotKey Test</h4>
 
@@ -528,6 +551,7 @@ export default {
       waitUnit: 'seconds',
       done: false,
       showDelayed: false,
+      clearValue: '',
     }
   },
   methods: {
@@ -550,6 +574,10 @@ export default {
       this.modalOpen = false
     },
 
+    onClearInput(event: Event) {
+      this.clearValue = (event.target as HTMLInputElement).value
+    },
+
     startWait() {
       this.done = false
       this.showDelayed = false
@@ -563,6 +591,14 @@ export default {
         this.showDelayed = true
       }, time)
     }
+  },
+  mounted() {
+    const input = this.$refs.clearInput as HTMLInputElement
+    setInterval(() => {
+      if (input && this.clearValue !== input.value) {
+        this.clearValue = input.value
+      }
+    }, 100)
   },
   watch: {
     modalOpen(val) {

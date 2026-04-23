@@ -1,0 +1,82 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Condition</name>
+        <description>
+            This scenario verifies switchToFrame command using condition in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scrollTo comment="Scroll to iframe"
+                  locator="uiElements.testFrame"/>
+
+        <wait comment="Wait after scroll"
+              time="2"/>
+
+        <condition comment="Create false condition"
+                   name="shouldSwitchFalse"
+                   spel="false"/>
+
+        <condition comment="Create true condition"
+                   name="shouldSwitchTrue"
+                   spel="true"/>
+
+        <switchToFrame comment="Try to switch with false condition"
+                       locator="uiElements.testFrame"
+                       condition="shouldSwitchFalse">
+
+            <click comment="Click inside iframe"
+                   locator="uiElements.frameButton"/>
+
+            <assert comment="Verify action was NOT executed">
+                <attribute comment="Result should NOT be changed"
+                           name="innerText"
+                           locator="uiElements.frameResult"
+                           negative="true">
+                    <content>Clicked!</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+        <switchToFrame comment="Switch with true condition"
+                       locator="uiElements.testFrame"
+                       condition="shouldSwitchTrue">
+
+            <click comment="Click inside iframe"
+                   locator="uiElements.frameButton"/>
+
+            <wait comment="Wait after click"
+                  time="2"/>
+
+            <assert comment="Verify result inside iframe">
+                <attribute comment="Check result text"
+                           name="innerText"
+                           locator="uiElements.frameResult">
+                    <content>Clicked!</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+    </mobilebrowser>
+
+</scenario>

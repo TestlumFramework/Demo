@@ -1,0 +1,49 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert NotEqual - Condition</name>
+        <description>
+            This scenario verifies condition-based execution of assert notEqual in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Create true condition" name="trueCondition" spel="true"/>
+        <condition comment="Create false condition" name="falseCondition" spel="false"/>
+
+        <var comment="Get Dashboard title" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="/html/body/div/div/div[2]/main/div/div/h3"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <assert comment="Should execute because condition is true"
+                condition="trueCondition">
+            <notEqual comment="Valid notEqual check">
+                <content>{{dashboardTitle}}</content>
+                <content>INVALID</content>
+            </notEqual>
+        </assert>
+
+        <assert comment="Should NOT execute because condition is false"
+                condition="falseCondition">
+            <notEqual comment="Invalid but skipped">
+                <content>{{dashboardTitle}}</content>
+                <content>Dashboard</content>
+            </notEqual>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - FullScreen</name>
+        <description>
+            This scenario verifies fullScreen image comparison in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Capture full screen.
+            3. Compare with baseline image.
+
+            This scenario validates:
+            - fullScreen execution
+            - page rendering consistency
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <image comment="Compare full screen image"
+               file="image_fullScreen.png">
+            <fullScreen percentage="99.9"/>
+        </image>
+
+    </mobilebrowser>
+
+</scenario>

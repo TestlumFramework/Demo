@@ -1,0 +1,103 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Variable</name>
+        <description>
+            This scenario verifies clear command using variables in mobile browser.
+
+            Test flow:
+            1. Inject path, locator, value, and comments via variables.
+            2. Navigate to forms page.
+            3. Input value into field.
+            4. Execute clear command using variable.
+            5. Verify clear execution using assertion.
+
+            This scenario validates:
+            - Locator injection
+            - Value injection
+            - Comment injection
+            - Clear execution via variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Store navigation path" name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Store input locator" name="inputLocator">
+            <constant value="uiElements.clearInput"/>
+        </var>
+
+        <var comment="Store result locator" name="resultLocator">
+            <constant value="uiElements.clearResult"/>
+        </var>
+
+        <var comment="Store input value" name="value">
+            <constant value="TestUser"/>
+        </var>
+
+        <var comment="Store navigate comment" name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Store input comment" name="inputComment">
+            <constant value="Enter value into input field"/>
+        </var>
+
+        <var comment="Store clear comment" name="clearComment">
+            <constant value="Clear field using variable"/>
+        </var>
+
+        <var comment="Store assert comment" name="assertComment">
+            <constant value="Verify clear execution via UI"/>
+        </var>
+
+        <var comment="Store display check comment" name="displayComment">
+            <constant value="Verify value is displayed"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="{{inputLocator}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{inputLocator}}"
+               value="{{value}}"/>
+
+        <assert comment="{{displayComment}}">
+            <attribute comment="{{displayComment}}" name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: {{value}}</content>
+            </attribute>
+        </assert>
+
+        <clear comment="{{clearComment}}"
+               locator="{{inputLocator}}"
+               highlight="true"/>
+
+        <wait comment="Wait after clear" time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{assertComment}}" name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: empty</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

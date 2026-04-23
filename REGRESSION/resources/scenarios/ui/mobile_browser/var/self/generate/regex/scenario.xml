@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Generate Regex</name>
+        <description>
+            This scenario verifies regex-based value generation and input usage in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Generate value using regex pattern.
+            3. Input generated value.
+            4. Verify that input contains generated value.
+            5. Validate generated value format.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Generate value by regex"
+             name="value">
+            <generate length="5">
+                <randomRegexp pattern="TST[0-9]{2}"/>
+            </generate>
+        </var>
+
+        <input comment="Input generated value"
+               locator="uiElements.hotKeyInput1"
+               value="{{value}}"
+               highlight="true"/>
+
+        <assert comment="Verify input contains generated value">
+            <attribute comment="Check input value"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

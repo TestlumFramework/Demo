@@ -3,18 +3,20 @@
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
 
     <overview>
-        <name>Var - DOM (Full)</name>
+        <name>Var - DOM (Full) - Correct</name>
         <description>
-            This scenario verifies var dom for full page.
+            This scenario verifies full DOM extraction and parsing.
 
             Test flow:
             1. Navigate to UI Elements page.
             2. Capture full DOM.
-            3. Verify that DOM is not empty.
+            3. Extract element from DOM using XPath.
+            4. Verify extracted value.
 
             This scenario validates:
             - full DOM extraction
             - variable storage
+            - DOM parsing via path
         </description>
     </overview>
 
@@ -39,11 +41,17 @@
             <dom/>
         </var>
 
-        <assert comment="Verify DOM is not empty">
-            <notEqual comment="Verify DOM is not empty">
-                <content>Empty</content>
-                <content>{{fullDom}}</content>
-            </notEqual>
+        <var comment="Extract page title from DOM"
+             name="pageTitle">
+            <path fromVar="fullDom"
+                  value="//h3/text()"/>
+        </var>
+
+        <assert comment="Verify page title is correct">
+            <equal comment="Verify page title is correct">
+                <content>{{pageTitle}}</content>
+                <content>UI Elements</content>
+            </equal>
         </assert>
 
     </web>

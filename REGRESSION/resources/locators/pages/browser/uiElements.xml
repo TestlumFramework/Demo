@@ -191,6 +191,14 @@
         <locator locatorId="waitClickable">
             <cssSelector>[data-test='wait-clickable']</cssSelector>
         </locator>
+
+        <locator locatorId="clearInput">
+            <cssSelector>[data-test='clear-input']</cssSelector>
+        </locator>
+
+        <locator locatorId="clearResult">
+            <cssSelector>[data-test='clear-result']</cssSelector>
+        </locator>
     </locators>
 
 </page>

@@ -5,18 +5,19 @@
     <overview>
         <name>Clear - General</name>
         <description>
-            This scenario verifies clear command functionality.
+            This scenario verifies clear command functionality using UI value representation.
 
             Test flow:
-            1. Navigate to forms page.
+            1. Navigate to UI Elements page.
             2. Input value into field.
-            3. Store value before clear.
+            3. Verify value is displayed.
             4. Execute clear command.
-            5. Verify value is no longer equal to original.
+            5. Verify field is empty via UI.
 
             This scenario validates:
             - Clear command execution
             - Field value reset behavior
+            - UI state consistency
         </description>
     </overview>
 
@@ -29,31 +30,36 @@
 
     <web comment="Start WEB script">
 
-        <navigate comment="Navigate to forms page"
+        <navigate comment="Navigate to UI Elements page"
                   command="to"
-                  path="/forms"/>
+                  path="/ui-elements"/>
 
-        <input comment="Enter username"
-               locator="forms.username"
+        <scrollTo comment="Scroll to Clear section" locator="uiElements.clearInput"/>
+
+        <input comment="Enter value into input"
+               locator="uiElements.clearInput"
                value="TestUser"/>
 
-        <var comment="Store value before clear"
-             name="beforeClear">
-            <element>
-                <attribute name="value"
-                           locator="forms.username"/>
-            </element>
-        </var>
+        <assert comment="Verify value is displayed">
+            <attribute comment="Check displayed value"
+                       name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
 
-        <clear comment="Clear username field"
-               locator="forms.username"
+        <clear comment="Clear input field"
+               locator="uiElements.clearInput"
                highlight="true"/>
 
-        <assert comment="Verify value changed after clear">
-            <notEqual comment="Value should not equal original">
-                <content>{{beforeClear}}</content>
-                <content>TestUsers</content>
-            </notEqual>
+        <wait comment="Wait 1 second" time="1"/>
+
+        <assert comment="Verify value is empty after clear">
+            <attribute comment="Check empty state"
+                       name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: empty</content>
+            </attribute>
         </assert>
 
     </web>

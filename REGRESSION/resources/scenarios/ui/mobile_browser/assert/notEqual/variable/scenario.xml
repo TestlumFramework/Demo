@@ -1,0 +1,65 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert NotEqual - Variable</name>
+        <description>
+            This scenario verifies FULL variable injection into assert notEqual command in mobile browser.
+
+            Test flow:
+            1. Store locator in variable.
+            2. Extract value from UI using variable locator.
+            3. Store invalid value in variable.
+            4. Execute notEqual assertion using variables.
+
+            This scenario validates:
+            - Locator injection via variables
+            - Value extraction into variable
+            - Variable-based comparison
+            - Correct notEqual execution using variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Store locator" name="dashboardTitleLocator">
+            <constant value="/html/body/div/div/div[2]/main/div/div/h3"/>
+        </var>
+
+        <var comment="Get title Dashboard" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="{{dashboardTitleLocator}}"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <var comment="Invalid value" name="invalidValue">
+            <constant value="INVALID"/>
+        </var>
+
+        <var comment="Assert comment" name="assertComment">
+            <constant value="Check notEqual using variables"/>
+        </var>
+
+        <var comment="Not equal comment" name="notEqualComment">
+            <constant value="Compare different values"/>
+        </var>
+
+        <assert comment="{{assertComment}}">
+            <notEqual comment="{{notEqualComment}}">
+                <content>{{dashboardTitle}}</content>
+                <content>{{invalidValue}}</content>
+            </notEqual>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

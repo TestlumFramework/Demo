@@ -1,0 +1,78 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DragAndDrop - Condition</name>
+        <description>
+            This scenario verifies conditional execution of dragAndDrop command in mobile browser.
+
+            Test flow:
+            1. Open Developer Board page.
+            2. Execute dragAndDrop with condition=true.
+            3. Verify file uploaded.
+            4. Reload page.
+            5. Execute dragAndDrop with condition=false.
+            6. Verify file is NOT uploaded.
+
+            This scenario validates:
+            - Execution when condition=true
+            - Skipping when condition=false
+            - Correct UI state behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="DragAndDrop should execute"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="DragAndDrop should be skipped"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to developer board" command="to" path="/blank"/>
+
+        <wait comment="Wait page load" time="1"/>
+
+        <dragAndDrop comment="Upload file (condition=true)"
+                     toLocator="developerBoard.selectFileDropZone"
+                     condition="trueCondition">
+            <fileName>upload_dropZone.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="Verify file uploaded">
+            <attribute comment="Check uploaded file name"
+                       name="innerHTML"
+                       locator="developerBoard.fileDropZone">
+                <content>File: upload_dropZone.png</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait page reload" time="1"/>
+
+        <dragAndDrop comment="Upload file (condition=false)"
+                     toLocator="developerBoard.selectFileDropZone"
+                     condition="falseCondition">
+            <fileName>upload_input.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="Verify file NOT uploaded">
+            <attribute comment="Check file is not present"
+                       name="innerHTML"
+                       locator="developerBoard.fileDropZone">
+                <content>File: upload_dropZone.png</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>
