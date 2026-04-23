@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Navigate - Condition</name>
+        <description>
+            This scenario verifies conditional execution of navigate command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Try navigate with false condition.
+            3. Verify navigation is NOT performed.
+
+            This scenario validates:
+            - condition handling
+            - navigation skipping
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Always false condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <navigate comment="Try navigate to Forms page (should NOT happen)"
+                  command="to"
+                  path="/forms"
+                  condition="falseCondition"/>
+
+        <wait comment="Wait after navigation attempt" time="2"/>
+
+        <assert comment="Verify still on UI Elements page">
+            <attribute comment="Check page header unchanged"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

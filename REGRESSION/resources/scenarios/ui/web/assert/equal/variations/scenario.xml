@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Equal - Variations</name>
+        <description>
+            This scenario verifies equal assertion using CSV-driven variations.
+
+            Test flow:
+            1. Load variations from CSV file.
+            2. Extract UI value using locator from CSV.
+            3. Execute equal assertion for each variation.
+
+            This scenario validates:
+            - CSV-based variable injection
+            - Dynamic test execution per variation
+            - Correct equal behavior for multiple data sets
+        </description>
+    </overview>
+
+    <settings>
+        <variations>equal_variations.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="{{varComment}}" name="uiValue">
+            <element>
+                <attribute name="{{attributeName}}"
+                           locator="{{locator}}"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <assert comment="{{requestComment}}">
+            <equal comment="{{equalComment}}">
+                <content>{{uiValue}}</content>
+                <content>{{value1}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

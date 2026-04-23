@@ -1,0 +1,77 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Click - Condition</name>
+        <description>
+            This scenario verifies conditional execution of click command.
+
+            Test flow:
+            1. Execute click with condition=true.
+            2. Verify Dashboard element is displayed.
+            3. Execute click with condition=false.
+            4. Verify Dashboard is NOT displayed.
+
+            This scenario validates:
+            - Click execution when condition=true
+            - Click skipping when condition=false
+            - UI state change validation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Click should execute"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Click should be skipped"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <click comment="Click Sign In (condition=true)"
+               locator="login.signIn"
+               condition="trueCondition"/>
+
+        <wait comment="Wait after click" time="1"/>
+
+        <assert comment="Verify Dashboard is displayed">
+            <attribute comment="Check dashboard header"
+                       name="innerText"
+                       locator="dashboard.title">
+                <content>Dashboard</content>
+            </attribute>
+        </assert>
+
+        <hover comment="Hover over the menu icon" locator="dashboard.menuIcon"/>
+
+        <hover comment="Move the mouse over the logout button" locator="dashboard.logout"/>
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <click comment="Click on the 'Log out' button" locator="dashboard.logout"/>
+
+        <wait comment="Wait after skipped click" time="1"/>
+
+        <click comment="Click Sign In (condition=false)"
+               locator="login.signIn"
+               condition="falseCondition"/>
+
+        <wait comment="Wait after skipped click" time="1"/>
+
+        <assert comment="Verify Login button displayed">
+            <attribute comment="Sign in should not be visible"
+                       name="innerText"
+                       locator="login.signIn">
+                <content>Sign in</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

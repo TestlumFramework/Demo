@@ -1,0 +1,62 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Repeat</name>
+        <description>
+            This scenario verifies wait command inside repeat block.
+
+            Test flow:
+            1. Navigate to page.
+            2. Repeat 3 times:
+            - Verify result is not visible
+            - Click start button
+            - Wait for result
+            - Verify result is visible
+
+            This scenario validates:
+            - repeat execution
+            - wait behavior consistency
+            - async UI stability
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script for wait repeat">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <input comment="Set wait time to 1 second"
+               locator="uiElements.waitTime"
+               value="1"/>
+
+        <repeat comment="Repeat wait test 3 times"
+                times="3">
+
+            <click comment="Start delayed action"
+                   locator="uiElements.waitStart"/>
+
+            <wait comment="Wait for result"
+                  time="1"/>
+
+            <assert comment="Verify result is visible">
+                <present comment="Verify result is visible" locator="uiElements.waitResult"/>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

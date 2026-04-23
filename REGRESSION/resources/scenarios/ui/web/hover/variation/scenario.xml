@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Hover - Variation</name>
+        <description>
+            This scenario verifies hover command using CSV variations.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute hover using injected locator.
+            3. Verify hover result.
+
+            This scenario validates:
+            - CSV-based locator injection
+            - Dynamic hover execution
+            - Dynamic assert validation
+        </description>
+    </overview>
+
+    <settings>
+        <variations>hover.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <hover comment="{{hoverComment}}"
+               locator="{{targetLocator}}"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

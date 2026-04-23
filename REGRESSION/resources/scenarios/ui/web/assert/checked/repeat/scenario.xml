@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Checked - Repeat Times</name>
+        <description>
+            This scenario verifies checkbox state inside repeat block.
+
+            Test flow:
+            1. Navigate to checkbox page.
+            2. Repeat checkbox validation 2 times:
+            - verify checkbox is not selected
+            - click checkbox
+            - verify checkbox is selected
+
+            This scenario validates:
+            - Stable repeated execution
+            - Checkbox state transitions
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI elements page with checkbox"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <repeat comment="Repeat checkbox toggle test 2 times" times="2">
+
+            <assert comment="Check checkbox state before click">
+                <checked comment="Checkbox should NOT be selected"
+                         locator="uiElements.checkbox"
+                         negative="true"/>
+            </assert>
+
+            <click comment="Click checkbox to change its state"
+                   locator="uiElements.checkbox"/>
+
+            <assert comment="Check checkbox state after click">
+                <checked comment="Checkbox should be selected"
+                         locator="uiElements.checkbox"/>
+            </assert>
+
+            <click comment="Click checkbox to change its state"
+                   locator="uiElements.checkbox"/>
+
+        </repeat>
+
+    </web>
+
+</scenario>

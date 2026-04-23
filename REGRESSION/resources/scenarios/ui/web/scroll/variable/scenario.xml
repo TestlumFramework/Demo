@@ -1,0 +1,90 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Percent (Variable)</name>
+        <description>
+            This scenario verifies scroll command using variables.
+
+            This scenario validates:
+            - scroll value injection
+            - locator injection
+            - expected value injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to Scroll Test page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Scroll command comment"
+             name="scrollComment">
+            <constant value="Scroll page down by percent"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify scroll result"/>
+        </var>
+
+        <var comment="Present assert comment"
+             name="presentComment">
+            <constant value="Check bottom element"/>
+        </var>
+
+        <var comment="Path variable"
+             name="path">
+            <constant value="/scroll-test"/>
+        </var>
+
+        <var comment="Scroll value"
+             name="scrollValue">
+            <constant value="80"/>
+        </var>
+
+        <var comment="Locator variable"
+             name="locator">
+            <constant value="scrollTest.pageBottom"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="2"/>
+
+        <scroll comment="{{scrollComment}}"
+                type="page"
+                direction="down"
+                value="80"
+                measure="percent"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{presentComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

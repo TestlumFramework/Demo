@@ -1,0 +1,2 @@
+webComment,navigateComment,waitComment,hoverComment,assertComment,attributeComment,attributeName,targetLocator,resultLocator,expected
+Start WEB script,Navigate to UI Elements page,Wait for page load,Hover over element,Verify hover result,Check hover state,innerText,uiElements.hoverTarget,uiElements.hoverResult,Hover status: true

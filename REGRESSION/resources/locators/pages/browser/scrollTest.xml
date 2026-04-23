@@ -1,0 +1,43 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+
+    <details>
+        <name>ScrollTest</name>
+        <url>/scroll-test</url>
+        <description>Locators for scroll test page</description>
+    </details>
+
+    <locators>
+
+        <locator locatorId="inner">
+            <cssSelector>[data-test="scroll-inner"]</cssSelector>
+        </locator>
+
+        <locator locatorId="innerTop">
+            <cssSelector>[data-test="inner-top"]</cssSelector>
+        </locator>
+
+        <locator locatorId="innerMiddle">
+            <cssSelector>[data-test="inner-middle"]</cssSelector>
+        </locator>
+
+        <locator locatorId="innerBottom">
+            <cssSelector>[data-test="inner-bottom"]</cssSelector>
+        </locator>
+
+        <locator locatorId="pageTop">
+            <cssSelector>[data-test="page-top"]</cssSelector>
+        </locator>
+
+        <locator locatorId="pageMiddle">
+            <cssSelector>[data-test="page-middle"]</cssSelector>
+        </locator>
+
+        <locator locatorId="pageBottom">
+            <cssSelector>[data-test="page-bottom"]</cssSelector>
+        </locator>
+
+    </locators>
+
+</page>

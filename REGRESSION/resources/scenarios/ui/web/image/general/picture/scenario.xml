@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Picture</name>
+        <description>
+            This scenario verifies picture comparison using image source.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Locate image element.
+            3. Compare image by src attribute.
+
+            This scenario validates:
+            - picture execution
+            - image source comparison
+            - correct rendering of img element
+        </description>
+    </overview>
+
+    <settings active="false">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <scrollTo comment="Scroll to image test block"
+                  locator="uiElements.testImage"/>
+
+        <wait comment="Wait after scroll" time="1"/>
+
+        <image comment="Compare picture using src attribute"
+               file="test-image.png">
+            <picture locator="uiElements.testImage"
+                     attribute="src"/>
+        </image>
+
+    </web>
+
+</scenario>

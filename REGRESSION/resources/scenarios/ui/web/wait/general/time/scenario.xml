@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Time</name>
+        <description>
+            This scenario verifies basic wait command with time.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Click start button to trigger delayed result.
+            3. Wait for defined time.
+            4. Verify result is displayed.
+
+            This scenario validates:
+            - wait time execution
+            - async UI behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script for wait time">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <click comment="Start delayed action"
+               locator="uiElements.waitStart"/>
+
+        <wait comment="Wait for delayed result"
+              time="2"/>
+
+        <assert comment="Verify result is visible after wait">
+            <present comment="Check result is displayed"
+                     locator="uiElements.waitResult"/>
+        </assert>
+
+    </web>
+
+</scenario>

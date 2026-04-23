@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Paste</name>
+        <description>
+            This scenario verifies hotKey paste command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input text into source field.
+            3. Highlight and copy text.
+            4. Paste into target field.
+            5. Verify pasted value.
+
+            This scenario validates:
+            - paste execution
+            - clipboard usage
+        </description>
+    </overview>
+
+    <settings active="false">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <input comment="Fill source input"
+               locator="uiElements.hotKeyInput1"
+               value="PASTE_TEST"/>
+
+        <hotKey comment="Highlight text in source input">
+            <highlight comment="Select all text"
+                       locator="uiElements.hotKeyInput1"/>
+        </hotKey>
+
+        <hotKey comment="Copy selected text">
+            <copy comment="Copy to clipboard"/>
+        </hotKey>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <hotKey comment="Paste into target input">
+            <paste comment="Paste value into input2"
+                   locator="uiElements.hotKeyInput2"/>
+        </hotKey>
+
+        <wait comment="Wait for DOM update" time="1"/>
+
+        <assert comment="Verify pasted value">
+            <attribute comment="Check pasted text"
+                       name="value"
+                       locator="uiElements.hotKeyInput2">
+                <content>PASTE_TEST</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

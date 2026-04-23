@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Variation</name>
+        <description>
+            This scenario verifies var usage with CSV variations and full injection.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>varVariation.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <var comment="{{varComment}}"
+             name="{{varName}}">
+            <constant value="{{value}}"/>
+        </var>
+
+        <input comment="{{inputComment}}"
+               locator="{{locator}}"
+               value="{{value}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{locator}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

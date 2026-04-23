@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - OneValue Value</name>
+        <description>
+            This scenario verifies selecting one value by value in single select dropdown.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Select value by value.
+            3. Verify selected value.
+
+            This scenario validates:
+            - oneValue select by value
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <dropDown comment="Select value by value"
+                  locator="uiElements.singleSelect">
+            <oneValue type="select" by="value" value="2"/>
+        </dropDown>
+
+        <wait comment="Wait for DOM update" time="1"/>
+
+        <assert comment="Verify selected value">
+            <attribute comment="Check selected value"
+                       name="innerHTML"
+                       locator="uiElements.singleResult">
+                <content>Selected value: 2</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

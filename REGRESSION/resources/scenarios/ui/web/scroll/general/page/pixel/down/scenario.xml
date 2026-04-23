@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Pixel</name>
+        <description>
+            This scenario verifies page scroll using pixel measure.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Scroll down page by pixel.
+            3. Verify that bottom element becomes present.
+
+            This scenario validates:
+            - page scroll
+            - pixel measure
+            - scroll down behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scroll comment="Scroll page down by pixel"
+                type="page"
+                direction="down"
+                value="600"
+                measure="pixel"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="Verify bottom element is present after scroll">
+            <present comment="Check bottom element"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </web>
+
+</scenario>
