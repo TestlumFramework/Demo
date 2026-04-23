@@ -1,0 +1,6 @@
+{
+  "_index" : "test-index",
+  "_type" : "_doc",
+  "_id" : "1",
+  "found" : false
+}

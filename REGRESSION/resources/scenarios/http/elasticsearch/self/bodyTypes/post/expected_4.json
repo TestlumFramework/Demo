@@ -1,0 +1,13 @@
+{
+  "_index" : "test-body-index",
+  "_type" : "_doc",
+  "_id" : "raw-doc",
+  "_version" : "p(any)",
+  "_seq_no" : "p(any)",
+  "_primary_term" : "p(any)",
+  "found" : true,
+  "_source" : {
+    "type" : "raw",
+    "description" : "This is raw JSON body"
+  }
+}

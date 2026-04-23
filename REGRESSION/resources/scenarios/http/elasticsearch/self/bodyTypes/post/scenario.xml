@@ -1,0 +1,99 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch POST with different body types</description>
+        <name>Elasticsearch Body Types Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with file body (create resource)">
+        <post endpoint="/test-body-index/_doc/file-doc">
+            <response code="201"/>
+            <body>
+                <from file="body_1.json"/>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate file payload response">
+        <get endpoint="/test-body-index/_doc/file-doc">
+            <response code="200" file="expected_2.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with raw body">
+        <post endpoint="/test-body-index/_doc/raw-doc">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "type": "raw",
+                    "description": "This is raw JSON body"
+                    }
+
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate raw payload response">
+        <get endpoint="/test-body-index/_doc/raw-doc">
+            <response code="200" file="expected_4.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with multipart body">
+        <post endpoint="/test-body-index/_doc/multipart-doc">
+            <response code="201"/>
+            <body>
+                <multipart>
+                    <param data="value1" name="field1"/>
+                    <param data="value2" name="field2"/>
+                </multipart>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate multipart payload response">
+        <get endpoint="/test-body-index/_doc/multipart-doc">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with valid query parameters">
+        <post endpoint="/test-param-index/_doc/param-doc-1">
+            <param data="true" name="refresh"/>
+            <param data="tenant_1" name="routing"/>
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "type": "param_test",
+                    "description": "Document created with refresh and routing parameters"
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and validate param payload response">
+        <get endpoint="/test-param-index/_doc/param-doc-1">
+            <param data="tenant_1" name="routing"/>
+            <response code="200" file="expected_8.json"/>
+        </get>
+    </elasticsearch>
+
+</scenario>
