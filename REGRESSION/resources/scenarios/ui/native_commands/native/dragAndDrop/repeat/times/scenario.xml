@@ -22,6 +22,11 @@
                          fromLocatorStrategy="locatorId"
                          toLocator="testApp.placeWhereElementWillBe"
                          toLocatorStrategy="locatorId"/>
+            <dragAndDrop comment="Run dragAndDrop from dropZone"
+                         fromLocator="testApp.elementToBeFlipped"
+                         fromLocatorStrategy="locatorId"
+                         toLocator="//android.widget.TextView[@text='Test App']"
+                         toLocatorStrategy="xpath"/>
         </repeat>
 
         <assert comment="Validating expected UI state">
