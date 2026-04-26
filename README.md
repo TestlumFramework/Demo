@@ -5,8 +5,8 @@
 <!-- RESULTS-TABLE:START -->
 | Image | Linux `amd64` | Linux `arm64` | Windows `amd64` | Branch | Last Updated | Mobile Tests |
 |---|---|---|---|---|---|---|
-| [`latest`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [`main`](https://github.com/TestlumFramework/Demo/tree/main) | 2026/04/23 | ✅ |
-| [`1.0.2`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24923882586) | [`main`](https://github.com/TestlumFramework/Demo/tree/main) | 2026/04/14 | ➖ |
+| [`latest`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [✅](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [`main`](https://github.com/TestlumFramework/Demo/tree/main) | 2026/04/23 | ✅ |
+| [`1.0.2`](https://github.com/orgs/TestlumFramework/packages/container/package/testlum) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [❌](https://github.com/TestlumFramework/Demo/actions/runs/24949702823) | [`main`](https://github.com/TestlumFramework/Demo/tree/main) | 2026/04/14 | ➖ |
 <!-- RESULTS-TABLE:END -->
 
 A comprehensive end-to-end testing application that serves as both a test target and a validation suite for the [Testlum](https://github.com/TestlumFramework/Testlum) testing framework.
