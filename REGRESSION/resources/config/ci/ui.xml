@@ -47,7 +47,7 @@
                 <browserStackCapabilities>
                     <deviceName>Google Pixel 9</deviceName>
                     <platformVersion>16.0</platformVersion>
-                    <app>bs://e4f05b18dd2053653057b02c58a70bf3dbc99582</app>
+                    <app>bs://92737005d86ac8446c5057cce96f3614b8154f54</app>
                 </browserStackCapabilities>
             </device>
         </devices>
