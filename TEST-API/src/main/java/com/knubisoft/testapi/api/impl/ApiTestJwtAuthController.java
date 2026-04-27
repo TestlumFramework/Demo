@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,12 +25,11 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
 
     private final Map<String, String> users = new ConcurrentHashMap<>();
     private final Map<String, String> tokens = new ConcurrentHashMap<>();
-
-    private final Map<String, List<String>> userStorage = new ConcurrentHashMap<>();
+    private final Map<String, CopyOnWriteArrayList<String>> storageByToken = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
-        resetState();
+        users.put("testlum", "123456");
     }
 
     @Override
@@ -40,6 +42,7 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
 
         final String token = "jwt-token-" + UUID.randomUUID();
         tokens.put(token, request.getUsername());
+        storageByToken.put(token, new CopyOnWriteArrayList<>());
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
@@ -52,36 +55,29 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
             final JwtProtectedCreateRequest request) {
 
         final String token = validateJwt(authorizationHeader);
-        final String username = tokens.get(token);
 
-        userStorage
-                .computeIfAbsent(username, k -> new CopyOnWriteArrayList<>())
+        storageByToken
+                .computeIfAbsent(token, key -> new CopyOnWriteArrayList<>())
                 .add(request.getValue());
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
-                .body(new JwtProtectedResourceResponse(
-                        new ArrayList<>(userStorage.get(username))
-                ));
+                .body(new JwtProtectedResourceResponse(new ArrayList<>(storageByToken.get(token))));
     }
 
     @Override
-    public ResponseEntity<JwtProtectedResourceResponse> getAllProtected(
-            final String authorizationHeader) {
-
+    public ResponseEntity<JwtProtectedResourceResponse> getAllProtected(final String authorizationHeader) {
         final String token = validateJwt(authorizationHeader);
-        final String username = tokens.get(token);
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
                 .body(new JwtProtectedResourceResponse(
-                        new ArrayList<>(userStorage.getOrDefault(username, Collections.emptyList()))
+                        new ArrayList<>(storageByToken.getOrDefault(token, new CopyOnWriteArrayList<>()))
                 ));
     }
 
     @Override
-    public synchronized ResponseEntity<Void> reset() {
-        resetState();
+    public ResponseEntity<Void> reset() {
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
                 .build();
@@ -103,13 +99,5 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
         }
 
         return token;
-    }
-
-    private synchronized void resetState() {
-        users.clear();
-        tokens.clear();
-        userStorage.clear();
-
-        users.put("testlum", "123456");
     }
 }
