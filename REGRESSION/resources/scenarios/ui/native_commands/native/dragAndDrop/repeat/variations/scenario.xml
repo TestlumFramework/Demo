@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing dragAndDrop tag with repeat variations</description>
+        <name>Drag and drop tag</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button dragAndDrop page" locator="testApp.dragAndDropPage"/>
+        <repeat comment="Repeat 2 times with variations"
+                variations="variations_native_command.csv">
+            <dragAndDrop comment="Run dragAndDrop {{comment}}"
+                         condition="{{flag}}"
+                         fromLocator="{{locatorDragFrom}}"
+                         fromLocatorStrategy="locatorId"
+                         toLocator="{{locatorDragTo}}"
+                         toLocatorStrategy="locatorId"/>
+        </repeat>
+
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="//android.widget.TextView[@text='Dropped: 2']"
+                       locatorStrategy="xpath"
+                       name="text">
+                <content>Dropped: 2</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

@@ -1,0 +1,35 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing image part command with variables</description>
+        <name>Image part variables test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
+
+        <var comment="Variable filename"
+             name="imgFile">
+            <constant value="test_image"/>
+        </var>
+        
+        <var comment="Variable locator"
+             name="locImage">
+            <constant value="testApp.image"/>
+        </var>
+
+        <image comment="Test image part with variables"
+               file="{{imgFile}}.png">
+            <part locator="{{locImage}}" locatorStrategy="locatorId"/>
+        </image>
+
+    </native>
+
+</scenario>

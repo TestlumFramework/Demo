@@ -1,0 +1,52 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test swipe element - condition</description>
+        <name>Swipe element condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Test native swipe element command">
+
+        <click comment="Navigate to Swipe screen" locator="testApp.swipePage"/>
+        <click comment="Reset state before test" locator="testApp.resetButtonSwipe"/>
+        <click comment="Activate element mode" locator="testApp.enableElementMode"/>
+
+        <swipe comment="Swipe element condition false"
+               condition="false">
+            <element comment="Should not swipe"
+                     direction="right"
+                     locator="testApp.swipeElement"
+                     percent="80"/>
+        </swipe>
+        <assert comment="Verify element swipe count">
+            <attribute comment="Check element counter text"
+                       locator="testApp.swipeElementCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Element swipes: 0</content>
+            </attribute>
+        </assert>
+        <swipe comment="Swipe element condition true"
+               condition="true">
+            <element comment="Should swipe"
+                     direction="right"
+                     locator="testApp.swipeElement"
+                     percent="80"/>
+        </swipe>
+        <assert comment="Verify element swipe count">
+            <attribute comment="Check element counter text"
+                       locator="testApp.swipeElementCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Element swipes: 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

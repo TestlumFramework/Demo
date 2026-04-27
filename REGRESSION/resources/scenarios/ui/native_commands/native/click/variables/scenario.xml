@@ -1,0 +1,40 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing general Click tag</description>
+        <name>Interactive Click Validation</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+  
+    <native comment="Executing native automation sequence">
+
+        <var comment="Variable locator"
+             name="locator">
+            <constant value="testApp.clickButton"/>
+        </var>
+
+        <click comment="Clicking on button clickPage"
+               locator="testApp.clickPage"
+               locatorStrategy="locatorId"
+               method="selenium"/>
+        
+        <click comment="Clicking on button to increase counter"
+               locator="testApp.clickButton"
+               locatorStrategy="locatorId"
+               method="selenium"/>
+        
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.counter"
+                       name="text">
+                <content>Counter: 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

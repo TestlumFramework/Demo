@@ -1,0 +1,29 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test wait command - general</description>
+        <name>Wait general</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Wait screen" locator="testApp.waitPage"/>
+        <click comment="Reset state" locator="testApp.resetButtonWait"/>
+        <click comment="Start long task (3 seconds)" locator="testApp.startTaskButton"/>
+
+        <wait comment="Wait 4 seconds for task to complete" time="4" unit="seconds"/>
+        <assert comment="Assert wait status is Complete">
+            <attribute comment="Check status text"
+                       locator="testApp.waitStatus"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Complete</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

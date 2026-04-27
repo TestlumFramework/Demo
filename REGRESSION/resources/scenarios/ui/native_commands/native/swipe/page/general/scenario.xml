@@ -1,0 +1,44 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test swipe page - general</description>
+        <name>Swipe page general</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Test native swipe page command">
+
+        <click comment="Navigate to Swipe screen" locator="testApp.swipePage"/>
+        <click comment="Reset state before test" locator="testApp.resetButtonSwipe"/>
+        <click comment="Activate page mode" locator="testApp.enablePageMode"/>
+
+        <swipe comment="Swipe page to the right">
+            <page comment="Swipe full screen right"
+                  direction="right"
+                  percent="80"
+                  quantity="1"/>
+        </swipe>
+        <assert comment="Verify page swipe count">
+            <attribute comment="Check page counter text"
+                       locator="testApp.swipePageCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Page swipes: 1</content>
+            </attribute>
+        </assert>
+        <assert comment="Verify last swipe direction">
+            <attribute comment="Check direction text"
+                       locator="testApp.swipePageDirection"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Last page direction: right</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

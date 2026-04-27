@@ -1,0 +1,37 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - element attribute</description>
+        <name>Var element attribute</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Extract text attribute from extractable text element"
+             name="extractedText">
+            <element>
+                <attribute locator="testApp.varExtractableText"
+                           locatorStrategy="locatorId"
+                           name="text"/>
+            </element>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{extractedText}}"/>
+        <assert comment="Assert injected value is [Testlum]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: Testlum</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

@@ -1,0 +1,24 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert equal - general: extracted var equals constant</description>
+        <name>Assert equal general</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <assert comment="Assert extracted value equals constant">
+            <equal comment="Both contents must be equal">
+                <content>Testlum</content>
+                <content>Testlum</content>
+            </equal>
+        </assert>
+    </native>
+
+</scenario>

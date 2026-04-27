@@ -1,0 +1,50 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test swipe page - condition</description>
+        <name>Swipe page condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Test native swipe page command">
+
+        <click comment="Navigate to Swipe screen" locator="testApp.swipePage"/>
+        <click comment="Reset state before test" locator="testApp.resetButtonSwipe"/>
+        <click comment="Activate page mode" locator="testApp.enablePageMode"/>
+
+        <swipe comment="Swipe page condition false"
+               condition="false">
+            <page comment="Should not swipe"
+                  direction="right"
+                  percent="80"/>
+        </swipe>
+        <assert comment="Verify page swipe count">
+            <attribute comment="Check page counter text"
+                       locator="testApp.swipePageCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Page swipes: 0</content>
+            </attribute>
+        </assert>
+        <swipe comment="Swipe page condition true"
+               condition="true">
+            <page comment="Should swipe"
+                  direction="right"
+                  percent="80"/>
+        </swipe>
+        <assert comment="Verify page swipe count">
+            <attribute comment="Check page counter text"
+                       locator="testApp.swipePageCounter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Page swipes: 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>
