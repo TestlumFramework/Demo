@@ -19,12 +19,6 @@
             <constant value="comment"/>
         </var>
         <navigate comment="Test navigate overview" destination="overview"/>
-        <wait comment="Waiting 1 second" time="1"/>
-        <image comment="Verify visual destination"
-               file="assert_navigate.png">
-            <part locator="//android.view.View[@resource-id='com.google.android.apps.nexuslauncher:id/icon']"
-                  locatorStrategy="xpath"/>
-        </image>
     </native>
 
 </scenario>

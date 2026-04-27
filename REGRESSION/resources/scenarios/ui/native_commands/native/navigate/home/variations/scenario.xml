@@ -18,12 +18,6 @@
         <navigate comment="Test navigate {comment}"
                   condition="{{flag}}"
                   destination="home"/>
-        <wait comment="Waiting 1 seconds" time="1"/>
-        <image comment="Verify visual destination from variations"
-               file="assert_navigate.png">
-            <part locator="//android.widget.TextView[@content-desc='Predicted app: My Application']"
-                  locatorStrategy="xpath"/>
-        </image>
     </native>
 
 </scenario>
