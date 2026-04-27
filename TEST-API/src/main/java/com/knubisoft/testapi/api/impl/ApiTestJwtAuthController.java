@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
@@ -21,7 +22,8 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
 
     private final Map<String, String> users = new ConcurrentHashMap<>();
     private final Map<String, String> tokens = new ConcurrentHashMap<>();
-    private final List<String> protectedStorage = new ArrayList<>();
+
+    private final Map<String, List<String>> userStorage = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -49,28 +51,36 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
             final String authorizationHeader,
             final JwtProtectedCreateRequest request) {
 
-        validateJwt(authorizationHeader);
+        final String token = validateJwt(authorizationHeader);
+        final String username = tokens.get(token);
 
-        protectedStorage.add(request.getValue());
+        userStorage
+                .computeIfAbsent(username, k -> new CopyOnWriteArrayList<>())
+                .add(request.getValue());
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
-                .body(new JwtProtectedResourceResponse(new ArrayList<String>(protectedStorage)));
+                .body(new JwtProtectedResourceResponse(
+                        new ArrayList<>(userStorage.get(username))
+                ));
     }
 
     @Override
     public ResponseEntity<JwtProtectedResourceResponse> getAllProtected(
             final String authorizationHeader) {
 
-        validateJwt(authorizationHeader);
+        final String token = validateJwt(authorizationHeader);
+        final String username = tokens.get(token);
 
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
-                .body(new JwtProtectedResourceResponse(new ArrayList<String>(protectedStorage)));
+                .body(new JwtProtectedResourceResponse(
+                        new ArrayList<>(userStorage.getOrDefault(username, Collections.emptyList()))
+                ));
     }
 
     @Override
-    public ResponseEntity<Void> reset() {
+    public synchronized ResponseEntity<Void> reset() {
         resetState();
         return ResponseEntity.ok()
                 .header("X-Auth-Type", "JWT")
@@ -95,10 +105,10 @@ public class ApiTestJwtAuthController implements ApiTestJwtAuthApi {
         return token;
     }
 
-    private void resetState() {
+    private synchronized void resetState() {
         users.clear();
         tokens.clear();
-        protectedStorage.clear();
+        userStorage.clear();
 
         users.put("testlum", "123456");
     }
