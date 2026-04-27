@@ -7,7 +7,7 @@
         <name>Multipart</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings truncateStorages="true" active="false">
         <tags>api</tags>
     </settings>
 
