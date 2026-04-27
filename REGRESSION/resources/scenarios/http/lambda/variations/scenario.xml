@@ -12,10 +12,10 @@
         <variations>variations_lambda.csv</variations>
         <tags>lambda</tags>
     </settings>
-
-    <lambda comment="Use variations and invoke student-scores-python with different failing student scores - average {{average}}"
+<!--    TODO: not possible to insert in alias-->
+    <lambda comment="{{comment}}"
             alias="LAMBDA"
-            functionName="student-scores-python">
+            functionName="{{functionName}}">
         <body>
             <raw>
                 {

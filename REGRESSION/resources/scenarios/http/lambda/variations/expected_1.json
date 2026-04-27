@@ -1,6 +1,6 @@
 {
-  "student" : "Bob",
-  "subject" : "Physics",
+  "student" : "{{name}}",
+  "subject" : "{{subject}}",
   "scores" : [ 50, 50, 50, 50 ],
   "average" : 50.0,
   "passed" : false,

@@ -3,12 +3,12 @@
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
 
     <overview>
-        <description>Repeat test for student-scores-python lambda: student score processor - calculates average, pass/fail status
+        <description>Repeat test with variations for student-scores-python lambda: student score processor - calculates average, pass/fail status
         </description>
         <name>AWS Lambda Repeat scenario</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings truncateStorages="true" onlyThis="true">
         <tags>lambda</tags>
     </settings>
 
@@ -21,6 +21,25 @@
             </body>
             <response file="expected_1.json">
                 <header name="X-Amz-Executed-Version" data="$LATEST"/>
+            </response>
+        </lambda>
+    </repeat>
+
+    <repeat comment="Invoke lambda function with repeat command 3 times" variations="variations_repeat_2.csv">
+        <lambda comment="{{lambdaComment}}"
+                alias="LAMBDA"
+                functionName="{{functionName}}">
+            <body>
+                <raw>
+                    {
+                    "name": "{{name}}",
+                    "subject": "{{subject}}",
+                    "scores": [{{score1}}, {{score2}}, {{score3}}]
+                    }
+                </raw>
+            </body>
+            <response file="{{expected}}.json">
+                <header name="{{header}}" data="{{headerVersion}}"/>
             </response>
         </lambda>
     </repeat>
