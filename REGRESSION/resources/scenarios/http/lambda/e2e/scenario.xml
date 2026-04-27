@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>lambda</tags>
+        <tags>lambda_e2e</tags>
     </settings>
 
     <!--todo var from env.profile -> condition==jenkins ? host=mega-test-api : host.docker.internal-->

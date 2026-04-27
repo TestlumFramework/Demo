@@ -30,6 +30,7 @@
         <tag name="websocket" enabled="false"/>
         <tag name="graphql" enabled="false"/>
         <tag name="lambda" enabled="false"/>
+        <tag name="lambda_e2e" enabled="false"/>
         <tag name="mysql" enabled="false"/>
         <tag name="postgresql" enabled="false"/>
         <tag name="clickhouse" enabled="false"/>

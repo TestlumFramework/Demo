@@ -37,6 +37,7 @@
         <tag name="websocket" enabled="false"/>
         <tag name="graphql" enabled="false"/>
         <tag name="lambda" enabled="true"/>
+        <tag name="lambda_e2e" enabled="true"/>
         <tag name="mysql" enabled="false"/>
         <tag name="postgresql" enabled="false"/>
         <tag name="clickhouse" enabled="false"/>
