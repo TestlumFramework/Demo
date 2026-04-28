@@ -1,0 +1,31 @@
+[ {
+  "id" : "1",
+  "author" : "J. K. Rowling",
+  "title" : "Harry Potter and Philosopher's Stone",
+  "number" : 1
+}, {
+  "id" : "2",
+  "author" : "J. R. R. Tolkien",
+  "title" : "The Lord of the Rings: The Fellowship of the Ring",
+  "number" : 2
+}, {
+  "id" : "3",
+  "author" : "George R. R. Martin",
+  "title" : "A Game of Thrones",
+  "number" : 3
+}, {
+  "id" : "4",
+  "author" : "Fredrik Backman",
+  "title" : "A Man Called Ove",
+  "number" : 4
+}, {
+  "id" : "5",
+  "author" : "Ivan Franko",
+  "title" : "Kamenyari",
+  "number" : 5
+}, {
+  "id" : "6",
+  "author" : "Taras Shevchenko",
+  "title" : "Kobzar",
+  "number" : 6
+} ]
