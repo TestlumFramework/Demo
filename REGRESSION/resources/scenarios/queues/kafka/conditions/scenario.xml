@@ -11,7 +11,7 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Check that topic is empty initially">
         <receive commit="true"
                  timeoutMillis="4000"
@@ -20,7 +20,7 @@
         </receive>
     </kafka>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Send message to topic with false condition"
            condition="false">
         <send topic="weather">
@@ -33,12 +33,9 @@
         </send>
     </kafka>
 
-    <var comment="True condition to test injecting var into condition attribute"
-         name="TRUE_CONDITION">
-        <constant value="true"/>
-    </var>
+    <condition comment="True condition to test injecting into condition attribute" name="TRUE_CONDITION" spel="true"/>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Send valid message with true condition"
            condition="{{TRUE_CONDITION}}">
         <send topic="weather">
@@ -51,7 +48,7 @@
         </send>
     </kafka>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Unconditionally verify that ONLY the true condition message was sent">
         <receive commit="true"
                  timeoutMillis="4000"

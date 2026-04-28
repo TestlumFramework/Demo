@@ -13,7 +13,7 @@
 
     <repeat comment="Send 100 events with repeat"
             times="100">
-        <kafka alias="QUEUE"
+        <kafka alias="KAFKA_0"
                comment="Kafka send message in a loop">
             <send topic="weather">
                 <value>
@@ -26,7 +26,7 @@
         </kafka>
     </repeat>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka receive all 100 messages">
         <receive commit="true"
                  timeoutMillis="10000"
@@ -37,8 +37,9 @@
 
     <repeat comment="Send 100 events with variations repeat"
             variations="kafka_with_variations_test_data.csv">
-        <kafka alias="QUEUE"
-               comment="Kafka send message with variation in a loop">
+        <kafka alias="KAFKA_0"
+               comment="Kafka send message with variation in a loop for city {{city}}">
+<!--            variation in topic-->
             <send topic="weather">
                 <value>
                     [ {
@@ -50,7 +51,7 @@
         </kafka>
     </repeat>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka receive 2 messages">
         <receive commit="true"
                  timeoutMillis="1000"

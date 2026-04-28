@@ -20,7 +20,7 @@
          name="topic">
         <constant value="weather"/>
     </var>
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka send and receive for country {{city}} - inject into value tag">
         <send correlationId="1"
               topic="{{topic}}">
@@ -41,14 +41,14 @@
 
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="{{topic}}">
             <value>
                 [ {
                 "key" : null,
                 "value" : [ {
                 "key" : null,
                 "value" : [ {
-                "city" : "London",
+                "city" : "{{city}}",
                 "temperature" : 1,
                 "condition" : "sunny",
                 "timestamp" : 1650762900
@@ -73,7 +73,7 @@
         <constant value="expected_9"/>
     </var>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka send and receive for country {{city}} - inject into file">
         <send correlationId="1"
               topic="{{topic}}">

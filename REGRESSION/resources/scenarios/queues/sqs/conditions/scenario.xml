@@ -31,10 +31,7 @@
         </send>
     </sqs>
 
-    <var comment="True condition to test injecting var into condition attribute"
-         name="TRUE_CONDITION">
-        <constant value="true"/>
-    </var>
+    <condition comment="True condition to test injecting into condition attribute" name="TRUE_CONDITION" spel="true"/>
 
     <sqs alias="SQS_0"
          comment="Send valid message with true condition injected from variable"

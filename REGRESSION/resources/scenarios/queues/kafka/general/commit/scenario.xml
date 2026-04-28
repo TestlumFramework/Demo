@@ -11,7 +11,7 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka send and receive checking manual commit behavior">
 
         <send topic="weather">

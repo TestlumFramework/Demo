@@ -12,7 +12,7 @@
         <tags>kafka</tags>
     </settings>
     
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Kafka send and receive using variations: {{testDescription}}">
 
         <send topic="{{topicName}}">

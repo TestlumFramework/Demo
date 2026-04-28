@@ -11,7 +11,7 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Publish a single broadcast message to the topic">
         <send topic="weather-broadcast-test">
             <value>
@@ -23,7 +23,7 @@
         </send>
     </kafka>
 
-    <kafka alias="QUEUE"
+    <kafka alias="KAFKA_0"
            comment="Verify that Consumer Group 1 successfully consumes the message">
         <receive commit="true"
                  timeoutMillis="4000"
