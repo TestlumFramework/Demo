@@ -8,7 +8,7 @@
         <name>AWS Lambda Repeat scenario</name>
     </overview>
 
-    <settings truncateStorages="true" onlyThis="true">
+    <settings truncateStorages="true">
         <tags>lambda</tags>
     </settings>
 
