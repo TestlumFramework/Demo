@@ -4,12 +4,13 @@
 
     <web enabled="true">
         <baseUrl>http://mega-test-site:80</baseUrl>
+        <autoHealing enabled="false" mode="soft"/>
         <browserSettings>
             <takeScreenshots enabled="false"/>
             <elementAutowait seconds="5"/>
             <browsers>
                 <chrome alias="chrome_0" enabled="true" maximizedBrowserWindow="false" headlessMode="true"
-                        browserWindowSize="1536x864">
+                        browserWindowSize="1536x864" keepDownloadedFiles="false">
                     <browserType>
                         <remoteBrowser browserVersion="144.0" remoteBrowserURL="http://selenium-hub:4444/"/>
                     </browserType>
