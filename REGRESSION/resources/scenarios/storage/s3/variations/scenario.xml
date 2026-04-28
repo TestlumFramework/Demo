@@ -3,7 +3,7 @@
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
 
     <overview>
-        <description>Variations S3 test: create bucket, upload file, verify upload, remove file and bucket using variation variables - runs once per CSV row</description>
+        <description>Variations S3 test: create bucket, upload file, verify upload, remove file and bucket using variations</description>
         <name>S3 Variations scenario</name>
     </overview>
 
@@ -12,22 +12,22 @@
         <tags>s3</tags>
     </settings>
 
-    <s3 comment="Step 1 - create bucket using variation variable_bucket" alias="S3_0">
-        <bucket comment="Check ability to create bucket using variation variable {{variable_bucket}}">
+    <s3 comment="{{create_bucket_comment}}" alias="S3_0">
+        <bucket comment="Check ability to create bucket using variation variable 'variable_bucket'">
             <create>{{variable_bucket}}</create>
         </bucket>
     </s3>
 
-    <s3 comment="Step 2 - upload file using variation variable_file to variation bucket" alias="S3_0">
-        <file comment="Check ability to upload {{variable_file}} to {{variable_bucket}}"
+    <s3 comment="{{upload_file_comment}}" alias="S3_0">
+        <file comment="Check ability to upload 'variable_file' to 'variable_bucket'"
               bucket="{{variable_bucket}}"
               key="/testlum/{{variable_file}}">
             <upload>{{variable_file}}</upload>
         </file>
     </s3>
 
-    <s3 comment="Step 3 - verify upload via file comparison using variation variable_expected" alias="S3_0">
-        <file comment="Check that downloaded {{variable_file}} matches expected_{{variable_expected}}.json"
+    <s3 comment="{{download_file_comment}}" alias="S3_0">
+        <file comment="Check that downloaded file matches expected"
               bucket="{{variable_bucket}}"
               key="/testlum/{{variable_file}}">
             <download>
@@ -36,8 +36,8 @@
         </file>
     </s3>
 
-    <s3 comment="Step 4 - verify upload via file inline comparison using variation variable_expected" alias="S3_0">
-        <file comment="Check that downloaded {{variable_file}} matches expected_{{variable_expected}}.json"
+    <s3 comment="{{download_inline_comment}}" alias="S3_0">
+        <file comment="Check that downloaded file matches expected"
               bucket="{{variable_bucket}}"
               key="/testlum/{{variable_file}}">
             <download>
@@ -46,15 +46,15 @@
         </file>
     </s3>
 
-    <s3 comment="Step 4 - remove file using variation variable_file from variation bucket" alias="S3_0">
-        <file comment="Check ability to remove {{variable_file}} from {{variable_bucket}}"
+    <s3 comment="Step 5 - remove file using file key and bucket" alias="S3_0">
+        <file comment="Check ability to remove file from bucket"
               bucket="{{variable_bucket}}"
               key="/testlum/{{variable_file}}">
             <remove/>
         </file>
     </s3>
 
-    <s3 comment="Step 5 - remove bucket using variation variable_bucket after file cleanup" alias="S3_0">
+    <s3 comment="{{remove_bucket_comment}}" alias="S3_0">
         <bucket comment="Check ability to remove {{variable_bucket}} after all files are cleaned up">
             <remove>{{variable_bucket}}</remove>
         </bucket>
