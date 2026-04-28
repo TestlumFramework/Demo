@@ -17,14 +17,16 @@
         </bucket>
     </s3>
 
-    <var comment="Sum variable to aggregate result" name="upload_postfix">
+    <var comment="Create variable to aggregate result for repeat steps" name="upload_postfix">
         <constant value="0"/>
     </var>
 
     <repeat comment="Repeat s3 storage operations with content verification for N number of times" times="3">
+
         <var comment="Variable to aggregate result on each iteration by 1" name="upload_postfix">
-            <expression value="{{result}} + 1"/>
+            <expression value="{{upload_postfix}} + 1"/>
         </var>
+
 
         <s3 comment="Execute upload_1.json storage operation within repeat" alias="S3_0">
             <file comment="Check ability to upload upload_{{upload_postfix}}.json file to testlum-repeat-bucket-one on each iteration"
