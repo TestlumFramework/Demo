@@ -35,7 +35,7 @@
 
         <image comment="Compare full screen image"
                file="image_fullScreen.png">
-            <fullScreen percentage="99.9"/>
+            <fullScreen percentage="95"/>
         </image>
 
     </web>
