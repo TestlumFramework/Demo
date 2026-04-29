@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Attribute - Variable</name>
+        <description>
+            This scenario verifies attribute assertion using variables.
+
+            Test flow:
+            1. Store locator, attribute name, and expected value in variables.
+            2. Execute attribute assertion using variables.
+
+            This scenario validates:
+            - Variable injection
+            - Attribute assertion via variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <var comment="Location variable" name="locator">
+            <constant value="forms.type"/>
+        </var>
+
+        <var comment="Attribute name variable" name="attributeName">
+            <constant value="type"/>
+        </var>
+
+        <var comment="Expected value variable" name="expectedValue">
+            <constant value="password"/>
+        </var>
+
+        <var comment="Assert comment variable" name="assertComment">
+            <constant value="Check attribute via variables"/>
+        </var>
+
+        <var comment="Attribute comment variable" name="attributeComment">
+            <constant value="Compare attribute value"/>
+        </var>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{locator}}">
+                <content>{{expectedValue}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

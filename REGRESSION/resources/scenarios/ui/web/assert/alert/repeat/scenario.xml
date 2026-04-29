@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Alert - Repeat Times</name>
+        <description>
+            This scenario verifies repeated alert execution.
+
+            Test flow:
+            1. Repeat alert trigger and validation multiple times.
+            2. Verify alert text on each iteration.
+            3. Close alert after each iteration.
+
+            This scenario validates:
+            - Stable repeated execution
+            - Alert lifecycle handling
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to modal page"
+                  command="to"
+                  path="/modal"/>
+
+        <click comment="Trigger alert"
+               locator="modal.alertBtn"/>
+
+        <wait comment="Wait for alert" time="1"/>
+
+        <repeat comment="Repeat alert test 2 times" times="2">
+
+            <assert comment="Verify alert">
+                <alert comment="Check alert text">
+                    <text>Alert! You are not Nazar</text>
+                </alert>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

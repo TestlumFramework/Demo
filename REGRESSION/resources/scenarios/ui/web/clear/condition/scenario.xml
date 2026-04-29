@@ -1,0 +1,103 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Condition</name>
+        <description>
+            This scenario verifies conditional execution of clear command.
+
+            Test flow:
+            1. Navigate to forms page.
+            2. Input value into field.
+            3. Execute clear with condition=true.
+            4. Input new value and verify it replaces previous value.
+            5. Input value again.
+            6. Execute clear with condition=false.
+            7. Input new value and verify it does NOT replace previous value.
+
+            This scenario validates:
+            - Conditional execution of clear command
+            - Correct behavior when condition=true
+            - Skipping logic when condition=false
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Condition should execute clear"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Condition should skip clear"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <input comment="Enter initial value"
+               locator="forms.username"
+               value="TestUser"/>
+
+        <clear comment="Clear field with true condition"
+               locator="forms.username"
+               condition="trueCondition"/>
+
+        <input comment="Enter new value after clear"
+               locator="forms.username"
+               value="A"/>
+
+        <var comment="Store value after true condition"
+             name="afterTrue">
+            <element>
+                <attribute name="value"
+                           locator="forms.username"/>
+            </element>
+        </var>
+
+        <assert comment="Verify value replaced after clear">
+            <equal comment="Value should be new value">
+                <content>{{afterTrue}}</content>
+                <content>A</content>
+            </equal>
+        </assert>
+
+        <input comment="Enter initial value again"
+               locator="forms.username"
+               value="TestUser"/>
+
+        <clear comment="Attempt clear with false condition"
+               locator="forms.username"
+               condition="falseCondition"/>
+
+        <input comment="Append new value without clearing"
+               locator="forms.username"
+               value="A"/>
+
+        <var comment="Store value after false condition"
+             name="afterFalse">
+            <element>
+                <attribute name="value"
+                           locator="forms.username"/>
+            </element>
+        </var>
+
+        <assert comment="Verify value was NOT cleared">
+            <notEqual comment="Value should not be only new value">
+                <content>{{afterFalse}}</content>
+                <content>AA</content>
+            </notEqual>
+        </assert>
+
+    </web>
+
+</scenario>

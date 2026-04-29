@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Enter</name>
+        <description>
+            This scenario verifies hotKey enter command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input value into field.
+            3. Execute enter command.
+            4. Verify that result is updated.
+
+            This scenario validates:
+            - enter execution
+            - correct event triggering
+            - correct result rendering
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <input comment="Fill input field with value"
+               locator="uiElements.hotKeyInput2"
+               value="ENTER_TEXT"/>
+
+        <hotKey comment="Execute enter command">
+            <enter comment="Trigger enter key event"/>
+        </hotKey>
+
+        <assert comment="Verify result after pressing enter">
+            <attribute comment="Check result text"
+                       name="innerText"
+                       locator="uiElements.hotKeyResult">
+                <content>Result: ENTER_TEXT</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

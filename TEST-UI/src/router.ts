@@ -8,6 +8,7 @@ import Login from './views/Login.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
+import ScrollTest from "./views/ScrollTest.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -51,6 +52,11 @@ const routes: RouteRecordRaw[] = [
     name: 'Blank',
     component: Blank,
   },
+  {
+    path: '/scroll-test',
+    name: 'ScrollTest',
+    component: ScrollTest,
+  }
 ];
 
 const router = createRouter({

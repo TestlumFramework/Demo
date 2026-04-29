@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert NotEqual - General</name>
+        <description>
+            This scenario verifies basic notEqual assertion.
+
+            Test flow:
+            1. Extract value from UI.
+            2. Execute notEqual assertion.
+            3. Verify that values are different.
+
+            This scenario validates:
+            - Correct notEqual logic
+            - Comparison of different values
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Get Dashboard title" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="/html/body/div/div/div[2]/main/div/div/h3"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <assert comment="Check that values are NOT equal">
+            <notEqual comment="Check 2 different values">
+                <content>{{dashboardTitle}}</content>
+                <content>INVALID</content>
+            </notEqual>
+        </assert>
+
+    </web>
+
+</scenario>

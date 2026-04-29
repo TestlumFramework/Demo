@@ -32,6 +32,10 @@
         <locator locatorId="developerBoard1">
             <xpath>(.//span[text() ='Developer Board'])[1]</xpath>
         </locator>
+
+        <locator locatorId="scrollTest">
+            <xpath>.//span[text()='Scroll Test']</xpath>
+        </locator>
     </locators>
 
 </page>

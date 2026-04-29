@@ -1,0 +1,2 @@
+webComment,navigateComment,path,beforeAssertComment,beforePresentComment,buttonLocator,resultLocator,doubleClickComment,waitAfterClickComment,waitAfterClick,afterAssertComment,afterPresentComment
+Start WEB script,Navigate to UI Elements page,/ui-elements,Verify result is not visible before action,Result should not be visible,uiElements.doubleClickBtn,uiElements.doubleClickResult,Perform double click on button,Wait after double click,1,Verify result is visible after action,Result should be visible

@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Percent (Repeat)</name>
+        <description>
+            This scenario verifies scroll command using repeat block.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Execute scroll multiple times.
+            3. Verify bottom element becomes present.
+
+            This scenario validates:
+            - repeat execution
+            - cumulative scroll behavior
+            - state persistence between iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <repeat comment="Scroll page multiple times"
+                times="3">
+
+            <scroll comment="Scroll page down by 30 percent"
+                    type="page"
+                    direction="down"
+                    value="30"
+                    measure="percent"/>
+
+            <wait comment="Wait between scrolls"
+                  time="1"/>
+
+        </repeat>
+
+        <assert comment="Verify bottom element is present after repeat scroll">
+            <present comment="Check bottom element"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,39 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Present - Variations</name>
+        <description>
+            This scenario verifies present assertion using CSV-driven variations.
+
+            Test flow:
+            1. Load variations from CSV.
+            2. Execute present assertion for each variation.
+
+            This scenario validates:
+            - CSV injection
+            - Dynamic presence checks
+        </description>
+    </overview>
+
+    <settings>
+        <variations>present_variations.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start Web script">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to" path="{{path}}"/>
+
+        <assert comment="{{requestComment}}">
+            <present comment="{{presentComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

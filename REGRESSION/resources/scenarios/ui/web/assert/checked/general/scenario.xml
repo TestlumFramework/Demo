@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Checked - General</name>
+        <description>
+            This scenario verifies checkbox state assertion.
+
+            Test flow:
+            1. Navigate to checkbox page.
+            2. Verify checkbox is not selected.
+            3. Click checkbox.
+            4. Verify checkbox is selected.
+
+            This scenario validates:
+            - Checkbox state detection
+            - State change after click
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to checkbox page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <assert comment="Check initial checkbox state">
+            <checked comment="Checkbox should NOT be selected"
+                     locator="uiElements.checkbox"
+                     negative="true"/>
+        </assert>
+
+        <click comment="Click checkbox"
+               locator="uiElements.checkbox"/>
+
+        <assert comment="Check checkbox after click">
+            <checked comment="Checkbox should be selected"
+                     locator="uiElements.checkbox"/>
+        </assert>
+
+    </web>
+
+</scenario>

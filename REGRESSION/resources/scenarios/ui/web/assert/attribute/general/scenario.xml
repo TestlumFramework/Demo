@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Attribute - General</name>
+        <description>
+            This scenario verifies basic attribute assertion.
+
+            Test flow:
+            1. Navigate to page.
+            2. Execute attribute assertion.
+            3. Verify attribute value equals expected.
+
+            This scenario validates:
+            - Attribute extraction
+            - Attribute comparison logic
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <assert comment="Check attribute value">
+            <attribute comment="Check input type"
+                       name="type"
+                       locator="forms.type">
+                <content>password</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

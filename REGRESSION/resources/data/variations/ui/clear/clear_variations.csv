@@ -1,0 +1,2 @@
+navigateComment,path,inputComment,locator,value,clearComment,assertComment,notEqualComment
+Navigate to forms page,/forms,Enter value into field,forms.username,TestUser,Clear field,Verify clear execution,Value should not equal predefined string

@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Navigate - Variations</name>
+        <description>
+            This scenario verifies navigate command using CSV variations.
+
+            Test flow:
+            1. Navigate to different pages.
+            2. Verify correct page header.
+
+            This scenario validates:
+            - CSV-based path injection
+            - dynamic expected values
+            - navigation stability
+        </description>
+    </overview>
+
+    <settings>
+        <variations>navigate.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerText"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

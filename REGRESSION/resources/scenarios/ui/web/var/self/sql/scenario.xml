@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - SQL (UI usage)</name>
+        <description>
+            This scenario verifies SQL variable usage in UI.
+
+            Test flow:
+            1. Prepare DB data.
+            2. Execute SQL query.
+            3. Store result into variable.
+            4. Input value into UI.
+            5. Verify that value is applied.
+
+            This scenario validates:
+            - SQL execution
+            - variable usage
+            - integration with UI
+        </description>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>web</tags>
+    </settings>
+
+    <migrate comment="Prepare test data"
+             alias="POSTGRES_0"
+             name="POSTGRES">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI elements" command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait 2 sec" time="2"/>
+
+        <var comment="Get ID from DB"
+             name="newsId">
+            <sql dbType="POSTGRES"
+                 alias="POSTGRES_0">
+                <query>
+                    SELECT id
+                    FROM news
+                    WHERE id=101
+                </query>
+            </sql>
+        </var>
+
+        <input comment="Input SQL value"
+               locator="uiElements.hotKeyInput1"
+               value="{{newsId}}"
+               highlight="true"/>
+
+        <assert comment="Verify input contains SQL value">
+            <attribute comment="Verify input contains SQL value" name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>{{newsId}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

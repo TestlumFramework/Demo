@@ -1,0 +1,72 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Repeat (Outer)</name>
+        <description>
+            This scenario verifies switchToFrame inside repeat block.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Scroll to iframe.
+            3. Repeat:
+            - switch to iframe
+            - click button
+            - verify result
+
+            This scenario validates:
+            - repeated switching to iframe
+            - correct context reset per iteration
+            - stability of switchToFrame command
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <scrollTo comment="Scroll to iframe"
+                  locator="uiElements.testFrame"/>
+
+        <wait comment="Wait after scroll" time="1"/>
+
+
+        <repeat comment="Repeat switchToFrame 3 times"
+                times="3">
+
+            <switchToFrame comment="Switch to iframe"
+                           locator="uiElements.testFrame">
+
+                <click comment="Click button inside iframe"
+                       locator="uiElements.frameButton"/>
+
+                <wait comment="Wait after click"
+                      time="1"/>
+
+                <assert comment="Verify result inside iframe">
+                    <attribute comment="Check result text"
+                               name="innerText"
+                               locator="uiElements.frameResult">
+                        <content>Clicked!</content>
+                    </attribute>
+                </assert>
+
+            </switchToFrame>
+
+        </repeat>
+
+    </web>
+
+</scenario>

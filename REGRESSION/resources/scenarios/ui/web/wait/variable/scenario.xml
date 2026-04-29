@@ -1,0 +1,96 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Variable</name>
+        <description>
+            This scenario verifies wait command using variables with default values.
+
+            Test flow:
+            1. Inject all values via variables.
+            2. Navigate to page.
+            3. Click start button (default delay = 1 second).
+            4. Wait using variable.
+            5. Verify result.
+
+            This scenario validates:
+            - variable injection into comments
+            - variable injection into locators
+            - wait execution with default UI values
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <var comment="Global web comment variable" name="webComment">
+        <constant value="Start WEB script for wait variable"/>
+    </var>
+
+    <web comment="{{webComment}}">
+
+        <var comment="Navigate comment variable" name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait comment variable" name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Click comment variable" name="clickComment">
+            <constant value="Click start button"/>
+        </var>
+
+        <var comment="Assert comment variable" name="assertComment">
+            <constant value="Verify result is visible"/>
+        </var>
+
+        <var comment="Pre-check comment variable" name="preCheckComment">
+            <constant value="Verify result is not visible before click"/>
+        </var>
+
+        <var comment="Wait action comment variable" name="waitActionComment">
+            <constant value="Wait using injected time variable"/>
+        </var>
+
+        <var comment="Start locator variable" name="startLocator">
+            <constant value="uiElements.waitStart"/>
+        </var>
+
+        <var comment="Result locator variable" name="resultLocator">
+            <constant value="uiElements.waitResult"/>
+        </var>
+
+        <var comment="Time variable for wait" name="time">
+            <constant value="2"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{time}}"/>
+
+        <assert comment="{{preCheckComment}}">
+            <present comment="{{preCheckComment}}" locator="{{resultLocator}}" negative="true"/>
+        </assert>
+
+        <click comment="{{clickComment}}"
+               locator="{{startLocator}}"/>
+
+        <wait comment="{{waitActionComment}}"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{assertComment}}" locator="{{resultLocator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

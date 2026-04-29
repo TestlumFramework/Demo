@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Part - Variable</name>
+        <description>
+            This scenario verifies image part comparison using variables.
+
+            This scenario validates:
+            - locator injection
+            - file injection
+            - percentage injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="WEB section comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Navigate comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Scroll comment"
+             name="scrollComment">
+            <constant value="Scroll to image block"/>
+        </var>
+
+        <var comment="Image command comment"
+             name="imageComment">
+            <constant value="Compare image part using variables"/>
+        </var>
+
+        <var comment="Image file"
+             name="file">
+            <constant value="image_part"/>
+        </var>
+
+        <var comment="Locator for part"
+             name="locator">
+            <constant value="uiElements.testImage"/>
+        </var>
+
+        <var comment="Comparison percentage"
+             name="percentage">
+            <constant value="99.9"/>
+        </var>
+
+        <var comment="Path variable" name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}" time="2"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{locator}}"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <image comment="{{imageComment}}"
+               file="image_part.png">
+            <part locator="{{locator}}"
+                  percentage="99.9"/>
+        </image>
+
+    </web>
+
+</scenario>

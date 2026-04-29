@@ -1,0 +1,74 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>ScrollTo - Condition</name>
+        <description>
+            This scenario verifies scrollTo command using condition.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Execute scrollTo with false condition.
+            3. Verify scrolling is NOT performed.
+            4. Execute scrollTo with true condition.
+            5. Verify scrolling IS performed.
+
+            This scenario validates:
+            - conditional execution
+            - scrollTo skip behavior
+            - scrollTo execution behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <condition comment="False condition"
+                   name="shouldScrollFalse"
+                   spel="false"/>
+
+        <scrollTo comment="Try scrollTo with false condition"
+                  locator="scrollTest.pageBottom"
+                  condition="shouldScrollFalse"/>
+
+        <wait comment="Wait after skip"
+              time="1"/>
+
+        <assert comment="Verify element not reached">
+            <present comment="Top element still visible"
+                     locator="scrollTest.pageTop"/>
+        </assert>
+
+        <condition comment="True condition"
+                   name="shouldScrollTrue"
+                   spel="true"/>
+
+        <scrollTo comment="ScrollTo with true condition"
+                  locator="scrollTest.pageBottom"
+                  condition="shouldScrollTrue"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="Verify element reached">
+            <present comment="Bottom element visible"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </web>
+
+</scenario>

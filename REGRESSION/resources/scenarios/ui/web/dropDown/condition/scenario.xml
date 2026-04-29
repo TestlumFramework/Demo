@@ -1,0 +1,81 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - Condition True/False</name>
+        <description>
+            This scenario verifies that dropDown command is executed only when condition is true.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute dropDown with TRUE condition.
+            3. Verify value is selected.
+            4. Execute dropDown with FALSE condition.
+            5. Verify value is NOT changed.
+
+            This scenario validates:
+            - Condition = true → command executed
+            - Condition = false → command skipped
+            - State remains unchanged when skipped
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Always true condition"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Always false condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <dropDown comment="Select value Two (condition = true)"
+                  locator="uiElements.singleSelect"
+                  condition="trueCondition">
+            <oneValue type="select" by="text" value="Two"/>
+        </dropDown>
+
+        <wait comment="Wait for DOM update" time="1"/>
+
+        <assert comment="Verify value was selected">
+            <attribute comment="Check selected value equals 2"
+                       name="innerText"
+                       locator="uiElements.singleResult">
+                <content>Selected value: 2</content>
+            </attribute>
+        </assert>
+
+        <dropDown comment="Try to select value Three (condition = false)"
+                  locator="uiElements.singleSelect"
+                  condition="falseCondition">
+            <oneValue type="select" by="text" value="Three"/>
+        </dropDown>
+
+        <wait comment="Wait for DOM update" time="1"/>
+
+        <assert comment="Verify value did NOT change">
+            <attribute comment="Value should remain 2"
+                       name="innerText"
+                       locator="uiElements.singleResult">
+                <content>Selected value: 2</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

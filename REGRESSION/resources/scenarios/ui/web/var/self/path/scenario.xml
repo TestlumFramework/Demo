@@ -1,0 +1,47 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Path</name>
+        <description>
+            This scenario verifies var path functionality.
+
+            Test flow:
+            1. Load JSON from file.
+            2. Extract value using path.
+            3. Verify extracted value.
+
+            This scenario validates:
+            - JSON parsing
+            - JPath extraction
+            - variable storage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <var comment="Load JSON file"
+             name="json">
+            <file fileName="data.json"/>
+        </var>
+
+        <var comment="Extract active field"
+             name="isActive">
+            <path value="$.[0].active"/>
+        </var>
+
+        <assert comment="Verify extracted value">
+            <equal comment="Verify extracted value">
+                <content>true</content>
+                <content>{{isActive}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

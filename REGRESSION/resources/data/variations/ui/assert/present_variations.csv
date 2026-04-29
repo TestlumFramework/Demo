@@ -1,0 +1,2 @@
+navigateComment,path,requestComment,presentComment,locator
+Navigate to 'tables page' for apply the 'assert' command,/forms,Check present element,Element exists,forms.save

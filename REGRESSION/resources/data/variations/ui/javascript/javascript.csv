@@ -1,0 +1,2 @@
+webComment,navigateComment,path,waitComment,waitTime,jsComment,assertComment,attributeComment,locator,file,expected
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,2,Execute JS file 1,Verify result 1,Check value,uiElements.hotKeyInput1,set_value_1.js,JS_VALUE

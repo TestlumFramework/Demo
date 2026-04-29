@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Open</name>
+        <description>
+            This scenario verifies opening a new tab.
+
+            Test flow:
+            1. Navigate to Forms page.
+            2. Open new tab with UI Elements page.
+            3. Verify that new tab is opened and content is loaded.
+
+            This scenario validates:
+            - tab open command
+            - navigation in new tab
+            - correct page rendering
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <tab comment="Open new tab with UI Elements page">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait for new tab load"
+              time="2"/>
+
+        <assert comment="Verify UI Elements page is opened in new tab">
+            <attribute comment="Check page title"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

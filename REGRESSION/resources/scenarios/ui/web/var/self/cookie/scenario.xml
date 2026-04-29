@@ -1,0 +1,62 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Cookie</name>
+        <description>
+            This scenario verifies var cookie functionality.
+
+            Test flow:
+            1. Navigate to dashboard.
+            2. Create cookie via UI.
+            3. Store cookie value into variable.
+            4. Verify stored value.
+
+            This scenario validates:
+            - cookie creation
+            - variable storage
+            - correct cookie retrieval
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scrollTo comment="Scroll to Set cookie button"
+                  locator="uiElements.setCookieButton"/>
+
+        <click comment="Set cookie via UI"
+               locator="uiElements.setCookieButton"/>
+
+        <wait comment="Wait after setting cookie"
+              time="1"/>
+
+        <var comment="Get cookie value"
+             name="cookieVar">
+            <cookie/>
+        </var>
+
+        <assert comment="Verify cookie value">
+            <equal comment="Check cookie content">
+                <content>testCookie=cookieValue</content>
+                <content>{{cookieVar}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

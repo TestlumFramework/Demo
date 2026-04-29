@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Equal - Condition</name>
+        <description>
+            This scenario verifies condition-based execution of assert equal.
+
+            Test flow:
+            1. Execute assert with condition=true → should pass.
+            2. Execute assert with condition=false → should be skipped (even if values are invalid).
+
+            This scenario validates:
+            - correct condition handling
+            - skipping logic when condition=false
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Create true condition" name="trueCondition" spel="true"/>
+        <condition comment="Create false condition" name="falseCondition" spel="false"/>
+
+        <var comment="Get Dashboard title" name="dashboardTitle">
+            <element>
+                <attribute name="innerText" locator="/html/body/div/div/div[2]/main/div/div/h3" locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <assert comment="Should execute because condition is true"
+                condition="trueCondition">
+            <equal comment="Valid equal check">
+                <content>{{dashboardTitle}}</content>
+                <content>Dashboard</content>
+            </equal>
+        </assert>
+
+        <assert comment="Should NOT execute because condition is false"
+                condition="falseCondition">
+            <equal comment="Invalid equal but should be skipped">
+                <content>{{dashboardTitle}}</content>
+                <content>invalid</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

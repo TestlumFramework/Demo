@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - Variations</name>
+        <description>
+            This scenario verifies dropDown command using CSV-driven variations.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute dropDown using injected data.
+            3. Verify selected value.
+
+            This scenario validates:
+            - CSV-based injection
+            - Dynamic locator usage
+            - Dynamic value selection
+            - Dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <variations>drop_down.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <dropDown comment="{{dropDownComment}}"
+                  locator="{{locator}}">
+            <oneValue type="select" by="text" value="{{value}}"/>
+        </dropDown>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

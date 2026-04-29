@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>ScrollTo - General</name>
+        <description>
+            This scenario verifies scrollTo command.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Scroll to target element.
+            3. Verify that element is reached.
+
+            This scenario validates:
+            - scrollTo execution
+            - correct element targeting
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scrollTo comment="Scroll to bottom element"
+                  locator="scrollTest.pageBottom"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="Verify target element reached">
+            <present comment="Check bottom element"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </web>
+
+</scenario>

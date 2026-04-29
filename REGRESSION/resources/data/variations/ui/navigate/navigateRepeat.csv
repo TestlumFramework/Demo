@@ -1,0 +1,3 @@
+navigateComment,path,waitComment,waitTime,assertComment,attributeComment,locator,expected
+Navigate to UI Elements page,/ui-elements,Wait for page load,2,Verify UI Elements page,Check header,uiElements.title,UI Elements
+Navigate to Forms page,/forms,Wait for page load,2,Verify Forms page,Check header,forms.title,Forms

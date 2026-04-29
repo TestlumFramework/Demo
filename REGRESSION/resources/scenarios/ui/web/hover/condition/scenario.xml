@@ -1,0 +1,81 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Hover - Condition</name>
+        <description>
+            This scenario verifies hover command execution based on conditions.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute hover with TRUE condition.
+            3. Verify hover state is true.
+            4. Try to execute hover with FALSE condition.
+            5. Verify state does not change.
+
+            This scenario validates:
+            - Conditional execution
+            - Correct branch behavior
+            - Stable hover state
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Always true condition"
+                   name="runHover"
+                   spel="true"/>
+
+        <condition comment="Always false condition"
+                   name="skipHover"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <hover comment="Execute hover (should run)"
+               locator="uiElements.hoverTarget"
+               condition="runHover"/>
+
+        <wait comment="Wait after hover" time="1"/>
+
+        <assert comment="Verify hover applied">
+            <attribute comment="Check hover is true"
+                       name="innerText"
+                       locator="uiElements.hoverResult">
+                <content>Hover status: true</content>
+            </attribute>
+        </assert>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <hover comment="Execute hover (should NOT run)"
+               locator="uiElements.hoverTarget"
+               condition="skipHover"/>
+
+        <wait comment="Wait after skipped hover" time="1"/>
+
+        <assert comment="Verify state did not change">
+            <attribute comment="Hover still true"
+                       name="innerText"
+                       locator="uiElements.hoverResult">
+                <content>Hover status: false</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

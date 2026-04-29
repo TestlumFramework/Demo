@@ -1,0 +1,2 @@
+navigateComment,path,beforeAssertComment,beforeCheckedComment,clickComment,afterAssertComment,afterCheckedComment,locator
+Navigate to checkbox page,/ui-elements,Check initial state,Checkbox should NOT be selected,Click checkbox,Check state after click,Checkbox should be selected,uiElements.checkbox

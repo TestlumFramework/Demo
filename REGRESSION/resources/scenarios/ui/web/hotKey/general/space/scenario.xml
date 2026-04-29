@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Space</name>
+        <description>
+            This scenario verifies hotKey space command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input initial text.
+            3. Execute space key multiple times.
+            4. Verify spaces are added.
+
+            This scenario validates:
+            - space execution
+            - correct text modification
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <input comment="Fill input with base text"
+               locator="uiElements.hotKeyInput2"
+               value="SPACE"/>
+
+        <click comment="Focus input field"
+               locator="uiElements.hotKeyInput2"/>
+
+        <hotKey comment="Add spaces">
+            <space comment="Press space key" times="3"/>
+        </hotKey>
+
+        <wait comment="Wait for DOM update" time="1"/>
+
+        <assert comment="Verify spaces added">
+            <attribute comment="Check value with spaces"
+                       name="value"
+                       locator="uiElements.hotKeyInput2">
+                <content>SPACE   </content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

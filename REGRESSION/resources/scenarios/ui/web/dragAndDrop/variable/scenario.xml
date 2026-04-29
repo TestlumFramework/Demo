@@ -1,0 +1,97 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DragAndDrop - Variable</name>
+        <description>
+            This scenario verifies dragAndDrop command using variables.
+
+            This scenario validates:
+            - Locator injection
+            - FileName injection
+            - Dynamic comments usage
+            - Dynamic dragAndDrop execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="WEB section comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Click command comment"
+             name="clickComment">
+            <constant value="Open Developer Board"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait page load"/>
+        </var>
+
+        <var comment="DragAndDrop command comment"
+             name="dragComment">
+            <constant value="Upload file using variables"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify uploaded file"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check uploaded file name"/>
+        </var>
+
+        <var comment="Drop zone locator"
+             name="locator">
+            <constant value="developerBoard.selectFileDropZone"/>
+        </var>
+
+        <var comment="Result locator"
+             name="resultLocator">
+            <constant value="developerBoard.fileDropZone"/>
+        </var>
+
+        <var comment="File name to upload"
+             name="fileName">
+            <constant value="upload_dropZone.png"/>
+        </var>
+
+        <var comment="Expected result value"
+             name="expected">
+            <constant value="File: upload_dropZone.png"/>
+        </var>
+
+        <click comment="{{clickComment}}"
+               locator="sideBar.developerBoard1"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <dragAndDrop comment="{{dragComment}}"
+                     toLocator="{{locator}}">
+            <fileName>upload_dropZone.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerHTML"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

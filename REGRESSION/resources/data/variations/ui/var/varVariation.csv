@@ -1,0 +1,4 @@
+webComment,navigateComment,waitComment,waitTime,varComment,varName,value,inputComment,locator,assertComment,attributeComment,attributeName,path
+Start WEB script with CSV,Navigate to UI Elements page,Wait for page load,2,Create variable from CSV,dynamicVar,HELLO,Input HELLO value,uiElements.hotKeyInput1,Verify HELLO value,Check attribute value,value,/ui-elements
+Start WEB script with CSV,Navigate to UI Elements page,Wait for page load,2,Create variable from CSV,dynamicVar,WORLD,Input WORLD value,uiElements.hotKeyInput1,Verify WORLD value,Check attribute value,value,/ui-elements
+Start WEB script with CSV,Navigate to UI Elements page,Wait for page load,2,Create variable from CSV,dynamicVar,TEST123,Input TEST123 value,uiElements.hotKeyInput1,Verify TEST123 value,Check attribute value,value,/ui-elements

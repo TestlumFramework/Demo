@@ -1,0 +1,86 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Condition</name>
+        <description>
+            This scenario verifies tab command using condition.
+
+            Test flow:
+            1. Navigate to Forms page.
+            2. Create false condition → tab should NOT open.
+            3. Verify still on Forms page.
+            4. Create true condition → tab SHOULD open.
+            5. Verify new tab content.
+
+            This scenario validates:
+            - conditional tab execution
+            - skip behavior
+            - correct tab opening
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <condition comment="Create false condition"
+                   name="shouldOpenTabFalse"
+                   spel="false"/>
+
+        <tab comment="Try to open tab (should be skipped)"
+             condition="shouldOpenTabFalse">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait after skipped action"
+              time="1"/>
+
+        <assert comment="Verify still on Forms page">
+            <attribute comment="Verify still on Forms page"
+                       name="type"
+                       locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+        <condition comment="Create true condition"
+                   name="shouldOpenTabTrue"
+                   spel="true"/>
+
+        <tab comment="Open tab with true condition"
+             condition="shouldOpenTabTrue">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait for tab open"
+              time="2"/>
+
+        <tab comment="Switch to new tab">
+            <switch index="2"/>
+        </tab>
+
+        <assert comment="Verify UI Elements page opened">
+            <attribute comment="Get UI Elements Title"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

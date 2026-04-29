@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Tab</name>
+        <description>
+            This scenario verifies hotKey tab command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Focus first input.
+            3. Execute tab key.
+            4. Input text.
+            5. Verify text is entered in second input.
+
+            This scenario validates:
+            - tab execution
+            - focus switching between inputs
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <click comment="Focus first input"
+               locator="uiElements.hotKeyInput1"/>
+
+        <hotKey comment="Switch focus using tab">
+            <tab comment="Press tab key"/>
+        </hotKey>
+
+        <input comment="Type into focused field"
+               locator="uiElements.hotKeyInput2"
+               value="TAB_WORKS"/>
+
+        <assert comment="Verify text entered into second input">
+            <attribute comment="Check second input value"
+                       name="value"
+                       locator="uiElements.hotKeyInput2">
+                <content>TAB_WORKS</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,61 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - General</name>
+        <description>
+            This scenario verifies clear command functionality.
+
+            Test flow:
+            1. Navigate to forms page.
+            2. Input value into field.
+            3. Store value before clear.
+            4. Execute clear command.
+            5. Verify value is no longer equal to original.
+
+            This scenario validates:
+            - Clear command execution
+            - Field value reset behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <input comment="Enter username"
+               locator="forms.username"
+               value="TestUser"/>
+
+        <var comment="Store value before clear"
+             name="beforeClear">
+            <element>
+                <attribute name="value"
+                           locator="forms.username"/>
+            </element>
+        </var>
+
+        <clear comment="Clear username field"
+               locator="forms.username"
+               highlight="true"/>
+
+        <assert comment="Verify value changed after clear">
+            <notEqual comment="Value should not equal original">
+                <content>{{beforeClear}}</content>
+                <content>TestUsers</content>
+            </notEqual>
+        </assert>
+
+    </web>
+
+</scenario>

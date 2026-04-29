@@ -1,0 +1,72 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Condition</name>
+        <description>
+            This scenario verifies wait command with condition.
+
+            Test flow:
+            1. Navigate to page.
+            2. Create false condition.
+            3. Trigger delayed action.
+            4. Execute wait with false condition (should be skipped).
+            5. Verify result is NOT visible.
+            6. Create true condition.
+            7. Execute wait with true condition.
+            8. Verify result is visible.
+
+            This scenario validates:
+            - conditional wait execution
+            - skip behavior
+            - correct async handling
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script for wait condition">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <input comment="Set wait time to 1 second"
+               locator="uiElements.waitTime"
+               value="1"/>
+
+        <condition comment="Create false condition"
+                   name="shouldWaitFalse"
+                   spel="false"/>
+
+        <condition comment="Create true condition"
+                   name="shouldWaitTrue"
+                   spel="true"/>
+
+        <click comment="Start delayed action"
+               locator="uiElements.waitStart"/>
+
+        <wait comment="Wait should be skipped"
+              time="1"
+              condition="shouldWaitFalse"/>
+
+        <wait comment="Wait should execute"
+              time="1"
+              condition="shouldWaitTrue"/>
+
+        <assert comment="Verify result is visible after wait">
+            <present comment="Verify result is visible after wait" locator="uiElements.waitResult"/>
+        </assert>
+
+    </web>
+
+</scenario>

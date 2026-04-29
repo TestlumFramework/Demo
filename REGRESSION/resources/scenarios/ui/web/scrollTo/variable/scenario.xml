@@ -1,0 +1,98 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>ScrollTo - Variable</name>
+        <description>
+            This scenario verifies scrollTo command using variables.
+
+            Test flow:
+            1. Navigate to page using variable.
+            2. Scroll to element using variable locator.
+            3. Verify that element is reached.
+
+            This scenario validates:
+            - locator injection
+            - path injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <var comment="Web block comment"
+         name="webComment">
+        <constant value="Start WEB script"/>
+    </var>
+
+    <web comment="{{webComment}}">
+
+        <var comment="Navigate comment"
+             name="navigateComment">
+            <constant value="Navigate to Scroll Test page"/>
+        </var>
+
+        <var comment="Wait comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="ScrollTo comment"
+             name="scrollToComment">
+            <constant value="Scroll to bottom element"/>
+        </var>
+
+        <var comment="Assert comment"
+             name="assertComment">
+            <constant value="Verify element reached"/>
+        </var>
+
+        <var comment="Path variable"
+             name="path">
+            <constant value="/scroll-test"/>
+        </var>
+
+        <var comment="Locator variable"
+             name="locator">
+            <constant value="scrollTest.pageBottom"/>
+        </var>
+
+        <var comment="Time variation" name="time">
+            <constant value="2"/>
+        </var>
+
+        <var comment="Present comment" name="presentComment">
+            <constant value="Check element visibility"/>
+        </var>
+
+        <var comment="Wait comment" name="waitComment">
+            <constant value="Wait after scroll"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{time}}"/>
+
+        <scrollTo comment="{{scrollToComment}}"
+                  locator="{{locator}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{presentComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Hover - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of hover command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Repeat hover action multiple times.
+            3. Verify hover state after each iteration.
+
+            This scenario validates:
+            - repeat execution
+            - stable hover behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <repeat comment="Repeat hover action 3 times"
+                times="3">
+
+            <hover comment="Hover over target element"
+                   locator="uiElements.hoverTarget"/>
+
+            <wait comment="Wait after hover" time="1"/>
+
+            <assert comment="Verify hover state">
+                <attribute comment="Check hover is true"
+                           name="innerText"
+                           locator="uiElements.hoverResult">
+                    <content>Hover status: true</content>
+                </attribute>
+            </assert>
+        </repeat>
+
+    </web>
+
+</scenario>

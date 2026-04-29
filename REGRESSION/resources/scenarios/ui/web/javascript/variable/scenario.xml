@@ -1,0 +1,89 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Javascript - Variable</name>
+        <description>
+            This scenario verifies javascript command using variables.
+
+            This scenario validates:
+            - file injection
+            - locator injection
+            - expected value injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Javascript command comment"
+             name="jsComment">
+            <constant value="Execute JS from file"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify JS execution result"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check updated value"/>
+        </var>
+
+        <var comment="JS file name"
+             name="file">
+            <constant value="set_value.js"/>
+        </var>
+
+        <var comment="Target locator"
+             name="locator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Expected value"
+             name="expected">
+            <constant value="JS_VALUE"/>
+        </var>
+
+        <var comment="Path variable" name="path">
+            <constant value="/ui-elements"/>
+        </var>
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}" time="2"/>
+
+        <javascript comment="{{jsComment}}"
+                    file="set_value.js"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

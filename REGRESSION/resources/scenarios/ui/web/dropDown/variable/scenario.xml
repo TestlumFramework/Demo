@@ -1,0 +1,110 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - Variable</name>
+        <description>
+            This scenario verifies dropDown command using variables.
+
+            This scenario validates:
+            - Locator injection
+            - Value injection
+            - Dynamic comments usage
+            - Dynamic dropDown execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="WEB section comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="DropDown command comment"
+             name="dropDownComment">
+            <constant value="Select value using variables"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify selected value"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check selected value"/>
+        </var>
+
+        <var comment="Single select locator"
+             name="locator">
+            <constant value="uiElements.singleSelect"/>
+        </var>
+
+        <var comment="Result text locator"
+             name="resultLocator">
+            <constant value="uiElements.singleResult"/>
+        </var>
+
+        <var comment="DropDown selection type"
+             name="type">
+            <constant value="select"/>
+        </var>
+
+        <var comment="Selection strategy"
+             name="by">
+            <constant value="text"/>
+        </var>
+
+        <var comment="Value to select"
+             name="value">
+            <constant value="Two"/>
+        </var>
+
+        <var comment="Expected result text"
+             name="expected">
+            <constant value="Selected value: 2"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <dropDown comment="{{dropDownComment}}"
+                  locator="{{locator}}">
+            <oneValue type="select" by="text" value="{{value}}"/>
+        </dropDown>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerHTML"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

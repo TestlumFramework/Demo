@@ -184,6 +184,19 @@
 
           <span class="mx-4">Developer Board</span>
         </router-link>
+        <router-link
+            class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+            :class="[$route.name === 'ScrollTest' ? activeClass : inactiveClass]"
+            to="/scroll-test"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path
+                d="M10 3a1 1 0 011 1v8h2l-3 4-3-4h2V4a1 1 0 011-1z"
+            />
+          </svg>
+
+          <span class="mx-4">Scroll Test</span>
+        </router-link>
       </nav>
     </div>
   </div>

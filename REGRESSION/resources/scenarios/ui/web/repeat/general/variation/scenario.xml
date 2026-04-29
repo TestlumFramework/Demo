@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Repeat - Variations</name>
+        <description>
+            Verify repeat execution using variations.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <repeat comment="Repeat input using variations"
+                variations="repeatVariation.csv">
+
+            <clear comment="Clear input before repeat"
+                   locator="uiElements.hotKeyInput1"/>
+
+            <input comment="Set value from CSV"
+                   locator="uiElements.hotKeyInput1"
+                   value="{{value}}"/>
+
+            <assert comment="Verify last variation value">
+                <attribute comment="Check final value"
+                           name="value"
+                           locator="uiElements.hotKeyInput1">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

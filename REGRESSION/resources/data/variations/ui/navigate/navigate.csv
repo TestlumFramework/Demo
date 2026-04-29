@@ -1,0 +1,2 @@
+webComment,navigateComment,path,waitComment,waitTime,assertComment,attributeComment,locator,expected
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,2,Verify UI Elements page,Check header text,uiElements.title,UI Elements

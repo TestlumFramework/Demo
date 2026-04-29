@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Percent (Variation)</name>
+        <description>
+            This scenario verifies scroll command using CSV variations.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Execute scroll with different values.
+            3. Verify bottom element is visible.
+
+            This scenario validates:
+            - CSV-based scroll value injection
+            - dynamic locator usage
+            - multiple executions
+        </description>
+    </overview>
+
+    <settings>
+        <variations>scrollVariation.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <scroll comment="{{scrollComment}}"
+                type="page"
+                direction="down"
+                value="80"
+                measure="percent"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{presentComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>
