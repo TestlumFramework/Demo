@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"HMSET\",\"arg\":[\"user:1\",\"name\",\"John Doe\",\"age\",\"30\"]}",
+    "query": "{\"arg\":[\"user:1\",\"name\",\"John Doe\",\"age\",\"30\"],\"command\":\"HMSET\"}",
     "content": "OK"
   }
 ]

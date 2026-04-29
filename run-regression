@@ -22,18 +22,11 @@ pathPattern='^(-p=|--path=)(./|/|(./[a-zA-Z0-9_-]+)|(/[a-zA-Z0-9_-]+))+$'
 
 workspace="$(cd "$(dirname "$0")" && pwd)"
 
-# Input arguments are pre-defined
-# Replace with $1
-dockerImageName=ghcr.io/testlumframework/testlum
-# Replace with $2
-configFileName="-c=config-local.xml"
-# Replace with $3
-pathToFiles="-p=$workspace/REGRESSION/resources"
-
-# Dynamic params
-# dockerImageName=$1
-# configFileName=$2
-# pathToFiles=$3
+# Input arguments with fallback defaults.
+# If an argument is provided, it is used; otherwise the default value applies.
+dockerImageName="${1:-ghcr.io/testlumframework/testlum}"
+configFileName="${2:--c=config-local.xml}"
+pathToFiles="${3:--p=$workspace/REGRESSION/resources}"
 
 # -----------------------------------------------------------------------------
 # Validates that all required arguments are provided
