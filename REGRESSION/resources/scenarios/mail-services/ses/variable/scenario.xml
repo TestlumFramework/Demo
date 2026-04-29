@@ -1,0 +1,61 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SES Variable Test</name>
+        <description>
+            This scenario verifies variable injection in SES request.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>ses</tags>
+    </settings>
+
+    <var comment="Destination email variable" name="destinationEmail">
+        <constant value="testlum.test.acc@gmail.com"/>
+    </var>
+
+    <var comment="Source Email variation" name="sourceEmail">
+        <constant value="testlum@gmail.com"/>
+    </var>
+
+    <var comment="Subject text variation" name="subjectText">
+        <constant value="SES Variable Subject"/>
+    </var>
+
+    <var comment="Html body variation" name="htmlBody">
+        <constant value="&lt;b&gt;SES HTML&lt;/b&gt;"/>
+    </var>
+
+    <var comment="Text body variation" name="textBody">
+        <constant value="SES Text Message"/>
+    </var>
+
+    <var comment="SES comment variation" name="sesComment">
+        <constant value="Send email using variables"/>
+    </var>
+
+    <condition comment="Test condition" name="sesCondition" spel="true"/>
+
+    <var comment="Condition Variable" name="varCondition">
+        <constant value="{{sesCondition}}"/>
+    </var>
+
+    <ses comment="{{sesComment}}" alias="SES_0" condition="{{varCondition}}">
+
+        <destination>{{destinationEmail}}</destination>
+        <source>{{sourceEmail}}</source>
+
+        <message>
+            <body>
+                <html>{{htmlBody}}</html>
+                <text>{{textBody}}</text>
+            </body>
+            <subject>{{subjectText}}</subject>
+        </message>
+
+    </ses>
+
+</scenario>

@@ -1,0 +1,30 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SMTP Repeat Variation Test</name>
+        <description>
+            This scenario verifies repeat execution using CSV rows.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <repeat comment="Send email using variation rows"
+            variations="smtp_repeat.csv">
+
+        <smtp comment="Send email from variation"
+              alias="SMTP_0"
+              recipientEmail="{{recipient}}">
+
+            <subject>{{subjectText}}</subject>
+            <text>{{messageText}}</text>
+
+        </smtp>
+
+    </repeat>
+
+</scenario>

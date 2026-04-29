@@ -1,0 +1,4 @@
+comment,recipient,subjectText,messageText
+Send first email from CSV,test1@gmail.com,Hello 1,Message 1
+Send second email from CSV,test2@gmail.com,Hello 2,Message 2
+Send third email from CSV,test3@gmail.com,Hello 3,Message 3

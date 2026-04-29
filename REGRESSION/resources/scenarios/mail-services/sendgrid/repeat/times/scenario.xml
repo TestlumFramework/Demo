@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid Repeat Times</name>
+        <description>
+            This scenario verifies SendGrid execution inside repeat block using times.
+
+            Test flow:
+            1. Execute SendGrid request inside repeat block 3 times.
+            2. Send the same email on each iteration.
+            3. Verify response status = 202 for each execution.
+
+            This scenario validates:
+            - Stable repeated execution
+            - Correct handling of multiple identical requests
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <repeat comment="Execute SendGrid request 3 times"
+            times="3">
+
+        <sendgrid comment="Send email inside repeat-times block"
+                  alias="SG_0">
+
+            <post endpoint="/mail/send">
+                <response code="202"/>
+
+                <body>
+                    <raw>
+                        {
+                        "from": { "email": "contact@testlum.com" },
+                        "subject": "Repeat Times Test",
+                        "personalizations": [{
+                        "to": [{
+                        "email": "testlum.test.acc@gmail.com"
+                        }]
+                        }],
+                        "content": [{
+                        "type": "text/plain",
+                        "value": "Repeated message"
+                        }]
+                        }
+                    </raw>
+                </body>
+
+            </post>
+
+        </sendgrid>
+
+    </repeat>
+
+</scenario>

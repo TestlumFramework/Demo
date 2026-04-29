@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SMTP Variation Test</name>
+        <description>
+            This scenario verifies CSV-driven SMTP execution.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>smtp_variations.csv</variations>
+        <tags>smtp</tags>
+    </settings>
+
+    <smtp comment="{{comment}}"
+          alias="SMTP_0"
+          recipientEmail="{{recipient}}">
+
+        <subject>{{subjectText}}</subject>
+        <text>{{messageText}}</text>
+
+    </smtp>
+
+</scenario>

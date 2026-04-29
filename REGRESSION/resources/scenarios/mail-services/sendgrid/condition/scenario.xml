@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid Condition Execution Control Test</name>
+        <description>
+            This scenario verifies condition-based execution control for SendGrid requests.
+
+            Test flow:
+            1. Execute request with TRUE condition → request should be sent and return 202.
+            2. Execute request with FALSE condition → request should NOT be executed.
+
+            Additional validation:
+            - Second request contains invalid payload to ensure failure if condition is ignored.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <condition comment="Condition that allows request execution"
+               name="executeRequest"
+               spel="true"/>
+
+    <condition comment="Condition that blocks request execution"
+               name="skipRequest"
+               spel="false"/>
+
+
+    <sendgrid comment="Request should be executed because condition is TRUE"
+              alias="SG_0"
+              condition="executeRequest">
+
+        <post endpoint="/mail/send">
+            <response code="202"/>
+
+            <body>
+                <raw>
+                    {
+                    "from": { "email": "contact@testlum.com" },
+                    "subject": "Condition TRUE - request executed",
+                    "personalizations": [{
+                    "to": [{
+                    "email": "konnor999@gmail.com"
+                    }]
+                    }],
+                    "content": [{
+                    "type": "text/plain",
+                    "value": "This request must be executed"
+                    }]
+                    }
+                </raw>
+            </body>
+        </post>
+
+    </sendgrid>
+
+    <sendgrid comment="Request should NOT be executed because condition is FALSE"
+              alias="SG_0"
+              condition="skipRequest">
+
+        <post endpoint="/mail/send">
+            <response code="200"/>
+            <body>
+                <raw>
+                    {
+                    "from": { "email": "INVALID_EMAIL" },
+                    "subject": "Condition FALSE - request must be skipped",
+                    "personalizations": [{
+                    "to": [{
+                    "email": "testlum.test.acc@gmail.com"
+                    }]
+                    }],
+                    "content": [{
+                    "type": "text/plain",
+                    "value": "This request must NOT be executed"
+                    }]
+                    }
+                </raw>
+            </body>
+        </post>
+
+    </sendgrid>
+
+</scenario>

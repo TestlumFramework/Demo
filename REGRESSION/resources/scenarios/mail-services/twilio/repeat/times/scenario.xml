@@ -1,0 +1,29 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Twilio Repeat Times Test</name>
+        <description>
+            This scenario verifies repeated SMS sending.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>twilio</tags>
+    </settings>
+
+    <repeat comment="Send SMS 3 times"
+            times="3">
+
+        <twilio comment="Repeat SMS"
+                alias="TWILIO_0"
+                destinationPhoneNumber="+380500387639">
+
+            <message>Repeat message</message>
+
+        </twilio>
+
+    </repeat>
+
+</scenario>

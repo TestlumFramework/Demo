@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SMTP Variable Test</name>
+        <description>
+            This scenario verifies variable injection in SMTP request.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <var comment="Recipient variable" name="recipient">
+        <constant value="testlum.test.acc@gmail.com"/>
+    </var>
+
+    <var comment="SubjectT ext variable" name="subjectText">
+        <constant value="SMTP Variable Subject"/>
+    </var>
+
+    <var comment="SMTP Variable Message variable" name="messageText">
+        <constant value="SMTP Variable Message"/>
+    </var>
+
+    <condition comment="Test condition" name="smtpCondition" spel="true"/>
+
+    <var comment="Condition Variable" name="varCondition">
+        <constant value="{{smtpCondition}}"/>
+    </var>
+
+    <var comment="Send email using variables" name="comment">
+        <constant value="Send email using variables"/>
+    </var>
+
+    <smtp comment="{{comment}}"
+          alias="SMTP_0"
+          condition="{{varCondition}}"
+          recipientEmail="{{recipient}}">
+
+        <subject>{{subjectText}}</subject>
+        <text>{{messageText}}</text>
+
+    </smtp>
+
+</scenario>

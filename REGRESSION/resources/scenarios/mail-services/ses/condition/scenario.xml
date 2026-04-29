@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SES Condition Test</name>
+        <description>
+            This scenario verifies condition-based execution control.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>ses</tags>
+    </settings>
+
+    <condition comment="First condition" name="executeEmail" spel="true"/>
+    <condition comment="Second condition" name="skipEmail" spel="false"/>
+
+    <ses comment="Should be sent"
+         alias="SES_0"
+         condition="executeEmail">
+
+        <destination>testlum.test.acc@gmail.com</destination>
+        <source>testlum@gmail.com</source>
+
+        <message>
+            <body>
+                <html>Condition TRUE</html>
+                <text>Email sent</text>
+            </body>
+            <subject>OK</subject>
+        </message>
+
+    </ses>
+
+    <ses comment="Should NOT be sent"
+         alias="SES_0"
+         condition="skipEmail">
+
+        <destination>INVALID</destination>
+        <source>testlum@gmail.com</source>
+
+        <message>
+            <body>
+                <html>Condition FALSE</html>
+                <text>Should not execute</text>
+            </body>
+            <subject>FAIL</subject>
+        </message>
+
+    </ses>
+
+</scenario>

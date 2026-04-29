@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid VARIATION Test</name>
+        <description>
+            This scenario verifies SendGrid request using CSV-driven variations.
+
+            It validates:
+            - multiple payload combinations
+            - variable injection from CSV
+            - different response codes
+        </description>
+    </overview>
+
+    <settings>
+        <variations>sendgrid_variations.csv</variations>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <sendgrid comment="{{requestComment}}" alias="SG_0">
+        <post endpoint="/mail/send">
+            <response code="202"/>
+            <body>
+                <raw>
+                    {
+                    "from": {
+                    "email": "{{contactEmail}}"
+                    },
+                    "subject": "{{subject}}",
+                    "personalizations": [
+                    {
+                    "to": [
+                    {
+                    "email": "{{userEmail}}"
+                    }
+                    ]
+                    }
+                    ],
+                    "content": [
+                    {
+                    "type": "{{type}}",
+                    "value": "{{messageText}}"
+                    }
+                    ]
+                    }
+                </raw>
+            </body>
+
+        </post>
+    </sendgrid>
+
+</scenario>

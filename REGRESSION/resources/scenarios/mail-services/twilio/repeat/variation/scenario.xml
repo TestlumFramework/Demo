@@ -1,0 +1,29 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Twilio Repeat Variation Test</name>
+        <description>
+            This scenario verifies repeat execution using CSV rows.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>twilio</tags>
+    </settings>
+
+    <repeat comment="Send SMS using variation rows"
+            variations="twilio_repeat.csv">
+
+        <twilio comment="Send SMS from variation"
+                alias="TWILIO_0"
+                destinationPhoneNumber="{{phoneNumber}}">
+
+            <message>{{messageText}}</message>
+
+        </twilio>
+
+    </repeat>
+
+</scenario>

@@ -1,0 +1,21 @@
+{
+  "from": {
+    "email": "contact@testlum.com"
+  },
+  "subject": "File Body Test",
+  "personalizations": [
+    {
+      "to": [
+        {
+          "email": "testlum.test.acc@gmail.com"
+        }
+      ]
+    }
+  ],
+  "content": [
+    {
+      "type": "text/plain",
+      "value": "Message from file body"
+    }
+  ]
+}
