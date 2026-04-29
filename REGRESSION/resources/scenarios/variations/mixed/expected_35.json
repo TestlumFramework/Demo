@@ -5,6 +5,6 @@
     "newsName" : "News1",
     "newsNumber" : 4,
     "active" : false,
-    "createdAt" : "2023-04-21T07:49:02.000+00:00"
+    "createdAt" : "2023-04-21T07:49:02.000Z"
   } ]
 } ]

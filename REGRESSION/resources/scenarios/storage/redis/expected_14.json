@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"LREM\",\"arg\":[\"mylist\",\"0\",\"grape\"]}",
+    "query": "{\"arg\":[\"mylist\",\"0\",\"grape\"],\"command\":\"LREM\"}",
     "content": "1"
   }
 ]

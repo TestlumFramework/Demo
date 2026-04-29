@@ -30,6 +30,6 @@ if $(vault status | grep Initialized | awk '{print $2}'); then
     vault kv put secret/rabbit/password key=guest
     vault kv put secret/s3/accessKeyId key=DEFAULT_ACCESS_KEY
     vault kv put secret/ses/accessKeyId key=DEFAULT_ACCESS_KEY
-    vault kv put secret/browserStack/user username=bshakhov_rg7chA
-    vault kv put secret/browserStack/accessKey key=CcvPAhgGXWwE5j4p18Qu
+    vault kv put secret/browserStack/user username=bohdanshakhov_fMHusx
+    vault kv put secret/browserStack/accessKey key=xzf94rKxaDBUxULLwJXC
 fi
