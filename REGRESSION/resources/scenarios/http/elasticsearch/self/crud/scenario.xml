@@ -45,7 +45,7 @@
     </elasticsearch>
 
     <elasticsearch alias="ELASTIC_0"
-                   comment="6. Send PUT request with updated payload">
+                   comment="Send PUT request with updated payload">
         <put endpoint="/test-index/_doc/1">
             <response code="200"/>
             <body>
