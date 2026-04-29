@@ -34,7 +34,7 @@
             <value>
                 [ [ {
                 "entityId" : 808,
-                "payload" : "Delyed message test"
+                "payload" : "Delayed message test"
                 } ] ]
             </value>
         </receive>

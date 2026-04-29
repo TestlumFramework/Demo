@@ -50,10 +50,10 @@
          comment="Unconditionally verify that ONLY the true condition message was actually sent">
         <receive queue="weather">
             <value>
-                [ {
-                "city": "Kyiv",
-                "temperature": 15
-                } ]
+                [ [ {
+                "city" : "Kyiv",
+                "temperature" : 15
+                } ] ]
             </value>
         </receive>
     </sqs>
