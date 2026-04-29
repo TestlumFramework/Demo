@@ -28,9 +28,14 @@
         <constant value="out"/>
     </var>
 
+    <var comment="Variable with correlation ID" name="CORRELATION_ID">
+        <constant value="req-8899-abc"/>
+    </var>
+
+    <!--  XSD validation error in injection into alias  -->
     <rabbit alias="RABBIT_0"
-            comment="Send to RabbitMQ and verify that variable is injected">
-        <send correlationId="req-8899-abc"
+            comment="Send to RabbitMQ and verify that variable is injected. Routing key: {{queue}}">
+        <send correlationId="{{CORRELATION_ID}}"
               routingKey="{{queue}}">
             <value>
                 [ {
@@ -60,27 +65,27 @@
     </rabbit>
 
     <var comment="Variable with body file"
-         name="body_10">
-        <constant value="body_10"/>
+         name="body_11">
+        <constant value="body_11"/>
     </var>
 
     <var comment="Variable with expected file"
-         name="expected_11">
-        <constant value="expected_11"/>
+         name="expected_12">
+        <constant value="expected_12"/>
     </var>
 
     <rabbit alias="RABBIT_0"
             comment="Send to RabbitMQ and verify that variable is injected with file">
         <send correlationId="req-8899-abc"
               routingKey="{{queue}}">
-<!--            <file>{{body_10}}.json          XSD validation error</file>-->
-            <file>body_10.json</file>
+<!--            <file>{{body_11}}.json          XSD validation error</file>-->
+            <file>body_11.json</file>
         </send>
 
         <receive headers="true"
                  queue="{{queue}}"
                  timeoutMillis="4000">
-            <file>{{expected_11}}.json</file>
+            <file>{{expected_12}}.json</file>
         </receive>
 
     </rabbit>

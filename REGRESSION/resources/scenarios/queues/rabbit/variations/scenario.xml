@@ -12,9 +12,10 @@
         <tags>rabbit</tags>
     </settings>
 
+    <!--  XSD validation error in injection into alias  -->
     <rabbit alias="RABBIT_0"
             comment="Rabbit send and receive using variations: {{testDescription}}">
-        <send routingKey="{{queueName}}">
+        <send routingKey="{{queueName}}" correlationId="{{queueName}}">
             <value>
                 [ {
                 "city": "{{city}}",
@@ -31,7 +32,7 @@
                 "city" : "{{city}}",
                 "temperature" : "{{temp}}"
                 } ],
-                "correlationId" : "null",
+                "correlationId" : "{{queueName}}",
                 "headers" : { }
                 } ]
             </value>

@@ -70,9 +70,15 @@
                  timeoutMillis="4000">
             <value>
                 [ {
-                "entityId": 1000,
-                "status": "PROCESSED",
-                "payload": "This SHOULD be in the queue"
+                "correlationId" : "cond-pass-456",
+                "headers" : {
+                "X-Test-Condition" : "true"
+                },
+                "message" : [ {
+                "entityId" : 1000,
+                "status" : "PROCESSED",
+                "payload" : "This SHOULD be in the queue"
+                } ]
                 } ]
             </value>
         </receive>
