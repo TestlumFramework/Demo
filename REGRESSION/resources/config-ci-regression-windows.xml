@@ -17,6 +17,7 @@
         <tag name="condition-self" enabled="true"/>
         <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
+        <tag name="shell-self-windows" enabled="true"/>
         <tag name="assert-self" enabled="true"/>
         <tag name="var-mixed" enabled="false"/>
         <tag name="var-self" enabled="true"/>

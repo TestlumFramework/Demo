@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Shell (Windows Edition)</description>
+        <name>Isolated Shell Windows</name>
+        <developer>Bohdan Shakhov</developer>
+    </overview>
+
+    <settings>
+        <tags>shell-self-windows</tags>
+    </settings>
+
+    <shell comment="Execute simple echo command" file="expected_1.json">
+        <shellCommand>echo "Hello World"</shellCommand>
+    </shell>
+
+    <shell comment="Execute basic failure command with empty output" file="expected_2.json">
+        <shellCommand>cmd /c exit 1</shellCommand>
+    </shell>
+
+    <shell comment="Execute dir command with invalid option" file="expected_3.json">
+        <shellCommand>dir /invalid-option</shellCommand>
+    </shell>
+
+    <shell comment="Execute timeout and echo command as separate commands" file="expected_4.json">
+        <shellCommand>timeout /t 2 /nobreak > NUL</shellCommand>
+        <shellCommand>echo "done"</shellCommand>
+    </shell>
+
+    <shell comment="Execute simple echo command from bat file" file="expected_5.json">
+        <shellFile>echo.bat</shellFile>
+    </shell>
+
+    <shell comment="Execute timeout as shell command and simple echo from bat file" file="expected_6.json">
+        <shellFile>echo.bat</shellFile>
+        <shellCommand>timeout /t 2 /nobreak > NUL</shellCommand>
+    </shell>
+
+    <shell comment="Execute bat script which requires parameters without it" file="expected_7.json">
+        <shellFile>self-test.bat</shellFile>
+    </shell>
+
+    <shell comment="Execute bat script with success parameter" file="expected_8.json">
+        <shellFile>self-test.bat success</shellFile>
+    </shell>
+
+    <shell comment="Execute bat script with slow parameter" file="expected_9.json">
+        <shellFile>self-test.bat slow</shellFile>
+    </shell>
+
+    <shell comment="Execute bat script with env parameter" file="expected_10.json">
+        <shellFile>self-test.bat env</shellFile>
+    </shell>
+
+</scenario>
