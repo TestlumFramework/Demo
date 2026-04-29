@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket Standard Text Variations</name>
+        <description>
+            This scenario verifies standard WebSocket text execution using variations file.
+
+            Test flow includes:
+            1. Load websocket messages and attributes from variations CSV file.
+            2. Connect to standard WebSocket.
+            3. Send text message for each variation row.
+            4. Receive echoed response for each iteration.
+            5. Validate echoed response using expected file from variation.
+
+            This scenario validates:
+            - Variation injection into websocket comment
+            - Variation injection into send comment
+            - Variation injection into receive comment
+            - Variation injection into message
+            - Variation injection into timeout and limit
+            - Variation injection into expected file names
+            - Stable execution across variation rows
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>websocketStandardVariations.csv</variations>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="{{wsComment}}"
+               alias="MEGA_WS_STANDARD"
+               disconnect="true">
+
+        <send comment="{{sendComment}}">
+            <message>{{message}}</message>
+        </send>
+
+        <receive comment="{{receiveComment}}"
+                 limit="1"
+                 timeoutMillis="1000">
+            <file>{{expected_2}}.json</file>
+        </receive>
+
+    </websocket>
+
+</scenario>

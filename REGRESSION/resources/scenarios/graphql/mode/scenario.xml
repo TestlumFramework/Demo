@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Response Mode</name>
+        <description>
+            This scenario verifies difference between strict and lenient response comparison modes for GraphQL.
+
+            Test flow includes:
+            1. Send GraphQL mutation and validate response using lenient mode with partial expected JSON.
+            2. Send the same GraphQL mutation and validate response using strict mode with full expected JSON.
+            3. Reset in-memory GraphQL storage after test.
+
+            This scenario validates:
+            - Lenient mode allows partial GraphQL response validation
+            - Strict mode requires full GraphQL response match
+            - Same GraphQL response can be validated differently depending on comparison mode
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphql</tags>
+    </settings>
+
+    <graphql comment="Step 1. Validate GraphQL mutation response using lenient mode where partial expected JSON is enough"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" mode="lenient" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Mode Book\", author: \"Mode Author\", number: 10 }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 2. Validate GraphQL mutation response using strict mode where full expected JSON is required"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" mode="strict" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { addSelfBook(newBook: { title: \"Mode Book 2\", author: \"Mode Author 2\", number: 20 }) { title author number } }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+    <graphql comment="Step 3. Reset GraphQL storage after response comparison mode test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_3.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

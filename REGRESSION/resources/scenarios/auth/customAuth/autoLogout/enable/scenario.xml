@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth Custom AutoLogout Enabled</name>
+        <description>
+            This scenario verifies Custom Authentication behavior when autoLogout is enabled.
+
+            Test flow includes:
+            1. Send request without Authorization header → expect 401.
+            2. Apply Custom Auth via auth tag.
+            3. Send GET request inside auth block → expect 200.
+            4. Verify protected response body and X-Auth-Type header.
+            5. Exit auth block.
+            6. Send request again without Authorization header → expect 401 because autoLogout=true.
+            7. Reset test data.
+
+            This scenario validates:
+            - Custom auth login flow via auth command
+            - Custom Authorization header injection inside auth block
+            - Protected endpoint access with valid custom token
+            - Automatic Authorization cleanup after leaving auth block
+            - Unauthorized access after auth block when autoLogout is enabled
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <http comment="Unauthorized request should return 401 before auth"
+          alias="MEGA_APP_CUSTOM">
+        <get endpoint="/api/test/auth/custom/resource">
+            <response code="401" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <auth comment="Apply Custom Auth header"
+          apiAlias="MEGA_APP_CUSTOM"
+          credentials="http-auth-user-custom.json"
+          loginEndpoint="/api/test/auth/custom/login">
+
+        <http comment="Access protected custom resource inside auth block"
+              alias="MEGA_APP_CUSTOM">
+            <get endpoint="/api/test/auth/custom/resource">
+                <response code="200" file="expected_3.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Unauthorized request should return 401 after auth block because autoLogout is enabled"
+          alias="MEGA_APP_CUSTOM">
+        <get endpoint="/api/test/auth/custom/resource">
+            <response code="401" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <http comment="Reset custom auth state after test"
+          alias="MEGA_APP_CUSTOM">
+        <delete endpoint="/api/test/auth/custom/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

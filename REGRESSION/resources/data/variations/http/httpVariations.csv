@@ -1,0 +1,3 @@
+comment,endpoint,name,description,status,category,expected_1
+Step 1-4. Create first entity using first variation row,api/test/entities,Variation Entity One,Created from first variation,NEW,VARIATION_ONE,expected_1_1
+Step 1-4. Create second entity using second variation row,api/test/entities,Variation Entity Two,Created from second variation,ACTIVE,VARIATION_TWO,expected_1_2

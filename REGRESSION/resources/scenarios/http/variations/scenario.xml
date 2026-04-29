@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Variations</name>
+        <description>
+            This scenario verifies HTTP request execution using variations file.
+
+            Test flow includes:
+            1. Load test data from variations CSV file.
+            2. Send POST request for each variation row.
+            3. Verify response status = 201 for each iteration.
+            4. Validate response body using expected file from variation.
+            5. Reset in-memory storage after all iterations.
+
+            This scenario validates:
+            - Variation value injection into comment
+            - Variation value injection into endpoint
+            - Variation value injection into request body
+            - Variation value injection into expected file names
+            - Repeated HTTP execution using multiple variation rows
+            - Stable entity creation flow for different input values
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>httpVariations.csv</variations>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="{{comment}}"
+          alias="MEGA_APP">
+        <post endpoint="/{{endpoint}}">
+            <response code="201" file="{{expected_1}}.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "{{name}}",
+                    "description": "{{description}}",
+                    "status": "{{status}}",
+                    "category": "{{category}}"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after all variation iterations"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

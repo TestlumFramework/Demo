@@ -1,0 +1,17 @@
+{
+  "data" : {
+    "getAllSelfBooks" : [ {
+      "title" : "Repeat Times Book",
+      "author" : "Vadym",
+      "number" : 1
+    }, {
+      "title" : "Repeat Times Book",
+      "author" : "Vadym",
+      "number" : 1
+    }, {
+      "title" : "Repeat Times Book",
+      "author" : "Vadym",
+      "number" : 1
+    } ]
+  }
+}

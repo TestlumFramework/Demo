@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP DELETE</name>
+        <description>
+            This scenario verifies HTTP DELETE method behavior.
+
+            Test flow includes:
+            1. Create entity in memory.
+            2. Send DELETE request to remove all entities.
+            3. Verify response status = 200.
+            4. Send GET request to verify storage is empty.
+
+            This scenario validates:
+            - Full entity storage cleanup via DELETE method
+            - Correct removal of in-memory data
+            - Empty response state after deletion
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create entity before DELETE request"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Delete Entity",
+                    "description": "Will be deleted",
+                    "status": "NEW",
+                    "category": "DEFAULT"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-3. Delete all entities via DELETE request"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/entities">
+            <response code="200"/>
+        </delete>
+    </http>
+
+    <http comment="Step 4. Verify entity storage is empty after DELETE request"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_3.json"/>
+        </get>
+    </http>
+
+</scenario>

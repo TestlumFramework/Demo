@@ -1,0 +1,5 @@
+{
+  "status": "UNAUTHORIZED",
+  "message": "Missing Authorization header",
+  "timestamp": "p(any)"
+}

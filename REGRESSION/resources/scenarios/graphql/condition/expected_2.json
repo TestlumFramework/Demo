@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Condition Book",
+      "author" : "Vadym",
+      "number" : 1
+    }
+  }
+}

@@ -1,0 +1,108 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Variable</name>
+        <description>
+            This scenario verifies JWT authentication flow using variables.
+
+            Test flow includes:
+            1. Create variables for comments, login endpoint, protected endpoint, reset endpoint, condition and request values.
+            2. Authenticate via auth tag using variable-based login endpoint.
+            3. Create protected resource using variable-based endpoint and body.
+            4. Verify create response = 200 using expected file with injected variables.
+            5. Reset JWT auth state using variable-based endpoint.
+
+            This scenario validates:
+            - Variable injection into auth tag attributes
+            - Variable injection into auth and http comments
+            - Variable injection into condition
+            - Variable injection into HTTP endpoints
+            - Variable injection into request body
+            - Variable injection into expected file content
+            - Variable reuse across authenticated JWT flow
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <condition comment="Create true condition"
+               name="shouldExecute"
+               spel="true"/>
+
+    <var comment="Create variable for condition"
+         name="varShouldExecute">
+        <constant value="{{shouldExecute}}"/>
+    </var>
+
+    <var comment="Create variable for auth comment"
+         name="authComment">
+        <constant value="Authenticate via JWT auth command using variable-based login endpoint"/>
+    </var>
+
+    <var comment="Create variable for create resource comment"
+         name="createComment">
+        <constant value="Create protected resource using variable-based endpoint and body"/>
+    </var>
+
+    <var comment="Create variable for reset comment"
+         name="resetComment">
+        <constant value="Reset JWT auth state using variable-based endpoint"/>
+    </var>
+
+    <var comment="Create login endpoint variable"
+         name="loginEndpoint">
+        <constant value="api/test/auth/jwt/login"/>
+    </var>
+
+    <var comment="Create resource creation endpoint variable"
+         name="createResourceEndpoint">
+        <constant value="api/test/auth/jwt/resource"/>
+    </var>
+
+    <var comment="Create reset endpoint variable"
+         name="resetEndpoint">
+        <constant value="api/test/auth/jwt/reset"/>
+    </var>
+
+    <var comment="Create protected resource value variable"
+         name="resourceValue">
+        <constant value="variable-resource"/>
+    </var>
+
+    <auth comment="{{authComment}}"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/{{loginEndpoint}}"
+          condition="{{shouldExecute}}">
+
+        <http comment="{{createComment}}"
+              alias="MEGA_APP"
+              condition="{{varShouldExecute}}">
+            <post endpoint="/{{createResourceEndpoint}}">
+                <response code="200" file="expected_7.json"/>
+                <body>
+                    <raw>
+                        {
+                        "value": "{{resourceValue}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+    </auth>
+
+    <http comment="{{resetComment}}"
+          alias="MEGA_APP"
+          condition="{{shouldExecute}}">
+        <delete endpoint="/{{resetEndpoint}}">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

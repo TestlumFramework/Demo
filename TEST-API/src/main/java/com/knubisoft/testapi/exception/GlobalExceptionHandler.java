@@ -70,6 +70,16 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
     }
 
+    @ExceptionHandler(value = ApiTestEntityException.class)
+    public ResponseEntity<Object> handleApiTestEntityException(ApiTestEntityException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex);
+    }
+
+    @ExceptionHandler(value = ApiTestAuthException.class)
+    public ResponseEntity<Object> handleApiTestAuthException(ApiTestAuthException ex) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex);
+    }
+
     private ResponseEntity<Object> buildResponse(HttpStatus httpStatus, Exception ex) {
         String errorMessage = getMessage(ex);
         return buildResponse(httpStatus, ex, errorMessage);

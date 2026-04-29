@@ -1,0 +1,3 @@
+comment,subscribeComment,sendComment,receiveComment,endpoint,topic,message,expected_2
+STOMP variation 1,Subscribe to ping,Send ping,Receive ping,app/ping,topic/ping,hello stomp,expected_2_1
+STOMP variation 2,Subscribe to ping,Send test,Receive test,app/ping,topic/ping,test message,expected_2_2

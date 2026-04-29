@@ -1,0 +1,7 @@
+{
+  "name" : "Post Entity",
+  "description" : "Created via POST",
+  "status" : "NEW",
+  "category" : "DEFAULT",
+  "uploadedFile" : null
+}

@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP GET</name>
+        <description>
+            This scenario verifies HTTP GET method behavior.
+
+            Test flow includes:
+            1. Create entity in memory using POST request.
+            2. Send GET request to retrieve all entities.
+            3. Verify response status = 200.
+            4. Validate returned entities list.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Retrieval of stored entities via GET method
+            - List response correctness
+            - Persistence of created test data in memory
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create entity before GET request"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Get Entity",
+                    "description": "Created before GET",
+                    "status": "NEW",
+                    "category": "DEFAULT"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-4. Retrieve all entities via GET request"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_2.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after GET test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

@@ -8,6 +8,11 @@
     <delayBetweenScenarioRuns seconds="1" enabled="true"/>
 
     <runScenariosByTag enabled="true">
+        <tag name="auth" enabled="true"/>
+        <tag name="http" enabled="true"/>
+        <tag name="websocket" enabled="true"/>
+        <tag name="graphql" enabled="true"/>
+
         <tag name="web" enabled="false"/>
         <tag name="mobilebrowser" enabled="false"/>
         <tag name="mobilebrowser-healthcheck" enabled="true"/>
@@ -27,8 +32,6 @@
         <tag name="elasticsearch-mixed" enabled="false"/>
         <tag name="elasticsearch-self" enabled="false"/>
         <tag name="api" enabled="false"/>
-        <tag name="websocket" enabled="false"/>
-        <tag name="graphql" enabled="false"/>
         <tag name="lambda" enabled="false"/>
         <tag name="mysql" enabled="false"/>
         <tag name="postgresql" enabled="false"/>

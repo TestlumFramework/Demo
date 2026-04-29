@@ -1,0 +1,7 @@
+{
+  "name": "{{name}}",
+  "description": "{{description}}",
+  "status": "{{status}}",
+  "category": "{{category}}",
+  "uploadedFile": null
+}

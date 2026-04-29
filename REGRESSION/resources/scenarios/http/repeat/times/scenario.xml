@@ -1,0 +1,66 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Repeat Times</name>
+        <description>
+            This scenario verifies HTTP request execution inside repeat block using times.
+
+            Test flow includes:
+            1. Execute POST request inside repeat block three times.
+            2. Create one entity during each iteration.
+            3. Send GET request after repeat block.
+            4. Verify that three entities were created in memory.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Repeat execution using times attribute
+            - Stable repeated HTTP POST execution
+            - Data accumulation across repeat iterations
+            - Final storage consistency after repeated execution
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <repeat comment="Repeat entity creation three times"
+            times="3">
+
+        <http comment="Step 1-2. Create entity inside repeat block"
+              alias="MEGA_APP">
+            <post endpoint="/api/test/entities">
+                <response code="201"/>
+                <body>
+                    <raw>
+                        {
+                        "name": "Repeat Time Entity",
+                        "description": "Created inside repeat times block",
+                        "status": "ACTIVE",
+                        "category": "REPEAT_TIME"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+    </repeat>
+
+    <http comment="Step 3-4. Verify all repeated entities were created"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_5.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after repeat times test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>
