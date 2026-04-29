@@ -11,7 +11,7 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="KAFKA_0" comment="Kafka send and receive with value">
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" comment="Kafka send and receive with value">
         <send correlationId="1" topic="weather">
             <value>
                 [ {
@@ -43,7 +43,7 @@
     </kafka>
 
 
-    <kafka alias="KAFKA_0" comment="Kafka send and receive with file">
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" comment="Kafka send and receive with file">
         <send correlationId="1"
               topic="weather">
             <file>body_5.json</file>

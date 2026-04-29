@@ -3,7 +3,7 @@
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
 
     <overview>
-        <description>Kafka Self Testing: Commit</description>
+        <description>Kafka Self Testing: Manual Commit Behaviour</description>
         <name>Kafka Commit Test</name>
     </overview>
 
@@ -11,8 +11,14 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="KAFKA_0"
-           comment="Kafka send and receive checking manual commit behavior">
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Kafka send and receive event without committing offest">
+
+        <receive topic="weather">
+            <value>
+                []
+            </value>
+        </receive>
 
         <send topic="weather">
             <value>
@@ -22,17 +28,38 @@
                 } ]
             </value>
         </send>
+    </kafka>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Kafka send and receive event without committing offest">
 
         <receive commit="false"
                  timeoutMillis="4000"
                  topic="weather">
-            <file>expected_3.json</file>
+            <file>expected_5.json</file>
         </receive>
 
+<!--        Error: manual committing is not working properly with a single <kafka> command -->
+
+<!--        <receive commit="true"-->
+<!--                 timeoutMillis="4000"-->
+<!--                 topic="weather">-->
+<!--            <file>expected_4.json</file>-->
+<!--        </receive>-->
+
+<!--        <receive timeoutMillis="4000"-->
+<!--                 topic="weather">-->
+<!--            <value>[]</value>-->
+<!--        </receive>-->
+
+    </kafka>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Try to receive event under uncommitted offset">
         <receive commit="true"
                  timeoutMillis="4000"
                  topic="weather">
-            <file>expected_4.json</file>
+            <file>expected_7.json</file>
         </receive>
 
         <receive timeoutMillis="4000"

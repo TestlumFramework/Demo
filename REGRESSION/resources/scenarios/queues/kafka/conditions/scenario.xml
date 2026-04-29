@@ -55,8 +55,13 @@
                  topic="weather">
             <value>
                 [ {
-                "city": "Kyiv",
-                "temperature": 15
+                "correlationId" : null,
+                "headers" : { },
+                "key" : null,
+                "value" : [ {
+                "city" : "Kyiv",
+                "temperature" : 15
+                } ]
                 } ]
             </value>
         </receive>

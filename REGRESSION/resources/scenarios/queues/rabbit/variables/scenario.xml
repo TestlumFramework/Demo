@@ -7,8 +7,7 @@
         <name>RabbitMQ Self Test with Variables</name>
     </overview>
 
-    <settings onlyThis="true"
-              truncateStorages="true">
+    <settings truncateStorages="true">
         <tags>rabbit</tags>
     </settings>
 
@@ -70,12 +69,12 @@
         <constant value="expected_11"/>
     </var>
 
-    <!-- Exception here: xsd validation error for <file>    -->
     <rabbit alias="RABBIT_0"
             comment="Send to RabbitMQ and verify that variable is injected with file">
         <send correlationId="req-8899-abc"
               routingKey="{{queue}}">
-            <file>{{body_10}}.json</file>
+<!--            <file>{{body_10}}.json          XSD validation error</file>-->
+            <file>body_10.json</file>
         </send>
 
         <receive headers="true"

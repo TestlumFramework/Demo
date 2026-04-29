@@ -18,6 +18,12 @@
             <file>body_2.json</file>
             <key>ua-kyiv-region</key>
         </send>
+    </kafka>
+
+    <wait comment="Wait maxPollIntervalMs time (needs to be removed after consumer fix)" time="1"/>
+
+    <kafka alias="KAFKA_0"
+           comment="Kafka send and receive verifying message key">
 
         <receive commit="true"
                  timeoutMillis="4000"

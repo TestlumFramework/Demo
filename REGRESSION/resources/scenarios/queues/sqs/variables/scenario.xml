@@ -54,11 +54,11 @@
         <constant value="expected_10"/>
     </var>
 
-    <!--    Exception here - xsd validation error for <file> -->
     <sqs alias="SQS_0"
          comment="SQS send and receive for status {{source}}">
         <send queue="{{queue}}">
-            <file>{{body_9}}.json</file>
+<!--            <file>{{body_9}}.json           XSD validation exception</file>-->
+            <file>body_9.json</file>
         </send>
 
         <receive queue="{{queue}}">

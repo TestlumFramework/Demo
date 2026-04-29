@@ -227,21 +227,9 @@
             </value>
         </receive>
 
-        <receive topic="weather" headers="true">
+        <receive topic="weather">
             <value>
-                [ {
-                "key" : "33",
-                "value" : [ {
-                "city" : "Boston",
-                "temperature" : 9,
-                "condition" : "windy",
-                "timestamp" : 1650765000
-                } ],
-                "correlationId" : null,
-                "headers" : {
-                "Lviv" : "33"
-                }
-                } ]
+                [ ]
             </value>
         </receive>
     </kafka>

@@ -37,9 +37,10 @@
             </value>
         </receive>
 
-        <!--        Exception here - xsd validation error for <file>        -->
         <send routingKey="{{queueName}}">
-            <file>{{body_4}}.json</file>
+<!--            <file>{{body_4}}.json           XSD validation error</file>-->
+<!--            <file>body_4_1.json             XSD validation</file>-->
+            <file>body_4.json</file>
         </send>
 
         <receive queue="{{queueName}}"

@@ -1,28 +1,31 @@
-[
-  {
-    "key": "7",
-    "value": [
-      {
-        "city": "San Francisco",
-        "temperature": 7,
-        "condition": "foggy",
-        "timestamp": 1650764400
-      }
-    ],
-    "correlationId": "7",
-    "headers": null
-  },
-  {
-    "key": null,
-    "value": [
-      {
-        "city": "Seattle",
-        "temperature": 8,
-        "condition": "rainy",
-        "timestamp": 1650764700
-      }
-    ],
-    "correlationId": null,
-    "headers": null
-  }
-]
+[ {
+  "correlationId" : "7",
+  "headers" : null,
+  "key" : "7",
+  "value" : [ {
+    "city" : "San Francisco",
+    "temperature" : 7,
+    "condition" : "foggy",
+    "timestamp" : 1650764400
+  } ]
+}, {
+  "correlationId" : null,
+  "headers" : null,
+  "key" : null,
+  "value" : [ {
+    "city" : "Seattle",
+    "temperature" : 8,
+    "condition" : "rainy",
+    "timestamp" : 1650764700
+  } ]
+}, {
+  "correlationId" : null,
+  "headers" : null,
+  "key" : "33",
+  "value" : [ {
+    "city" : "Boston",
+    "temperature" : 9,
+    "condition" : "windy",
+    "timestamp" : 1650765000
+  } ]
+} ]

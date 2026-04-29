@@ -11,7 +11,7 @@
         <tags>kafka</tags>
     </settings>
 
-    <kafka alias="KAFKA_0"
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
            comment="Kafka send and receive verifying correlationId and headers">
 
         <send correlationId="98765-abcde"

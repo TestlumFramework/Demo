@@ -23,10 +23,6 @@
             </value>
         </send>
     </kafka>
-
-    <wait comment="Wait for Kafka to save event"
-          time="1"
-          unit="seconds"/>
     
     <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
            comment="Verify latest offset reset: ignore messages produced before subscription, then process a newly published message">

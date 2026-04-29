@@ -32,9 +32,10 @@
             </value>
         </receive>
 
-        <!--        Exception here - xsd validation error for <file> -->
         <send queue="{{queueName}}">
-            <file>{{body_4}}.json</file>
+<!--            <file>{{body_4}}.json</file>        XSD validation error -->
+<!--            <file>body_4_1.json</file>          XSD validation error-->
+            <file>body_4.json</file>
         </send>
 
         <receive queue="{{queueName}}">
