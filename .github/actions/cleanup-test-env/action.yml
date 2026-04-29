@@ -59,5 +59,4 @@ runs:
 
         "${bs_dir}/BrowserStackLocal" \
           --key "${{ inputs.browserstack_access_key }}" \
-          --local-identifier "${{ inputs.browserstack_local_identifier }}" \
           --daemon stop || true
