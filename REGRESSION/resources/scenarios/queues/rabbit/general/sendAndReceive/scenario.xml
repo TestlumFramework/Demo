@@ -1,0 +1,88 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ Self Tests: Send and Receive with Correlation ID and Headers</description>
+        <name>RabbitMQ Self Send and Receive</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http alias="MEGA_APP"
+          comment="Check ability to receive a message">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <rabbit alias="RABBIT_0"
+            comment="Send to RabbitMQ and verify message value, correlationId, and headers">
+        <send correlationId="req-8899-abc"
+              routingKey="out">
+            <value>
+                [ {
+                "entityId": 404,
+                "status": "CREATED",
+                "payload": "RabbitMQ test data"
+                } ]
+            </value>
+            <headers>
+                <header name="X-Service-Origin" value="testlum-runner"/>
+                <header name="Action-Type" value="trigger-event"/>
+            </headers>
+        </send>
+
+        <receive headers="true"
+                 queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [ {
+                "message" : [ {
+                "entityId" : 404,
+                "status" : "CREATED",
+                "payload" : "RabbitMQ test data"
+                } ],
+                "correlationId" : "req-8899-abc",
+                "headers" : {
+                "Action-Type" : "trigger-event",
+                "X-Service-Origin" : "testlum-runner"
+                }
+                } ]
+            </value>
+        </receive>
+
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="Receive from queue again to ensure that queue is empty">
+        <receive headers="true"
+                 queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [ ]
+            </value>
+        </receive>
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="Send to RabbitMQ and verify message value, correlationId, and headers">
+        <send correlationId="req-8899-abc"
+              routingKey="out">
+            <file>body_8.json</file>
+            <headers>
+                <header name="X-Service-Origin" value="testlum-runner"/>
+                <header name="Action-Type" value="trigger-event"/>
+            </headers>
+        </send>
+
+        <receive headers="true"
+                 queue="out"
+                 timeoutMillis="4000">
+            <file>expected_9.json</file>
+        </receive>
+
+    </rabbit>
+</scenario>

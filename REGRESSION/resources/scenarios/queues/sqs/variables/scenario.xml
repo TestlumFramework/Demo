@@ -1,0 +1,68 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Self Tests with Variables</description>
+        <name>SQS Self with Variables Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <var comment="Variable with country for message"
+         name="source">
+        <constant value="api-call"/>
+    </var>
+
+    <var comment="Variable with queue for messaging"
+         name="queue">
+        <constant value="test-sqs-queue"/>
+    </var>
+
+    <sqs alias="SQS_0"
+         comment="SQS send and receive for status {{source}}">
+        <send queue="{{queue}}">
+            <value>
+                [ {
+                "entityId": 707,
+                "event": "USER_REGISTERED",
+                "source": "{{source}}"
+                } ]
+            </value>
+        </send>
+
+        <receive queue="{{queue}}">
+            <value>
+                [ [ {
+                "entityId" : 707,
+                "event" : "USER_REGISTERED",
+                "source" : "{{source}}"
+                } ] ]
+            </value>
+        </receive>
+    </sqs>
+
+    <var comment="Variable with body file"
+         name="body_9">
+        <constant value="body_9"/>
+    </var>
+
+    <var comment="Variable with expected file"
+         name="expected_10">
+        <constant value="expected_10"/>
+    </var>
+
+    <!--    Exception here - xsd validation error for <file> -->
+    <sqs alias="SQS_0"
+         comment="SQS send and receive for status {{source}}">
+        <send queue="{{queue}}">
+            <file>{{body_9}}.json</file>
+        </send>
+
+        <receive queue="{{queue}}">
+            <file>{{expected_10}}.json</file>
+        </receive>
+    </sqs>
+</scenario>

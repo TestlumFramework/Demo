@@ -1,0 +1,64 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS with Conditions Testing</description>
+        <name>SQS Condition Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="Check that the queue is completely empty initially">
+        <receive queue="weather">
+            <value>[]</value>
+        </receive>
+    </sqs>
+
+    <sqs alias="SQS_0"
+         comment="Test conditional execution: message should NOT be sent if condition is false"
+         condition="false">
+        <send queue="weather">
+            <value>
+                [ {
+                "city": "Lviv",
+                "temperature": 10
+                } ]
+            </value>
+        </send>
+    </sqs>
+
+    <var comment="True condition to test injecting var into condition attribute"
+         name="TRUE_CONDITION">
+        <constant value="true"/>
+    </var>
+
+    <sqs alias="SQS_0"
+         comment="Send valid message with true condition injected from variable"
+         condition="{{TRUE_CONDITION}}">
+        <send queue="weather">
+            <value>
+                [ {
+                "city": "Kyiv",
+                "temperature": 15
+                } ]
+            </value>
+        </send>
+    </sqs>
+
+    <sqs alias="SQS_0"
+         comment="Unconditionally verify that ONLY the true condition message was actually sent">
+        <receive queue="weather">
+            <value>
+                [ {
+                "city": "Kyiv",
+                "temperature": 15
+                } ]
+            </value>
+        </receive>
+    </sqs>
+
+</scenario>

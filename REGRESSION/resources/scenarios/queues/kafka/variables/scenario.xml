@@ -1,0 +1,89 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Self Tests: Variables</description>
+        <name>Kafka Self with Variables</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <var comment="Variable with country for message"
+         name="city">
+        <constant value="London"/>
+    </var>
+
+    <var comment="Variable with topic for messaging"
+         name="topic">
+        <constant value="weather"/>
+    </var>
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive for country {{city}} - inject into value tag">
+        <send correlationId="1"
+              topic="{{topic}}">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city" : "{{city}}",
+                "temperature" : 1,
+                "condition" : "sunny",
+                "timestamp" : 1650762900
+                } ],
+                "correlationId" : "1",
+                "headers" : { }
+                } ]
+            </value>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "key" : null,
+                "value" : [ {
+                "city" : "London",
+                "temperature" : 1,
+                "condition" : "sunny",
+                "timestamp" : 1650762900
+                } ],
+                "correlationId" : "1",
+                "headers" : { }
+                } ],
+                "correlationId" : "1",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+    <var comment="Variable with body file"
+         name="body_8">
+        <constant value="body_8"/>
+    </var>
+
+    <var comment="Variable with expected file"
+         name="expected_9">
+        <constant value="expected_9"/>
+    </var>
+
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive for country {{city}} - inject into file">
+        <send correlationId="1"
+              topic="{{topic}}">
+            <file>{{body_8}}.json</file>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <file>{{expected_9}}.json</file>
+        </receive>
+    </kafka>
+</scenario>

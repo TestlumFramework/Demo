@@ -1,0 +1,49 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Self Tests: Send and Receive</description>
+        <name>SQS Self Send and Receive</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="SQS Basic Send and Receive test">
+
+        <send queue="test-sqs-queue">
+            <value>
+                [ {
+                "entityId": 707,
+                "event": "USER_REGISTERED",
+                "source": "frontend"
+                } ]
+            </value>
+        </send>
+
+        <receive queue="test-sqs-queue">
+            <value>
+                [ [ {
+                "entityId" : 707,
+                "event" : "USER_REGISTERED",
+                "source" : "frontend"
+                } ] ]
+            </value>
+        </receive>
+
+    </sqs>
+
+    <sqs alias="SQS_0"
+         comment="SQS Basic Send and Receive test with file">
+        <send queue="test-sqs-queue">
+            <file>body_5.json</file>
+        </send>
+
+        <receive queue="test-sqs-queue">
+            <file>expected_6.json</file>
+        </receive>
+    </sqs>
+</scenario>

@@ -1,0 +1,65 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka with Latest Auto Offset Reset</description>
+        <name>Kafka Latest Offset Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
+           comment="Produce a message before the consumer connects">
+
+        <send topic="weather-latest-test">
+            <value>
+                [ {
+                "city": "Dnipro",
+                "temperature": 18
+                } ]
+            </value>
+        </send>
+    </kafka>
+
+    <wait comment="Wait for Kafka to save event"
+          time="1"
+          unit="seconds"/>
+    
+    <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
+           comment="Verify latest offset reset: ignore messages produced before subscription, then process a newly published message">
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather-latest-test">
+            <value>[]</value>
+        </receive>
+
+        <send topic="weather-latest-test">
+            <value>
+                [ {
+                "city": "Lutsk",
+                "temperature": 14
+                } ]
+            </value>
+        </send>
+
+        <receive commit="true"
+                 topic="weather-latest-test">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city": "Lutsk",
+                "temperature": 14
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+</scenario>

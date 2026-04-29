@@ -1,0 +1,90 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ Prefetch Testing</description>
+        <name>RabbitMQ Prefetch Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http alias="MEGA_APP"
+          comment="Check ability to receive a message">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <rabbit alias="RABBIT_0"
+            comment="Test prefetchCount limit by sending 3 messages and receiving in batches">
+
+        <send routingKey="out">
+            <value>
+                [ {
+                "entityId": 1,
+                "payload": "First message"
+                } ]
+            </value>
+        </send>
+
+        <send routingKey="out">
+            <value>
+                [ {
+                "entityId": 2,
+                "payload": "Second message"
+                } ]
+            </value>
+        </send>
+
+        <send routingKey="out">
+            <value>
+                [ {
+                "entityId": 3,
+                "payload": "Third message"
+                } ]
+            </value>
+        </send>
+
+        <receive headers="true"
+                 prefetchCount="2"
+                 queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [ {
+                "message" : [ {
+                "entityId" : 1,
+                "payload" : "First message"
+                } ],
+                "correlationId" : "null",
+                "headers" : { }
+                }, {
+                "message" : [ {
+                "entityId" : 2,
+                "payload" : "Second message"
+                } ],
+                "correlationId" : "null",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <receive headers="true"
+                 queue="out"
+                 timeoutMillis="4000">
+            <value>
+                [ {
+                "message" : [ {
+                "entityId" : 3,
+                "payload" : "Third message"
+                } ],
+                "correlationId" : "null",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+    </rabbit>
+</scenario>

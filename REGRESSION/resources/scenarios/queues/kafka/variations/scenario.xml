@@ -1,0 +1,54 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Testing with Variations</description>
+        <name>Kafka Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>kafka_with_variations_test_data.csv</variations>
+        <tags>kafka</tags>
+    </settings>
+    
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive using variations: {{testDescription}}">
+
+        <send topic="{{topicName}}">
+            <value>
+                [ {
+                "city": "{{city}}",
+                "temperature": {{temp}}
+                } ]
+            </value>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="{{topicName}}">
+            <value>
+                [ {
+                "key" : null,
+                "value" : [ {
+                "city": "{{city}}",
+                "temperature": {{temp}}
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+        <send topic="{{topicName}}">
+            <file>{{body_4}}.json</file>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="{{topicName}}">
+            <file>{{expected_5}}.json</file>
+        </receive>
+
+    </kafka>
+</scenario>

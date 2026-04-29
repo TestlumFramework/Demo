@@ -1,0 +1,11 @@
+[ {
+  "key" : null,
+  "value" : [ {
+    "city" : "{{city}}",
+    "temperature" : 1,
+    "condition" : "sunny",
+    "timestamp" : 1650762900
+  } ],
+  "correlationId" : "1",
+  "headers" : { }
+} ]

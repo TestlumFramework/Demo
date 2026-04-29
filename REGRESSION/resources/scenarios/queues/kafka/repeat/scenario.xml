@@ -1,0 +1,62 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Testing with Repeat</description>
+        <name>Kafka Repeat Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <repeat comment="Send 100 events with repeat"
+            times="100">
+        <kafka alias="QUEUE"
+               comment="Kafka send message in a loop">
+            <send topic="weather">
+                <value>
+                    [ {
+                    "city": "Kharkiv",
+                    "temperature": 20
+                    } ]
+                </value>
+            </send>
+        </kafka>
+    </repeat>
+
+    <kafka alias="QUEUE"
+           comment="Kafka receive all 100 messages">
+        <receive commit="true"
+                 timeoutMillis="10000"
+                 topic="weather">
+            <file>expected_203.json</file>
+        </receive>
+    </kafka>
+
+    <repeat comment="Send 100 events with variations repeat"
+            variations="kafka_with_variations_test_data.csv">
+        <kafka alias="QUEUE"
+               comment="Kafka send message with variation in a loop">
+            <send topic="weather">
+                <value>
+                    [ {
+                    "city": "{{city}}",
+                    "temperature": 20
+                    } ]
+                </value>
+            </send>
+        </kafka>
+    </repeat>
+
+    <kafka alias="QUEUE"
+           comment="Kafka receive 2 messages">
+        <receive commit="true"
+                 timeoutMillis="1000"
+                 topic="weather">
+            <file>expected_210.json</file>
+        </receive>
+    </kafka>
+
+</scenario>

@@ -1,0 +1,108 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Self Tests: Deduplication and Parallel Delivery</description>
+        <name>SQS Self Deduplication and Parallel Delivery Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="Verify FIFO deduplication and parallel delivery groups">
+
+        <send messageDeduplicationId="msg1"
+              messageGroupId="grp1"
+              queue="test-dedup.fifo">
+            <value>
+                [ {
+                "id": 1,
+                "payload": "First valid message"
+                } ]
+            </value>
+        </send>
+
+        <send messageDeduplicationId="msg1"
+              messageGroupId="grp1"
+              queue="test-dedup.fifo">
+            <value>
+                [ {
+                "id": 2,
+                "payload": "Duplicate message - WILL BE IGNORED"
+                } ]
+            </value>
+        </send>
+
+        <send messageDeduplicationId="msg2"
+              messageGroupId="grp2"
+              queue="test-dedup.fifo">
+            <value>
+                [ {
+                "id": 3,
+                "payload": "Third valid message in grp2"
+                } ]
+            </value>
+        </send>
+
+        <receive maxNumberOfMessages="10"
+                 queue="test-dedup.fifo"
+                 waitTimeSeconds="2">
+            <value>
+                [
+                {
+                "id": 1,
+                "payload": "First valid message"
+                },
+                {
+                "id": 3,
+                "payload": "Third valid message in grp2"
+                }
+                ]
+            </value>
+        </receive>
+
+
+        <send messageDeduplicationId="msg3"
+              messageGroupId="grp3"
+              queue="test-dedup.fifo">
+            <value>
+                [ {
+                "id": 4,
+                "payload": "Parallel message 1"
+                } ]
+            </value>
+        </send>
+
+        <send messageDeduplicationId="msg4"
+              messageGroupId="grp4"
+              queue="test-dedup.fifo">
+            <value>
+                [ {
+                "id": 5,
+                "payload": "Parallel message 2"
+                } ]
+            </value>
+        </send>
+
+        <receive maxNumberOfMessages="10"
+                 queue="test-dedup.fifo"
+                 waitTimeSeconds="2">
+            <value>
+                [
+                {
+                "id": 4,
+                "payload": "Parallel message 1"
+                },
+                {
+                "id": 5,
+                "payload": "Parallel message 2"
+                }
+                ]
+            </value>
+        </receive>
+
+    </sqs>
+</scenario>

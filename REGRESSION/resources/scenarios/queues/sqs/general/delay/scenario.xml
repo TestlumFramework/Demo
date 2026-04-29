@@ -1,0 +1,43 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Self Tests: Delay Sending</description>
+        <name>SQS Self Delay Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="Test SQS message delay functionality (DelaySeconds)">
+
+        <send delaySeconds="3"
+              queue="test-delay-queue">
+            <value>
+                [ {
+                "entityId": 808,
+                "payload": "Delayed message test"
+                } ]
+            </value>
+        </send>
+
+        <receive queue="test-delay-queue"
+                 waitTimeSeconds="1">
+            <value>[]</value>
+        </receive>
+
+        <receive queue="test-delay-queue"
+                 waitTimeSeconds="5">
+            <value>
+                [ [ {
+                "entityId" : 808,
+                "payload" : "Delyed message test"
+                } ] ]
+            </value>
+        </receive>
+
+    </sqs>
+</scenario>

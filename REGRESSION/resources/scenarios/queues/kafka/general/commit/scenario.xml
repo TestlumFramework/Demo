@@ -1,0 +1,45 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Self Testing: Commit</description>
+        <name>Kafka Commit Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive checking manual commit behavior">
+
+        <send topic="weather">
+            <value>
+                [ {
+                "city": "Odessa",
+                "temperature": 18
+                } ]
+            </value>
+        </send>
+
+        <receive commit="false"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <file>expected_3.json</file>
+        </receive>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <file>expected_4.json</file>
+        </receive>
+
+        <receive timeoutMillis="4000"
+                 topic="weather">
+            <value>[]</value>
+        </receive>
+
+    </kafka>
+
+</scenario>

@@ -161,11 +161,33 @@
         <kafka alias="KAFKA_0" enabled="false" truncate="true">
             <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>1000</maxPollIntervalMs>
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
+               enabled="true"
+               truncate="true">
+            <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
+            <autoOffsetReset>latest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
             <maxPollIntervalMs>1000</maxPollIntervalMs>
-            <clientId>group</clientId>
-            <groupId>group</groupId>
-            <!--            <autoCommitTimeout>50</autoCommitTimeout>-->
+            <clientId>client-latest</clientId>
+            <groupId>group-latest</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
+               enabled="true"
+               truncate="true">
+            <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>2</maxPollRecords>
+            <maxPollIntervalMs>5000</maxPollIntervalMs>
+            <clientId>client-reduced</clientId>
+            <groupId>group-reduced</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
     </kafkaIntegration>
 

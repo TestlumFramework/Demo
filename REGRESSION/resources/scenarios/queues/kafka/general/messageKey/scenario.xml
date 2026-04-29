@@ -1,0 +1,42 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Self Testing: Key</description>
+        <name>Kafka Key Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="QUEUE"
+           comment="Kafka send and receive verifying message key">
+
+        <send topic="weather">
+            <file>body_2.json</file>
+            <key>ua-kyiv-region</key>
+        </send>
+
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather">
+            <value>
+                [ {
+                "key" : "ua-kyiv-region",
+                "value" : [ {
+                "city" : "Kyiv",
+                "temperature" : 15,
+                "condition" : "cloudy",
+                "timestamp" : 1650762955
+                } ],
+                "correlationId" : null,
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+    </kafka>
+
+
+</scenario>

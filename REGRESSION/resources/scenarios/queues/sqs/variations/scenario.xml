@@ -1,0 +1,45 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Testing with Variations</description>
+        <name>SQS Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>sqs_with_variations_test_data.csv</variations>
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="SQS send and receive using variations: {{testDescription}}">
+        <send queue="{{queueName}}">
+            <value>
+                [ {
+                "city": "{{city}}",
+                "temperature": "{{temp}}"
+                } ]
+            </value>
+        </send>
+
+        <receive queue="{{queueName}}">
+            <value>
+                [ [ {
+                "city" : "{{city}}",
+                "temperature" : "{{temp}}"
+                } ] ]
+            </value>
+        </receive>
+
+        <!--        Exception here - xsd validation error for <file> -->
+        <send queue="{{queueName}}">
+            <file>{{body_4}}.json</file>
+        </send>
+
+        <receive queue="{{queueName}}">
+            <file>{{expected_5}}.json</file>
+        </receive>
+    </sqs>
+
+</scenario>

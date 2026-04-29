@@ -1,0 +1,88 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ Self Tests: Variables</description>
+        <name>RabbitMQ Self Test with Variables</name>
+    </overview>
+
+    <settings onlyThis="true"
+              truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <http alias="MEGA_APP"
+          comment="Check ability to receive a message">
+        <get endpoint="/queue/rabbit/receive/in">
+            <response code="200" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <var comment="Variable with entity status"
+         name="entity_status">
+        <constant value="DELETED"/>
+    </var>
+
+    <var comment="Variable with topic for messaging"
+         name="queue">
+        <constant value="out"/>
+    </var>
+
+    <rabbit alias="RABBIT_0"
+            comment="Send to RabbitMQ and verify that variable is injected">
+        <send correlationId="req-8899-abc"
+              routingKey="{{queue}}">
+            <value>
+                [ {
+                "entityId": 404,
+                "status": "{{entity_status}}",
+                "payload": "RabbitMQ test data"
+                } ]
+            </value>
+        </send>
+
+        <receive headers="true"
+                 queue="{{queue}}"
+                 timeoutMillis="4000">
+            <value>
+                [ {
+                "message" : [ {
+                "entityId" : 404,
+                "status" : "{{entity_status}}",
+                "payload" : "RabbitMQ test data"
+                } ],
+                "correlationId" : "req-8899-abc",
+                "headers" : { }
+                } ]
+            </value>
+        </receive>
+
+    </rabbit>
+
+    <var comment="Variable with body file"
+         name="body_10">
+        <constant value="body_10"/>
+    </var>
+
+    <var comment="Variable with expected file"
+         name="expected_11">
+        <constant value="expected_11"/>
+    </var>
+
+    <!-- Exception here: xsd validation error for <file>    -->
+    <rabbit alias="RABBIT_0"
+            comment="Send to RabbitMQ and verify that variable is injected with file">
+        <send correlationId="req-8899-abc"
+              routingKey="{{queue}}">
+            <file>{{body_10}}.json</file>
+        </send>
+
+        <receive headers="true"
+                 queue="{{queue}}"
+                 timeoutMillis="4000">
+            <file>{{expected_11}}.json</file>
+        </receive>
+
+    </rabbit>
+</scenario>

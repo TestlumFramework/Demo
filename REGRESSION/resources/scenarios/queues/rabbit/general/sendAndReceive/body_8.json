@@ -1,0 +1,5 @@
+[ {
+  "entityId": 404,
+  "status": "CREATED",
+  "payload": "RabbitMQ test data"
+} ]

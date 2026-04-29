@@ -1,0 +1,78 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>RabbitMQ Testing with Repeat</description>
+        <name>RabbitMQ Repeat Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>rabbit</tags>
+    </settings>
+
+    <repeat comment="Send 100 events with repeat"
+            times="100">
+        <rabbit alias="RABBIT_0"
+                comment="RabbitMQ send message in a loop">
+            <send routingKey="out">
+                <value>
+                    [ {
+                    "city": "Kharkiv",
+                    "temperature": 20
+                    } ]
+                </value>
+            </send>
+        </rabbit>
+    </repeat>
+
+    <rabbit alias="RABBIT_0"
+            comment="RabbitMQ receive only 1 message because of prefetch count equals 1">
+        <receive queue="out">
+            <file>expected_203.json</file>
+        </receive>
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="RabbitMQ receive another 50 messages">
+        <receive prefetchCount="50"
+                 queue="out"
+                 timeoutMillis="10000">
+            <file>expected_205.json</file>
+        </receive>
+    </rabbit>
+
+    <rabbit alias="RABBIT_0"
+            comment="RabbitMQ receive the other 49 message">
+        <receive prefetchCount="50"
+                 queue="out"
+                 timeoutMillis="10000">
+            <file>expected_207.json</file>
+        </receive>
+    </rabbit>
+
+    <repeat comment="Send events with variations repeat"
+            variations="kafka_with_variations_test_data.csv">
+        <rabbit alias="RABBIT_0"
+                comment="RabbitMQ send message with variation in a loop">
+            <send routingKey="out">
+                <value>
+                    [ {
+                    "city": "{{city}}",
+                    "temperature": 20
+                    } ]
+                </value>
+            </send>
+        </rabbit>
+    </repeat>
+
+    <rabbit alias="RABBIT_0"
+            comment="RabbitMQ receive 2 messages">
+        <receive prefetchCount="5"
+                 queue="out"
+                 timeoutMillis="1000">
+            <file>expected_214.json</file>
+        </receive>
+    </rabbit>
+
+</scenario>

@@ -1,0 +1,12 @@
+[ {
+  "message" : [ {
+    "entityId" : 404,
+    "status" : "CREATED",
+    "payload" : "RabbitMQ test data"
+  } ],
+  "correlationId" : "req-8899-abc",
+  "headers" : {
+    "Action-Type" : "trigger-event",
+    "X-Service-Origin" : "testlum-runner"
+  }
+} ]

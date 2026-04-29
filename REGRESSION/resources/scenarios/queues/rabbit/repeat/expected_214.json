@@ -1,0 +1,15 @@
+[ {
+  "message" : [ {
+    "city" : "Kyiv",
+    "temperature" : 20
+  } ],
+  "correlationId" : "null",
+  "headers" : { }
+}, {
+  "message" : [ {
+    "city" : "Lviv",
+    "temperature" : 20
+  } ],
+  "correlationId" : "null",
+  "headers" : { }
+} ]
