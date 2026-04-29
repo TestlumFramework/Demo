@@ -25,7 +25,7 @@
         <developer>Vadym Kostenko</developer>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>auth</tags>
     </settings>
 

@@ -246,7 +246,7 @@
     </twilioIntegration>
 
     <smtpIntegration>
-        <smtp alias="SMTP_0" enabled="false">
+        <smtp alias="SMTP_0" enabled="true">
             <host>smtp.gmail.com</host>
             <port>587</port>
             <username>${SMTP_USERNAME}</username>
