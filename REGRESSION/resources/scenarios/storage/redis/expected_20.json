@@ -1,10 +1,10 @@
 [
   {
-    "query": "{\"command\":\"DEL\",\"arg\":[\"user:1\"]}",
+    "query": "{\"arg\":[\"user:1\"],\"command\":\"DEL\"}",
     "content": "1"
   },
   {
-    "query": "{\"command\":\"HGETALL\",\"arg\":[\"user:1\"]}",
+    "query": "{\"arg\":[\"user:1\"],\"command\":\"HGETALL\"}",
     "content": "[]"
   }
 ]

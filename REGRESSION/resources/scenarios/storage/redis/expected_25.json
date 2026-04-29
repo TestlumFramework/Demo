@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"HGET\",\"arg\":[\"\\\"Employee\\\"\",\"1\"]}",
+    "query": "{\"arg\":[\"\\\"Employee\\\"\",\"1\"],\"command\":\"HGET\"}",
     "content": "\"{\\\"id\\\":1,\\\"firstName\\\":\\\"Serhii\\\",\\\"lastName\\\":\\\"Soroka\\\",\\\"email\\\":\\\"serhii.soroka@gmail.com\\\"}\""
   }
 ]

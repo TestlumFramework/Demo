@@ -1,6 +1,6 @@
 [
   {
-    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "query": "{\"arg\":[\"mylist\",\"0\",\"-1\"],\"command\":\"LRANGE\"}",
     "content": "[grape, banana, orange, pineapple]"
   }
 ]

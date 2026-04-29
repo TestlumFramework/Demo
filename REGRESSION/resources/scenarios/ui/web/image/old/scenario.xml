@@ -81,14 +81,18 @@
         <image comment="Compare full screen with locator exclude (local image)"
                file="compare3_local.png" condition="local">
             <fullScreen percentage="99.9">
-                <exclude locator="forms.username"/>
+                <exclude>
+                    <byLocator locator="forms.username"/>
+                </exclude>
             </fullScreen>
         </image>
 
         <image comment="Compare full screen with locator exclude (remote Jenkins image)"
                file="compare3_remote.png" condition="remote">
             <fullScreen percentage="95">
-                <exclude locator="forms.username"/>
+                <exclude>
+                    <byLocator locator="forms.username"/>
+                </exclude>
             </fullScreen>
         </image>
 

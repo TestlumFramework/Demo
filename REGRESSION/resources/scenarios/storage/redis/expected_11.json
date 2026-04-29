@@ -1,18 +1,18 @@
 [
   {
-    "query": "{\"command\":\"RPUSH\",\"arg\":[\"mylist\",\"apple\",\"banana\",\"orange\"]}",
+    "query": "{\"arg\":[\"mylist\",\"apple\",\"banana\",\"orange\"],\"command\":\"RPUSH\"}",
     "content": "3"
   },
   {
-    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "query": "{\"arg\":[\"mylist\",\"0\",\"-1\"],\"command\":\"LRANGE\"}",
     "content": "[apple, banana, orange]"
   },
   {
-    "query": "{\"command\":\"RPUSH\",\"arg\":[\"mylist\",\"pineapple\"]}",
+    "query": "{\"arg\":[\"mylist\",\"pineapple\"],\"command\":\"RPUSH\"}",
     "content": "4"
   },
   {
-    "query": "{\"command\":\"LRANGE\",\"arg\":[\"mylist\",\"0\",\"-1\"]}",
+    "query": "{\"arg\":[\"mylist\",\"0\",\"-1\"],\"command\":\"LRANGE\"}",
     "content": "[apple, banana, orange, pineapple]"
   }
 ]

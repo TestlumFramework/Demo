@@ -7,14 +7,14 @@
         "newsName": "News4",
         "newsNumber": 4,
         "active": false,
-        "createdAt": "2023-04-21T07:49:02.000+00:00"
+        "createdAt": "2023-04-21T07:49:02.000Z"
       },
       {
         "id": 7,
         "newsName": "News7",
         "newsNumber": 7,
         "active": true,
-        "createdAt": "2023-04-26T07:50:41.000+00:00"
+        "createdAt": "2023-04-26T07:50:41.000Z"
       }
     ]
   },
@@ -22,7 +22,7 @@
     "query": "SELECT createdAt FROM news WHERE id = 7",
     "content": [
       {
-        "createdAt": "2023-04-26T07:50:41.000+00:00"
+        "createdAt": "2023-04-26T07:50:41.000Z"
       }
     ]
   }
