@@ -163,6 +163,16 @@
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
             <maxPollIntervalMs>1000</maxPollIntervalMs>
+            <!--            <maxPollIntervalMs>200</maxPollIntervalMs>-->
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true" truncate="true">
+            <bootstrapAddress>localhost:9094</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>200</maxPollIntervalMs>
             <clientId>client-queue</clientId>
             <groupId>group-queue</groupId>
             <autoCommitTimeout>2000</autoCommitTimeout>
