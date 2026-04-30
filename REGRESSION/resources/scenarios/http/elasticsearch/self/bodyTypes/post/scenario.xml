@@ -51,25 +51,27 @@
         </get>
     </elasticsearch>
 
-    <elasticsearch alias="ELASTIC_0"
-                   comment="Send POST request with multipart body">
-        <post endpoint="/test-body-index/_doc/multipart-doc">
-            <response code="201"/>
-            <body>
-                <multipart>
-                    <param data="value1" name="field1"/>
-                    <param data="value2" name="field2"/>
-                </multipart>
-            </body>
-        </post>
-    </elasticsearch>
+    <!--    Exception: ElasticSearch doesn't support multipart -->
 
-    <elasticsearch alias="ELASTIC_0"
-                   comment="Send GET request and validate multipart payload response">
-        <get endpoint="/test-body-index/_doc/multipart-doc">
-            <response code="200" file="expected_6.json"/>
-        </get>
-    </elasticsearch>
+<!--    <elasticsearch alias="ELASTIC_0"-->
+<!--                   comment="Send POST request with multipart body">-->
+<!--        <post endpoint="/test-body-index/_doc/multipart-doc">-->
+<!--            <response code="201"/>-->
+<!--            <body>-->
+<!--                <multipart>-->
+<!--                    <param data="value1" name="field1"/>-->
+<!--                    <param data="value2" name="field2"/>-->
+<!--                </multipart>-->
+<!--            </body>-->
+<!--        </post>-->
+<!--    </elasticsearch>-->
+
+<!--    <elasticsearch alias="ELASTIC_0"-->
+<!--                   comment="Send GET request and validate multipart payload response">-->
+<!--        <get endpoint="/test-body-index/_doc/multipart-doc">-->
+<!--            <response code="200" file="expected_6.json"/>-->
+<!--        </get>-->
+<!--    </elasticsearch>-->
 
     <elasticsearch alias="ELASTIC_0"
                    comment="Send POST request with valid query parameters">
@@ -92,7 +94,7 @@
                    comment="Send GET request and validate param payload response">
         <get endpoint="/test-param-index/_doc/param-doc-1">
             <param data="tenant_1" name="routing"/>
-            <response code="200" file="expected_8.json"/>
+            <response code="200" file="expected_6.json"/>
         </get>
     </elasticsearch>
 

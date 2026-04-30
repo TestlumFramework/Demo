@@ -1,6 +1,14 @@
 {
-  "_index" : "test-body-index",
+  "_index" : "test-param-index",
   "_type" : "_doc",
-  "_id" : "multipart-doc",
-  "found" : false
+  "_id" : "param-doc-1",
+  "_version" : 1,
+  "_seq_no" : 0,
+  "_primary_term" : 1,
+  "_routing" : "tenant_1",
+  "found" : true,
+  "_source" : {
+    "type" : "param_test",
+    "description" : "Document created with refresh and routing parameters"
+  }
 }

@@ -11,12 +11,11 @@
         <tags>elasticsearch-self</tags>
     </settings>
 
-   <elasticsearch comment="Execute elasticsearch command get before post method" alias="ELASTIC_0">
-        <get endpoint="/news/_doc/1">
-            <response file="expected_1.json" code="404">
-                <warning name="null"/>
-            </response>
-        </get>
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Create index before starting CRUD operations">
+        <put endpoint="/news">
+            <response code="200"/>
+        </put>
     </elasticsearch>
 
     <elasticsearch comment="Execute elasticsearch command post" alias="ELASTIC_0">

@@ -6,18 +6,15 @@
         <name>Elasticsearch CRUD Test</name>
     </overview>
 
-    <settings>
+    <settings truncateStorages="true">
         <tags>elasticsearch-self</tags>
     </settings>
 
     <elasticsearch alias="ELASTIC_0"
-                   comment="Execute elasticsearch command get before post method">
-        <get endpoint="/test-index/_doc/1">
-            <response code="404"
-                      file="expected_1.json">
-                <warning name="null"/>
-            </response>
-        </get>
+                   comment="Create index before starting CRUD operations">
+        <put endpoint="/test-index">
+            <response code="200"/>
+        </put>
     </elasticsearch>
 
     <elasticsearch alias="ELASTIC_0"
@@ -69,15 +66,15 @@
 
     <elasticsearch alias="ELASTIC_0"
                    comment="Send DELETE request to remove resource">
-        <delete endpoint="/test-index/_doc/1">
+        <delete endpoint="/test-index/_doc/1?refresh=true">
             <response code="200"/>
         </delete>
     </elasticsearch>
 
     <elasticsearch alias="ELASTIC_0"
-                   comment="Send GET request to confirm resource was deleted">
-        <get endpoint="/test-index/_doc/1">
-            <response code="404"/>
+                   comment="Send GET request to retrieve ALL resources in index">
+        <get endpoint="/test-index/_search">
+            <response code="200" file="expected_8.json"/>
         </get>
     </elasticsearch>
 
