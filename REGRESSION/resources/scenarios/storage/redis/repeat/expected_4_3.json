@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:30\"]}",
+  "query" : "{\"arg\":[\"repeat_news:30\"],\"command\":\"HGETALL\"}",
   "content" : "[title, Weather Forecast 2026]"
 } ]

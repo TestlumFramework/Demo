@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:10\"]}",
+  "query" : "{\"arg\":[\"repeat_news:10\"],\"command\":\"HGETALL\"}",
   "content" : "[title, Global Tech Update]"
 } ]

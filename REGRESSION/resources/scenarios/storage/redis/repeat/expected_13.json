@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"LLEN\",\"arg\":[\"repeat_simple_log\"]}",
+  "query" : "{\"arg\":[\"repeat_simple_log\"],\"command\":\"LLEN\"}",
   "content" : "5"
 } ]

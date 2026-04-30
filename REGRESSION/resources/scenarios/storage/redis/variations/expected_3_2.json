@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"test_news:20\"]}",
+  "query" : "{\"arg\":[\"test_news:20\"],\"command\":\"HGETALL\"}",
   "content" : "[title, In-Memory Databases, category, Tech]"
 } ]

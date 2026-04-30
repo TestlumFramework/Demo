@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HSET\",\"arg\":[\"test_news:30\",\"title\",\"Concurrency on Redis\",\"category\",\"Core\"]}",
+  "query" : "{\"arg\":[\"test_news:30\",\"title\",\"Concurrency on Redis\",\"category\",\"Core\"],\"command\":\"HSET\"}",
   "content" : "2"
 } ]

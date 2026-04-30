@@ -7,8 +7,7 @@
         <name>MariaDB Variations Test</name>
     </overview>
 
-    <settings onlyThis="true"
-              truncateStorages="true">
+    <settings truncateStorages="true">
         <variations>mariadb_variations.csv</variations>
         <tags>abstract-db</tags>
     </settings>

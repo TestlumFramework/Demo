@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"test_news:10\"]}",
+  "query" : "{\"arg\":[\"test_news:10\"],\"command\":\"HGETALL\"}",
   "content" : "[title, New Database Support, category, Tech]"
 } ]

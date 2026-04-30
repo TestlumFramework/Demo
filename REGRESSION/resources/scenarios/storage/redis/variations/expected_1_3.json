@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"DEL\",\"arg\":[\"test_news:30\"]}",
+  "query" : "{\"arg\":[\"test_news:30\"],\"command\":\"DEL\"}",
   "content" : "0"
 } ]

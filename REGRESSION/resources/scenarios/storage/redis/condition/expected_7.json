@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"DEL\",\"arg\":[\"condition_test:99\"]}",
+  "query" : "{\"arg\":[\"condition_test:99\"],\"command\":\"DEL\"}",
   "content" : "1"
 } ]

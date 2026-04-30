@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HSET\",\"arg\":[\"test_news:10\",\"title\",\"{{title}}\",\"category\",\"{{category}}\"]}",
+  "query" : "{\"arg\":[\"test_news:{{id}}\",\"title\",\"{{title}}\",\"category\",\"{{category}}\"],\"command\":\"HSET\"}",
   "content" : "2"
 } ]

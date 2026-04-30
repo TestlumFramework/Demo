@@ -1,4 +1,4 @@
 [ {
-  "query" : "{\"command\":\"HGETALL\",\"arg\":[\"repeat_news:20\"]}",
+  "query" : "{\"arg\":[\"repeat_news:20\"],\"command\":\"HGETALL\"}",
   "content" : "[title, Local Sports Events]"
 } ]
