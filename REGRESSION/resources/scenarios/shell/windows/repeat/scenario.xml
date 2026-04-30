@@ -16,7 +16,7 @@
 
         <shell comment="Execute simple inline command and validate exit code"
                file="expected_2.json">
-            <shellCommand>echo Running iteration inside loop</shellCommand>
+            <shellCommand>cmd.exe /c echo Running iteration inside loop</shellCommand>
         </shell>
 
     </repeat>
@@ -26,7 +26,7 @@
 
         <shell comment="Execute simple inline command and validate exit code for word {{full_word}}"
                file="{{expected_8}}.json">
-            <shellCommand>echo Running iteration inside loop for word {{full_word}}</shellCommand>
+            <shellCommand>cmd.exe /c echo Running iteration inside loop for word {{full_word}}</shellCommand>
         </shell>
 
     </repeat>

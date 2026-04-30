@@ -13,13 +13,13 @@
 
     <shell comment="Before all: remove file if present before test"
            file="expected_1.json">
-        <shellCommand>if exist test_shell_condition.txt del test_shell_condition.txt</shellCommand>
+        <shellCommand>cmd.exe /c if exist test_shell_condition.txt del test_shell_condition.txt</shellCommand>
     </shell>
 
     <shell comment="Attempt to execute failing command with condition=false"
            condition="false"
            file="expected_2.json">
-        <shellCommand>cmd /c exit 1</shellCommand>
+        <shellCommand>cmd.exe /c cmd /c exit 1</shellCommand>
     </shell>
 
     <condition comment="True condition to test injection"
@@ -29,12 +29,12 @@
     <shell comment="Create file with condition=true"
            condition="{{TRUE_CONDITION}}"
            file="expected_4.json">
-        <shellCommand>type nul > test_shell_condition.txt</shellCommand>
+        <shellCommand>cmd.exe /c type nul > test_shell_condition.txt</shellCommand>
     </shell>
 
     <shell comment="Remove the file to verify it was actually created"
            file="expected_5.json">
-        <shellCommand>del test_shell_condition.txt</shellCommand>
+        <shellCommand>cmd.exe /c del test_shell_condition.txt</shellCommand>
     </shell>
 
 </scenario>

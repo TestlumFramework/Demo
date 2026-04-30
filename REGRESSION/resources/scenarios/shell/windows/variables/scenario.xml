@@ -28,7 +28,7 @@
 
     <shell comment="Verify dynamic variables in inline command for word {{full_word}}"
            file="{{expected_1}}.json">
-        <shellCommand>echo {{full_word}} | find "{{search_part}}" &gt;nul</shellCommand>
+        <shellCommand>cmd.exe /c echo {{full_word}} | find "{{search_part}}" &gt;nul</shellCommand>
     </shell>
 
     <var comment="Variable for expected 2 file"
