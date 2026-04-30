@@ -1,0 +1,49 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Javascript - General</name>
+        <description>
+            This scenario verifies javascript command execution in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute javascript to modify DOM.
+            3. Verify updated value.
+
+            This scenario validates:
+            - javascript execution
+            - DOM manipulation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <javascript comment="Set value via javascript"
+                    file="set_value.js"/>
+
+        <assert comment="Verify value updated by JS">
+            <attribute comment="Check input value"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>JS_VALUE</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

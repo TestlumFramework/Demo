@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - AllValues</name>
+        <description>
+            This scenario verifies selecting and deselecting all values in multi-select dropdown in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Select all values using allValues select.
+            3. Verify all values are selected.
+            4. Deselect all values using allValues deselect.
+            5. Verify all values are deselected.
+
+            This scenario validates:
+            - allValues select
+            - allValues deselect
+            - multi-select behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <dropDown comment="Select all values in multi-select"
+                  locator="uiElements.multiSelect">
+            <allValues type="select"/>
+        </dropDown>
+
+        <assert comment="Verify all values are selected">
+            <attribute comment="Check selected values"
+                       name="innerHTML"
+                       locator="uiElements.multiResult">
+                <content>Selected values: A,B,C</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait after select" time="1"/>
+
+        <dropDown comment="Deselect all values in multi-select"
+                  locator="uiElements.multiSelect">
+            <allValues type="deselect"/>
+        </dropDown>
+
+        <assert comment="Verify all values are deselected">
+            <attribute comment="Check empty selection"
+                       name="innerHTML"
+                       locator="uiElements.multiResult">
+                <content>Selected values:</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

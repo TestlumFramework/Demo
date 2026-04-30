@@ -1,0 +1,73 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Condition</name>
+        <description>
+            This scenario verifies variable behavior with conditions in mobile browser.
+
+            Test flow:
+            1. Create initial variable.
+            2. Increment with true condition.
+            3. Try increment with false condition.
+            4. Verify final value.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script for var condition">
+
+        <navigate comment="Navigate to UI Elements"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Initial counter value"
+             name="counter">
+            <constant value="1"/>
+        </var>
+
+        <condition comment="True condition"
+                   name="shouldIncrement"
+                   spel="true"/>
+
+        <condition comment="False condition"
+                   name="shouldSkip"
+                   spel="false"/>
+
+        <var comment="Increment when condition is true"
+             name="counter"
+             condition="shouldIncrement">
+            <expression value="{{counter}} + 1"/>
+        </var>
+
+        <var comment="Increment when condition is false"
+             name="counter"
+             condition="shouldSkip">
+            <expression value="{{counter}} + 1"/>
+        </var>
+
+        <input comment="Input final counter value"
+               locator="uiElements.hotKeyInput1"
+               value="{{counter}}"/>
+
+        <assert comment="Verify final value equals 2">
+            <attribute comment="Verify final value equals 2"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>2</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

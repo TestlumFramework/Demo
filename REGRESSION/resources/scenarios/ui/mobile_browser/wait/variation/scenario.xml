@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Variation</name>
+        <description>
+            This scenario verifies wait command using CSV variations in mobile browser.
+
+            Test flow:
+            1. Load variation data.
+            2. Navigate to page.
+            3. Set wait parameters from CSV.
+            4. Trigger delayed action.
+            5. Wait using CSV time.
+            6. Verify result.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>waitVariation.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{initialWait}}"/>
+
+        <assert comment="{{preCheckComment}}">
+            <present comment="{{preCheckComment}}"
+                     locator="{{resultLocator}}"
+                     negative="true"/>
+        </assert>
+
+        <input comment="{{inputComment}}"
+               locator="{{timeLocator}}"
+               value="{{time}}"/>
+
+        <click comment="{{clickComment}}"
+               locator="{{startLocator}}"/>
+
+        <wait comment="{{waitActionComment}}"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{assertComment}}"
+                     locator="{{resultLocator}}"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

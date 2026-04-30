@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Repeat Times</name>
+        <description>
+            This scenario verifies repeated execution of clear command in mobile browser.
+
+            Test flow:
+            1. Navigate to forms page.
+            2. Repeat input and clear actions multiple times.
+            3. Verify clear command execution on each iteration.
+
+            This scenario validates:
+            - Stable repeated execution of clear
+            - Consistent field reset behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="uiElements.clearInput"/>
+
+        <repeat comment="Repeat clear test 2 times" times="2">
+
+            <input comment="Enter value into input field"
+                   locator="uiElements.clearInput"
+                   value="TestUser"/>
+
+            <assert comment="Verify value is displayed">
+                <attribute comment="Verify value is displayed" name="innerText"
+                           locator="uiElements.clearResult">
+                    <content>Value: TestUser</content>
+                </attribute>
+            </assert>
+
+            <clear comment="Clear input field"
+                   locator="uiElements.clearInput"
+                   highlight="true"/>
+
+            <wait comment="Wait after clear"
+                  time="1"/>
+
+            <assert comment="Verify value is empty">
+                <attribute comment="Verify value is empty" name="innerText"
+                           locator="uiElements.clearResult">
+                    <content>Value: empty</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>

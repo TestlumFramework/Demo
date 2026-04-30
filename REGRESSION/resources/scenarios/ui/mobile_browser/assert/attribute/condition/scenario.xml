@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Attribute - Condition</name>
+        <description>
+            This scenario verifies conditional execution of attribute assertion in mobile browser.
+
+            Test flow:
+            1. Execute valid assertion with condition=true.
+            2. Execute invalid assertion with condition=false.
+
+            This scenario validates:
+            - Condition handling
+            - Skipping logic
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Create true condition (should execute)"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Create false condition (should skip)"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <assert comment="Assert should execute because condition=true"
+                condition="trueCondition">
+            <attribute comment="Check that input type attribute equals expected value"
+                       name="type"
+                       locator="forms.type">
+                <content>password</content>
+            </attribute>
+        </assert>
+
+        <assert comment="Assert should NOT execute because condition=false"
+                condition="falseCondition">
+            <attribute comment="Invalid attribute value but should be skipped"
+                       name="type"
+                       locator="forms.type">
+                <content>INVALID</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

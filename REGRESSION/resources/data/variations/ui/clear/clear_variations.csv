@@ -1,2 +1,2 @@
-navigateComment,path,inputComment,locator,value,clearComment,assertComment,notEqualComment
-Navigate to forms page,/forms,Enter value into field,forms.username,TestUser,Clear field,Verify clear execution,Value should not equal predefined string
+webComment,navigateComment,path,inputComment,inputLocator,value,clearComment,waitComment,waitTime,resultLocator,assertComment
+Start WEB script,Navigate to UI Elements,/ui-elements,Enter value,uiElements.clearInput,TestUser,Clear field,Wait after clear,1,uiElements.clearResult,Verify clear execution

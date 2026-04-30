@@ -1,0 +1,115 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Variable</name>
+        <description>
+            This scenario verifies switchToFrame command using variables in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Comment for navigate command"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Comment for scrollTo command"
+             name="scrollComment">
+            <constant value="Scroll to iframe"/>
+        </var>
+
+        <var comment="Comment for switchToFrame command"
+             name="switchComment">
+            <constant value="Switch to iframe"/>
+        </var>
+
+        <var comment="Comment for click command"
+             name="clickComment">
+            <constant value="Click inside iframe"/>
+        </var>
+
+        <var comment="Comment for assert block"
+             name="assertComment">
+            <constant value="Verify result inside iframe"/>
+        </var>
+
+        <var comment="Comment for attribute assertion"
+             name="attributeComment">
+            <constant value="Check result text"/>
+        </var>
+
+        <var comment="Path to target page"
+             name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Locator for iframe element"
+             name="frameLocator">
+            <constant value="uiElements.testFrame"/>
+        </var>
+
+        <var comment="Locator for button inside iframe"
+             name="buttonLocator">
+            <constant value="uiElements.frameButton"/>
+        </var>
+
+        <var comment="Locator for result element"
+             name="resultLocator">
+            <constant value="uiElements.frameResult"/>
+        </var>
+
+        <var comment="Expected result text after click"
+             name="expected">
+            <constant value="Clicked!"/>
+        </var>
+
+        <var comment="Wait time between actions (seconds)"
+             name="waitTime">
+            <constant value="2"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="Wait for page load"
+              time="{{waitTime}}"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{frameLocator}}"/>
+
+        <wait comment="Wait before switching to iframe"
+              time="{{waitTime}}"/>
+
+        <switchToFrame comment="{{switchComment}}"
+                       locator="{{frameLocator}}">
+
+            <click comment="{{clickComment}}"
+                   locator="{{buttonLocator}}"/>
+
+            <wait comment="Wait after click"
+                  time="{{waitTime}}"/>
+
+            <assert comment="{{assertComment}}">
+                <attribute comment="{{attributeComment}}"
+                           name="innerText"
+                           locator="{{resultLocator}}">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+    </mobilebrowser>
+
+</scenario>

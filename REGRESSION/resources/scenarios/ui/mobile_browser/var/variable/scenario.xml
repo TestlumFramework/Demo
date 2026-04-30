@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Variable Injection</name>
+        <description>
+            This scenario verifies variable injection into var attributes, values, and comments in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <var comment="Global mobile web comment variable"
+         name="webComment">
+        <constant value="Start MOBILE BROWSER script"/>
+    </var>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <var comment="Variable for input comment text"
+             name="inputComment">
+            <constant value="Input var value"/>
+        </var>
+
+        <var comment="Variable for assert comment text"
+             name="assertComment">
+            <constant value="Verify injected value"/>
+        </var>
+
+        <var comment="Variable for injected comment usage"
+             name="varComment">
+            <constant value="Injected comment value"/>
+        </var>
+
+        <var comment="Variable that stores constant value"
+             name="constantVarValue">
+            <constant value="HELLO_VAR"/>
+        </var>
+
+        <!-- MAIN VAR -->
+        <var comment="{{varComment}}"
+             name="MainVAR">
+            <constant value="{{constantVarValue}}"/>
+        </var>
+        <!-- MAIN VAR -->
+
+        <var comment="Navigation comment for UI elements page"
+             name="navigateComment">
+            <constant value="Navigate to UI elements"/>
+        </var>
+
+        <var comment="Path variable for navigation usage"
+             name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Locator variable for input field usage"
+             name="inputLocator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Attribute name variable for assertion usage"
+             name="attributeName">
+            <constant value="value"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{inputLocator}}"
+               value="{{MainVAR}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{assertComment}}"
+                       name="{{attributeName}}"
+                       locator="{{inputLocator}}">
+                <content>{{constantVarValue}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

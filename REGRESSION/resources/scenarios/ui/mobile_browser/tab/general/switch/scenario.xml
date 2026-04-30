@@ -1,0 +1,73 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Switch</name>
+        <description>
+            This scenario verifies switching between browser tabs in mobile browser.
+
+            Test flow:
+            1. Navigate to Forms page (tab 1).
+            2. Open UI Elements page in new tab (tab 2).
+            3. Switch to tab 2 and verify content.
+            4. Switch back to tab 1 and verify content.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <tab comment="Open new tab with UI Elements page">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait for tab creation"
+              time="2"/>
+
+        <tab comment="Switch to second tab">
+            <switch index="2"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="2"/>
+
+        <assert comment="Verify UI Elements page is active">
+            <attribute comment="Check page title"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <tab comment="Switch back to first tab">
+            <switch index="1"/>
+        </tab>
+
+        <wait comment="Wait after switch back"
+              time="2"/>
+
+        <assert comment="Verify Forms page is active">
+            <attribute comment="Check page title"
+                       name="innerText"
+                       locator="forms.title">
+                <content>Forms</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

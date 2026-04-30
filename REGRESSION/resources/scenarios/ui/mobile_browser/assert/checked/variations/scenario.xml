@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Checked - Variations</name>
+        <description>
+            This scenario verifies checkbox state transitions using CSV-driven variations in mobile browser.
+
+            Test flow:
+            1. Load variations from CSV file.
+            2. Navigate to page using path from CSV.
+            3. Verify checkbox is initially NOT selected.
+            4. Click checkbox.
+            5. Verify checkbox is selected.
+
+            This scenario validates:
+            - CSV-based variable injection
+            - Dynamic navigation handling
+            - Checkbox state transitions (unchecked → checked)
+            - Correct checked assertion behavior
+        </description>
+    </overview>
+
+    <settings>
+        <variations>checked_variations.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER Script">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <assert comment="{{beforeAssertComment}}">
+            <checked comment="{{beforeCheckedComment}}"
+                     locator="{{locator}}"
+                     negative="true"/>
+        </assert>
+
+        <click comment="{{clickComment}}"
+               locator="{{locator}}"/>
+
+        <assert comment="{{afterAssertComment}}">
+            <checked comment="{{afterCheckedComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

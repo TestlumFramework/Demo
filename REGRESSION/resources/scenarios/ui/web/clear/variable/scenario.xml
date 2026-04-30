@@ -5,20 +5,22 @@
     <overview>
         <name>Clear - Variable</name>
         <description>
-            This scenario verifies clear command using variables.
+            This scenario verifies clear command using variables and UI state.
 
             Test flow:
             1. Inject path, locator, value, and comments via variables.
-            2. Navigate to forms page.
+            2. Navigate to UI Elements page.
             3. Input value into field.
-            4. Execute clear command using variable.
-            5. Verify clear execution using assertion.
+            4. Verify value is displayed.
+            5. Execute clear command using variable.
+            6. Verify field is empty via UI.
 
             This scenario validates:
             - Locator injection
             - Value injection
             - Comment injection
             - Clear execution via variables
+            - UI state consistency
         </description>
     </overview>
 
@@ -32,11 +34,15 @@
     <web comment="Start WEB script">
 
         <var comment="Store navigation path" name="path">
-            <constant value="/forms"/>
+            <constant value="/ui-elements"/>
         </var>
 
-        <var comment="Store input locator" name="locator">
-            <constant value="forms.username"/>
+        <var comment="Store input locator" name="inputLocator">
+            <constant value="uiElements.clearInput"/>
+        </var>
+
+        <var comment="Store result locator" name="resultLocator">
+            <constant value="uiElements.clearResult"/>
         </var>
 
         <var comment="Store input value" name="value">
@@ -44,7 +50,7 @@
         </var>
 
         <var comment="Store navigate comment" name="navigateComment">
-            <constant value="Navigate to forms page"/>
+            <constant value="Navigate to UI Elements page"/>
         </var>
 
         <var comment="Store input comment" name="inputComment">
@@ -56,30 +62,42 @@
         </var>
 
         <var comment="Store assert comment" name="assertComment">
-            <constant value="Verify clear execution"/>
+            <constant value="Verify clear execution via UI"/>
         </var>
 
-        <var comment="Store notEqual comment" name="notEqualComment">
-            <constant value="Value should not equal predefined string"/>
+        <var comment="Store display check comment" name="displayComment">
+            <constant value="Verify value is displayed"/>
         </var>
 
         <navigate comment="{{navigateComment}}"
                   command="to"
                   path="{{path}}"/>
 
+        <scrollTo comment="Scroll to Clear section"
+                  locator="{{inputLocator}}"/>
+
         <input comment="{{inputComment}}"
-               locator="{{locator}}"
+               locator="{{inputLocator}}"
                value="{{value}}"/>
 
+        <assert comment="{{displayComment}}">
+            <attribute comment="{{displayComment}}" name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: {{value}}</content>
+            </attribute>
+        </assert>
+
         <clear comment="{{clearComment}}"
-               locator="{{locator}}"
+               locator="{{inputLocator}}"
                highlight="true"/>
 
+        <wait comment="Wait after clear" time="1"/>
+
         <assert comment="{{assertComment}}">
-            <notEqual comment="{{notEqualComment}}">
-                <content>{{value}}</content>
-                <content>TestUsers</content>
-            </notEqual>
+            <attribute comment="{{assertComment}}" name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: empty</content>
+            </attribute>
         </assert>
 
     </web>

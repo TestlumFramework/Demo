@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - File</name>
+        <description>
+            This scenario verifies var file functionality in mobile browser.
+
+            Test flow:
+            1. Read content from file.
+            2. Store it into variable.
+            3. Verify stored value.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Read file content"
+             name="fileContent">
+            <file fileName="file.txt"/>
+        </var>
+
+        <assert comment="Verify file content">
+            <equal comment="Verify file content">
+                <content>TestlumFileContent</content>
+                <content>{{fileContent}}</content>
+            </equal>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

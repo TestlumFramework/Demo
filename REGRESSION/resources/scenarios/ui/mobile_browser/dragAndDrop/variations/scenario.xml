@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DragAndDrop - Variations</name>
+        <description>
+            This scenario verifies dragAndDrop command using CSV-driven variations in mobile browser.
+
+            Test flow:
+            1. Navigate to Developer Board page.
+            2. Execute dragAndDrop using injected data.
+            3. Verify uploaded file result.
+
+            This scenario validates:
+            - CSV-based injection
+            - Dynamic locator usage
+            - Dynamic fileName usage
+            - Dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <variations>drag_and_drop.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="Navigate to developer board" command="to" path="/blank"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <dragAndDrop comment="{{dragComment}}"
+                     toLocator="{{dropLocator}}">
+            <fileName>upload_dropZone.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

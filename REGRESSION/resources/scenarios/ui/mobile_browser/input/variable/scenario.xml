@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - Variable</name>
+        <description>
+            This scenario verifies input command using variables in mobile browser.
+
+            This scenario validates:
+            - locator injection
+            - value injection
+            - highlight injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <var comment="WEB section comment"
+         name="webComment">
+        <constant value="Start MOBILE BROWSER script"/>
+    </var>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Input command comment"
+             name="inputComment">
+            <constant value="Input value using variables"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify input value"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check input value"/>
+        </var>
+
+        <var comment="Locator for input"
+             name="locator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Input value"
+             name="value">
+            <constant value="VARIABLE_TEST"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="2"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{locator}}"
+               value="{{value}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

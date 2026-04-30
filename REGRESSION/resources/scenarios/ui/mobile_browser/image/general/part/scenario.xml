@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Part</name>
+        <description>
+            This scenario verifies image comparison for a specific part of the page in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Capture specific element.
+            3. Compare with baseline image.
+
+            This scenario validates:
+            - part execution
+            - element-level comparison
+            - stable UI rendering
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <scrollTo comment="Scroll to dropdown test zone"
+                  locator="uiElements.multiSelect"/>
+
+        <wait comment="Wait after scroll" time="1"/>
+
+        <image comment="Compare part of the page (multi select block)"
+               file="image_part.png">
+            <part locator="uiElements.multiSelect"
+                  percentage="99.9"/>
+        </image>
+
+    </mobilebrowser>
+
+</scenario>

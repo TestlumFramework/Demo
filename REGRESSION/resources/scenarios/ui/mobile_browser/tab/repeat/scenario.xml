@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Repeat Variations</name>
+        <description>
+            This scenario verifies tab opening using repeat with variations in mobile browser.
+
+            Test flow:
+            1. Navigate to base page.
+            2. Open multiple tabs using repeat variations.
+            3. Switch to each tab.
+            4. Verify correct content.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <repeat comment="Open tabs from CSV"
+                variations="tabRepeat.csv">
+
+            <tab comment="{{tabComment}}">
+                <open url="{{url}}"/>
+            </tab>
+
+        </repeat>
+
+        <wait comment="Wait after opening tabs"
+              time="2"/>
+
+        <tab comment="Switch to tab 2">
+            <switch index="2"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="2"/>
+
+        <assert comment="Verify UI Elements">
+            <attribute comment="Verify UI Elements"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <tab comment="Switch to tab 3">
+            <switch index="3"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="2"/>
+
+        <assert comment="Verify Forms">
+            <attribute comment="Verify Forms"
+                       name="type"
+                       locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+        <tab comment="Switch to tab 4">
+            <switch index="4"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="2"/>
+
+        <assert comment="Verify UI Elements again">
+            <attribute comment="Verify UI Elements again"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

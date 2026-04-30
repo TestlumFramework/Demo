@@ -1,0 +1,76 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Javascript - Condition</name>
+        <description>
+            This scenario verifies conditional execution of javascript command in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute JS with true condition.
+            3. Verify value is updated.
+            4. Execute JS with false condition.
+            5. Verify value is NOT changed.
+
+            This scenario validates:
+            - condition true execution
+            - condition false skipping
+            - javascript execution control
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Always true condition"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Always false condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Clear input before test"
+               locator="uiElements.hotKeyInput1"/>
+
+        <javascript comment="Execute JS with true condition"
+                    file="set_true.js"
+                    condition="trueCondition"/>
+
+        <assert comment="Verify JS executed">
+            <attribute comment="Check updated value"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>TRUE_EXECUTED</content>
+            </attribute>
+        </assert>
+
+        <javascript comment="Try execute JS with false condition"
+                    file="set_false.js"
+                    condition="falseCondition"/>
+
+        <assert comment="Verify JS was NOT executed">
+            <attribute comment="Value should remain unchanged"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>TRUE_EXECUTED</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

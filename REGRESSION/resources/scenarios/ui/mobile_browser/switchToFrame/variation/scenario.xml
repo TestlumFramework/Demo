@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Variations</name>
+        <description>
+            This scenario verifies switchToFrame command using CSV variations in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>switchToFrame.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{frameLocator}}"/>
+
+        <wait comment="Wait before switching to iframe"
+              time="{{waitTime}}"/>
+
+        <switchToFrame comment="{{switchComment}}"
+                       locator="{{frameLocator}}">
+
+            <click comment="{{clickComment}}"
+                   locator="{{buttonLocator}}"/>
+
+            <wait comment="Wait after click"
+                  time="{{waitTime}}"/>
+
+            <assert comment="{{assertComment}}">
+                <attribute comment="{{attributeComment}}"
+                           name="innerText"
+                           locator="{{resultLocator}}">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Hover - Variable</name>
+        <description>
+            This scenario verifies hover command using variables in mobile browser.
+
+            This scenario validates:
+            - Locator injection
+            - Dynamic comments usage
+            - Dynamic hover execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Hover command comment"
+             name="hoverComment">
+            <constant value="Execute hover using variables"/>
+        </var>
+
+        <var comment="Assert block comment"
+             name="assertComment">
+            <constant value="Verify hover result"/>
+        </var>
+
+        <var comment="Attribute assert comment"
+             name="attributeComment">
+            <constant value="Check hover state"/>
+        </var>
+
+        <var comment="Hover target locator"
+             name="targetLocator">
+            <constant value="uiElements.hoverTarget"/>
+        </var>
+
+        <var comment="Result locator"
+             name="resultLocator">
+            <constant value="uiElements.hoverResult"/>
+        </var>
+
+        <var comment="Expected value after hover"
+             name="expected">
+            <constant value="Hover status: true"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <hover comment="{{hoverComment}}"
+               locator="{{targetLocator}}"/>
+
+        <wait comment="{{waitComment}}" time="1"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerText"
+                       locator="{{resultLocator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

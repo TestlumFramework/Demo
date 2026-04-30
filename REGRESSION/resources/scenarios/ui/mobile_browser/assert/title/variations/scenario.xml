@@ -1,0 +1,29 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Title - Variations</name>
+        <description>
+            This scenario verifies title assertion using CSV-driven variations in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>title_variations.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <assert comment="{{requestComment}}">
+            <title comment="{{titleComment}}">
+                <content>{{value}}</content>
+            </title>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

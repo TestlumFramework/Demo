@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Present - Condition</name>
+        <description>
+            This scenario verifies conditional execution of present assertion in mobile browser.
+
+            Test flow:
+            1. Execute valid present assertion with condition=true.
+            2. Execute invalid present assertion with condition=false.
+
+            This scenario validates:
+            - Condition handling
+            - Skipping logic
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to 'tables page' for apply the 'assert' command"
+                  command="to" path="/forms"/>
+
+        <condition comment="Create true condition (should execute)"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Create false condition (should skip)"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <assert comment="Assert should execute because condition=true"
+                condition="trueCondition">
+            <present comment="Check that element is present"
+                     locator="forms.save"/>
+        </assert>
+
+        <assert comment="Assert should NOT execute because condition=false"
+                condition="falseCondition">
+            <present comment="Element does not exist but should be skipped"
+                     locator=".//img[@alt='NotExisting']"
+                     locatorStrategy="xpath"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

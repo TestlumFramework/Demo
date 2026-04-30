@@ -5,19 +5,21 @@
     <overview>
         <name>Clear - Variations</name>
         <description>
-            This scenario verifies clear command using CSV-driven variations.
+            This scenario verifies clear command using CSV-driven variations and UI state.
 
             Test flow:
             1. Load data from CSV file.
             2. Navigate to page using injected path.
             3. Input value using injected data.
-            4. Execute clear command using injected locator and highlight.
-            5. Verify clear execution using assertion.
+            4. Verify value is displayed.
+            5. Execute clear command.
+            6. Verify value is empty via UI.
 
             This scenario validates:
             - CSV-based variable injection
             - Dynamic locator and value usage
-            - Clear command execution with different data sets
+            - Stable clear execution
+            - UI state consistency
         </description>
     </overview>
 
@@ -29,25 +31,32 @@
     <include comment="Include login steps"
              scenario="/ui/includes/login_web/scenario.xml"/>
 
-    <web comment="Start WEB script">
+    <web comment="{{webComment}}">
 
         <navigate comment="{{navigateComment}}"
                   command="to"
                   path="{{path}}"/>
 
+        <scrollTo comment="Scroll to Clear section"
+                  locator="{{inputLocator}}"/>
+
         <input comment="{{inputComment}}"
-               locator="{{locator}}"
+               locator="{{inputLocator}}"
                value="{{value}}"/>
 
         <clear comment="{{clearComment}}"
-               locator="{{locator}}"
+               locator="{{inputLocator}}"
                highlight="true"/>
 
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
         <assert comment="{{assertComment}}">
-            <notEqual comment="{{notEqualComment}}">
-                <content>{{value}}</content>
-                <content>TestUsers</content>
-            </notEqual>
+            <attribute comment="{{assertComment}}"
+                       name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: empty</content>
+            </attribute>
         </assert>
 
     </web>

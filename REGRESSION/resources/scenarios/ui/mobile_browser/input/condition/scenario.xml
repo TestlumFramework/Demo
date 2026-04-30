@@ -1,0 +1,78 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - Condition</name>
+        <description>
+            This scenario verifies conditional execution of input command in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute input with true condition.
+            3. Verify value is entered.
+            4. Execute input with false condition.
+            5. Verify value is NOT changed.
+
+            This scenario validates:
+            - condition true execution
+            - condition false skipping
+            - correct input behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Always true condition"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Always false condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Clear input before test"
+               locator="uiElements.hotKeyInput1"/>
+
+        <input comment="Input value with true condition"
+               locator="uiElements.hotKeyInput1"
+               value="VISIBLE"
+               condition="trueCondition"/>
+
+        <assert comment="Verify value is entered">
+            <attribute comment="Check value after true condition"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>VISIBLE</content>
+            </attribute>
+        </assert>
+
+        <input comment="Try to overwrite value with false condition"
+               locator="uiElements.hotKeyInput1"
+               value="SHOULD_NOT_BE_SET"
+               condition="falseCondition"/>
+
+        <assert comment="Verify value is NOT changed">
+            <attribute comment="Value should remain unchanged"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>VISIBLE</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Checked - Condition</name>
+        <description>
+            This scenario verifies conditional execution of checked assertion in mobile browser.
+
+            Test flow:
+            1. Navigate to checkbox page.
+            2. Execute checked assertion with condition=true.
+            3. Execute checked assertion with condition=false.
+
+            This scenario validates:
+            - Condition handling
+            - Skipping logic for checked assertion
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Create true condition (should execute)"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Create false condition (should skip)"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI elements page with checkbox"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <assert comment="Assert should execute because condition=true">
+            <checked comment="Checkbox should NOT be selected"
+                     locator="uiElements.checkbox"
+                     condition="trueCondition"
+                     negative="true"/>
+        </assert>
+
+        <assert comment="Assert should NOT execute because condition=false">
+            <checked comment="Checkbox state is irrelevant but should be skipped"
+                     condition="falseCondition"
+                     locator="uiElements.checkbox"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

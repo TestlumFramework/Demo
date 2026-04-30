@@ -1,0 +1,38 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Path</name>
+        <description>
+            This scenario verifies var path functionality in mobile browser.
+
+            Test flow:
+            1. Load JSON from file.
+            2. Extract value using path.
+            3. Verify extracted value.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Extract active field"
+             name="isActive">
+            <path value="$.[0].active"
+                  fromFile="data.json"/>
+        </var>
+
+        <assert comment="Verify extracted value">
+            <equal comment="Verify extracted value">
+                <content>true</content>
+                <content>{{isActive}}</content>
+            </equal>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>
