@@ -9,7 +9,7 @@
 
     <settings truncateStorages="true">
         <variations>mongo_variations.csv</variations>
-        <tags>mongo</tags>
+        <tags>mongodb</tags>
     </settings>
 
     <mongo alias="MONGO_0"

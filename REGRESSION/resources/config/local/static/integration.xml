@@ -157,7 +157,7 @@
             <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
             <username>root</username>
             <password>root_password</password>
-            <connectionUrl>jdbc:mariadb://localhost:3316/testlum_db</connectionUrl>
+            <connectionUrl>jdbc:mariadb://localhost:3316/testlum_db?allowMultiQueries=true</connectionUrl>
             <hikari>
                 <connectionTimeout>30000</connectionTimeout>
                 <idleTimeout>600000</idleTimeout>

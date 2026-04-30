@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>mongo</tags>
+        <tags>mongodb</tags>
     </settings>
 
     <mongo alias="MONGO_0"
