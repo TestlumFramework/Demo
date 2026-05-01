@@ -32,7 +32,7 @@
         <tag name="lambda" enabled="true"/>
         <tag name="mysql" enabled="true"/>
         <tag name="postgresql" enabled="true"/>
-        <tag name="clickhouse" enabled="true"/>
+        <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="true"/>
         <tag name="mongodb" enabled="true"/>
         <tag name="dynamodb" enabled="true"/>
