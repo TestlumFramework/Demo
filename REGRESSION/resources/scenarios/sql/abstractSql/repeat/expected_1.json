@@ -1,0 +1,7 @@
+[ {
+  "query" : "CREATE TABLE IF NOT EXISTS repeat_news ( id INT PRIMARY KEY, title VARCHAR(100) )",
+  "content" : "Query completed successfully"
+}, {
+  "query" : "TRUNCATE TABLE repeat_news;",
+  "content" : "Query completed successfully"
+} ]

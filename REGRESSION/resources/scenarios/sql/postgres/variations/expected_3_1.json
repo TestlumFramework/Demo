@@ -1,0 +1,8 @@
+[ {
+  "query" : "SELECT id, title, category FROM test_news WHERE id = {{id}};",
+  "content" : [ {
+    "id" : 1,
+    "title" : "Release Testlum 1.0",
+    "category" : "Tech"
+  } ]
+} ]

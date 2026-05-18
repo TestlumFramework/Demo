@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE test_users ( id NUMBER(10), username VARCHAR2(50) NOT NULL, user_role VARCHAR2(20), PRIMARY KEY (id))",
+  "content" : "Query completed successfully"
+} ]

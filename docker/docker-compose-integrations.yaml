@@ -151,6 +151,24 @@ services:
       retries: 3
     profiles: [ci]
 
+  mariadb-e2e:
+    image: mariadb:11.4
+    container_name: testlum-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: testlum_db
+    ports:
+      - "3316:3306"
+    volumes:
+      - ./init-data/mariadb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles: [ ci, local ]
+
   clickhouse-e2e:
     image: clickhouse/clickhouse-server:26.1
     container_name: clickhouse-e2e

@@ -36,6 +36,7 @@
         <tag name="oracle" enabled="false"/>
         <tag name="mongodb" enabled="false"/>
         <tag name="dynamodb" enabled="false"/>
+        <tag name="abstract-db" enabled="false"/>
         <tag name="kafka" enabled="false"/>
         <tag name="rabbit" enabled="false"/>
         <tag name="sqs" enabled="false"/>

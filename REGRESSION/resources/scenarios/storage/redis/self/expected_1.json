@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"test_user:101\",\"username\",\"john_doe\",\"role\",\"ADMIN\"],\"command\":\"HSET\"}",
+  "content" : "2"
+} ]

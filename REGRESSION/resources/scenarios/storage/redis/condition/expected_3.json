@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"condition_test:99\",\"data_value\",\"INITIAL_DATA\"],\"command\":\"HSET\"}",
+  "content" : "1"
+} ]

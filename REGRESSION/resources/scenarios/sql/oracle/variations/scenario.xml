@@ -1,0 +1,52 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Oracle Data-Driven Test with dynamic expected files</description>
+        <name>Oracle Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>oracle_variations.csv</variations>
+        <tags>oracle</tags>
+    </settings>
+
+    <oracle alias="ORACLE_0"
+            comment="Create table for the current variation"
+            file="{{expected_1}}.json">
+        <query>
+            CREATE TABLE test_news (
+            id NUMBER(10) PRIMARY KEY,
+            title VARCHAR2(100),
+            category VARCHAR2(50)
+            )
+        </query>
+    </oracle>
+
+    <oracle alias="ORACLE_0"
+            comment="Insert dynamic data to table for news id {{id}}"
+            file="{{expected_2}}.json">
+        <query>
+            INSERT INTO test_news (id, title, category)
+            VALUES ({{id}}, '{{title}}', '{{category}}')
+        </query>
+    </oracle>
+
+    <oracle alias="ORACLE_0"
+            comment="Read data from table using variations"
+            file="{{expected_3}}.json">
+        <query>
+            SELECT id AS "id", title AS "title", category AS "category"
+            FROM test_news
+            WHERE id = {{id}}
+        </query>
+    </oracle>
+
+    <oracle alias="ORACLE_0"
+            comment="Drop table to prepare for the next variation iteration"
+            file="{{expected_4}}.json">
+        <query>DROP TABLE test_news</query>
+    </oracle>
+
+</scenario>

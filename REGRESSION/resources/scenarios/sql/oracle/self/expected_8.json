@@ -1,0 +1,4 @@
+[ {
+  "query" : "DROP TABLE test_users",
+  "content" : "Query completed successfully"
+} ]

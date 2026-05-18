@@ -1,0 +1,6 @@
+[ {
+  "query" : "INSERT INTO condition_test (id, data_value) VALUES (99, 'INITIAL_DATA')",
+  "content" : {
+    "count" : 1
+  }
+} ]

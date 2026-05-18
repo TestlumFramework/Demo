@@ -1,0 +1,56 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>DynamoDB Data-Driven Test with dynamic expected files</description>
+        <name>DynamoDB Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>dynamo_variations.csv</variations>
+        <tags>dynamodb</tags>
+    </settings>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Clear previous data for the current ID"
+            file="{{expected_1}}.json">
+        <query>
+            DELETE FROM dynamodb_news
+            WHERE id = '{{id}}'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Insert dynamic data to table for news id {{id}}"
+            file="{{expected_2}}.json">
+        <query>
+            INSERT INTO dynamodb_news VALUE {
+            'id': '{{id}}',
+            'name': '{{name}}',
+            'number': {{number}},
+            'active': true,
+            'createdAt': '2026-04-15T15:00:00.000'
+            }
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Read data from table using variations"
+            file="{{expected_3}}.json">
+        <query>
+            SELECT * FROM dynamodb_news
+            WHERE id = '{{id}}'
+        </query>
+    </dynamo>
+
+    <dynamo alias="DYNAMO_0"
+            comment="Clean up data after test iteration"
+            file="expected_4.json">
+        <query>
+            DELETE FROM dynamodb_news
+            WHERE id = '{{id}}'
+        </query>
+    </dynamo>
+
+</scenario>

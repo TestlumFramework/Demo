@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"delete\": \"test_users\",             \"deletes\": [             {             \"q\": { \"_id\": 101 },             \"limit\": 1             }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

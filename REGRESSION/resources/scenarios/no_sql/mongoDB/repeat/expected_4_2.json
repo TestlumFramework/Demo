@@ -1,0 +1,4 @@
+[ {
+  "query" : "                 {                 \"find\": \"repeat_news\",                 \"filter\": { \"_id\": 20 }                 }             ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":20,\"title\":\"Local Sports Events\"}],\"id\":0,\"ns\":\"mongo_db.repeat_news\"},\"ok\":1.0}"
+} ]

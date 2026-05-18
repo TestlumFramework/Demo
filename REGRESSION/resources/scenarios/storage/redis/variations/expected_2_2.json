@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"test_news:20\",\"title\",\"In-Memory Databases\",\"category\",\"Tech\"],\"command\":\"HSET\"}",
+  "content" : "2"
+} ]

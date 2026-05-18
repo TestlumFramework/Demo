@@ -1,0 +1,8 @@
+[ {
+  "query" : "SELECT id, title, category FROM test_news WHERE id = 2;",
+  "content" : [ {
+    "id" : 2,
+    "title" : "New Database Support",
+    "category" : "Tech"
+  } ]
+} ]

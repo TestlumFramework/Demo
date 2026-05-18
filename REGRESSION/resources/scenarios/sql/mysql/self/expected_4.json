@@ -1,0 +1,6 @@
+[ {
+  "query" : "UPDATE test_users SET role = 'SUPER_ADMIN' WHERE id = 101;",
+  "content" : {
+    "count" : 1
+  }
+} ]

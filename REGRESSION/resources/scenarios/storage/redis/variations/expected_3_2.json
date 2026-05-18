@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"test_news:20\"],\"command\":\"HGETALL\"}",
+  "content" : "[title, In-Memory Databases, category, Tech]"
+} ]

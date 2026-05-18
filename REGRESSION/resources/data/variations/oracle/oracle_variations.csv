@@ -1,0 +1,4 @@
+id,title,category,expected_1,expected_2,expected_3,expected_4
+10,Oracle Database 23c Released,Tech,expected_1_1,expected_2_1,expected_3_1,expected_4_1
+20,New Cloud Features,Cloud,expected_1_2,expected_2_2,expected_3_2,expected_4_2
+30,Concurrent Updates,Core,expected_1_3,expected_2_3,expected_3_3,expected_4_3

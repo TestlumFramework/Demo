@@ -1,0 +1,8 @@
+[ {
+  "query" : "SELECT id AS \"id\", title AS \"title\", category AS \"category\" FROM test_news WHERE id = 30",
+  "content" : [ {
+    "id" : 30,
+    "title" : "Concurrent Updates",
+    "category" : "Core"
+  } ]
+} ]

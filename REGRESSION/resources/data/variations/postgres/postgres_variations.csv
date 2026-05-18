@@ -1,0 +1,4 @@
+id,title,category,expected_1,expected_2,expected_3
+1,Release Testlum 1.0,Tech,expected_1_1,expected_2_1,expected_3_1
+2,New Database Support,Tech,expected_1_2,expected_2_2,expected_3_2
+3,Company Holiday,Culture,expected_1_3,expected_2_3,expected_3_3

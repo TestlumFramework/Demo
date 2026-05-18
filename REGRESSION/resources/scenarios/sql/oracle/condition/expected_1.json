@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE condition_test ( id NUMBER(10) PRIMARY KEY, data_value VARCHAR2(50) )",
+  "content" : "Query completed successfully"
+} ]

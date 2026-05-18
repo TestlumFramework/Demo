@@ -1,0 +1,7 @@
+[ {
+  "query" : "SELECT id, title FROM repeat_news WHERE id = 30",
+  "content" : [ {
+    "id" : 30,
+    "title" : "Weather Forecast 2026"
+  } ]
+} ]

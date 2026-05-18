@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"test_news:10\"],\"command\":\"HGETALL\"}",
+  "content" : "[title, Redis 7.2 Released, category, Cache]"
+} ]

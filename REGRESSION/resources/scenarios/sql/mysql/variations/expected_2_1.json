@@ -1,0 +1,6 @@
+[ {
+  "query" : "INSERT INTO test_news (id, title, category) VALUES (1, 'Release Testlum 1.0', 'Tech');",
+  "content" : {
+    "count" : 1
+  }
+} ]

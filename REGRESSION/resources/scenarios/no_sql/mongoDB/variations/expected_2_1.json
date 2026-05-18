@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"test_news\",             \"documents\": [             {             \"_id\": 10,             \"title\": \"Mongo 7.0 Released\",             \"category\": \"Tech\"             }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

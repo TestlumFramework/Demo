@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"find\": \"test_users\",             \"filter\": { \"_id\": 101 }             }         ",
+  "content" : "{\"cursor\":{\"firstBatch\":[{\"_id\":101,\"username\":\"john_doe\",\"role\":\"ADMIN\"}],\"id\":0,\"ns\":\"mongo_db.test_users\"},\"ok\":1.0}"
+} ]
