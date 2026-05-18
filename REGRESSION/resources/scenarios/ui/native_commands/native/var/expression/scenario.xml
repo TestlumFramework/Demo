@@ -1,0 +1,33 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - expression type</description>
+        <name>Var expression</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Store numeric expression result"
+             name="exprResult">
+            <expression value="2 + 3 * 4"/>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{exprResult}}"/>
+        <assert comment="Assert injected value is [14]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: 14</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

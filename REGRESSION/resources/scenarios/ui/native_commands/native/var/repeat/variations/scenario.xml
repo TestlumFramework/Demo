@@ -1,0 +1,39 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - repeat variations</description>
+        <name>Var repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+        <repeat comment="Repeat var constant across CSV rows"
+                variations="variations_native_command.csv">
+            <var comment="Store constant in repeat {{comment}}"
+                 condition="{{flag}}"
+                 name="{{varName}}">
+                <constant value="{{varName}}"/>
+            </var>
+            <clear comment="Clear input for current iteration" locator="testApp.varInputField"/>
+            <input comment="Type value into input field"
+                   locator="testApp.varInputField"
+                   value="{{varName}}"/>
+            <assert comment="Assert injected value is [RowValue]">
+                <attribute comment="Check injected result text"
+                           locator="testApp.varInjectedResult"
+                           locatorStrategy="locatorId"
+                           name="text">
+                    <content>Injected value: {{varName}}</content>
+                </attribute>
+            </assert>
+        </repeat>
+
+    </native>
+
+</scenario>

@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert equal - condition: false skipped, true executed</description>
+        <name>Assert equal condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <assert comment="Assert equal condition false - skipped"
+                condition="false">
+            <equal comment="Skipped - mismatch would fail if executed">
+                <content>someValue</content>
+                <content>WRONG</content>
+            </equal>
+        </assert>
+
+        <assert comment="Assert equal condition true - executes">
+            <equal comment="Both match - passes">
+                <content>Hello</content>
+                <content>Hello</content>
+            </equal>
+        </assert>
+    </native>
+
+</scenario>

@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing image fullscreen tag with repeat variations</description>
+        <name>Image fullscreen repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
+
+        <wait comment="Waiting 1 second" time="1"/>
+
+        <repeat comment="Repeat 2 times with variations"
+                variations="variations_native_command.csv">
+            <image comment="Test image fullscreen {{comment}}"
+                   condition="{{flag}}"
+                   file="{{imageFileName}}.png">
+                <fullScreen/>
+            </image>
+        </repeat>
+
+    </native>
+
+</scenario>

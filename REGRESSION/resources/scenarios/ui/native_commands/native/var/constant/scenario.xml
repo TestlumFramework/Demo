@@ -1,0 +1,33 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - constant type</description>
+        <name>Var constant</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Store constant value"
+             name="myConst">
+            <constant value="HelloTestlum"/>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{myConst}}"/>
+        <assert comment="Assert injected value is [HelloTestlum]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: HelloTestlum</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

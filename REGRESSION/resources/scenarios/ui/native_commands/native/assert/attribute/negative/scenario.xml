@@ -1,0 +1,27 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert attribute - negative: element text is NOT a given value</description>
+        <name>Assert attribute negative</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <assert comment="Assert counter is NOT Counter: 999 (negative)">
+            <attribute comment="Check counter text is not 999"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text"
+                       negative="true">
+                <content>Counter: 999</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

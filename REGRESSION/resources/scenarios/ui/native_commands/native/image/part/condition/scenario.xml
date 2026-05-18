@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing image part command with condition</description>
+        <name>Image part condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
+
+        <image comment="Test image part with condition true"
+               condition="true"
+               file="test_image.png">
+            <part locator="testApp.image" locatorStrategy="locatorId"/>
+        </image>
+               
+        <image comment="Test image part with condition false"
+               condition="false"
+               file="non_existed_image.png">
+            <part locator="non_existed_locator" locatorStrategy="locatorId"/>
+        </image>
+
+    </native>
+
+</scenario>

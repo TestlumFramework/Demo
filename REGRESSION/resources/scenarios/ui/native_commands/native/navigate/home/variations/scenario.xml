@@ -1,0 +1,23 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing system-level navigation to the home screen using variations.</description>
+        <name>System Navigation: Home</name>
+    </overview>
+
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <navigate comment="Test navigate {comment}"
+                  condition="{{flag}}"
+                  destination="home"/>
+    </native>
+
+</scenario>

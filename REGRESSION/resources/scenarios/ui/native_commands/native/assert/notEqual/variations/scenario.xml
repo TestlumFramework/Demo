@@ -1,0 +1,26 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert notEqual - variations: condition from CSV</description>
+        <name>Assert notEqual variations</name>
+    </overview>
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <assert comment="Assert notEqual in variation {{comment}}"
+                condition="{{flag}}">
+            <notEqual comment="Testlum is not Other">
+                <content>{{flag}}</content>
+                <content>false</content>
+            </notEqual>
+        </assert>
+    </native>
+
+</scenario>

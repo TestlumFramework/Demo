@@ -1,0 +1,25 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat/variations test navigate home command</description>
+        <name>Navigate home repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <repeat comment="Repeat 2 times with variations"
+                variations="variations_native_command.csv">
+            <navigate comment="Test navigate home {comment}"
+                      condition="{{flag}}"
+                      destination="home"/>
+        </repeat>
+    </native>
+
+</scenario>

@@ -1,0 +1,37 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing input tag with repeat variations</description>
+        <name>Input repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button inputPage" locator="testApp.inputPage"/>
+
+        <repeat comment="Repeat 2 times with variations"
+                variations="variations_native_command.csv">
+            <input comment="Run input {{comment}}"
+                   condition="{{flag}}"
+                   locator="{{locatorInput}}"
+                   locatorStrategy="locatorId"
+                   value="{{inputText}}"/>
+
+            <assert comment="Validating expected UI state">
+                <attribute comment="Retrieving element text attribute for validation"
+                           locator="testApp.inputResult"
+                           locatorStrategy="locatorId"
+                           name="text">
+                    <content>You typed: {{inputText}}</content>
+                </attribute>
+            </assert>
+        </repeat>
+    </native>
+
+</scenario>

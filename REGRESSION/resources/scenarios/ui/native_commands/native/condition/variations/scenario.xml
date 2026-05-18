@@ -1,0 +1,37 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test condition command - variations: evaluated per CSV row</description>
+        <name>Condition variations</name>
+    </overview>
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <condition comment="Evaluate true condition for variation {comment}"
+                   condition="{{flag}}"
+                   name="rowFlag"
+                   spel="1 == 1"/>
+
+        <click comment="Click for variation {comment} if rowFlag=true"
+               condition="{{rowFlag}}"
+               locator="testApp.clickButton"/>
+
+        <assert comment="Assert counter is 1">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 1</content>
+            </attribute>
+        </assert>
+
+    </native>
+
+</scenario>

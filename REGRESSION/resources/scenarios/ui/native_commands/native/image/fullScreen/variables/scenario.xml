@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing image fullscreen command with variables</description>
+        <name>Image fullscreen variables test</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
+
+        <var comment="Variable filename"
+             name="imgFile">
+            <constant value="test_image"/>
+        </var>
+
+        <wait comment="Waiting 1 second" time="1"/>
+
+        <image comment="Test image fullscreen with variables"
+               file="{{imgFile}}.png">
+            <fullScreen/>
+        </image>
+
+    </native>
+
+</scenario>

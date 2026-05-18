@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - variations</description>
+        <name>Var variations</name>
+    </overview>
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+        <var comment="Store constant {{comment}}"
+             condition="{{flag}}"
+             name="{{varName}}">
+            <constant value="{{varName}}"/>
+        </var>
+        <clear comment="Clear input field" locator="testApp.varInputField"/>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{varName}}"/>
+        <assert comment="Assert injected value">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: {{varName}}</content>
+            </attribute>
+        </assert>
+
+    </native>
+
+</scenario>

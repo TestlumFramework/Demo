@@ -1,0 +1,24 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert notEqual - general: two values are different</description>
+        <name>Assert notEqual general</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <assert comment="Assert extracted value does NOT equal something else">
+            <notEqual comment="Testlum is NOT equal to Other">
+                <content>Testlum</content>
+                <content>Other</content>
+            </notEqual>
+        </assert>
+    </native>
+
+</scenario>

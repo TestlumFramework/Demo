@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Variables test refresh command</description>
+        <name>Refresh variables</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Refresh screen" locator="testApp.refreshPage"/>
+
+        <var comment="Test variable injection"
+             name="comment">
+            <constant value="comment"/>
+        </var>
+        <refresh comment="Test refresh variable {{comment}}"/>
+        <assert comment="Verify refresh execution">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.refreshCount"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

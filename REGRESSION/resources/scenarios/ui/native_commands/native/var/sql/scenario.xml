@@ -1,0 +1,91 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>wfefewhhjwfebhjewbfwef</description>
+        <name>ewfjknkjewefwjfewwfe</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>native</tags>
+    </settings>
+
+    <migrate alias="POSTGRES_0"
+             comment="DB migration for testing">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <migrate alias="MYSQL_0"
+             comment="DB migration for testing"
+             name="MYSQL">
+        <dataset>mysql_patch.sql</dataset>
+    </migrate>
+
+    <migrate alias="ORACLE_0"
+             comment="DB migration for testing"
+             name="ORACLE">
+        <dataset>oracle_patch.sql</dataset>
+    </migrate>
+  
+    <native comment="ewfjknnwejfknfjewknjkwefjwef">
+        <var comment="PostgreSQL query with single column"
+             name="postgresQuery">
+            <sql alias="POSTGRES_0"
+                 dbType="POSTGRES">
+                <query>
+          SELECT id
+          FROM news
+          WHERE newsname='News1';
+                </query>
+            </sql>
+        </var>
+
+        <var comment="MySQL query with single column"
+             name="mysqlQuery">
+            <sql alias="MYSQL_0"
+                 dbType="MYSQL">
+                <query>
+          SELECT id
+          FROM news
+          WHERE newsname='News1';
+                </query>
+            </sql>
+        </var>
+
+        <var comment="Oracle query with single column"
+             name="oracleQuery">
+            <sql alias="ORACLE_0"
+                 dbType="ORACLE">
+                <query>
+          SELECT newsnumber
+          FROM news
+          WHERE newsname = 'Ukraine'
+                </query>
+            </sql>
+        </var>
+
+        <assert comment="Check postgreSQL query usage">
+            <equal comment="Check postgreSQL query usage">
+                <content>{{postgresQuery}}</content>
+                <content>101</content>
+            </equal>
+        </assert>
+
+        <assert comment="Check mySQL query usage">
+            <equal comment="Check mySQL query usage">
+                <content>{{mysqlQuery}}</content>
+                <content>1</content>
+            </equal>
+        </assert>
+
+        <assert comment="Check oracleQuery usage">
+            <equal comment="Check oracleSQL usage">
+                <content>{{oracleQuery}}</content>
+                <content>43752156</content>
+            </equal>
+        </assert>
+    </native>
+
+
+</scenario>

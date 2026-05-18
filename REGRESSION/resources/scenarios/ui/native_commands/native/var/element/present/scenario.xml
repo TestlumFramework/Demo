@@ -1,0 +1,37 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - element present</description>
+        <name>Var element present</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <click comment="Show the hidden element" locator="testApp.btnToggleHidden"/>
+
+        <var comment="Check if hidden element is present"
+             name="isPresent">
+            <element>
+                <present locator="testApp.varHiddenElement" locatorStrategy="locatorId"/>
+            </element>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{isPresent}}"/>
+        <assert comment="Assert injected value is [true]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: true</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

@@ -1,0 +1,49 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test condition command - general: true and false SpEL expressions</description>
+        <name>Condition general</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <condition comment="Evaluate: 1+1==2 (true)"
+                   name="isTrue"
+                   spel="1 + 1 == 2"/>
+
+        <click comment="Click executes because isTrue=true"
+               condition="{{isTrue}}"
+               locator="testApp.clickButton"/>
+        <assert comment="Assert counter is 1">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 1</content>
+            </attribute>
+        </assert>
+
+        <condition comment="Evaluate: 1+1==3 (false)"
+                   name="isFalse"
+                   spel="1 + 1 == 3"/>
+
+        <click comment="Click skipped because isFalse=false"
+               condition="{{isFalse}}"
+               locator="testApp.clickButton"/>
+        <assert comment="Assert counter is 1">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

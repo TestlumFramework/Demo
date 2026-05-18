@@ -1,0 +1,33 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>General test input command</description>
+        <name>Input command</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+
+        <click comment="Clicking on button inputPage" locator="testApp.inputPage"/>
+
+        <input comment="Test general input command"
+               locator="testApp.inputArea"
+               locatorStrategy="locatorId"
+               value="Test"/>
+
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.inputResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>You typed: Test</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

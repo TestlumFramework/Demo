@@ -1,0 +1,58 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test webView command - general</description>
+        <name>WebView general</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to WebView screen" locator="testApp.webViewPage"/>
+        <wait comment="Waiting 1 second" time="1"/>
+
+        <webView comment="Assert initial state">
+            <assert comment="Assert initial paragraph text">
+                <attribute comment="Verify initial text"
+                           locator="testApp.webViewText"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>This is an embedded web view.</content>
+                </attribute>
+            </assert>
+            <assert comment="Assert initial counter is zero">
+                <attribute comment="Verify counter starts at zero"
+                           locator="testApp.webViewCounter"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>0</content>
+                </attribute>
+            </assert>
+        </webView>
+
+        <webView comment="Click button and verify result">
+            <click comment="Click the button inside webView" locator="testApp.webViewBtn"/>
+            <assert comment="Assert text changed after click">
+                <attribute comment="Verify updated text"
+                           locator="testApp.webViewText"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>WebView Button Clicked!</content>
+                </attribute>
+            </assert>
+            <assert comment="Assert counter incremented to 1">
+                <attribute comment="Verify counter is 1"
+                           locator="testApp.webViewCounter"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>1</content>
+                </attribute>
+            </assert>
+        </webView>
+
+    </native>
+
+</scenario>

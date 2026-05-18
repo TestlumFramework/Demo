@@ -1,0 +1,33 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verification of synchronization logic and dynamic waiting across varying time intervals.</description>
+        <name>Dynamic Wait Synchronization</name>
+    </overview>
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Wait screen" locator="testApp.waitPage"/>
+        <click comment="Reset state" locator="testApp.resetButtonWait"/>
+        <click comment="Start long task" locator="testApp.startTaskButton"/>
+
+        <wait comment="Wait {{comment}}"
+              condition="{{flag}}"
+              time="{{time}}"
+              unit="seconds"/>
+        <assert comment="Assert wait status is Complete">
+            <attribute comment="Check status text"
+                       locator="testApp.waitStatus"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Complete</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

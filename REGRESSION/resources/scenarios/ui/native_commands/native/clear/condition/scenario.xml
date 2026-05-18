@@ -1,0 +1,51 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test clear general with condition</description>
+        <name>Clear general with condition</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button clear page" locator="testApp.clearPage"/>
+
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.statusInput"
+                       name="text">
+                <content>Status: NotEmpty</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Clear input value"
+               condition="false"
+               locator="testApp.clearInputText"/>
+
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.statusInput"
+                       name="text">
+                <content>Status: NotEmpty</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Clear input value"
+               condition="true"
+               locator="testApp.clearInputText"/>
+
+        <assert comment="Validating expected UI state">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.statusInput"
+                       name="text">
+                <content>Status: Empty</content>
+            </attribute>
+        </assert>
+    </native>
+
+
+</scenario>
