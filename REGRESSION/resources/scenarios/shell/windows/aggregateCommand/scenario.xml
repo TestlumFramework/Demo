@@ -1,0 +1,34 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell complex commands (pipes, redirects, logical operators) check (Windows Edition)</description>
+        <name>Shell Complex Commands Test Windows</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self-windows</tags>
+    </settings>
+
+    <shell comment="Execute command with redirect"
+           file="expected_1.json">
+        <shellCommand>cmd.exe /c echo "test content" &gt; test_pipe.txt</shellCommand>
+    </shell>
+
+    <shell comment="Execute command with pipe"
+           file="expected_2.json">
+        <shellCommand>cmd.exe /ctype test_pipe.txt | find "content"</shellCommand>
+    </shell>
+
+    <shell comment="Execute command with logical AND"
+           file="expected_3.json">
+        <shellCommand>cmd.exe /cecho "Step 1" &amp;&amp; echo "Step 2"</shellCommand>
+    </shell>
+
+    <shell comment="Cleanup test file"
+           file="expected_4.json">
+        <shellCommand>cmd.exe /cdel test_pipe.txt</shellCommand>
+    </shell>
+
+</scenario>

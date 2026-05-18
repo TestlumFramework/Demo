@@ -18,6 +18,7 @@
 
         <tag name="shell-self" enabled="false"/>
         <tag name="shell-mixed" enabled="false"/>
+        <tag name="shell-self-windows" enabled="false"/>
 
         <tag name="assert-self" enabled="true"/>
 

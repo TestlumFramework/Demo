@@ -1,0 +1,5 @@
+{
+  "productName": "{{product_name}}",
+  "category": "{{product_category}}",
+  "price": "{{product_price}}"
+}

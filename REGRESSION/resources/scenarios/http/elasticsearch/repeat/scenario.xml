@@ -1,0 +1,69 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch Repeat Execution Test</description>
+        <name>Elasticsearch Basic Repeat</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Setup: Create initial document for repeat test">
+        <post endpoint="/test-repeat-index/_doc/constant-doc">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "status": "READY",
+                    "message": "This document will be read multiple times"
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <repeat comment="Read the document 5 times to ensure stability"
+            times="5">
+
+        <elasticsearch alias="ELASTIC_0"
+                       comment="Execute GET request inside loop">
+            <get endpoint="/test-repeat-index/_doc/constant-doc">
+                <response code="200" file="expected_3.json"/>
+            </get>
+        </elasticsearch>
+
+    </repeat>
+
+    <repeat comment="Write the document in repeat with variations to ensure stability"
+            variations="elasticsearch_data.csv">
+        <elasticsearch alias="ELASTIC_0"
+                       comment="Create document inside repeat">
+            <post endpoint="/test-repeat-index/_doc/{{doc_id}}">
+                <param data="true" name="refresh"/>
+                <response code="201"/>
+                <body>
+                    <raw>
+                        {
+                        "productName": "{{product_name}}",
+                        "category": "{{product_category}}",
+                        "price": {{product_price}}
+                        }
+</raw>
+                </body>
+            </post>
+        </elasticsearch>
+    </repeat>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Execute GET request to fetch ALL documents">
+        <get endpoint="/test-repeat-index/_search">
+            <param data="100" name="size"/>
+            <response code="200" file="expected_12.json"/>
+        </get>
+    </elasticsearch>
+
+</scenario>

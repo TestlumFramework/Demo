@@ -1,0 +1,4 @@
+full_word,search_part,expected_1,expected_2,body_2_file
+hello_world,hello,expected_1_1,expected_2_1,check_substring.sh
+automation_test,auto,expected_1_2,expected_2_2,check_substring.sh
+superman,super,expected_1_3,expected_2_3,check_substring.sh

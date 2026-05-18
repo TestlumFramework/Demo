@@ -1,0 +1,4 @@
+doc_id,product_name,product_category,product_price,expected_2,status,body_3,expected_4,doc_id_from_file
+var-1,Laptop Pro,Electronics,1500,expected_2_1,201,body_3_1,expected_4_1,var-file-1
+var-2,Coffee Mug,Kitchen,15,expected_2_2,201,body_3_2,expected_4_2,var-file-2
+var-3,Office Chair,Furniture,250,expected_2_3,201,body_3_3,expected_4_3,var-file-3

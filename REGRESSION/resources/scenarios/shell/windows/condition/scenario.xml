@@ -1,0 +1,40 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell conditional execution check (Windows Edition)</description>
+        <name>Shell Condition Test Windows</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self-windows</tags>
+    </settings>
+
+    <shell comment="Before all: remove file if present before test"
+           file="expected_1.json">
+        <shellCommand>cmd.exe /c if exist test_shell_condition.txt del test_shell_condition.txt</shellCommand>
+    </shell>
+
+    <shell comment="Attempt to execute failing command with condition=false"
+           condition="false"
+           file="expected_2.json">
+        <shellCommand>cmd.exe /c cmd /c exit 1</shellCommand>
+    </shell>
+
+    <condition comment="True condition to test injection"
+               name="TRUE_CONDITION"
+               spel="true"/>
+
+    <shell comment="Create file with condition=true"
+           condition="{{TRUE_CONDITION}}"
+           file="expected_4.json">
+        <shellCommand>cmd.exe /c type nul > test_shell_condition.txt</shellCommand>
+    </shell>
+
+    <shell comment="Remove the file to verify it was actually created"
+           file="expected_5.json">
+        <shellCommand>cmd.exe /c del test_shell_condition.txt</shellCommand>
+    </shell>
+
+</scenario>

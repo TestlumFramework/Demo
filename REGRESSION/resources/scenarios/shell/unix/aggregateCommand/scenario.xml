@@ -1,0 +1,35 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell complex commands (pipes, redirects, logical operators) check</description>
+        <name>Shell Complex Commands Test</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self</tags>
+    </settings>
+
+    <!--    Complex commands are not supported because of Shell implementation -->
+    <shell comment="Execute command with redirect"
+           file="expected_1.json">
+        <shellCommand>echo "test content" &gt; test_pipe.txt</shellCommand>
+    </shell>
+
+    <shell comment="Execute command with pipe"
+           file="expected_2.json">
+        <shellCommand>cat test_pipe.txt | grep "content"</shellCommand>
+    </shell>
+
+    <shell comment="Execute command with logical AND"
+           file="expected_3.json">
+        <shellCommand>echo "Step 1" &amp;&amp; echo "Step 2"</shellCommand>
+    </shell>
+
+    <shell comment="Cleanup test file"
+           file="expected_4.json">
+        <shellCommand>rm test_pipe.txt</shellCommand>
+    </shell>
+
+</scenario>

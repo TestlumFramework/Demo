@@ -1,0 +1,40 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell conditional execution check</description>
+        <name>Shell Condition Test</name>
+    </overview>
+
+    <settings>
+        <tags>shell-self</tags>
+    </settings>
+
+    <shell comment="Before all: remove file if present before test"
+           file="expected_1.json">
+        <shellCommand>rm -f test_shell_condition.txt</shellCommand>
+    </shell>
+
+    <shell comment="Attempt to execute failing command with condition=false"
+           condition="false"
+           file="expected_2.json">
+        <shellCommand>exit 1</shellCommand>
+    </shell>
+
+    <condition comment="True condition to test injection"
+               name="TRUE_CONDITION"
+               spel="true"/>
+
+    <shell comment="Create file with condition=true"
+           condition="{{TRUE_CONDITION}}"
+           file="expected_4.json">
+        <shellCommand>touch test_shell_condition.txt</shellCommand>
+    </shell>
+
+    <shell comment="Remove the file to verify it was actually created"
+           file="expected_5.json">
+        <shellCommand>rm test_shell_condition.txt</shellCommand>
+    </shell>
+
+</scenario>

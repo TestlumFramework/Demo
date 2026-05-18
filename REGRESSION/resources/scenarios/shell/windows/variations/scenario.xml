@@ -1,0 +1,25 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Shell Variations Test without file I/O (Windows Edition)</description>
+        <name>Shell Simple Variations Windows</name>
+    </overview>
+
+    <settings>
+        <variations>shell_variations-windows.csv</variations>
+        <tags>shell-self-windows</tags>
+    </settings>
+
+    <shell comment="Verify dynamic variables in inline command for word {{full_word}}"
+           file="{{expected_1}}.json">
+        <shellCommand>cmd.exe /c echo {{full_word}} | find "{{search_part}}" &gt;nul</shellCommand>
+    </shell>
+
+    <shell comment="Verify passing dynamic arguments to a script for word {{full_word}}"
+           file="{{expected_2}}.json">
+        <shellFile>{{body_2_file}} {{full_word}} {{search_part}}</shellFile>
+    </shell>
+
+</scenario>
