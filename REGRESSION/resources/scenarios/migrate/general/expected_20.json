@@ -1,0 +1,6 @@
+[ {
+  "query" : "SELECT newsNumber FROM news WHERE newsName = 'Uganda'",
+  "content" : [ {
+    "newsNumber" : 225
+  } ]
+} ]

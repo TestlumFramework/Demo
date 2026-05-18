@@ -17,15 +17,19 @@
         <tag name="condition-self" enabled="true"/>
         <tag name="shell-self" enabled="true"/>
         <tag name="shell-mixed" enabled="true"/>
-        <tag name="assert-self" enabled="true"/>
+        <tag name="assert" enabled="true"/>
         <tag name="var-mixed" enabled="true"/>
-        <tag name="var-self" enabled="true"/>
+        <tag name="var" enabled="true"/>
         <tag name="variations-mixed" enabled="true"/>
         <tag name="variations-self" enabled="true"/>
         <tag name="auth-basic-mixed" enabled="true"/>
         <tag name="auth-jwt-mixed" enabled="true"/>
         <tag name="elasticsearch-mixed" enabled="true"/>
         <tag name="elasticsearch-self" enabled="true"/>
+        <tag name="repeat" enabled="true"/>
+        <tag name="migrate" enabled="true"/>
+        <tag name="include" enabled="true"/>
+        <tag name="wait" enabled="true"/>
         <tag name="api" enabled="true"/>
         <tag name="websocket" enabled="true"/>
         <tag name="graphql" enabled="true"/>

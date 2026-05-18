@@ -1,0 +1,15 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test scenario for including in test</description>
+        <name>Include Scenario</name>
+    </overview>
+
+    <settings>
+        <tags>include</tags>
+    </settings>
+
+    <wait comment="Stub wait for scenario" time="1" unit="millis"/>
+</scenario>

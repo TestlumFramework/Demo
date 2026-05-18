@@ -1,0 +1,25 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for Include command with variations</description>
+        <name>Include with variations</name>
+    </overview>
+
+    <settings>
+        <tags>include</tags>
+    </settings>
+
+    <wait comment="Stub wait for scenario" time="1" unit="millis"/>
+
+<!--    <include comment="Include test scenario with variations" scenario="include/variation/included/scenario.xml"/>-->
+
+<!--    <assert comment="Assert value from another scenario with variations">-->
+<!--        <equal comment="Check value from included scenario">-->
+<!--            <content>{{value}}</content>-->
+<!--            <content>1</content>-->
+<!--        </equal>-->
+<!--    </assert>-->
+
+</scenario>

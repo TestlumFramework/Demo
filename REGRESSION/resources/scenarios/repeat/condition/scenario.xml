@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Repeat with condition — verifies that repeat is skipped when condition is false and executes when condition is true</description>
+        <name>Repeat self with condition</name>
+    </overview>
+
+    <settings>
+        <tags>repeat</tags>
+    </settings>
+
+    <condition comment="Define a condition that always evaluates to false — used to trigger repeat skip"
+               name="alwaysFalseCondition"
+               spel="1 == 2"/>
+
+    <condition comment="Define a condition that always evaluates to true — used as a positive control"
+               name="alwaysTrueCondition"
+               spel="1 == 1"/>
+
+    <var comment="Initialize value with constant before repeat starts — must remain 'initial' if repeat is skipped" name="value">
+        <constant value="initial"/>
+    </var>
+
+    <repeat comment="This repeat must be skipped entirely because alwaysFalseCondition is false" times="3" condition="alwaysFalseCondition">
+        <var comment="This var must never be executed — value must not be overwritten" name="value">
+            <expression value="incorrectExpressionValue"/>
+        </var>
+    </repeat>
+
+    <assert comment="Verify value remains 'initial' — the repeat block was not executed due to the false condition">
+        <equal comment="value must equal 'initial' — repeat was skipped">
+            <content>{{value}}</content>
+            <content>initial</content>
+        </equal>
+    </assert>
+
+    <repeat comment="This repeat must execute because condition is true" times="2" condition="alwaysTrueCondition">
+        <var comment="Overwrite value — this must execute on each iteration" name="value">
+            <constant value="overwritten"/>
+        </var>
+    </repeat>
+
+    <assert comment="Verify the true-condition repeat did execute and value was overwritten">
+        <equal comment="value should equal 'overwritten' after true-condition repeat ran">
+            <content>{{value}}</content>
+            <content>overwritten</content>
+        </equal>
+    </assert>
+
+</scenario>

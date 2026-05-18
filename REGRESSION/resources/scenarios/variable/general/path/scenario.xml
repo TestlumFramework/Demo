@@ -1,0 +1,73 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test path variable creation and usage</description>
+        <name>Variable(path) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create variable with constant value" name="constantVar">
+        <constant value="{&quot;name&quot;:&quot;HelloWorld&quot;, &quot;someField&quot;:&quot;test&quot;}"/>
+    </var>
+
+    <assert comment="Assert constant variable value">
+        <equal comment="Check constantVar equals expected">
+            <content>{{constantVar}}</content>
+            <content>{&quot;name&quot;:&quot;HelloWorld&quot;, &quot;someField&quot;:&quot;test&quot;}</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable using path from existing variable" name="pathFromVar">
+        <path value="$.someField" fromVar="constantVar"/>
+    </var>
+
+    <assert comment="Assert pathFromVar value">
+        <equal comment="Check pathFromVar equals constantVar value">
+            <content>{{pathFromVar}}</content>
+            <content>test</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable using path from JSON file" name="pathFromFile">
+        <path value="$.description" fromFile="data.json"/>
+    </var>
+
+    <var comment="Create variable using path from JSON file" name="nameFromPath">
+        <path value="$.name" fromFile="data.json"/>
+    </var>
+
+    <assert comment="Assert pathFromFile value">
+        <equal comment="Check pathFromFile equals expected file value">
+            <content>{{pathFromFile}}</content>
+            <content>The best tool you can imagine!</content>
+        </equal>
+        <notEqual comment="Check that the name from path is not equal expected value">
+            <content>{{nameFromPath}}</content>
+            <content>TestRail</content>
+        </notEqual>
+    </assert>
+
+    <http comment="Execute a call to non-existing API (to generate expected in context)" alias="MEGA_APP">
+        <get endpoint="/someendpoint/test/path">
+            <response code="404" file="expected_12.json"/>
+        </get>
+    </http>
+    
+    <var comment="Create var using path without fromVar/fromFile" name="pathVar">
+        <path value="$.status"/>
+    </var>
+    
+    <assert comment="Check that without 'from' attribute - path var is taken from last expected file in context">
+        <equal comment="Ensure path value evaluated correctly">
+            <content>{{pathVar}}</content>
+            <content>NOT_FOUND</content>
+        </equal>
+    </assert>
+
+</scenario>
