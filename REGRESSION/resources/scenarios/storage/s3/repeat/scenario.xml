@@ -27,7 +27,6 @@
             <expression value="{{upload_postfix}} + 1"/>
         </var>
 
-
         <s3 comment="Execute upload_1.json storage operation within repeat" alias="S3_0">
             <file comment="Check ability to upload upload_{{upload_postfix}}.json file to testlum-repeat-bucket-one on each iteration"
                   bucket="testlum-repeat-bucket-one"

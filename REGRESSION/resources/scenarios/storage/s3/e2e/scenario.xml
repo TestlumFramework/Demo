@@ -9,7 +9,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>s3</tags>
+        <tags>s3_e2e</tags>
     </settings>
 
     <http comment="Check ability to create new 'bucket-one' bucket" alias="MEGA_APP">
