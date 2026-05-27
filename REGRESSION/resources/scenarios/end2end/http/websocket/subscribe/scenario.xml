@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>websocket</tags>
+        <tags>end2end</tags>
     </settings>
 
     <websocket comment="Connect to stomp websocket API" alias="MEGA_WS_APP" disconnect="false">

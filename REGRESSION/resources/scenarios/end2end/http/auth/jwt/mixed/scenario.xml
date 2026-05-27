@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>auth-jwt-mixed</tags>
+        <tags>end2end</tags>
     </settings>
 
     <migrate comment="Migrate list of registered users from patch to 'users' table" alias="POSTGRES_AUTH">

@@ -8,6 +8,7 @@
     <delayBetweenScenarioRuns seconds="1" enabled="true"/>
 
     <runScenariosByTag enabled="true">
+        <tag name="end2end" enabled="true"/>
         <tag name="auth" enabled="true"/>
         <tag name="http" enabled="true"/>
         <tag name="websocket" enabled="true"/>

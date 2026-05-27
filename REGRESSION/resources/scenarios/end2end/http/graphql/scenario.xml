@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>graphql</tags>
+        <tags>end2end</tags>
     </settings>
 
     <migrate comment="Migrate test dataset (4 books)"

@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true" active="false">
-        <tags>api</tags>
+        <tags>end2end</tags>
     </settings>
 
     <http comment="Check ability to send http multipart query to POSTMAN ECHO"
