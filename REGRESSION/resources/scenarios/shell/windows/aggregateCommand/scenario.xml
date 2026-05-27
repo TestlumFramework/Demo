@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>shell-self-windows</tags>
+        <tags>shell-windows</tags>
     </settings>
 
     <shell comment="Execute command with redirect"

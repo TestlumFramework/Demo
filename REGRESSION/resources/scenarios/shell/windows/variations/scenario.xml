@@ -9,7 +9,7 @@
 
     <settings>
         <variations>shell_variations-windows.csv</variations>
-        <tags>shell-self-windows</tags>
+        <tags>shell-windows</tags>
     </settings>
 
     <shell comment="Verify dynamic variables in inline command for word {{full_word}}"

@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>shell-self</tags>
+        <tags>shell</tags>
     </settings>
 
     <shell comment="Before all: remove file if present before test"

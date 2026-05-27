@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>shell-self</tags>
+        <tags>shell</tags>
     </settings>
 
     <var comment="Variable for expected 1 file"
