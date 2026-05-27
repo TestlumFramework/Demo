@@ -21,7 +21,7 @@
     </shell>
     
     <shell comment="Execute ls command with invalid option" file="expected_3.json">
-        <shellCommand>ls --invalid-option</shellCommand>
+        <shellCommand>cat /nonexistent_file_xyz</shellCommand>
     </shell>
 
     <shell comment="Execute sleep and echo command as separate commands" file="expected_4.json">
