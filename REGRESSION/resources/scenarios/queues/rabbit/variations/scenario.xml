@@ -12,7 +12,6 @@
         <tags>rabbit</tags>
     </settings>
 
-    <!--  XSD validation error in injection into alias  -->
     <rabbit alias="RABBIT_0"
             comment="Rabbit send and receive using variations: {{testDescription}}">
         <send routingKey="{{queueName}}" correlationId="{{queueName}}">
@@ -39,8 +38,6 @@
         </receive>
 
         <send routingKey="{{queueName}}">
-<!--            <file>{{body_4}}.json           XSD validation error</file>-->
-<!--            <file>body_4_1.json             XSD validation</file>-->
             <file>body_4.json</file>
         </send>
 

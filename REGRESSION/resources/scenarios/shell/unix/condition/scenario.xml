@@ -13,7 +13,7 @@
 
     <shell comment="Before all: remove file if present before test"
            file="expected_1.json">
-        <shellCommand>rm -f test_shell_condition.txt</shellCommand>
+        <shellCommand>rm -f /tmp/testlum_cond_marker.txt</shellCommand>
     </shell>
 
     <shell comment="Attempt to execute failing command with condition=false"
@@ -29,12 +29,12 @@
     <shell comment="Create file with condition=true"
            condition="{{TRUE_CONDITION}}"
            file="expected_4.json">
-        <shellCommand>touch test_shell_condition.txt</shellCommand>
+        <shellCommand>touch /tmp/testlum_cond_marker.txt</shellCommand>
     </shell>
 
     <shell comment="Remove the file to verify it was actually created"
            file="expected_5.json">
-        <shellCommand>rm test_shell_condition.txt</shellCommand>
+        <shellCommand>rm /tmp/testlum_cond_marker.txt</shellCommand>
     </shell>
 
 </scenario>

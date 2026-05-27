@@ -77,7 +77,6 @@
            comment="Kafka send and receive for country {{city}} - inject into file">
         <send correlationId="1"
               topic="{{topic}}">
-<!--            <file>{{body_8}}.json           XSD validation error</file>-->
             <file>body_8.json</file>
         </send>
 
