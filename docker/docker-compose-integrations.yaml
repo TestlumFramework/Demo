@@ -162,6 +162,8 @@ services:
       - "3316:3306"
     volumes:
       - ./init-data/mariadb:/docker-entrypoint-initdb.d
+    networks:
+      - e2e_network
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 10s
