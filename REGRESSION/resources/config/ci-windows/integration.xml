@@ -232,7 +232,7 @@
     </s3Integration>
 
     <sendgridIntegration>
-        <sendgrid alias="SG_0" enabled="true">
+        <sendgrid alias="SG_0" enabled="false">
             <apiKey>${SENDGRID_API_KEY}</apiKey>
         </sendgrid>
     </sendgridIntegration>

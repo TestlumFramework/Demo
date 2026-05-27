@@ -11,7 +11,7 @@
         <tags>twilio</tags>
     </settings>
 
-    <twilio comment="Test how twilio works" alias="TWILIO_0" destinationPhoneNumber="+380990625082">
+    <twilio comment="Test how twilio works" alias="TWILIO_0" destinationPhoneNumber="+380500387639">
         <message>Testlum=))</message>
     </twilio>
 
