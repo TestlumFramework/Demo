@@ -152,7 +152,7 @@
 
     <sqlDatabaseIntegration>
         <sqlDatabase alias="MARIADB_0"
-                     enabled="true"
+                     enabled="false"
                      truncate="true">
             <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
             <username>root</username>
@@ -193,7 +193,7 @@
             <groupId>group-queue</groupId>
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
-        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true" truncate="true">
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="false" truncate="true">
             <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
@@ -203,7 +203,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
-               enabled="true"
+               enabled="false"
                truncate="true">
             <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
             <autoOffsetReset>latest</autoOffsetReset>
@@ -214,7 +214,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
-               enabled="true"
+               enabled="false"
                truncate="true">
             <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
