@@ -1,0 +1,4 @@
+comment,destinationEmail,sourceEmail,subjectText,textBody
+Send first SES email from CSV,test1@gmail.com,testlum@gmail.com,Hello 1,Message 1
+Send second SES email from CSV,test2@gmail.com,testlum@gmail.com,Hello 2,Message 2
+Send third SES email from CSV,test3@gmail.com,testlum@gmail.com,Hello 3,Message 3

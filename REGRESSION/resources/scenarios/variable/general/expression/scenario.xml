@@ -1,0 +1,36 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test expression variable creation and usage</description>
+        <name>Variable(expression) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create expression variable with repeat method" name="expressionVar">
+        <expression value="'Testlum'.repeat(3)"/>
+    </var>
+
+    <assert comment="Check if the expression result equals 'TestlumTestlumTestlum'">
+        <equal comment="Check expressionVar value equal expected">
+            <content>{{expressionVar}}</content>
+            <content>TestlumTestlumTestlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create expression variable with reserved symbols" name="expressionWithSymbols">
+        <expression value="'$Test@[]{}();.=||'.repeat(2)"/>
+    </var>
+
+    <assert comment="Check if the expression with reserved symbols equals '$Test@$Test@'">
+        <equal comment="Check expressionWithSymbols var equal expected">
+            <content>{{expressionWithSymbols}}</content>
+            <content>$Test@[]{}();.=||$Test@[]{}();.=||</content>
+        </equal>
+    </assert>
+</scenario>

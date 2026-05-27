@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Twilio Condition Test</name>
+        <description>
+            This scenario verifies condition-based execution.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>twilio</tags>
+    </settings>
+
+    <condition comment="First condition" name="send" spel="true"/>
+    <condition comment="Second condition" name="skip" spel="false"/>
+
+    <twilio comment="Should be sent"
+            alias="TWILIO_0"
+            condition="send"
+            destinationPhoneNumber="+380500387639">
+
+        <message>Condition TRUE</message>
+
+    </twilio>
+
+    <twilio comment="Should NOT be sent"
+            alias="TWILIO_0"
+            condition="skip"
+            destinationPhoneNumber="INVALID">
+
+        <message>Condition FALSE</message>
+
+    </twilio>
+
+</scenario>

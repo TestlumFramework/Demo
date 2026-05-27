@@ -9,7 +9,7 @@
 
     <settings truncateStorages="true">
         <variations>variations.csv</variations>
-        <tags>variations-mixed</tags>
+        <tags>end2end</tags>
     </settings>
 
     <include comment="Include login steps" scenario="{{scenario_path}}"/>

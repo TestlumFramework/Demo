@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>elasticsearch-self</tags>
+        <tags>elasticsearch</tags>
     </settings>
 
    <elasticsearch comment="Execute elasticsearch command get before post method" alias="ELASTIC_0">
