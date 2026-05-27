@@ -18,7 +18,7 @@
 
     <shell comment="Execute command with pipe"
            file="expected_2.json">
-        <shellCommand>cmd.exe /ctype test_pipe.txt | find "content"</shellCommand>
+        <shellCommand>cmd.exe /ctype test_pipe.txt | findstr "content"</shellCommand>
     </shell>
 
     <shell comment="Execute command with logical AND"
