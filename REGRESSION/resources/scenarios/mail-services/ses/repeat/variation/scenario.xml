@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SES Repeat Variation Test</name>
+        <description>
+            This scenario verifies repeat execution using CSV rows.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>ses</tags>
+    </settings>
+
+    <repeat comment="Send SES emails using variation rows"
+            variations="ses_repeat.csv">
+
+        <ses comment="Send SES email from variation"
+             alias="SES_0">
+
+            <destination>{{destinationEmail}}</destination>
+            <source>testlum@gmail.com</source>
+
+            <message>
+                <body>
+                    <html>HTML {{subjectText}}</html>
+                    <text>{{textBody}}</text>
+                </body>
+                <subject>{{subjectText}}</subject>
+            </message>
+
+        </ses>
+
+    </repeat>
+
+</scenario>
