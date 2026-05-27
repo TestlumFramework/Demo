@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"condition_test\",             \"documents\": [             { \"_id\": 99, \"data_value\": \"INITIAL_DATA\" }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

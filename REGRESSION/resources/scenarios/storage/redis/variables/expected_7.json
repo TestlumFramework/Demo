@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"test_news:{{id}}\",\"title\",\"{{title}}\",\"category\",\"{{category}}\"],\"command\":\"HSET\"}",
+  "content" : "2"
+} ]

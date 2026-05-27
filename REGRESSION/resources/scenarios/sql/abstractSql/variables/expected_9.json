@@ -1,0 +1,4 @@
+[ {
+  "query" : "DROP TABLE IF EXISTS test_news",
+  "content" : "Query completed successfully"
+} ]

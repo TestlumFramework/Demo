@@ -1,0 +1,92 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>MongoDB CRUD Operations Test</description>
+        <name>Mongo Basic CRUD Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>mongodb</tags>
+    </settings>
+
+    <mongo alias="MONGO_0"
+           comment="Insert data to collection"
+           file="expected_1.json">
+        <query>
+            {
+            "insert": "test_users",
+            "documents": [
+            { "_id": 101, "username": "john_doe", "role": "ADMIN" }
+            ]
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Read data from collection - verify inserted data"
+           file="expected_2.json">
+        <query>
+            {
+            "find": "test_users",
+            "filter": { "_id": 101 }
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Update data in collection"
+           file="expected_3.json">
+        <query>
+            {
+            "update": "test_users",
+            "updates": [
+            {
+            "q": { "_id": 101 },
+            "u": { "$set": { "role": "SUPER_ADMIN" } }
+            }
+            ]
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Verify updated data"
+           file="expected_4.json">
+        <query>
+            {
+            "find": "test_users",
+            "filter": { "_id": 101 }
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Delete from collection"
+           file="expected_5.json">
+        <query>
+            {
+            "delete": "test_users",
+            "deletes": [
+            {
+            "q": { "_id": 101 },
+            "limit": 1
+            }
+            ]
+            }
+        </query>
+    </mongo>
+
+    <mongo alias="MONGO_0"
+           comment="Read data from collection - verify data is deleted"
+           file="expected_6.json">
+        <query>
+            {
+            "find": "test_users",
+            "filter": { "_id": 101 }
+            }
+        </query>
+    </mongo>
+
+</scenario>

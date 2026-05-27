@@ -1,0 +1,55 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Redis Data-Driven Test with dynamic expected files</description>
+        <name>Redis Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>redis_variations.csv</variations>
+        <tags>redis</tags>
+    </settings>
+
+    <redis alias="REDIS_0"
+           comment="Clear previous data for the current ID"
+           file="{{expected_1}}.json">
+        <query>
+            <command>DEL</command>
+            <arg>test_news:{{id}}</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Insert dynamic data to hash for user id {{id}}"
+           file="{{expected_2}}.json">
+        <query>
+            <command>HSET</command>
+            <arg>test_news:{{id}}</arg>
+            <arg>title</arg>
+            <arg>{{title}}</arg>
+            <arg>category</arg>
+            <arg>{{category}}</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Read data from hash using variations"
+           file="{{expected_3}}.json">
+        <query>
+            <command>HGETALL</command>
+            <arg>test_news:{{id}}</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Clean up data after test iteration"
+           file="expected_4.json">
+        <query>
+            <command>DEL</command>
+            <arg>test_news:{{id}}</arg>
+        </query>
+    </redis>
+
+</scenario>

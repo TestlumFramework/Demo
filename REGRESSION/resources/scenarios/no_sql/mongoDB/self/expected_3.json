@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"update\": \"test_users\",             \"updates\": [             {             \"q\": { \"_id\": 101 },             \"u\": { \"$set\": { \"role\": \"SUPER_ADMIN\" } }             }             ]             }         ",
+  "content" : "{\"n\":1,\"nModified\":1,\"ok\":1.0}"
+} ]

@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE IF NOT EXISTS condition_test ( id INT PRIMARY KEY, data_value VARCHAR(50) )",
+  "content" : "Query completed successfully"
+} ]

@@ -41,6 +41,7 @@
         <tag name="oracle" enabled="false"/>
         <tag name="mongodb" enabled="false"/>
         <tag name="redis" enabled="false"/>
+        <tag name="abstract-db" enabled="false"/>
 
         <!--    AWS    -->
         <tag name="dynamodb" enabled="false"/>

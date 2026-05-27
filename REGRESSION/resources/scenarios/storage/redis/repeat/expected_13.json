@@ -1,0 +1,4 @@
+[ {
+  "query" : "{\"arg\":[\"repeat_simple_log\"],\"command\":\"LLEN\"}",
+  "content" : "5"
+} ]
