@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid Body Raw Test</name>
+        <description>
+            This scenario verifies SendGrid request execution using raw body.
+
+            Test flow:
+            1. Send email using inline JSON body (raw).
+            2. Verify response status = 202.
+
+            This scenario validates:
+            - Raw body parsing
+            - Correct JSON structure handling
+            - Successful request execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <sendgrid comment="Send email using raw body"
+              alias="SG_0">
+
+        <post endpoint="/mail/send">
+            <response code="202"/>
+
+            <body>
+                <raw>
+                    {
+                    "from": { "email": "contact@testlum.com" },
+                    "subject": "Raw Body Test",
+                    "personalizations": [{
+                    "to": [{
+                    "email": "testlum.test.acc@gmail.com"
+                    }]
+                    }],
+                    "content": [{
+                    "type": "text/plain",
+                    "value": "Message from raw body"
+                    }]
+                    }
+                </raw>
+            </body>
+
+        </post>
+
+    </sendgrid>
+
+</scenario>

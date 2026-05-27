@@ -1,0 +1,54 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>MySQL conditional execution check</description>
+        <name>MySQL Condition Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>mysql</tags>
+    </settings>
+
+    <mysql alias="MYSQL_0"
+           comment="Create table for condition test"
+           file="expected_1.json">
+        <query>
+            CREATE TABLE IF NOT EXISTS condition_test (
+            id INT PRIMARY KEY,
+            data_value VARCHAR(50)
+            );
+        </query>
+        <query>TRUNCATE TABLE condition_test;</query>
+    </mysql>
+
+    <condition comment="True condition to insert test data into table" name="CONDITION_TRUE" spel="true"/>
+
+    <mysql alias="MYSQL_0"
+           comment="Insert data to table"
+           file="expected_3.json"
+           condition="{{CONDITION_TRUE}}">
+        <query>INSERT INTO condition_test (id, data_value) VALUES (99, 'INITIAL_DATA');</query>
+    </mysql>
+
+    <mysql alias="MYSQL_0"
+           comment="Read data from table - verify inserted data"
+           file="expected_4.json">
+        <query>SELECT id, data_value FROM condition_test WHERE id = 99;</query>
+    </mysql>
+
+    <mysql alias="MYSQL_0"
+           comment="Attempt to delete with condition=false"
+           condition="false"
+           file="expected_5.json">
+        <query>DELETE_NOT_EXIST FROM condition_test WHERE id = 99;</query>
+    </mysql>
+
+    <mysql alias="MYSQL_0"
+           comment="Read data from table - verify data was NOT deleted"
+           file="expected_6.json">
+        <query>SELECT id, data_value FROM condition_test WHERE id = 99;</query>
+    </mysql>
+
+</scenario>

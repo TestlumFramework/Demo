@@ -10,7 +10,7 @@
 
     <settings>
         <variations>variations_condition.csv</variations>
-        <tags>condition-self</tags>
+        <tags>condition</tags>
     </settings>
 
     <condition comment="Create positive condition based on framework name" name="testlumCondition"

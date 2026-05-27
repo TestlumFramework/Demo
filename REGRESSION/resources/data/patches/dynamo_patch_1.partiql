@@ -1,0 +1,1 @@
+INSERT INTO dynamodb_news VALUE { 'name' : 'Uganda', 'number' : 225, 'active' : true, 'createdAt': '2023-04-17T12:32:53.558', 'id': '4' };;

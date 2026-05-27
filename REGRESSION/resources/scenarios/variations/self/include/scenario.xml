@@ -8,7 +8,7 @@
     </overview>
 
     <settings active="false">
-        <tags>variations-self</tags>
+        <tags>variations</tags>
     </settings>
 
     <assert comment="Assert values from variations in included scenario">

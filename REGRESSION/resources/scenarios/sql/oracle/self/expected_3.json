@@ -1,0 +1,8 @@
+[ {
+  "query" : "SELECT id AS \"id\", username AS \"username\", user_role AS \"role\" FROM test_users WHERE id = 101",
+  "content" : [ {
+    "id" : 101,
+    "username" : "john_doe",
+    "role" : "ADMIN"
+  } ]
+} ]

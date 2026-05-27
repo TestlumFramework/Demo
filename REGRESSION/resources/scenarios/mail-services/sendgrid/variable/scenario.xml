@@ -1,0 +1,87 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid VARIABLE Test</name>
+        <description>
+            This scenario verifies variable injection into SendGrid request body and attributes.
+
+            It validates:
+            - email variable substitution
+            - subject variable substitution
+            - message body variable substitution
+            - comment attribute variable substitution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <var name="contactEmail" comment="Contact email variable">
+        <constant value="contact@testlum.com"/>
+    </var>
+
+    <var name="userEmail" comment="Recipient email variable">
+        <constant value="konnor999@gmail.com"/>
+    </var>
+
+    <var name="subject" comment="Email subject variable">
+        <constant value="Test message from VARIABLE"/>
+    </var>
+
+    <var name="messageText" comment="Email body variable">
+        <constant value="Hello from VARIABLE test"/>
+    </var>
+
+    <var name="requestComment" comment="Comment for sendgrid block">
+        <constant value="Send email using variables"/>
+    </var>
+
+    <var name="type" comment="Type variable">
+        <constant value="text/plain"/>
+    </var>
+
+    <var comment="Sendgrid endpoint variable" name="endpoint">
+        <constant value="mail/send"/>
+    </var>
+
+    <condition comment="Test condition" name="testCondition" spel="true"/>
+
+    <var comment="Condition variable" name="conditionVariable">
+        <constant value="{{testCondition}}"/>
+    </var>
+
+    <sendgrid comment="{{requestComment}}" alias="SG_0" condition="testCondition">
+        <post endpoint="/{{endpoint}}">
+            <response code="202"/>
+            <body>
+                <raw>
+                    {
+                    "from": {
+                    "email": "{{contactEmail}}"
+                    },
+                    "subject": "{{subject}}",
+                    "personalizations": [
+                    {
+                    "to": [
+                    {
+                    "email": "{{userEmail}}"
+                    }
+                    ]
+                    }
+                    ],
+                    "content": [
+                    {
+                    "type": "{{type}}",
+                    "value": "{{messageText}}"
+                    }
+                    ]
+                    }
+                </raw>
+            </body>
+        </post>
+    </sendgrid>
+
+</scenario>

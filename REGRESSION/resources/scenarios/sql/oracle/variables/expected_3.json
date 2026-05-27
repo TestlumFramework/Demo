@@ -1,0 +1,4 @@
+[ {
+  "query" : "CREATE TABLE test_news ( id NUMBER(10) PRIMARY KEY, title VARCHAR2(100), category VARCHAR2(50) )",
+  "content" : "Query completed successfully"
+} ]

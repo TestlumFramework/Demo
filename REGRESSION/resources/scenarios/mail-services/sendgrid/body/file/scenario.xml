@@ -1,0 +1,39 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid Body File Test</name>
+        <description>
+            This scenario verifies SendGrid request execution using file-based body.
+
+            Test flow:
+            1. Load request body from external JSON file.
+            2. Send email using file content.
+            3. Verify response status = 202.
+
+            This scenario validates:
+            - File-based body loading
+            - JSON parsing from file
+            - Correct request execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <sendgrid comment="Send email using file body"
+              alias="SG_0">
+
+        <post endpoint="/mail/send">
+            <response code="202"/>
+            <body>
+                <from file="request_1.json"/>
+            </body>
+
+        </post>
+
+    </sendgrid>
+
+</scenario>

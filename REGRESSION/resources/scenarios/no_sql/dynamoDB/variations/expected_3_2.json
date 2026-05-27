@@ -1,0 +1,25 @@
+[ {
+  "query" : "             SELECT * FROM dynamodb_news             WHERE id = '20'         ",
+  "content" : [ {
+    "name" : {
+      "s" : "Dynamic News B",
+      "type" : "S"
+    },
+    "number" : {
+      "n" : "200",
+      "type" : "N"
+    },
+    "createdAt" : {
+      "s" : "2026-04-15T15:00:00.000",
+      "type" : "S"
+    },
+    "active" : {
+      "bool" : true,
+      "type" : "BOOL"
+    },
+    "id" : {
+      "s" : "20",
+      "type" : "S"
+    }
+  } ]
+} ]

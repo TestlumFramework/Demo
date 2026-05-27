@@ -1,0 +1,9 @@
+[ {
+  "query" : "DELETE FROM dynamodb_news WHERE id = '10'"
+}, {
+  "query" : "DELETE FROM dynamodb_news WHERE id = '20'"
+}, {
+  "query" : "DELETE FROM dynamodb_news WHERE id = '30'"
+}, {
+  "query" : "DELETE FROM dynamodb_news WHERE id = 'log_1'"
+} ]

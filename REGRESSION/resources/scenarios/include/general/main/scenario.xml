@@ -1,0 +1,29 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for Include command</description>
+        <name>Include</name>
+    </overview>
+
+    <settings>
+        <tags>include</tags>
+    </settings>
+
+    <include comment="Include test scenario with variable" scenario="include/general/included/scenario.xml"/>
+
+    <assert comment="Assert var from another scenario">
+        <equal comment="Check constant variable value from included scenario">
+            <content>{{bestTool}}</content>
+            <content>Testlum</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable for comment injecting" name="commentVar">
+        <constant value="Check inject in include command"/>
+    </var>
+
+    <include comment="{{commentVar}}" scenario="include/variation/included2/scenario.xml"/>
+
+</scenario>
