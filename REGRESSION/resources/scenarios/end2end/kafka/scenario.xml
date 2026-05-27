@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>kafka</tags>
+        <tags>end2end</tags>
     </settings>
 
     <kafka comment="Receive 1 time, send 1 time, receive 2 times and send 2 times" alias="KAFKA_0">
