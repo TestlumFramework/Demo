@@ -60,7 +60,8 @@
         <tag name="smtp" enabled="true"/>
 
         <!--    Other    -->
-        <tag name="shell" enabled="false"/>
+        <tag name="shell" enabled="true"/>
+        <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="true"/>
     </runScenariosByTag>
 

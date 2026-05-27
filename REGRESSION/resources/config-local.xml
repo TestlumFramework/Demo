@@ -61,6 +61,7 @@
 
         <!--    Other    -->
         <tag name="shell" enabled="false"/>
+        <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="false"/>
     </runScenariosByTag>
 

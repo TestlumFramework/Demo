@@ -1,0 +1,55 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch Data-Driven Test with Variations</description>
+        <name>Elasticsearch Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>elasticsearch_data.csv</variations>
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with variable payload for product {{product_name}}">
+        <post endpoint="/test-var-index/_doc/{{doc_id}}">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "productName": "{{product_name}}",
+                    "category": "{{product_category}}",
+                    "price": {{product_price}}
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and verify response contains the variable data">
+        <get endpoint="/test-var-index/_doc/{{doc_id}}">
+            <response code="200" file="{{expected_2}}.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send POST request with variable payload for product {{product_name}}">
+        <post endpoint="/test-var-index/_doc/{{doc_id_from_file}}">
+            <response code="201"/>
+            <body>
+                <from file="{{body_3}}.json"/>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Send GET request and verify response contains the variable data">
+        <get endpoint="/test-var-index/_doc/{{doc_id_from_file}}">
+            <response code="200" file="{{expected_4}}.json"/>
+        </get>
+    </elasticsearch>
+
+</scenario>
