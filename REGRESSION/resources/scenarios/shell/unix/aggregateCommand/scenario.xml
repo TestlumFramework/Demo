@@ -11,7 +11,6 @@
         <tags>shell</tags>
     </settings>
 
-    <!--    Complex commands are not supported because of Shell implementation -->
     <shell comment="Execute command with redirect"
            file="expected_1.json">
         <shellCommand>echo "test content" &gt; test_pipe.txt</shellCommand>

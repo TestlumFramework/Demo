@@ -41,8 +41,6 @@
         </receive>
 
         <send topic="{{topicName}}">
-<!--            <file>{{body_4}}.json</file>        XSD validation error-->
-<!--            <file>body_4_1.json</file>          XSD validation error-->
             <file>body_4.json</file>
         </send>
 

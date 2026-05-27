@@ -39,7 +39,6 @@
             variations="kafka_with_variations_test_data.csv">
         <kafka alias="KAFKA_0"
                comment="Kafka send message with variation in a loop for city {{city}}">
-<!--            variation in topic-->
             <send topic="weather">
                 <value>
                     [ {

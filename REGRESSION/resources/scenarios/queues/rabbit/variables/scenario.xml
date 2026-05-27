@@ -32,7 +32,6 @@
         <constant value="req-8899-abc"/>
     </var>
 
-    <!--  XSD validation error in injection into alias  -->
     <rabbit alias="RABBIT_0"
             comment="Send to RabbitMQ and verify that variable is injected. Routing key: {{queue}}">
         <send correlationId="{{CORRELATION_ID}}"
@@ -78,7 +77,6 @@
             comment="Send to RabbitMQ and verify that variable is injected with file">
         <send correlationId="req-8899-abc"
               routingKey="{{queue}}">
-<!--            <file>{{body_11}}.json          XSD validation error</file>-->
             <file>body_11.json</file>
         </send>
 
