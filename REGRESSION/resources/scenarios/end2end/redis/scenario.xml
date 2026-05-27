@@ -9,7 +9,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>redis,api</tags>
+        <tags>end2end</tags>
     </settings>
 
     <redis comment=" Check ability to add single key-value pair to redis using SET command; check impossibility to add

@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>oracle</tags>
+        <tags>end2end</tags>
     </settings>
 
     <migrate comment="Prepare information from oracle_patch.sql (20 records)"

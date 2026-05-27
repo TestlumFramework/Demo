@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>mongodb</tags>
+        <tags>end2end</tags>
     </settings>
 
     <migrate comment="Prepare information from mongo_patch.bson"

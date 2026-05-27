@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>dynamodb</tags>
+        <tags>end2end</tags>
     </settings>
 
     <migrate comment="Check ability to migrate dataset with undefined values"

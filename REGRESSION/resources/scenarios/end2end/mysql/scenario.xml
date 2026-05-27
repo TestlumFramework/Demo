@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>mysql</tags>
+        <tags>end2end</tags>
     </settings>
 
     <http comment="Check ability to get empty list of news" alias="MEGA_APP">
