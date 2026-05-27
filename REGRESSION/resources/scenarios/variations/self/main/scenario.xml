@@ -9,7 +9,7 @@
 
     <settings>
         <variations>variations_self.csv</variations>
-        <tags>variations-self</tags>
+        <tags>variations</tags>
     </settings>
 
     <assert comment="Assert values from variations">

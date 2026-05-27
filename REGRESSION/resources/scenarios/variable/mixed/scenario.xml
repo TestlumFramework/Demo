@@ -9,7 +9,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>var-mixed</tags>
+        <tags>end2end</tags>
     </settings>
 
     <var comment="Create var for random value that consists of two integers" name="numeric">
