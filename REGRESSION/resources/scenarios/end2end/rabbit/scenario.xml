@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>rabbit</tags>
+        <tags>end2end</tags>
     </settings>
 
     <http comment="Check ability to receive a message" alias="MEGA_APP">

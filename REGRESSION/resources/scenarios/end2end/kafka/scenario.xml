@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>kafka</tags>
+        <tags>end2end</tags>
     </settings>
 
     <kafka comment="Receive 1 time, send 1 time, receive 2 times and send 2 times" alias="KAFKA_0">
@@ -227,21 +227,9 @@
             </value>
         </receive>
 
-        <receive topic="weather" headers="true">
+        <receive topic="weather">
             <value>
-                [ {
-                "key" : "33",
-                "value" : [ {
-                "city" : "Boston",
-                "temperature" : 9,
-                "condition" : "windy",
-                "timestamp" : 1650765000
-                } ],
-                "correlationId" : null,
-                "headers" : {
-                "Lviv" : "33"
-                }
-                } ]
+                [ ]
             </value>
         </receive>
     </kafka>

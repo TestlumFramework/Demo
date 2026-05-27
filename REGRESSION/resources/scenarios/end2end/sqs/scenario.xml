@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>sqs</tags>
+        <tags>end2end</tags>
     </settings>
 
     <sqs comment="Check disability to receive message from not existing queue" alias="SQS_0">

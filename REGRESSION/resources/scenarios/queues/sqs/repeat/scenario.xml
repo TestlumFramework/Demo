@@ -1,0 +1,56 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS with Repeat Testing</description>
+        <name>SQS Repeat Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <repeat comment="Send 25 events with variations to test batching limits"
+            variations="kafka_with_variations_test_data.csv">
+        <sqs alias="SQS_0"
+             comment="SQS send message with variation in a loop to the queue {{topicName}}">
+            <send queue="{{topicName}}">
+                <value>
+                    [ {
+                    "city": "{{city}}",
+                    "temperature": {{temp}}
+                    } ]
+                </value>
+            </send>
+        </sqs>
+    </repeat>
+
+    <sqs alias="SQS_0"
+         comment="Receive first batch of 10 messages">
+        <receive maxNumberOfMessages="10"
+                 queue="test-batch-queue"
+                 waitTimeSeconds="4">
+            <file>expected_7.json</file>
+        </receive>
+    </sqs>
+
+    <sqs alias="SQS_0"
+         comment="Receive second batch of 10 messages">
+        <receive maxNumberOfMessages="10"
+                 queue="test-batch-queue"
+                 waitTimeSeconds="4">
+            <file>expected_9.json</file>
+        </receive>
+    </sqs>
+
+    <sqs alias="SQS_0"
+         comment="Receive remaining 5 messages">
+        <receive maxNumberOfMessages="5"
+                 queue="test-batch-queue"
+                 waitTimeSeconds="4">
+            <file>expected_11.json</file>
+        </receive>
+    </sqs>
+
+</scenario>
