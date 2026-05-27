@@ -1,0 +1,23 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Twilio Variation Test</name>
+        <description>
+            This scenario verifies CSV-driven Twilio execution.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>twilio_variations.csv</variations>
+        <tags>twilio</tags>
+    </settings>
+
+    <twilio comment="{{comment}}"
+            alias="TWILIO_0"
+            destinationPhoneNumber="{{phoneNumber}}">
+        <message>{{messageText}}</message>
+    </twilio>
+
+</scenario>

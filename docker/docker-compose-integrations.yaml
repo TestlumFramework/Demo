@@ -1,6 +1,6 @@
 services:
   dynamodb-e2e:
-    image: amazon/dynamodb-local:latest
+    image: amazon/dynamodb-local:3.3.0
     container_name: dynamodb-e2e
     environment:
       AWS_ACCESS_KEY_ID: dHwXPbnU9FVb3o
@@ -23,7 +23,7 @@ services:
 
   # only to drop and create table
   dynamodb-init:
-    image: amazon/aws-cli:latest
+    image: amazon/aws-cli:2.34.22
     container_name: dynamodb-init
     depends_on:
       dynamodb-e2e:
@@ -64,7 +64,7 @@ services:
     profiles: [ci, local]
 
   postgres-e2e:
-    image: postgres
+    image: postgres:18
     container_name: postgres-e2e
     restart: always
     environment:
@@ -86,7 +86,7 @@ services:
     profiles: [ci, local]
 
   postgres-auth-e2e:
-    image: postgres
+    image: postgres:18
     container_name: postgres-auth-e2e
     restart: always
     environment:
@@ -108,7 +108,7 @@ services:
     profiles: [ci, local]
 
   mysql-e2e:
-    image: mysql
+    image: mysql:9.6.0
     container_name: mysql-e2e
     restart: always
     environment:
@@ -132,7 +132,7 @@ services:
     profiles: [ci, local]
 
   oracle-e2e:
-    image: gvenzl/oracle-free:latest
+    image: gvenzl/oracle-free:23
     environment:
       TZ: Europe/Kiev
       ORACLE_PASSWORD: password
@@ -152,7 +152,7 @@ services:
     profiles: [ci]
 
   clickhouse-e2e:
-    image: clickhouse/clickhouse-server:latest
+    image: clickhouse/clickhouse-server:26.1
     container_name: clickhouse-e2e
     environment:
       CLICKHOUSE_DB: test_db
@@ -174,7 +174,7 @@ services:
     profiles: [ci]
 
   kafka-e2e:
-    image: apache/kafka-native
+    image: apache/kafka-native:4.0.2
     container_name: kafka-e2e
     environment:
       KAFKA_LISTENERS: CONTROLLER://kafka-e2e:9091,DOCKER://kafka-e2e:9093,EXTERNAL://0.0.0.0:9094
@@ -282,7 +282,7 @@ services:
 
   vault-e2e:
     container_name: vault-e2e
-    image: hashicorp/vault:latest
+    image: hashicorp/vault:1.21
     volumes:
       - ./init-data/vault/init_vault.sh:/tmp/init_vault.sh
       - ./init-data/vault/vault_config.conf:/vault/config.d/vault_config.conf:ro

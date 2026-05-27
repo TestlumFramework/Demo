@@ -1,10 +1,5 @@
 [
-  "some test message",
-  {
-    "squadName": "Super hero squad",
-    "homeTown": "Metro City",
-    "formed": 2016,
-    "secretBase": "Super tower",
-    "active": true
-  }
+  "server periodic message",
+  "server periodic message",
+  "server periodic message"
 ]

@@ -78,6 +78,7 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          browser_stack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
@@ -96,7 +97,7 @@ jobs:
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
-        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests }}
+        if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests_on_image && matrix.run_mobile_tests_on_arch }}
         uses: ./.github/actions/run-testlum
         with:
           image_tag: ${{ matrix.image }}
@@ -132,7 +133,7 @@ jobs:
           if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
             status="failed"
           fi
-          if [ "${{ matrix.run_mobile_tests }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+          if [ "${{ matrix.run_mobile_tests_on_image }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then
@@ -143,7 +144,7 @@ jobs:
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           mkdir -p results
           cat > "results/${safe_tag}-${{ matrix.os_family }}-${{ matrix.arch }}.json" <<EOF
-          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
+          {"image":"${{ matrix.image }}","tests_branch":"${{ matrix.tests_branch }}","config_file":"${{ matrix.config_file }}","mobile_config_file":"${{ matrix.mobile_config_file }}","run_mobile_tests":"${{ matrix.run_mobile_tests_on_image }}","os_family":"${{ matrix.os_family }}","arch":"${{ matrix.arch }}","status":"${status}","run_date":"${run_date}","run_url":"${run_url}"}
           EOF
 
       - name: Build Matrix Result (Windows)
@@ -270,7 +271,8 @@ jobs:
               item["linux_arm64_url"] = data.get("run_url", "")
 
             item["tests_branch"] = data["tests_branch"]
-            item["run_mobile_tests"] = data.get("run_mobile_tests", "false")
+            if data.get("run_mobile_tests", "false").lower() == "true":
+              item["run_mobile_tests"] = "true"
             item["last_updated"] = published_by_tag.get(key, data.get("run_date", "N/A"))
 
           ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
