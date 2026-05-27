@@ -32,7 +32,7 @@
         <tag name="lambda" enabled="true"/>
         <tag name="mysql" enabled="true"/>
         <tag name="postgresql" enabled="true"/>
-        <tag name="clickhouse" enabled="true"/>
+        <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="true"/>
         <tag name="mongodb" enabled="true"/>
         <tag name="dynamodb" enabled="true"/>
@@ -41,7 +41,7 @@
         <tag name="sqs" enabled="true"/>
         <tag name="redis" enabled="true"/>
         <tag name="s3" enabled="true"/>
-        <tag name="sendgrid" enabled="true"/>
+        <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="true"/>
         <tag name="ses" enabled="true"/>
