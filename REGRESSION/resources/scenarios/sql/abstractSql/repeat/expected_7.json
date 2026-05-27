@@ -1,0 +1,7 @@
+[ {
+  "query" : "CREATE TABLE IF NOT EXISTS repeat_simple_log ( run_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, message VARCHAR(50) )",
+  "content" : "Query completed successfully"
+}, {
+  "query" : "TRUNCATE TABLE repeat_simple_log;",
+  "content" : "Query completed successfully"
+} ]

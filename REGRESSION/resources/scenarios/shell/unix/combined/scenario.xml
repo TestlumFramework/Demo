@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>shell-mixed</tags>
+        <tags>end2end</tags>
     </settings>
 
     <web comment="Start web steps">

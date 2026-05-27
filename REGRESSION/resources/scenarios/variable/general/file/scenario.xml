@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test file variable creation and usage</description>
+        <name>Variable(file) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create variable from file" name="fileVar">
+        <file fileName="file.txt"/>
+    </var>
+
+    <assert comment="Check if the content of file matches expected">
+        <equal comment="Check content equals expected">
+            <content>{{fileVar}}</content>
+            <content>Testlum is the best tool ever!</content>
+        </equal>
+    </assert>
+
+</scenario>

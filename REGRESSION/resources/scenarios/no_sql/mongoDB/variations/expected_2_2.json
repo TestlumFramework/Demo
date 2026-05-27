@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"insert\": \"test_news\",             \"documents\": [             {             \"_id\": 20,             \"title\": \"Cloud Security Trends\",             \"category\": \"Security\"             }             ]             }         ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

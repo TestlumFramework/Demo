@@ -9,7 +9,7 @@
     </overview>
 
     <settings>
-        <tags>shell-self</tags>
+        <tags>shell</tags>
     </settings>
     
     <shell comment="Execute simple echo command" file="expected_1.json">

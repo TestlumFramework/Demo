@@ -1,0 +1,23 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test scenario for including in test</description>
+        <name>Include Scenario</name>
+    </overview>
+
+    <settings>
+        <variations>include_variations.csv</variations>
+        <tags>include</tags>
+    </settings>
+
+    <assert comment="Assert value from variations" condition="{{value}} eq 1">
+        <equal comment="Check value from variations">
+            <content>{{value}}</content>
+            <content>1</content>
+        </equal>
+    </assert>
+
+    <include comment="{{comment}}" scenario="include/variation/included2/scenario.xml"/>
+</scenario>

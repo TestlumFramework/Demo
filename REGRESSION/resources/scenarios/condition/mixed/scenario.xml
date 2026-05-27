@@ -9,7 +9,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>condition-mixed</tags>
+        <tags>end2end</tags>
     </settings>
 
     <http comment="Check ability to send news via API" alias="MEGA_APP">
