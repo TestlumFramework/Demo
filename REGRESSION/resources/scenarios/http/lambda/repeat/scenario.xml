@@ -25,7 +25,7 @@
         </lambda>
     </repeat>
 
-    <repeat comment="Invoke lambda function with repeat command 3 times" variations="variations_repeat_2.csv">
+    <repeat comment="Invoke lambda function with repeat command 3 times" variations="variations_lambda_repeat.csv">
         <lambda comment="{{lambdaComment}}"
                 alias="LAMBDA"
                 functionName="{{functionName}}">

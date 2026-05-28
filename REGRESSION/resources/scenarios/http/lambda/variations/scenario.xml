@@ -12,7 +12,7 @@
         <variations>variations_lambda.csv</variations>
         <tags>lambda</tags>
     </settings>
-<!--    TODO: not possible to insert in alias-->
+
     <lambda comment="{{comment}}"
             alias="LAMBDA"
             functionName="{{functionName}}">
