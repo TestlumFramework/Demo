@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self S3 test: create bucket, upload file, verify upload by download and compare, remove file, remove bucket</description>
+        <name>S3 Self scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="Step 1 - create new bucket testlum-self-bucket-one" alias="S3_0">
+        <bucket comment="Check ability to create new bucket testlum-self-bucket-one">
+            <create>testlum-self-bucket-one</create>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 2 - upload upload_1.json to testlum-self-bucket-one" alias="S3_0">
+        <file comment="Check ability to upload upload_1.json to testlum-self-bucket-one"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3 - verify upload_1.json via file comparison" alias="S3_0">
+        <file comment="Check that downloaded upload_1.json matches expected_1.json"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3b - verify upload_1.json via inline value comparison" alias="S3_0">
+        <file comment="Check that downloaded upload_1.json matches inline expected value"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <download>
+                <value>{"Testlum": "TOP"}</value>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4 - remove upload_1.json from testlum-self-bucket-one" alias="S3_0">
+        <file comment="Check ability to remove upload_1.json from testlum-self-bucket-one"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <remove/>
+        </file>
+    </s3>
+
+    <s3 comment="Step 5 - remove testlum-self-bucket-one" alias="S3_0">
+        <bucket comment="Check ability to remove testlum-self-bucket-one after file cleanup">
+            <remove>testlum-self-bucket-one</remove>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 1 - create bucket testlum-self-bucket-one again after it was removed" alias="S3_0">
+        <bucket comment="Check ability to create bucket with same name after previous removal">
+            <create>testlum-self-bucket-one</create>
+        </bucket>
+    </s3>
+
+    <s3 comment="Step 2 - upload upload_1.json to re-created testlum-self-bucket-one" alias="S3_0">
+        <file comment="Check ability to upload upload_1.json to re-created bucket"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <upload>upload_1.json</upload>
+        </file>
+    </s3>
+
+    <s3 comment="Step 3 - verify upload in re-created bucket via file comparison" alias="S3_0">
+        <file comment="Check that upload_1.json in re-created bucket matches expected_1.json"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <download>
+                <file>expected_1.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Step 4 - remove upload_1.json from re-created testlum-self-bucket-one" alias="S3_0">
+        <file comment="Check ability to remove upload_1.json from re-created bucket"
+              bucket="testlum-self-bucket-one"
+              key="/testlum/upload_1.json">
+            <remove/>
+        </file>
+    </s3>
+
+    <s3 comment="Step 5 - remove re-created testlum-self-bucket-one" alias="S3_0">
+        <bucket comment="Check ability to remove re-created testlum-self-bucket-one">
+            <remove>testlum-self-bucket-one</remove>
+        </bucket>
+    </s3>
+
+</scenario>

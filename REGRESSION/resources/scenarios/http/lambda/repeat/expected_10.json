@@ -1,0 +1,8 @@
+{
+  "student" : "Sebastian",
+  "subject" : "Arts",
+  "scores" : [ 50, 50, 60 ],
+  "average" : 53.33,
+  "passed" : false,
+  "status" : "FAILED"
+}

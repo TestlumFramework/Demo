@@ -4,12 +4,11 @@
 
     <overview>
         <description>Scenario for operations with s3</description>
-        <name>s3 operations</name>
-        <developer>Serhii Soroka</developer>
+        <name>S3 testing with http</name>
     </overview>
 
     <settings truncateStorages="true">
-        <tags>s3</tags>
+        <tags>end2end</tags>
     </settings>
 
     <http comment="Check ability to create new 'bucket-one' bucket" alias="MEGA_APP">
