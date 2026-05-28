@@ -32,16 +32,13 @@
                name="falseExecution"
                spel="1 == 2"/>
 
-    <lambda comment="Should skip invoke student-scores-python with failing student scores - average 47.5"
+    <lambda comment="Should not execute with false condition student-scores-python function with empty body that is failing if executed"
             alias="LAMBDA"
             condition="falseExecution"
             functionName="student-scores-python">
         <body>
             <raw>
                 {
-                "name": "Bob",
-                "subject": "Physics",
-                "scores": [40, 55, 50, 45]
                 }
             </raw>
         </body>
