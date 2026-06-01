@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Alert - Dismiss</name>
+        <description>
+            This scenario verifies alert dismiss action.
+
+            Test flow:
+            1. Navigate to modal page.
+            2. Trigger alert.
+            3. Dismiss alert.
+
+            This scenario validates:
+            - alert dismiss behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to modal page"
+                  command="to"
+                  path="/modal"/>
+
+        <click comment="Trigger alert"
+               locator="modal.alertBtn"/>
+
+        <alert comment="Dismiss alert"
+               action="dismiss"
+               type="alert"
+               waitUntilVisible="true"/>
+
+    </web>
+
+</scenario>

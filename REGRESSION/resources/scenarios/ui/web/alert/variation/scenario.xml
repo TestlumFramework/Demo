@@ -1,0 +1,36 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Alert - Variation</name>
+        <description>
+            This scenario verifies alert execution using CSV variations.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>alert_variation.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <click comment="{{clickComment}}"
+               locator="{{button}}"/>
+
+        <alert comment="{{alertComment}}"
+               action="accept"
+               type="alert"
+               waitUntilVisible="true"/>
+
+    </web>
+
+</scenario>
