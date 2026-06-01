@@ -1,0 +1,81 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Elasticsearch conditional execution test</description>
+        <name>Elasticsearch Condition Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>elasticsearch-self</tags>
+    </settings>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Create initial document">
+        <post endpoint="/test-condition-index/_doc/1">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "status": "INITIAL",
+                    "value": 100
+                    }
+</raw>
+            </body>
+        </post>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Verify initial state">
+        <get endpoint="/test-condition-index/_doc/1">
+            <response code="200" file="expected_2.json"/>
+        </get>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Attempt PUT with condition=false (should be skipped)"
+                   condition="false">
+        <put endpoint="/test-condition-index/_doc/1">
+            <body>
+                <raw>
+                    {
+                    "status": "UPDATED_BUT_SHOULD_FAIL",
+                    "value": 999
+                    }
+</raw>
+            </body>
+        </put>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Attempt DELETE with condition=false (should be skipped)"
+                   condition="false">
+        <delete endpoint="/test-condition-index/_doc/1"/>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Verify GET responses remain unchanged">
+        <get endpoint="/test-condition-index/_doc/1">
+            <response code="200" file="expected_5.json"/>
+        </get>
+    </elasticsearch>
+
+    <condition comment="True condition to delete from message" name="CONDITION_TRUE" spel="true"/>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Attempt DELETE with condition=true (should execute)"
+                   condition="{{CONDITION_TRUE}}">
+        <delete endpoint="/test-condition-index/_doc/1">
+            <response code="200"/>
+        </delete>
+    </elasticsearch>
+
+    <elasticsearch alias="ELASTIC_0"
+                   comment="Verify document was actually deleted">
+        <get endpoint="/test-condition-index/_doc/1">
+            <response code="404"/>
+        </get>
+    </elasticsearch>
+
+</scenario>

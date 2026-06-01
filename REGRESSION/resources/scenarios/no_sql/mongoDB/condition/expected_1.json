@@ -1,0 +1,4 @@
+[ {
+  "query" : "             {             \"delete\": \"condition_test\",             \"deletes\": [ { \"q\": {}, \"limit\": 0 } ]             }         ",
+  "content" : "{\"n\":0,\"ok\":1.0}"
+} ]

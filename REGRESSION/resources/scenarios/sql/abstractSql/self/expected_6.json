@@ -1,0 +1,6 @@
+[ {
+  "query" : "DELETE FROM test_users WHERE id = 101;",
+  "content" : {
+    "count" : 1
+  }
+} ]

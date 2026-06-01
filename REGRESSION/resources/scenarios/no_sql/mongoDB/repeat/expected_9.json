@@ -1,0 +1,4 @@
+[ {
+  "query" : "                 {                 \"insert\": \"repeat_simple_log\",                 \"documents\": [                 { \"message\": \"Loop iteration executed\" }                 ]                 }             ",
+  "content" : "{\"n\":1,\"ok\":1.0}"
+} ]

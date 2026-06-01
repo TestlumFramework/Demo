@@ -1,0 +1,6 @@
+[
+  {
+    "query": "             {             find: \"mongo_news\",             filter: {             active: true,             number: { \"$eq\": 17 }             } }         ",
+    "content": "\\{\"cursor\":\\{\"firstBatch\":\\[\\{\"_id\":p(any),\"name\":\"Kevin De Bruyne\",\"number\":17,\"active\":true,\"createdAt\":\"2023-04-14Tp(any)\"}],\"id\":0,\"ns\":\"mongo_db.mongo_news\"},\"ok\":1.0}"
+  }
+]

@@ -1,0 +1,47 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat test with variations for student-scores-python lambda: student score processor - calculates average, pass/fail status
+        </description>
+        <name>AWS Lambda Repeat scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>lambda</tags>
+    </settings>
+
+    <repeat comment="Invoke lambda function with repeat command N times" times="5">
+        <lambda comment="Invoke student-scores-python with passing student scores - average 88.75"
+                alias="LAMBDA"
+                functionName="student-scores-python">
+            <body>
+                <from file="body_1.json"/>
+            </body>
+            <response file="expected_1.json">
+                <header name="X-Amz-Executed-Version" data="$LATEST"/>
+            </response>
+        </lambda>
+    </repeat>
+
+    <repeat comment="Invoke lambda function with repeat command 3 times" variations="variations_lambda_repeat.csv">
+        <lambda comment="{{lambdaComment}}"
+                alias="LAMBDA"
+                functionName="{{functionName}}">
+            <body>
+                <raw>
+                    {
+                    "name": "{{name}}",
+                    "subject": "{{subject}}",
+                    "scores": [{{score1}}, {{score2}}, {{score3}}]
+                    }
+                </raw>
+            </body>
+            <response file="{{expected}}.json">
+                <header name="{{header}}" data="{{headerVersion}}"/>
+            </response>
+        </lambda>
+    </repeat>
+
+</scenario>

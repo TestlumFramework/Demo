@@ -1,0 +1,61 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>SQS Self Tests: Visibility Timeout</description>
+        <name>SQS Self Visibility Timeout Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>sqs</tags>
+    </settings>
+
+    <sqs alias="SQS_0"
+         comment="Test SQS visibility timeout and message re-delivery">
+
+        <send queue="test-visibility-queue">
+            <value>
+                [ {
+                "entityId": 909,
+                "payload": "Visibility timeout test"
+                } ]
+            </value>
+        </send>
+
+        <receive queue="test-visibility-queue"
+                 visibilityTimeout="5">
+            <value>
+                [ [ {
+                "entityId" : 909,
+                "payload" : "Visibility timeout test"
+                } ] ]
+            </value>
+        </receive>
+
+        <receive queue="test-visibility-queue"
+                 waitTimeSeconds="1">
+            <value>[]</value>
+        </receive>
+
+    </sqs>
+
+    <wait comment="Wait for visibility timeout to completely expire"
+          time="6"
+          unit="seconds"/>
+
+    <sqs alias="SQS_0"
+         comment="Receive message again after visibility timeout expires">
+
+        <receive queue="test-visibility-queue"
+                 waitTimeSeconds="2">
+            <value>
+                [ [ {
+                "entityId" : 909,
+                "payload" : "Visibility timeout test"
+                } ] ]
+            </value>
+        </receive>
+
+    </sqs>
+</scenario>

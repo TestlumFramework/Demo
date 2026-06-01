@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Repeat S3 test: execute upload 3 times and verify each uploaded file presence and content</description>
+        <name>S3 Repeat scenario</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>s3</tags>
+    </settings>
+
+    <s3 comment="Precondition - create testlum-repeat-bucket-one before repeat block" alias="S3_0">
+        <bucket comment="Create 'testlum-repeat-bucket-one'">
+            <create>testlum-repeat-bucket-one</create>
+        </bucket>
+    </s3>
+
+    <var comment="Create variable to aggregate result for repeat steps" name="upload_postfix">
+        <constant value="0"/>
+    </var>
+
+    <repeat comment="Repeat s3 storage operations with content verification for N number of times" times="3">
+
+        <var comment="Variable to aggregate result on each iteration by 1" name="upload_postfix">
+            <expression value="{{upload_postfix}} + 1"/>
+        </var>
+
+        <s3 comment="Execute upload_1.json storage operation within repeat" alias="S3_0">
+            <file comment="Check ability to upload upload_{{upload_postfix}}.json file to testlum-repeat-bucket-one on each iteration"
+                  bucket="testlum-repeat-bucket-one"
+                  key="/testlum/upload_{{upload_postfix}}.json">
+                <upload>upload_{{upload_postfix}}.json</upload>
+            </file>
+        </s3>
+    </repeat>
+
+    <s3 comment="Execute file download on each repeat iteration to check inline content" alias="S3_0">
+        <file comment="Verify file content matches inline on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_1.json">
+            <download>
+                <value>{"Testlum": "TOP1"}</value>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Execute file download on each repeat iteration to check content" alias="S3_0">
+        <file comment="Verify file content matches expected file on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_1.json">
+            <download>
+                <file>expected_16.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Execute file download on each repeat iteration to check inline content" alias="S3_0">
+        <file comment="Verify file content matches inline on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_2.json">
+            <download>
+                <value>{"Testlum": "TOP2"}</value>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Execute file download on each repeat iteration to check content" alias="S3_0">
+        <file comment="Verify file content matches expected file on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_2.json">
+            <download>
+                <file>expected_17.json</file>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Execute file download on each repeat iteration to check inline content" alias="S3_0">
+        <file comment="Verify file content matches inline on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_3.json">
+            <download>
+                <value>{"Testlum": "TOP3"}</value>
+            </download>
+        </file>
+    </s3>
+
+    <s3 comment="Execute file download on each repeat iteration to check content" alias="S3_0">
+        <file comment="Verify file content matches expected file on each repeat iteration"
+              bucket="testlum-repeat-bucket-one" key="/testlum/upload_3.json">
+            <download>
+                <file>expected_18.json</file>
+            </download>
+        </file>
+    </s3>
+
+</scenario>

@@ -1,0 +1,3 @@
+comment,functionName,name,subject,marks,header,headerValue,expected
+Use variations and invoke student-scores-python with different failing student scores - average 50,student-scores-python,Bob,Physics,"50,50,50,50",X-Amz-Executed-Version,$LATEST,expected_1
+Use variations and invoke student-scores-python with different failing student scores - average 60,student-scores-python,John,Physics,"70,60,60,50",X-Amz-Executed-Version,$LATEST,expected_2

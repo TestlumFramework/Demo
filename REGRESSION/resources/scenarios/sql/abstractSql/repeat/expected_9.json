@@ -1,0 +1,6 @@
+[ {
+  "query" : "INSERT INTO repeat_simple_log (message) VALUES ('Loop iteration executed')",
+  "content" : {
+    "count" : 1
+  }
+} ]

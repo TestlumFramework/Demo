@@ -1,0 +1,4 @@
+id,name,number,expected_1,expected_2,expected_3,expected_4
+10,Dynamic News A,100,expected_1_1,expected_2_1,expected_3_1,expected_4_1
+20,Dynamic News B,200,expected_1_2,expected_2_2,expected_3_2,expected_4_2
+30,Dynamic News С,300,expected_1_3,expected_2_3,expected_3_3,expected_4_3

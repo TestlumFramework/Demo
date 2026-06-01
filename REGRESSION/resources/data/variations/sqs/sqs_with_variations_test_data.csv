@@ -1,0 +1,3 @@
+queueName,testDescription,city,city2,temp,body_4,expected_5
+weather,"Check Kafka message sending and receiving with dynamic variables",Kyiv,London,15,body_4_1.json,expected_5_1
+weather,"Second iteration: check Kafka message sending and receiving with dynamic variables",Lviv,New York,20,body_4_1.json,expected_5_2
