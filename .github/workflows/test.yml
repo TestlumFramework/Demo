@@ -6,6 +6,12 @@ on:
   workflow_dispatch:
     inputs: {}
 
+# A single BrowserStack Local tunnel runs without a localIdentifier, so only one
+# workflow run may be active at a time to avoid colliding tunnels on the shared key.
+concurrency:
+  group: full-regression
+  cancel-in-progress: false
+
 jobs:
   prepare-matrix:
     runs-on: ubuntu-latest
@@ -48,9 +54,8 @@ jobs:
         with:
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
-          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
           browserstack_binary_arch: ${{ matrix.arch }}
-          enable_browserstack: true
+          enable_browserstack: ${{ matrix.image == 'latest' && matrix.arch == 'amd64' }}
 
       - name: Install xmlstarlet
         if: ${{ matrix.os_family == 'linux' }}
@@ -78,7 +83,6 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
-          browser_stack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
@@ -116,9 +120,8 @@ jobs:
         with:
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
-          browserstack_local_identifier: GitHubAction-${{ github.run_id }}-${{ matrix.arch }}
           browserstack_binary_arch: ${{ matrix.arch }}
-          enable_browserstack: true
+          enable_browserstack: ${{ matrix.image == 'latest' && matrix.arch == 'amd64' }}
 
       - name: Build Matrix Result (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}
