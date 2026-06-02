@@ -1,0 +1,9 @@
+[ {
+  "message" : [ {
+    "entityId" : 404,
+    "status" : "{{entity_status}}",
+    "payload" : "RabbitMQ test data"
+  } ],
+  "correlationId" : "req-8899-abc",
+  "headers" : { }
+} ]

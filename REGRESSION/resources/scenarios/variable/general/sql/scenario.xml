@@ -1,0 +1,98 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test sql variable creation and usage</description>
+        <name>Variable(sql) Test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>var</tags>
+    </settings>
+
+    <migrate comment="DB migration for testing" alias="POSTGRES_0">
+        <dataset>postgres_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="DB migration for testing" name="MYSQL" alias="MYSQL_0">
+        <dataset>mysql_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="DB migration for testing" name="ORACLE" alias="ORACLE_0">
+        <dataset>oracle_patch.sql</dataset>
+    </migrate>
+
+    <migrate comment="DB migration for testing" name="CLICKHOUSE" alias="CLICKHOUSE_0">
+        <dataset>clickhouse_patch.sql</dataset>
+    </migrate>
+
+    <var comment="PostgreSQL query with single column" name="postgresQuery">
+        <sql dbType="POSTGRES" alias="POSTGRES_0">
+            <query>
+                SELECT id
+                FROM news
+                WHERE newsname='News1';
+            </query>
+        </sql>
+    </var>
+
+    <var comment="MySQL query with single column" name="mysqlQuery">
+        <sql dbType="MYSQL" alias="MYSQL_0">
+            <query>
+                SELECT id
+                FROM news
+                WHERE newsname='News1';
+            </query>
+        </sql>
+    </var>
+
+    <var comment="Oracle query with single column" name="oracleQuery">
+        <sql dbType="ORACLE" alias="ORACLE_0">
+            <query>
+                SELECT newsnumber
+                FROM news
+                WHERE newsname = 'Ukraine'
+            </query>
+        </sql>
+    </var>
+
+    <var comment="Clickhouse query with single column" name="clickhouseQuery">
+        <sql dbType="CLICKHOUSE" alias="CLICKHOUSE_0">
+            <query>
+                SELECT database
+                FROM system.parts
+                WHERE table = 'news'
+            </query>
+        </sql>
+    </var>
+
+    <assert comment="Check postgreSQL query usage">
+        <equal comment="Check postgreSQL query usage">
+            <content>{{postgresQuery}}</content>
+            <content>101</content>
+        </equal>
+    </assert>
+
+    <assert comment="Check mySQL query usage">
+        <equal comment="Check mySQL query usage">
+            <content>{{mysqlQuery}}</content>
+            <content>1</content>
+        </equal>
+    </assert>
+
+    <assert comment="Check oracleQuery usage">
+        <equal comment="Check oracleSQL usage">
+            <content>{{oracleQuery}}</content>
+            <content>43752156</content>
+        </equal>
+    </assert>
+
+    <assert comment="Check clickHouse query usage">
+        <equal comment="Check clickHouse query usage">
+            <content>{{clickhouseQuery}}</content>
+            <content>test_db</content>
+        </equal>
+    </assert>
+</scenario>

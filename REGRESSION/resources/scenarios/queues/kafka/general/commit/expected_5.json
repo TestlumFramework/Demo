@@ -1,0 +1,9 @@
+[ {
+  "key" : null,
+  "value" : [ {
+    "city" : "Odessa",
+    "temperature" : 18
+  } ],
+  "correlationId" : null,
+  "headers" : { }
+} ]

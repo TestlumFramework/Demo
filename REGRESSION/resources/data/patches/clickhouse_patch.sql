@@ -1,3 +1,13 @@
+CREATE TABLE IF NOT EXISTS news
+(
+    id            Int256,
+    newsName      String,
+    newsNumber    Int256,
+    active        UInt8      DEFAULT 0,
+    createdAt     DateTime64
+) ENGINE = MergeTree()
+ORDER BY (id);
+
 INSERT INTO news (id, newsName, newsNumber, active, createdAt)
 VALUES
     (1, 'United States', 331449281, true, '2021-01-01 12:00:00'),

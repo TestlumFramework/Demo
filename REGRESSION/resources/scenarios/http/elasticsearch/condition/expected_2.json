@@ -1,0 +1,13 @@
+{
+  "_index" : "test-condition-index",
+  "_type" : "_doc",
+  "_id" : "p(digit)",
+  "_version" : "p(digit)",
+  "_seq_no" : "p(digit)",
+  "_primary_term" : "p(digit)",
+  "found" : true,
+  "_source" : {
+    "status" : "INITIAL",
+    "value" : 100
+  }
+}

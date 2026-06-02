@@ -1,0 +1,7 @@
+[ {
+  "query" : "CREATE TABLE IF NOT EXISTS test_users ( id INT PRIMARY KEY, username VARCHAR(50), role VARCHAR(20) );",
+  "content" : "Query completed successfully"
+}, {
+  "query" : "TRUNCATE TABLE test_users;",
+  "content" : "Query completed successfully"
+} ]

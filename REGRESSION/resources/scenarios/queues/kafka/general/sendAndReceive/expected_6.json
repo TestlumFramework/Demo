@@ -1,0 +1,11 @@
+[ {
+  "key" : null,
+  "value" : [ {
+    "city" : "Kyiv",
+    "temperature" : 10,
+    "condition" : "raining",
+    "timestamp" : 1650762900
+  } ],
+  "correlationId" : "p(any)",
+  "headers" : { }
+} ]

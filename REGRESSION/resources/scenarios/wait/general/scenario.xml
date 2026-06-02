@@ -1,0 +1,80 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Wait</description>
+        <name>Wait</name>
+    </overview>
+
+    <settings>
+        <tags>wait</tags>
+    </settings>
+
+    <var comment="Create variable for initial datetime"
+         name="initialDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <wait comment="wait for 2 second" time="2"/>
+
+    <var comment="Create variable for updated datetime"
+         name="updatedDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <var comment="expression to check initial dateTime is before updatedDateTime" name="isBeforeCheck">
+        <expression value="
+        T(java.time.LocalDateTime).parse(
+            '{{initialDateTime}}',
+            T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+        )
+        .isBefore(
+            T(java.time.LocalDateTime).parse(
+                '{{updatedDateTime}}',
+                T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+            )
+        )"/>
+    </var>
+
+    <assert comment="Check that initial dateTime is before updated">
+        <equal comment="Ensure wait command worked">
+            <content>{{isBeforeCheck}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <var comment="Create variable for initial datetime"
+         name="initialDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <wait comment="Wait (with unit)" time="1500" unit="millis"/>
+
+    <var comment="Create variable for updated datetime"
+         name="updatedDateTime">
+        <expression value="new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new java.util.Date())"/>
+    </var>
+
+    <var comment="Expression to check initial dateTime is before updatedDateTime" name="isBeforeCheck">
+        <expression value="
+        T(java.time.LocalDateTime).parse(
+            '{{initialDateTime}}',
+            T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+        )
+        .isBefore(
+            T(java.time.LocalDateTime).parse(
+                '{{updatedDateTime}}',
+                T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd HH:mm:ss')
+            )
+        )"/>
+    </var>
+
+    <assert comment="Check that initial dateTime is before updated">
+        <equal comment="Ensure wait command worked">
+            <content>{{isBeforeCheck}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

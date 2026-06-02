@@ -150,6 +150,31 @@
         </oracle>
     </oracleIntegration>
 
+    <sqlDatabaseIntegration>
+        <sqlDatabase alias="MARIADB_0"
+                     enabled="true"
+                     truncate="true">
+            <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
+            <username>root</username>
+            <password>root_password</password>
+            <connectionUrl>jdbc:mariadb://mariadb-e2e:3306/testlum_db?allowMultiQueries=true</connectionUrl>
+            <hikari>
+                <connectionTimeout>30000</connectionTimeout>
+                <idleTimeout>600000</idleTimeout>
+                <maxLifetime>1800000</maxLifetime>
+                <maximumPoolSize>10</maximumPoolSize>
+                <minimumIdle>2</minimumIdle>
+                <connectionInitSql>SELECT 1</connectionInitSql>
+                <connectionTestQuery>SELECT 1</connectionTestQuery>
+                <poolName>MariaDbTestlumPool</poolName>
+                <autoCommit>true</autoCommit>
+            </hikari>
+            <customTruncate>
+                <truncateFile>mariadb_truncate.sql</truncateFile>
+            </customTruncate>
+        </sqlDatabase>
+    </sqlDatabaseIntegration>
+
     <redisIntegration>
         <redis alias="REDIS_0" enabled="true" truncate="true">
             <host>redis-e2e</host>
@@ -161,11 +186,43 @@
         <kafka alias="KAFKA_0" enabled="true" truncate="true">
             <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>1000</maxPollIntervalMs>
+            <!--            <maxPollIntervalMs>200</maxPollIntervalMs>-->
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true" truncate="true">
+            <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>200</maxPollIntervalMs>
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
+               enabled="true"
+               truncate="true">
+            <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
+            <autoOffsetReset>latest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
             <maxPollIntervalMs>1000</maxPollIntervalMs>
-            <clientId>group</clientId>
-            <groupId>group</groupId>
-            <!--            <autoCommitTimeout>50</autoCommitTimeout>-->
+            <clientId>client-latest</clientId>
+            <groupId>group-latest</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
+               enabled="true"
+               truncate="true">
+            <bootstrapAddress>kafka-e2e:9093</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>2</maxPollRecords>
+            <maxPollIntervalMs>5000</maxPollIntervalMs>
+            <clientId>client-reduced</clientId>
+            <groupId>group-reduced</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
     </kafkaIntegration>
 
@@ -215,7 +272,7 @@
     </s3Integration>
 
     <sendgridIntegration>
-        <sendgrid alias="SG_0" enabled="true">
+        <sendgrid alias="SG_0" enabled="false">
             <apiKey>${SENDGRID_API_KEY}</apiKey>
         </sendgrid>
     </sendgridIntegration>

@@ -1,0 +1,14 @@
+{
+  "_index" : "test-var-index",
+  "_type" : "_doc",
+  "_id" : "var-file-1",
+  "_version" : "p(any)",
+  "_seq_no" : "p(any)",
+  "_primary_term" : "p(any)",
+  "found" : true,
+  "_source" : {
+    "productName" : "Laptop Pro",
+    "category" : "Electronics",
+    "price" : "1500"
+  }
+}

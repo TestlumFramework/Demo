@@ -1,0 +1,83 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Redis Repeat with localized variations and fixed times</description>
+        <name>Redis Repeat Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <tags>redis</tags>
+    </settings>
+
+    <redis alias="REDIS_0"
+           comment="Clean up keys for repeat variations test"
+           file="expected_1.json">
+        <query>
+            <command>DEL</command>
+            <arg>repeat_news:10</arg>
+            <arg>repeat_news:20</arg>
+            <arg>repeat_news:30</arg>
+            <arg>repeat_simple_log</arg>
+        </query>
+    </redis>
+
+    <redis alias="REDIS_0"
+           comment="Insert static data for the loop to read"
+           file="expected_2.json">
+        <query>
+            <command>HSET</command>
+            <arg>repeat_news:10</arg>
+            <arg>title</arg>
+            <arg>Global Tech Update</arg>
+        </query>
+        <query>
+            <command>HSET</command>
+            <arg>repeat_news:20</arg>
+            <arg>title</arg>
+            <arg>Local Sports Events</arg>
+        </query>
+        <query>
+            <command>HSET</command>
+            <arg>repeat_news:30</arg>
+            <arg>title</arg>
+            <arg>Weather Forecast 2026</arg>
+        </query>
+    </redis>
+
+    <repeat comment="Run variations locally in repeat"
+            variations="redis_repeat_data.csv">
+        <redis alias="REDIS_0"
+               comment="Check ability to get specific news inside repeat loop"
+               file="{{expected_4}}.json">
+            <query>
+                <command>HGETALL</command>
+                <arg>repeat_news:{{id}}</arg>
+            </query>
+        </redis>
+    </repeat>
+
+    <repeat comment="Run the list push command exactly 5 times"
+            times="5">
+        <redis alias="REDIS_0"
+               comment="Insert a log entry to the list on each iteration"
+               file="expected_8.json">
+            <query>
+                <command>RPUSH</command>
+                <arg>repeat_simple_log</arg>
+                <arg>Loop iteration executed</arg>
+            </query>
+        </redis>
+    </repeat>
+
+    <redis alias="REDIS_0"
+           comment="Verify exactly 5 items were inserted to the list by the loop"
+           file="expected_13.json">
+        <query>
+            <command>LLEN</command>
+            <arg>repeat_simple_log</arg>
+        </query>
+    </redis>
+
+</scenario>

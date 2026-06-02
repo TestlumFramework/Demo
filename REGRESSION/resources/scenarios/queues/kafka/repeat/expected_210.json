@@ -1,0 +1,17 @@
+[ {
+  "key" : null,
+  "value" : [ {
+    "city" : "Kyiv",
+    "temperature" : 20
+  } ],
+  "correlationId" : null,
+  "headers" : { }
+}, {
+  "key" : null,
+  "value" : [ {
+    "city" : "Lviv",
+    "temperature" : 20
+  } ],
+  "correlationId" : null,
+  "headers" : { }
+} ]

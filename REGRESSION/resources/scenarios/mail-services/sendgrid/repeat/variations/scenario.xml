@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SendGrid Repeat Variations</name>
+        <description>
+            This scenario verifies SendGrid execution inside repeat block using variations.
+
+            Test flow:
+            1. Execute SendGrid request for each CSV row.
+            2. Send email with different payload per iteration.
+            3. Verify response code dynamically.
+
+            This scenario validates:
+            - CSV-driven execution
+            - Variable interpolation inside repeat
+            - Positive and negative scenarios
+        </description>
+    </overview>
+
+    <settings>
+        <tags>sendgrid</tags>
+    </settings>
+
+    <repeat comment="Execute SendGrid request using variation rows"
+            variations="sendgridRepeatVariations.csv">
+
+        <sendgrid comment="Send email from variation row"
+                  alias="SG_0">
+
+            <post endpoint="/mail/send">
+                <response code="202"/>
+
+                <body>
+                    <raw>
+                        {
+                        "from": { "email": "{{contactEmail}}" },
+                        "subject": "{{subject}}",
+                        "personalizations": [{
+                        "to": [{
+                        "email": "{{userEmail}}"
+                        }]
+                        }],
+                        "content": [{
+                        "type": "{{type}}",
+                        "value": "{{messageText}}"
+                        }]
+                        }
+                    </raw>
+                </body>
+
+            </post>
+
+        </sendgrid>
+
+    </repeat>
+
+</scenario>

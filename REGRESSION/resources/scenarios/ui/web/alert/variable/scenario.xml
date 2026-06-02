@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Alert - Variable</name>
+        <description>
+            This scenario verifies alert execution using variables.
+
+            This scenario validates:
+            - variable injection
+            - dynamic locator usage
+            - alert execution
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Path variable" name="path">
+            <constant value="/modal"/>
+        </var>
+
+        <var comment="Button locator variable" name="button">
+            <constant value="modal.alertBtn"/>
+        </var>
+
+        <var comment="Navigate comment" name="navigateComment">
+            <constant value="Navigate to modal page"/>
+        </var>
+
+        <var comment="Click comment" name="clickComment">
+            <constant value="Click alert button"/>
+        </var>
+
+        <var comment="Alert comment" name="alertComment">
+            <constant value="Accept alert using variable"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <click comment="{{clickComment}}"
+               locator="{{button}}"/>
+
+        <alert comment="{{alertComment}}"
+               action="accept"
+               type="alert"
+               waitUntilVisible="true"/>
+
+    </web>
+
+</scenario>

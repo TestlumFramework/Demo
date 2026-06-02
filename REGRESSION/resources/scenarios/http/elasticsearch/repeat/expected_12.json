@@ -1,0 +1,57 @@
+{
+  "took" : "p(any)",
+  "timed_out" : false,
+  "_shards" : {
+    "total" : "p(any)",
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 4,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [ {
+      "_index" : "test-repeat-index",
+      "_type" : "_doc",
+      "_id" : "constant-doc",
+      "_score" : 1.0,
+      "_source" : {
+        "status" : "READY",
+        "message" : "This document will be read multiple times"
+      }
+    }, {
+      "_index" : "test-repeat-index",
+      "_type" : "_doc",
+      "_id" : "var-1",
+      "_score" : 1.0,
+      "_source" : {
+        "productName" : "Laptop Pro",
+        "category" : "Electronics",
+        "price" : 1500
+      }
+    }, {
+      "_index" : "test-repeat-index",
+      "_type" : "_doc",
+      "_id" : "var-2",
+      "_score" : 1.0,
+      "_source" : {
+        "productName" : "Coffee Mug",
+        "category" : "Kitchen",
+        "price" : 15
+      }
+    }, {
+      "_index" : "test-repeat-index",
+      "_type" : "_doc",
+      "_id" : "var-3",
+      "_score" : 1.0,
+      "_source" : {
+        "productName" : "Office Chair",
+        "category" : "Furniture",
+        "price" : 250
+      }
+    } ]
+  }
+}

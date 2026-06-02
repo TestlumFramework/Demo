@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for migrate with variation</description>
+        <name>Migrate with variation test</name>
+        <developer>Kamaletdinov Anatoliy</developer>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>migrate_variations.csv</variations>
+        <tags>migrate</tags>
+    </settings>
+
+    <migrate comment="{{comment}}" alias="POSTGRES_0" name="POSTGRES">
+        <dataset>{{dataset}}</dataset>
+    </migrate>
+
+    <postgres comment="{{postgresComment}}"
+              alias="POSTGRES_0"
+              file="{{expected_2}}.json">
+        <query>{{query}}</query>
+    </postgres>
+
+</scenario>

@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Alert - Condition</name>
+        <description>
+            This scenario verifies conditional alert execution.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="True condition"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="False condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to modal page"
+                  command="to"
+                  path="/modal"/>
+
+        <!-- SHOULD EXECUTE -->
+        <click comment="Trigger alert"
+               locator="modal.alertBtn"/>
+
+        <alert comment="Should execute"
+               action="accept"
+               type="alert"
+               condition="trueCondition"
+               waitUntilVisible="true"/>
+
+        <!-- SHOULD SKIP -->
+        <click comment="Trigger alert again"
+               locator="modal.alertBtn"/>
+
+        <alert comment="Should NOT execute"
+               action="accept"
+               type="alert"
+               condition="falseCondition"
+               waitUntilVisible="true"/>
+
+    </web>
+
+</scenario>

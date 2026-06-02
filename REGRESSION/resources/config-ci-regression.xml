@@ -8,43 +8,61 @@
     <delayBetweenScenarioRuns seconds="1" enabled="true"/>
 
     <runScenariosByTag enabled="true">
+        <tag name="end2end" enabled="true"/>
+
+        <!--    UI    -->
         <tag name="web" enabled="true"/>
         <tag name="mobilebrowser" enabled="true"/>
         <tag name="mobilebrowser-healthcheck" enabled="false"/>
         <tag name="native" enabled="false"/>
         <tag name="native-healthcheck" enabled="false"/>
-        <tag name="condition-mixed" enabled="true"/>
-        <tag name="condition-self" enabled="true"/>
-        <tag name="shell-self" enabled="true"/>
-        <tag name="shell-mixed" enabled="true"/>
-        <tag name="assert-self" enabled="true"/>
-        <tag name="var-mixed" enabled="true"/>
-        <tag name="var-self" enabled="true"/>
-        <tag name="variations-mixed" enabled="true"/>
-        <tag name="variations-self" enabled="true"/>
-        <tag name="auth-basic-mixed" enabled="true"/>
-        <tag name="auth-jwt-mixed" enabled="true"/>
-        <tag name="elasticsearch-mixed" enabled="true"/>
-        <tag name="elasticsearch-self" enabled="true"/>
+
+        <!--    General    -->
+        <tag name="condition" enabled="true"/>
+        <tag name="assert" enabled="true"/>
+        <tag name="var" enabled="true"/>
+        <tag name="variations" enabled="true"/>
+        <tag name="repeat" enabled="true"/>
+        <tag name="migrate" enabled="true"/>
+        <tag name="include" enabled="true"/>
+        <tag name="wait" enabled="true"/>
+
+        <!--    API    -->
         <tag name="api" enabled="true"/>
         <tag name="websocket" enabled="true"/>
         <tag name="graphql" enabled="true"/>
-        <tag name="lambda" enabled="true"/>
+        <tag name="auth-basic-mixed" enabled="true"/>
+        <tag name="auth-jwt-mixed" enabled="true"/>
+
+        <!--    Databases    -->
         <tag name="mysql" enabled="true"/>
         <tag name="postgresql" enabled="true"/>
-        <tag name="clickhouse" enabled="true"/>
+        <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="true"/>
         <tag name="mongodb" enabled="true"/>
+        <tag name="redis" enabled="true"/>
+        <tag name="abstract-db" enabled="true"/>
+
+        <!--    AWS    -->
         <tag name="dynamodb" enabled="true"/>
+        <tag name="ses" enabled="true"/>
+        <tag name="sqs" enabled="true"/>
+        <tag name="s3" enabled="true"/>
+        <tag name="lambda" enabled="true"/>
+
+        <!--    Queues    -->
         <tag name="kafka" enabled="true"/>
         <tag name="rabbit" enabled="true"/>
-        <tag name="sqs" enabled="true"/>
-        <tag name="redis" enabled="true"/>
-        <tag name="s3" enabled="true"/>
-        <tag name="sendgrid" enabled="true"/>
+
+        <!--    Messaging    -->
+        <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="true"/>
-        <tag name="ses" enabled="true"/>
+
+        <!--    Other    -->
+        <tag name="shell" enabled="true"/>
+        <tag name="shell-windows" enabled="false"/>
+        <tag name="elasticsearch" enabled="true"/>
     </runScenariosByTag>
 
     <report>
