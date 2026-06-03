@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Repeat Book Three",
+      "author" : "Knubisoft",
+      "number" : 3
+    }
+  }
+}

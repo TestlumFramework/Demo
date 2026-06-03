@@ -6,14 +6,31 @@
         <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="jwt"/>
         </api>
+        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="jwt" autoLogout="false"/>
+        </api>
         <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="basic"/>
+        </api>
+        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="basic" autoLogout="false"/>
+        </api>
+        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="custom"
+                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  autoLogout="true"/>
+        </api>
+        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="custom"
+                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  autoLogout="false"/>
         </api>
         <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="true"/>
         <api alias="MULTIPART" url="https://postman-echo.com" enabled="true"/>
     </apis>
 
     <websockets>
+        <api alias="MEGA_WS_STANDARD" enabled="true" url="ws://localhost:8080/api/v1/ws-standard" protocol="standard"/>
         <api alias="MEGA_WS_APP" url="ws://localhost:8080/api/v1/ws-app" protocol="stomp" enabled="true"/>
         <api alias="ECHO" url="wss://ws.postman-echo.com/raw" protocol="standard" enabled="true"/>
     </websockets>
