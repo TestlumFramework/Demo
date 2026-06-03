@@ -1,0 +1,2 @@
+requestComment,attributeComment,locator,attributeName,value
+Check input type,Compare attribute,forms.type,type,password

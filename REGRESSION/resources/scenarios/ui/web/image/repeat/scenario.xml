@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Part - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of image part comparison.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Repeat image comparison multiple times.
+
+            This scenario validates:
+            - repeat execution
+            - stability of image comparison
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <repeat comment="Repeat image comparison 3 times"
+                times="3">
+
+            <scrollTo comment="Scroll to image block"
+                      locator="uiElements.testImage"/>
+
+            <wait comment="Wait after scroll" time="1"/>
+
+            <image comment="Compare image part"
+                   file="image_part.png">
+                <part locator="uiElements.testImage"
+                      percentage="99.9"/>
+            </image>
+
+        </repeat>
+
+    </web>
+
+</scenario>

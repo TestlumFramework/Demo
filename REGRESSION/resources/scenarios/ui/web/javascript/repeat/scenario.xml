@@ -1,0 +1,59 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Javascript - Repeat Increment</name>
+        <description>
+            This scenario verifies repeated execution of javascript command using increment logic.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Clear input.
+            3. Execute javascript multiple times.
+            4. Verify incremented value.
+
+            This scenario validates:
+            - repeat execution
+            - javascript state persistence
+            - correct increment behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Reset input before repeat"
+               locator="uiElements.hotKeyInput1"/>
+
+        <repeat comment="Execute JS increment 3 times"
+                times="3">
+
+            <javascript comment="Increment value via JS"
+                        file="increment.js"/>
+
+        </repeat>
+
+        <assert comment="Verify final value is 3">
+            <attribute comment="Check increment result"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>3</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

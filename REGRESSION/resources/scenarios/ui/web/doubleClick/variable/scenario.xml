@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DoubleClick - Variable</name>
+        <description>
+            This scenario verifies doubleClick command using variables.
+
+            Test flow:
+            1. Store navigation path and locators in variables.
+            2. Navigate to UI Elements page.
+            3. Verify result is NOT present.
+            4. Execute doubleClick using variable locator.
+            5. Verify result is displayed.
+
+            This scenario validates:
+            - Variable injection
+            - Dynamic locator usage
+            - Double click execution
+            - UI state change validation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Store navigation path" name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Store button locator" name="buttonLocator">
+            <constant value="uiElements.doubleClickBtn"/>
+        </var>
+
+        <var comment="Store result locator" name="resultLocator">
+            <constant value="uiElements.doubleClickResult"/>
+        </var>
+
+        <var comment="Store navigate comment" name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Store before assert comment" name="beforeAssertComment">
+            <constant value="Verify result is NOT present before double click"/>
+        </var>
+
+        <var comment="Store before present comment" name="beforePresentComment">
+            <constant value="Result should not be visible"/>
+        </var>
+
+        <var comment="Store double click comment" name="doubleClickComment">
+            <constant value="Perform double click on button"/>
+        </var>
+
+        <var comment="Store wait comment" name="waitComment">
+            <constant value="Wait after double click"/>
+        </var>
+
+        <var comment="Store after assert comment" name="afterAssertComment">
+            <constant value="Verify result is visible after double click"/>
+        </var>
+
+        <var comment="Store after present comment" name="afterPresentComment">
+            <constant value="Result should be visible"/>
+        </var>
+
+        <var comment="Time variable" name="time">
+            <constant value="1"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <assert comment="{{beforeAssertComment}}">
+            <present comment="{{beforePresentComment}}"
+                     locator="{{resultLocator}}"
+                     negative="true"/>
+        </assert>
+
+        <doubleClick comment="{{doubleClickComment}}"
+                     locator="{{buttonLocator}}"/>
+
+        <wait comment="{{waitComment}}" time="{{time}}"/>
+
+        <assert comment="{{afterAssertComment}}">
+            <present comment="{{afterPresentComment}}"
+                     locator="{{resultLocator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

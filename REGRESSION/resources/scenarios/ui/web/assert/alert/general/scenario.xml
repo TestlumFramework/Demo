@@ -1,0 +1,47 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Alert - General</name>
+        <description>
+            This scenario verifies alert assertion.
+
+            Test flow:
+            1. Navigate to modal page.
+            2. Trigger alert.
+            3. Verify alert text.
+            4. Close alert.
+
+            This scenario validates:
+            - Alert appearance
+            - Alert text verification
+            - Alert lifecycle handling
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to modal page"
+                  command="to"
+                  path="/modal"/>
+
+        <click comment="Click button to open alert"
+               locator="modal.alertBtn"/>
+
+        <wait comment="Wait for alert to appear" time="1"/>
+
+        <assert comment="Verify alert text">
+            <alert comment="Check alert equals expected">
+                <text>Alert! You are not Nazar</text>
+            </alert>
+        </assert>
+    </web>
+
+</scenario>

@@ -1,0 +1,38 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Attribute - Variations</name>
+        <description>
+            This scenario verifies attribute assertion using CSV-driven variations.
+
+            Test flow:
+            1. Load variations from CSV.
+            2. Execute attribute assertion for each row.
+
+            This scenario validates:
+            - CSV injection
+            - Dynamic attribute checks
+        </description>
+    </overview>
+
+    <settings>
+        <variations>attribute_variations.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+
+    <web comment="Start WEB script">
+
+        <assert comment="{{requestComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="{{attributeName}}"
+                       locator="{{locator}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

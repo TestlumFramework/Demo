@@ -1,0 +1,3 @@
+webComment,navigateComment,path,waitComment,waitTime,scrollToComment,assertComment,attributeComment,locator
+Start WEB script,Navigate to Scroll Test page,/scroll-test,Wait for page load,2,Scroll to bottom element,Verify bottom reached,Check bottom visible,scrollTest.pageBottom
+Start WEB script,Navigate to Scroll Test page,/scroll-test,Wait for page load,2,Scroll to middle element,Verify middle reached,Check middle visible,scrollTest.innerMiddle

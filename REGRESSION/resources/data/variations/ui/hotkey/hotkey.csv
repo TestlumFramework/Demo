@@ -1,0 +1,4 @@
+webComment,navigateComment,waitComment,waitTime,inputComment,highlightComment,copyComment,pasteComment,assertComment,attributeComment,input1,input2,value,expected
+Start WEB script,Navigate to UI Elements page,Wait page load,1,Fill source input,Highlight text,Copy text,Paste text,Verify result,Check pasted value,uiElements.hotKeyInput1,uiElements.hotKeyInput2,HELLO,HELLO
+Start WEB script,Navigate to UI Elements page,Wait page load,1,Fill source input,Highlight text,Copy text,Paste text,Verify result,Check pasted value,uiElements.hotKeyInput1,uiElements.hotKeyInput2,WORLD,WORLD
+Start WEB script,Navigate to UI Elements page,Wait page load,1,Fill source input,Highlight text,Copy text,Paste text,Verify result,Check pasted value,uiElements.hotKeyInput1,uiElements.hotKeyInput2,TEST123,TEST123

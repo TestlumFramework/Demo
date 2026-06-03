@@ -1,0 +1,2 @@
+navigateComment,path,clickComment,clickLocator,waitComment,assertComment,alertComment,expectedText,cleanupComment
+Navigate to modal page,/modal,Click alert button,modal.alertBtn,Wait for alert,Verify alert,Check alert text,Alert! You are not Nazar,Close alert

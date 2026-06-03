@@ -1,0 +1,2 @@
+webComment,navigateComment,waitComment,tabComment,waitAfterOpen,assertComment,attributeComment,path,url,locator,expected,time
+Start WEB script,Navigate to Forms page,Wait before actions,Open tab using variation URL,Wait after tab open,Verify opened page,Check page content,/forms,/ui-elements,uiElements.title,UI Elements,2

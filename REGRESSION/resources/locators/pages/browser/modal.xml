@@ -13,6 +13,10 @@
             <xpath>.//button[text()= ' Open Modal ']</xpath>
         </locator>
 
+        <locator locatorId="closeModalBtn">
+            <xpath>//*[@id="app"]/div/div[2]/main/div/div/div/div[2]/div[2]/div[2]/button[1]</xpath>
+        </locator>
+
         <locator locatorId="assertExit">
             <xpath>.//div[contains(@class,"modal opacity-0 pointer-events-none z-50 fixed w-full h-full")]</xpath>
         </locator>

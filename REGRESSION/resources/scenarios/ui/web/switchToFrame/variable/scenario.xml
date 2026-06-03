@@ -1,0 +1,122 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - Variable</name>
+        <description>
+            This scenario verifies switchToFrame command using variables.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Scroll to iframe using variable.
+            3. Switch to iframe using variable.
+            4. Click button inside iframe.
+            5. Verify result inside iframe.
+
+            This scenario validates:
+            - locator injection
+            - dynamic comments
+            - iframe interaction using variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <var comment="Web start comment"
+         name="webComment">
+        <constant value="Start WEB script"/>
+    </var>
+
+    <web comment="{{webComment}}">
+
+        <var comment="Navigate comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Scroll comment"
+             name="scrollComment">
+            <constant value="Scroll to iframe"/>
+        </var>
+
+        <var comment="Switch comment"
+             name="switchComment">
+            <constant value="Switch to iframe"/>
+        </var>
+
+        <var comment="Click comment"
+             name="clickComment">
+            <constant value="Click inside iframe"/>
+        </var>
+
+        <var comment="Assert comment"
+             name="assertComment">
+            <constant value="Verify result inside iframe"/>
+        </var>
+
+        <var comment="Attribute comment"
+             name="attributeComment">
+            <constant value="Check result text"/>
+        </var>
+
+        <var comment="Frame locator"
+             name="frameLocator">
+            <constant value="uiElements.testFrame"/>
+        </var>
+
+        <var comment="Button locator"
+             name="buttonLocator">
+            <constant value="uiElements.frameButton"/>
+        </var>
+
+        <var comment="Result locator"
+             name="resultLocator">
+            <constant value="uiElements.frameResult"/>
+        </var>
+
+        <var comment="Expected text"
+             name="expected">
+            <constant value="Clicked!"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scrollTo comment="{{scrollComment}}"
+                  locator="{{frameLocator}}"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <switchToFrame comment="{{switchComment}}"
+                       locator="{{frameLocator}}">
+
+            <click comment="{{clickComment}}"
+                   locator="{{buttonLocator}}"/>
+
+            <wait comment="Wait after click"
+                  time="1"/>
+
+            <assert comment="{{assertComment}}">
+                <attribute comment="{{attributeComment}}"
+                           name="innerText"
+                           locator="{{resultLocator}}">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </switchToFrame>
+
+    </web>
+
+</scenario>

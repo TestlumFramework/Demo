@@ -1,0 +1,62 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Escape</name>
+        <description>
+            This scenario verifies hotKey escape command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Open modal.
+            3. Focus modal.
+            4. Execute escape command.
+            5. Verify modal is closed.
+
+            This scenario validates:
+            - escape execution
+            - modal closing behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <click comment="Open modal window"
+               locator="uiElements.hotKeyOpenModal"/>
+
+        <wait comment="Wait for modal to appear" time="1"/>
+
+        <click comment="Focus modal container"
+               locator="uiElements.hotKeyModal"/>
+
+        <hotKey comment="Execute escape command">
+            <escape comment="Press escape key"/>
+        </hotKey>
+
+        <wait comment="Wait for modal to close" time="1"/>
+
+        <assert comment="Verify modal is closed">
+            <attribute comment="Check modal is hidden"
+                       name="innerText"
+                       locator="uiElements.hotKeyResult">
+                <content>Result:</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

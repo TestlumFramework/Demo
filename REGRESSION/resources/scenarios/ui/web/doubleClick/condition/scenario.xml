@@ -1,0 +1,75 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DoubleClick - Condition</name>
+        <description>
+            This scenario verifies conditional execution of doubleClick command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute doubleClick with condition=true.
+            3. Verify result is displayed.
+            4. Reset state (reload page).
+            5. Execute doubleClick with condition=false.
+            6. Verify result is NOT displayed.
+
+            This scenario validates:
+            - DoubleClick execution when condition=true
+            - DoubleClick skipping when condition=false
+            - UI state change validation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Double click should execute"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Double click should be skipped"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <doubleClick comment="Double click (condition=true)"
+                     locator="uiElements.doubleClickBtn"
+                     condition="trueCondition"/>
+
+        <wait comment="Wait after double click" time="1"/>
+
+        <assert comment="Verify result is visible">
+            <present comment="Result should be visible"
+                     locator="uiElements.doubleClickResult"/>
+        </assert>
+
+        <navigate comment="Reload page to reset state"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <doubleClick comment="Double click (condition=false)"
+                     locator="uiElements.doubleClickBtn"
+                     condition="falseCondition"/>
+
+        <wait comment="Wait after skipped double click" time="1"/>
+
+        <assert comment="Verify result is NOT visible">
+            <present comment="Result should NOT be visible"
+                     locator="uiElements.doubleClickResult"
+                     negative="true"/>
+        </assert>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iframe Test</title>
+</head>
+<body>
+
+<h3 data-test="frame-title">Iframe Test</h3>
+
+<button data-test="frame-button" onclick="handleClick()">
+    Click me
+</button>
+
+<p id="result" data-test="frame-result"></p>
+
+<script>
+    function handleClick() {
+        document.getElementById('result').innerText = 'Clicked!'
+    }
+</script>
+
+</body>
+</html>

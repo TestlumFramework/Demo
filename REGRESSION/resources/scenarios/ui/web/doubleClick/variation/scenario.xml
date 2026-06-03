@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DoubleClick - Variations</name>
+        <description>
+            This scenario verifies doubleClick command using CSV-driven variations.
+
+            Test flow:
+            1. Navigate using injected data.
+            2. Verify result is NOT present.
+            3. Execute doubleClick using injected locator.
+            4. Verify result is displayed.
+
+            This scenario validates:
+            - CSV-based injection
+            - Dynamic locator usage
+            - Double click execution
+            - UI state change validation
+        </description>
+    </overview>
+
+    <settings>
+        <variations>doubleClick_variations.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <assert comment="{{beforeAssertComment}}">
+            <present comment="{{beforePresentComment}}"
+                     locator="{{resultLocator}}"
+                     negative="true"/>
+        </assert>
+
+        <doubleClick comment="{{doubleClickComment}}"
+                     locator="{{buttonLocator}}"/>
+
+        <wait comment="{{waitAfterClickComment}}"
+              time="{{waitAfterClick}}"/>
+
+        <assert comment="{{afterAssertComment}}">
+            <present comment="{{afterPresentComment}}"
+                     locator="{{resultLocator}}"/>
+        </assert>
+
+    </web>
+
+</scenario>

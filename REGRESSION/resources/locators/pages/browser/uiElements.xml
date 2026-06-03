@@ -71,6 +71,126 @@
         <locator locatorId="selected3">
             <xpath>(.//span[@class="multiselect-tag"])[3]</xpath>
         </locator>
+
+        <locator locatorId="doubleClickBtn">
+            <xpath>.//button[contains(text(),'Double Click Me')]</xpath>
+        </locator>
+
+        <locator locatorId="doubleClickResult">
+            <xpath>.//p[contains(text(),'Double click detected')]</xpath>
+        </locator>
+
+        <locator locatorId="singleSelect">
+            <xpath>.//select[not(@multiple)]</xpath>
+        </locator>
+
+        <locator locatorId="singleOption1">
+            <xpath>.//select[not(@multiple)]/option[@value='1']</xpath>
+        </locator>
+
+        <locator locatorId="singleOption2">
+            <xpath>.//select[not(@multiple)]/option[@value='2']</xpath>
+        </locator>
+
+        <locator locatorId="singleOption3">
+            <xpath>.//select[not(@multiple)]/option[@value='3']</xpath>
+        </locator>
+
+        <locator locatorId="multiSelect">
+            <xpath>.//select[@multiple]</xpath>
+        </locator>
+
+        <locator locatorId="multiOptionAlpha">
+            <xpath>.//select[@multiple]/option[@value='A']</xpath>
+        </locator>
+
+        <locator locatorId="multiOptionBeta">
+            <xpath>.//select[@multiple]/option[@value='B']</xpath>
+        </locator>
+
+        <locator locatorId="multiOptionGamma">
+            <xpath>.//select[@multiple]/option[@value='C']</xpath>
+        </locator>
+
+        <locator locatorId="singleResult">
+            <xpath>.//h4[text()='DropDown Test']/following::p[contains(text(),'Selected value')][1]</xpath>
+        </locator>
+
+        <locator locatorId="multiResult">
+            <xpath>(.//h4[text()='DropDown Test']/following::p)[2]</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyInput1">
+            <xpath>.//input[@placeholder='Input 1']</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyInput2">
+            <xpath>.//input[@placeholder='Input 2']</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyResult">
+            <xpath>.//p[contains(text(),'Result:')]</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyOpenModal">
+            <xpath>.//button[contains(.,'Open Modal')]</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyModal">
+            <xpath>.//div[contains(@class,'fixed') and .//p[text()='Modal Open']]</xpath>
+        </locator>
+
+        <locator locatorId="hotKeyModalText">
+            <xpath>.//p[text()='Modal Open']</xpath>
+        </locator>
+
+        <locator locatorId="hoverTarget">
+            <xpath>.//div[contains(text(),'Hover over me')]</xpath>
+        </locator>
+
+        <locator locatorId="hoverResult">
+            <xpath>.//p[contains(text(),'Hover status')]</xpath>
+        </locator>
+
+        <locator locatorId="testImage">
+            <cssSelector>[data-test='test-image']</cssSelector>
+        </locator>
+
+        <locator locatorId="testFrame">
+            <xpath>//iframe[@data-test='test-frame']</xpath>
+        </locator>
+
+        <locator locatorId="frameButton">
+            <xpath>//button[@data-test='frame-button']</xpath>
+        </locator>
+
+        <locator locatorId="frameResult">
+            <xpath>//p[@data-test='frame-result']</xpath>
+        </locator>
+
+        <locator locatorId="setCookieButton">
+            <xpath>.//button[@data-test='set-cookie']</xpath>
+        </locator>
+
+        <locator locatorId="waitTime">
+            <cssSelector>[data-test='wait-time']</cssSelector>
+        </locator>
+
+        <locator locatorId="waitUnit">
+            <cssSelector>[data-test='wait-unit']</cssSelector>
+        </locator>
+
+        <locator locatorId="waitStart">
+            <cssSelector>[data-test='wait-start']</cssSelector>
+        </locator>
+
+        <locator locatorId="waitResult">
+            <cssSelector>[data-test='wait-result']</cssSelector>
+        </locator>
+
+        <locator locatorId="waitClickable">
+            <cssSelector>[data-test='wait-clickable']</cssSelector>
+        </locator>
     </locators>
 
 </page>

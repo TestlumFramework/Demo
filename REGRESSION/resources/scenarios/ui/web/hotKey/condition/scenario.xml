@@ -1,0 +1,72 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Condition</name>
+        <description>
+            This scenario verifies conditional execution of hotKey commands.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute space with true condition.
+            3. Execute space with false condition.
+            4. Verify only one execution happened.
+
+            This scenario validates:
+            - condition true execution
+            - condition false skipping
+            - correct state preservation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+        <condition comment="Always true condition"
+                   name="runFirst"
+                   spel="true"/>
+
+        <condition comment="False condition"
+                   name="skipSecond"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <input comment="Set initial value"
+               locator="uiElements.hotKeyInput2"
+               value="A"/>
+
+        <click comment="Focus input"
+               locator="uiElements.hotKeyInput2"/>
+
+        <hotKey comment="Execute space (true condition)"
+                condition="runFirst">
+            <space comment="Add space to current value"/>
+        </hotKey>
+
+        <hotKey comment="Execute space (false condition)"
+                condition="skipSecond">
+            <space comment="Should NOT execute"/>
+        </hotKey>
+
+        <assert comment="Verify only one space added">
+            <attribute comment="Check final value"
+                       name="value"
+                       locator="uiElements.hotKeyInput2">
+                <content>A </content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

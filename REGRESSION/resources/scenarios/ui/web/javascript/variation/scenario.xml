@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Javascript - Variations</name>
+        <description>
+            This scenario verifies javascript command using multiple JS files.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute javascript from different files.
+            3. Verify result after each execution.
+
+            This scenario validates:
+            - CSV-based JS file injection
+            - multiple JS execution
+            - dynamic expected values
+        </description>
+    </overview>
+
+    <settings>
+        <variations>javascript.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <javascript comment="{{jsComment}}"
+                    file="set_value.js"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

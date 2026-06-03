@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - General</name>
+        <description>
+            This scenario verifies input command with highlight true and false.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input value with highlight enabled.
+            3. Verify value.
+            4. Input value with highlight disabled.
+            5. Verify value.
+
+            This scenario validates:
+            - input execution
+            - highlight=true behavior
+            - highlight=false behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <input comment="Input value with highlight enabled"
+               locator="uiElements.hotKeyInput1"
+               value="HELLO"
+               highlight="true"/>
+
+        <assert comment="Verify value after highlight=true">
+            <attribute comment="Check input1 value"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>HELLO</content>
+            </attribute>
+        </assert>
+
+        <input comment="Input value with highlight disabled"
+               locator="uiElements.hotKeyInput2"
+               value="WORLD"
+               highlight="false"/>
+
+        <assert comment="Verify value after highlight=false">
+            <attribute comment="Check input2 value"
+                       name="value"
+                       locator="uiElements.hotKeyInput2">
+                <content>WORLD</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

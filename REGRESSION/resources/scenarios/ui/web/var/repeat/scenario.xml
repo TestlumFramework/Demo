@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Repeat</name>
+        <description>
+            This scenario verifies variable update inside repeat block.
+
+            Test flow:
+            1. Create initial variable with value 1.
+            2. Repeat 3 times and increment variable.
+            3. Use final value in UI.
+            4. Verify result equals 4.
+
+            This scenario validates:
+            - variable reassignment
+            - repeat execution
+            - expression evaluation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script for var repeat">
+
+        <navigate comment="Navigate to UI Elements"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Initial value"
+             name="counter">
+            <constant value="1"/>
+        </var>
+
+        <repeat comment="Increment counter 3 times"
+                times="3">
+
+            <var comment="Increment counter"
+                 name="counter">
+                <expression value="{{counter}} + 1"/>
+            </var>
+
+        </repeat>
+
+        <input comment="Input final counter value"
+               locator="uiElements.hotKeyInput1"
+               value="{{counter}}"/>
+
+        <assert comment="Verify final value is 4">
+            <attribute comment="Verify final value is 4" name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>4</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

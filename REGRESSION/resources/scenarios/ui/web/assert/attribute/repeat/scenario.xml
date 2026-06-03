@@ -1,0 +1,40 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Attribute - Repeat Times</name>
+        <description>
+            This scenario verifies attribute assertion inside repeat block.
+
+            Test flow:
+            1. Execute attribute assertion 3 times.
+            2. Verify value remains correct.
+
+            This scenario validates:
+            - Stable repeated execution
+            - Attribute consistency
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <repeat comment="Repeat attribute check" times="3">
+
+            <assert comment="Check attribute in repeat">
+                <attribute comment="Compare attribute value"
+                           name="type"
+                           locator="forms.type">
+                    <content>password</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,88 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DropDown - Repeat Times</name>
+        <description>
+            This scenario verifies repeated execution of dropDown command.
+
+            Test flow:
+            1. Repeat dropdown selection multiple times.
+            2. Select values sequentially.
+            3. Verify selected value after each selection.
+
+            This scenario validates:
+            - Stable repeated dropDown execution
+            - Correct selection behavior
+            - Proper DOM updates between iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <repeat comment="Repeat dropdown selection 3 times" times="3">
+
+            <dropDown comment="Select value One"
+                      locator="uiElements.singleSelect">
+                <oneValue type="select" by="text" value="One"/>
+            </dropDown>
+
+            <wait comment="Wait after selection" time="1"/>
+
+            <assert comment="Verify value One is selected">
+                <attribute comment="Check selected value equals 1"
+                           name="innerText"
+                           locator="uiElements.singleResult">
+                    <content>Selected value: 1</content>
+                </attribute>
+            </assert>
+
+            <dropDown comment="Select value Two"
+                      locator="uiElements.singleSelect">
+                <oneValue type="select" by="text" value="Two"/>
+            </dropDown>
+
+            <wait comment="Wait after selection" time="1"/>
+
+            <assert comment="Verify value Two is selected">
+                <attribute comment="Check selected value equals 2"
+                           name="innerText"
+                           locator="uiElements.singleResult">
+                    <content>Selected value: 2</content>
+                </attribute>
+            </assert>
+
+            <dropDown comment="Select value Three"
+                      locator="uiElements.singleSelect">
+                <oneValue type="select" by="text" value="Three"/>
+            </dropDown>
+
+            <wait comment="Wait after selection" time="1"/>
+
+            <assert comment="Verify value Three is selected">
+                <attribute comment="Check selected value equals 3"
+                           name="innerText"
+                           locator="uiElements.singleResult">
+                    <content>Selected value: 3</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>
