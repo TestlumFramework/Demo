@@ -28,7 +28,7 @@
         <tag name="wait" enabled="true"/>
 
         <!--    API    -->
-        <tag name="api" enabled="true"/>
+        <tag name="http" enabled="true"/>
         <tag name="websocket" enabled="true"/>
         <tag name="graphql" enabled="true"/>
         <tag name="auth-basic-mixed" enabled="true"/>
