@@ -9,7 +9,7 @@
         </description>
     </overview>
 
-    <settings>
+    <settings active="false">
         <tags>smtp</tags>
     </settings>
 
