@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Second Book",
+      "author" : "Author Two",
+      "number" : 2
+    }
+  }
+}

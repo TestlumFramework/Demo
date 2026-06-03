@@ -1,0 +1,62 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Variations</name>
+        <description>
+            This scenario verifies JWT authentication flow using variation data.
+
+            Test flow includes:
+            1. Load variation data from CSV file.
+            2. Authenticate via auth tag using variation-based auth attributes.
+            3. Create protected resource using variation-based request data.
+            4. Verify create response = 200 using variation-based expected file.
+            5. Reset JWT auth state after all variation executions.
+
+            This scenario validates:
+            - Variation injection into auth comment
+            - Variation injection into auth login endpoint
+            - Variation injection into nested http comment
+            - Variation injection into nested http endpoint
+            - Variation injection into request body
+            - Variation injection into expected file names
+            - Stable repeated authenticated execution
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>authVariations.csv</variations>
+        <tags>auth</tags>
+    </settings>
+
+    <auth comment="{{authComment}}"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/{{authLoginEndpoint}}">
+
+        <http comment="{{httpComment}}"
+              alias="MEGA_APP">
+            <post endpoint="/{{httpEndpoint}}">
+                <response code="200" file="{{expected_2}}.json"/>
+                <body>
+                    <raw>
+                        {
+                        "value": "{{value}}"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </http>
+
+    </auth>
+
+    <http comment="Reset JWT auth state after all variation executions"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

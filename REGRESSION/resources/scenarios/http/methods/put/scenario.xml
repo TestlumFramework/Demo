@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP PUT</name>
+        <description>
+            This scenario verifies HTTP PUT method behavior.
+
+            Test flow includes:
+            1. Create initial entity in memory.
+            2. Send PUT request to fully replace the last entity.
+            3. Verify response status = 200.
+            4. Validate updated entity response body.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Full entity replacement via PUT method
+            - Request body handling
+            - Updated entity state correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create initial entity before PUT request"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Old Name",
+                    "description": "Old Description",
+                    "status": "NEW",
+                    "category": "DEFAULT"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-4. Replace last entity via PUT request"
+          alias="MEGA_APP">
+        <put endpoint="/api/test/entities">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Updated Name",
+                    "description": "Updated Description",
+                    "status": "ACTIVE",
+                    "category": "UPDATED"
+                    }
+                </raw>
+            </body>
+        </put>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after PUT test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>
