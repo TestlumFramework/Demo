@@ -1,0 +1,9 @@
+{
+  "data": {
+    "addSelfBook": {
+      "title": "GraphQL Book",
+      "author": "Vadym",
+      "number": 1
+    }
+  }
+}

@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket Standard Text Condition</name>
+        <description>
+            This scenario verifies condition support for standard WebSocket commands.
+
+            Test flow includes:
+            1. Create true and false conditions.
+            2. Execute standard websocket flow with true condition.
+            3. Verify websocket command is executed successfully.
+            4. Execute second websocket flow with false condition.
+            5. Verify false-conditioned websocket block is skipped.
+
+            This scenario validates:
+            - Websocket command execution when condition = true
+            - Websocket command skipping when condition = false
+            - Stable condition handling for standard websocket flow
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+
+    <condition comment="Create true condition"
+               name="shouldExecute"
+               spel="true"/>
+
+    <condition comment="Create false condition"
+               name="shouldSkip"
+               spel="false"/>
+
+    <websocket comment="Step 1-3. This websocket block must execute because condition is true"
+               alias="MEGA_WS_STANDARD"
+               condition="shouldExecute">
+
+        <send comment="Send ping text message">
+            <message>ping</message>
+        </send>
+
+        <receive comment="Receive echoed ping response"
+                 timeoutMillis="1000">
+            <file>expected_3.json</file>
+        </receive>
+
+    </websocket>
+
+    <websocket comment="Step 4-5. This websocket block must be skipped because condition is false"
+               alias="MEGA_WS_STANDARD"
+               condition="shouldSkip">
+
+        <send comment="This send must never execute">
+            <message>THIS_MUST_NEVER_BE_SENT</message>
+        </send>
+
+        <receive comment="This receive must never execute"
+                 timeoutMillis="1000">
+            <file>expected_7.json</file>
+        </receive>
+
+    </websocket>
+
+</scenario>

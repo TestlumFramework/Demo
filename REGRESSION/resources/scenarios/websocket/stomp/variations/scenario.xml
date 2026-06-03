@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket STOMP Variations</name>
+        <description>
+            This scenario verifies STOMP WebSocket execution using variation data.
+
+            Test flow includes:
+            1. Load websocket configuration from variations CSV file.
+            2. Connect to STOMP WebSocket.
+            3. Subscribe to topic using variation value.
+            4. Send message using variation endpoint and payload.
+            5. Receive and verify response using variation expected file.
+
+            This scenario validates:
+            - Variation injection into websocket endpoint
+            - Variation injection into message body
+            - Variation injection into topic
+            - Variation injection into expected file
+            - Stable STOMP execution across multiple variation rows
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <variations>websocketStompVariations.csv</variations>
+        <tags>websocket</tags>
+    </settings>
+
+    <websocket comment="{{comment}}"
+               alias="MEGA_WS_APP">
+
+        <stomp>
+
+            <subscribe comment="{{subscribeComment}}"
+                       topic="/{{topic}}"/>
+
+            <send comment="{{sendComment}}"
+                  endpoint="/{{endpoint}}">
+                <message>{{message}}</message>
+            </send>
+
+            <receive comment="{{receiveComment}}"
+                     topic="/{{topic}}"
+                     limit="1"
+                     timeoutMillis="1000">
+                <file>{{expected_2}}.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+</scenario>

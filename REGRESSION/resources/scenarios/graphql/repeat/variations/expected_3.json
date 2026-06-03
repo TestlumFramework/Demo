@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "Repeat Book Two",
+      "author" : "Taras",
+      "number" : 2
+    }
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Repeat Variation One",
+    "description": "Created from first repeat variation",
+    "status": "NEW",
+    "category": "REPEAT_ONE",
+    "uploadedFile": null
+  },
+  {
+    "name": "Repeat Variation Two",
+    "description": "Created from second repeat variation",
+    "status": "ACTIVE",
+    "category": "REPEAT_TWO",
+    "uploadedFile": null
+  },
+  {
+    "name": "Repeat Variation Three",
+    "description": "Created from third repeat variation",
+    "status": "ARCHIVED",
+    "category": "REPEAT_THREE",
+    "uploadedFile": null
+  }
+]

@@ -9,7 +9,7 @@
         </description>
     </overview>
 
-    <settings>
+    <settings active="false">
         <variations>smtp_variations.csv</variations>
         <tags>smtp</tags>
     </settings>

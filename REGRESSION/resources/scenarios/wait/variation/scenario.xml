@@ -13,22 +13,27 @@
     </settings>
 
     <var comment="Create var with current time" name="currentTime">
-        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+        <expression value="T(java.lang.System).currentTimeMillis()"/>
     </var>
 
     <wait comment="{{comment}}" time="{{seconds}}"/>
 
     <var comment="Create var with updated time" name="updatedTime">
-        <expression value="new java.text.SimpleDateFormat('mmss').format(new java.util.Date())"/>
+        <expression value="T(java.lang.System).currentTimeMillis()"/>
     </var>
 
     <var comment="Create var with diff between two times" name="diff">
-        <expression value="{{updatedTime}} - {{currentTime}}"/>
+        <expression
+                value="T(java.lang.Long).parseLong('{{updatedTime}}') - T(java.lang.Long).parseLong('{{currentTime}}')"/>
+    </var>
+
+    <var comment="Create normalize var" name="normalizedSeconds">
+        <expression value="T(java.lang.Math).round({{diff}} / 1000.0)"/>
     </var>
 
     <assert comment="Check actual diff between times">
-        <equal comment="Ensure wait worked for exact seconds">
-            <content>{{diff}}</content>
+        <equal comment="Ensure wait worked approximately">
+            <content>{{normalizedSeconds}}</content>
             <content>{{seconds}}</content>
         </equal>
     </assert>

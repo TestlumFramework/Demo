@@ -1,0 +1,9 @@
+{
+  "data" : {
+    "addSelfBook" : {
+      "title" : "{{fileBookTitle}}",
+      "author" : "{{fileBookAuthor}}",
+      "number" : "{{fileBookNumber}}"
+    }
+  }
+}

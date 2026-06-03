@@ -1,0 +1,4 @@
+name,description,status,category
+Repeat Variation One,Created from first repeat variation,NEW,REPEAT_ONE
+Repeat Variation Two,Created from second repeat variation,ACTIVE,REPEAT_TWO
+Repeat Variation Three,Created from third repeat variation,ARCHIVED,REPEAT_THREE
