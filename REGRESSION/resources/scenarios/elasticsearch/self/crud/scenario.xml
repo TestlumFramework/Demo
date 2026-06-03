@@ -7,7 +7,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>elasticsearch-self</tags>
+        <tags>elasticsearch</tags>
     </settings>
 
     <elasticsearch alias="ELASTIC_0"
