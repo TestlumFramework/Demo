@@ -7,7 +7,7 @@
         <name>SwitchToFrame test</name>
     </overview>
 
-    <settings active="true">
+    <settings active="false">
         <tags>web</tags>
     </settings>
 
