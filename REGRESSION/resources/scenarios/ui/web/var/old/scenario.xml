@@ -7,7 +7,7 @@
         <name>Var test</name>
     </overview>
 
-    <settings truncateStorages="true" active="true">
+    <settings truncateStorages="true">
         <tags>web</tags>
     </settings>
 
