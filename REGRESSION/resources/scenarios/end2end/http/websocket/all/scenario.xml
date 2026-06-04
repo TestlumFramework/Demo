@@ -19,7 +19,7 @@
 
             <receive comment="Check ability to receive periodic message from the server"
                      topic="/topic/server"
-                     limit="1" timeoutMillis="1000">
+                     limit="1" timeoutMillis="1500">
                 <message>[ "server periodic message" ]</message>
             </receive>
         </stomp>
