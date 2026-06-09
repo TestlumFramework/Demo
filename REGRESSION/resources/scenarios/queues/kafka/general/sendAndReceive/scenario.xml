@@ -12,7 +12,7 @@
     </settings>
 
     <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" comment="Kafka send and receive with value">
-        <send correlationId="1" topic="weather">
+        <send correlationId="1" topic="weather_base_commands">
             <value>
                 [ {
                 "city": "New York",
@@ -25,7 +25,7 @@
 
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_base_commands">
             <value>
                 [ {
                 "key" : null,
@@ -45,13 +45,13 @@
 
     <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" comment="Kafka send and receive with file">
         <send correlationId="1"
-              topic="weather">
+              topic="weather_base_commands">
             <file>body_5.json</file>
         </send>
 
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_base_commands">
             <file>expected_6.json</file>
         </receive>
     </kafka>

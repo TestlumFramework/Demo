@@ -14,13 +14,13 @@
     <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
            comment="Kafka send and receive event without committing offest">
 
-        <receive topic="weather">
+        <receive topic="weather_commit">
             <value>
                 []
             </value>
         </receive>
 
-        <send topic="weather">
+        <send topic="weather_commit">
             <value>
                 [ {
                 "city": "Odessa",
@@ -35,7 +35,7 @@
 
         <receive commit="false"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_commit">
             <file>expected_5.json</file>
         </receive>
     </kafka>
@@ -44,12 +44,12 @@
            comment="Try to receive event under uncommitted offset">
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_commit">
             <file>expected_7.json</file>
         </receive>
 
         <receive timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_commit">
             <value>[]</value>
         </receive>
 
