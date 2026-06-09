@@ -210,7 +210,7 @@
             <groupId>group-queue</groupId>
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
-        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true" truncate="true">
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
@@ -220,8 +220,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
-               enabled="true"
-               truncate="true">
+               enabled="true">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>latest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
@@ -231,8 +230,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
-               enabled="true"
-               truncate="true">
+               enabled="true">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>

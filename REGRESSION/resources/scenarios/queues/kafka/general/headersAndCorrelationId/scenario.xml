@@ -15,7 +15,7 @@
            comment="Kafka send and receive verifying correlationId and headers">
 
         <send correlationId="98765-abcde"
-              topic="weather">
+              topic="weather_headers_test">
             <file>body_2.json</file>
             <headers>
                 <header name="X-Request-Source" value="testlum-e2e"/>
@@ -25,7 +25,7 @@
 
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_headers_test">
             <value>
                 [ {
                 "key" : null,
