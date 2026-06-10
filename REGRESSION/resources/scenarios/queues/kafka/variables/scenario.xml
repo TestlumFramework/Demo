@@ -18,7 +18,7 @@
 
     <var comment="Variable with topic for messaging"
          name="topic">
-        <constant value="weather"/>
+        <constant value="weather_for_reduced_poll_kafka"/>
     </var>
     <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
            comment="Kafka send and receive for country {{city}} - inject into value tag">
@@ -82,7 +82,7 @@
 
         <receive commit="true"
                  timeoutMillis="4000"
-                 topic="weather">
+                 topic="weather_for_reduced_poll_kafka">
             <file>{{expected_9}}.json</file>
         </receive>
     </kafka>
