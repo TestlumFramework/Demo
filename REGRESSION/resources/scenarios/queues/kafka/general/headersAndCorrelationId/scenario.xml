@@ -7,7 +7,7 @@
         <name>Kafka Headers Test</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 

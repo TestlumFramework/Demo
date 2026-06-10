@@ -7,7 +7,7 @@
         <name>Kafka Self Send and Receive</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 

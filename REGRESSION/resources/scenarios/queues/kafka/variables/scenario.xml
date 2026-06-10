@@ -7,7 +7,7 @@
         <name>Kafka Self with Variables</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 

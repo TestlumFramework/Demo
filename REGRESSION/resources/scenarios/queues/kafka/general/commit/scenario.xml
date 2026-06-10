@@ -7,7 +7,7 @@
         <name>Kafka Commit Test</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 
