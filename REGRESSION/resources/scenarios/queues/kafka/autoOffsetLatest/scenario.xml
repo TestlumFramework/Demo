@@ -7,7 +7,7 @@
         <name>Kafka Latest Offset Test</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 

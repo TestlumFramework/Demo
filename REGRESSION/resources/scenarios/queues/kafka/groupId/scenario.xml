@@ -7,7 +7,7 @@
         <name>Kafka Multiple Consumer Groups</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings>
         <tags>kafka</tags>
     </settings>
 
