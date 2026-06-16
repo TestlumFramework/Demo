@@ -78,7 +78,7 @@ jobs:
           emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
           script: |
-            set -uo pipefail
+            set -u
 
             echo "Waiting for device + full boot..."
             adb wait-for-device
