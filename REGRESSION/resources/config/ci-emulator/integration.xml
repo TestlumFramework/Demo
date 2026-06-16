@@ -1,0 +1,5 @@
+<integrations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
+              xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
+
+</integrations>

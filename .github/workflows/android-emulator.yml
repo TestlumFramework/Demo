@@ -1,0 +1,158 @@
+name: mobilebrowser-and-native-regression-android
+
+on:
+  workflow_dispatch:
+    inputs: {}
+  schedule:
+    - cron: '0 2 * * *'
+
+concurrency:
+  group: android-emulator
+  cancel-in-progress: false
+
+env:
+  TESTLUM_IMAGE: ghcr.io/testlumframework/testlum:latest
+  APK_PATH: todoist-v10864.apk
+
+jobs:
+  emulator-tests:
+    name: MobileBrowser + native on Android emulator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Verify APK is present
+        run: |
+          if [ ! -f "${APK_PATH}" ]; then
+            echo "::error::Missing ${APK_PATH}"
+            exit 1
+          fi
+
+      - name: Create Docker network
+        run: docker network create e2e_network
+
+      - name: Start website (mega-test-site)
+        run: |
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build mega-test-site
+
+      - name: Wait for website to be healthy
+        run: |
+          for i in $(seq 1 30); do
+            status="$(docker inspect -f '{{.State.Health.Status}}' mega-test-site 2>/dev/null || echo starting)"
+            echo "mega-test-site health: ${status}"
+            if [ "${status}" = "healthy" ]; then exit 0; fi
+            sleep 5
+          done
+          echo "::error::mega-test-site did not become healthy in time"
+          docker logs mega-test-site || true
+          exit 1
+
+      - name: Set up Node and Appium
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Appium and UiAutomator2 driver
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+
+      - name: Pull Testlum image
+        run: docker pull "${TESTLUM_IMAGE}"
+
+      - name: Run mobile + native tests on emulator
+        id: emulator_run
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: |
+            set -uo pipefail
+
+            echo "Waiting for device + full boot..."
+            adb wait-for-device
+            adb shell 'while [ "$(getprop sys.boot_completed)" != "1" ]; do sleep 2; done'
+
+            echo "Installing APK: ${APK_PATH}"
+            adb install -r -g "${APK_PATH}"
+
+            echo "Starting Appium on host (port 4723)..."
+            nohup appium -p 4723 --allow-insecure=chromedriver_autodownload > appium.log 2>&1 &
+
+            echo "Waiting for Appium /status..."
+            for i in $(seq 1 30); do
+              if curl -sf http://localhost:4723/status > /dev/null; then
+                echo "Appium is up"; break
+              fi
+              sleep 2
+              if [ "$i" -eq 30 ]; then
+                echo "::error::Appium did not start"; cat appium.log; exit 1
+              fi
+            done
+
+            echo "Running Testlum..."
+            set +e
+            docker run -t -u "$(id -u):$(id -g)" --rm \
+              --network=e2e_network \
+              --add-host=host.docker.internal:host-gateway \
+              -v "${PWD}/REGRESSION:/REGRESSION" \
+              "${TESTLUM_IMAGE}" \
+              -c=config-ci-regression-mobile-emulator.xml \
+              -p=/REGRESSION/resources
+            EXIT_CODE=$?
+            set -e
+
+            echo "Testlum finished with exit code ${EXIT_CODE}"
+            case "${EXIT_CODE}" in
+              0) echo "BUILD STATUS [SUCCESS]" ;;
+              1) echo "BUILD STATUS [FAILURE] - Tests failed"; exit 1 ;;
+              2) echo "BUILD STATUS [FAILURE] - No tests found"; exit 1 ;;
+              *) echo "BUILD STATUS [FAILURE] - Invalid configuration or crash (Code: ${EXIT_CODE})"; exit 1 ;;
+            esac
+
+      - name: Teardown
+        if: always()
+        run: |
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
+          docker network rm e2e_network || true
+
+      - name: Build Slack payload
+        id: build_message
+        if: always()
+        run: |
+          case "${{ steps.emulator_run.outcome }}" in
+            success)   icon="✅"; status="passed" ;;
+            failure)   icon="❌"; status="failed" ;;
+            cancelled) icon="⏹"; status="cancelled" ;;
+            *)         icon="➖"; status="${{ steps.emulator_run.outcome }}" ;;
+          esac
+
+          blocks=$(jq -n \
+            --arg header "*${{ github.workflow }} #${{ github.run_number }}* | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>" \
+            --arg line "${icon} *MobileBrowser + native on Android emulator* | \`${status}\`" \
+            '[{"type":"section","text":{"type":"mrkdwn","text":$header}},{"type":"section","text":{"type":"mrkdwn","text":$line}}]')
+
+          echo "payload=$(echo "$blocks" | jq -c .)" >> "$GITHUB_OUTPUT"
+
+      - name: Slack Notification
+        if: always()
+        uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            unfurl_links: false
+            unfurl_media: false
+            blocks: ${{ steps.build_message.outputs.payload }}

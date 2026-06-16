@@ -1,0 +1,46 @@
+<uiConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
+
+    <mobilebrowser enabled="true">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <baseUrl>http://10.0.2.2:3000</baseUrl>
+        <connection>
+            <appiumServer>
+                <serverUrl>http://host.docker.internal:4723</serverUrl>
+            </appiumServer>
+        </connection>
+        <devices>
+            <device platformName="android" enabled="true" alias="ANDROID_0">
+                <appiumCapabilities>
+                    <deviceName>AndroidDevice</deviceName>
+                    <platformVersion>15.0</platformVersion>
+                    <udid>emulator-5554</udid>
+                </appiumCapabilities>
+            </device>
+        </devices>
+    </mobilebrowser>
+
+    <native enabled="true">
+        <takeScreenshots enabled="false"/>
+        <elementAutowait seconds="5"/>
+        <connection>
+            <appiumServer>
+                <serverUrl>http://host.docker.internal:4723</serverUrl>
+            </appiumServer>
+        </connection>
+        <devices>
+            <device alias="NATIVE_0" platformName="android" enabled="true">
+                <appiumCapabilities>
+                    <deviceName>AndroidDevice</deviceName>
+                    <platformVersion>15.0</platformVersion>
+                    <udid>emulator-5554</udid>
+                    <appPackage>com.todoist</appPackage>
+                    <appActivity>com.todoist.activity.HomeActivity</appActivity>
+                </appiumCapabilities>
+            </device>
+        </devices>
+    </native>
+
+</uiConfig>
