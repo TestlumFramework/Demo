@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>ScrollTo - Variable</name>
+        <description>
+            This scenario verifies scrollTo command using variables in mobile browser.
+
+            This scenario validates:
+            - locator injection
+            - path injection
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Navigate comment"
+             name="navigateComment">
+            <constant value="Navigate to Scroll Test page"/>
+        </var>
+
+        <var comment="Wait before load comment"
+             name="waitLoadComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Wait after scroll comment"
+             name="waitAfterScrollComment">
+            <constant value="Wait after scroll"/>
+        </var>
+
+        <var comment="ScrollTo comment"
+             name="scrollToComment">
+            <constant value="Scroll to bottom element"/>
+        </var>
+
+        <var comment="Assert comment"
+             name="assertComment">
+            <constant value="Verify element reached"/>
+        </var>
+
+        <var comment="Present comment"
+             name="presentComment">
+            <constant value="Check element visibility"/>
+        </var>
+
+        <var comment="Path variable"
+             name="path">
+            <constant value="/scroll-test"/>
+        </var>
+
+        <var comment="Locator variable"
+             name="locator">
+            <constant value="scrollTest.pageBottom"/>
+        </var>
+
+        <var comment="Wait time variable"
+             name="time">
+            <constant value="2"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitLoadComment}}"
+              time="{{time}}"/>
+
+        <scrollTo comment="{{scrollToComment}}"
+                  locator="{{locator}}"/>
+
+        <wait comment="{{waitAfterScrollComment}}"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <present comment="{{presentComment}}"
+                     locator="{{locator}}"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

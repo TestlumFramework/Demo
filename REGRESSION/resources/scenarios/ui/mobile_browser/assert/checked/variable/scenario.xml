@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Checked - Variable</name>
+        <description>
+            This scenario verifies checkbox assertion using variables in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Checkbox locator variable" name="checkboxLocator">
+            <constant value="uiElements.checkbox"/>
+        </var>
+
+        <var comment="Navigate comment variable" name="navigateComment">
+            <constant value="Navigate to checkbox page"/>
+        </var>
+
+        <var comment="Path variable" name="path">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}" command="to" path="{{path}}"/>
+
+        <var comment="Checked comment variable" name="checkedComment">
+            <constant value="Should NOT be selected"/>
+        </var>
+
+        <var comment="Assert Comment variable" name="assertCommentVariable">
+            <constant value="Check checkbox initial state via variable"/>
+        </var>
+
+        <assert comment="{{assertCommentVariable}}">
+            <checked comment="{{checkedComment}}"
+                     locator="{{checkboxLocator}}"
+                     negative="true"/>
+        </assert>
+
+        <var comment="Click comment variable" name="clickComment">
+            <constant value="Click on checkbox"/>
+        </var>
+
+        <click comment="{{clickComment}}" locator="{{checkboxLocator}}"/>
+
+        <var comment="Second Checked comment variable" name="secondCheckedComment">
+            <constant value="Should be selected"/>
+        </var>
+
+        <var comment="Second Assert Comment variable" name="secondAssertCommentVariable">
+            <constant value="Check checkbox after click via variable"/>
+        </var>
+
+        <assert comment="{{secondAssertCommentVariable}}">
+            <checked comment="{{secondCheckedComment}}"
+                     locator="{{checkboxLocator}}"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

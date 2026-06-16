@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Percent</name>
+        <description>
+            This scenario verifies page scroll using percent measure in mobile browser.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Scroll down page by percent.
+            3. Verify that bottom element becomes present.
+
+            This scenario validates:
+            - page scroll
+            - percent measure
+            - scroll down behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scroll comment="Scroll page down by percent"
+                type="page"
+                direction="down"
+                value="80"
+                measure="percent"/>
+
+        <wait comment="Wait for page scroll to stabilize"
+              time="2"/>
+
+        <assert comment="Verify bottom element is present after scroll">
+            <present comment="Check bottom element"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

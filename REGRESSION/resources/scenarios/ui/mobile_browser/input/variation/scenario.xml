@@ -1,0 +1,57 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - Variations</name>
+        <description>
+            This scenario verifies input command using CSV variations in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute input with different values and highlight modes.
+            3. Verify entered value.
+
+            This scenario validates:
+            - CSV-based injection
+            - dynamic value usage
+            - dynamic highlight usage
+            - input stability
+        </description>
+    </overview>
+
+    <settings>
+        <variations>input.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <clear comment="Ensure clean input state"
+               locator="{{locator}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{locator}}"
+               value="{{value}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

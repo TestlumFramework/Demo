@@ -37,9 +37,6 @@
         <repeat comment="Repeat input 3 times"
                 times="3">
 
-            <clear comment="Clear input before typing"
-                   locator="uiElements.hotKeyInput1"/>
-
             <input comment="Input value"
                    locator="uiElements.hotKeyInput1"
                    value="REPEAT"

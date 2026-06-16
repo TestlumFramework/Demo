@@ -5,21 +5,21 @@
     <overview>
         <name>Clear - Condition</name>
         <description>
-            This scenario verifies conditional execution of clear command.
+            This scenario verifies conditional execution of clear command using UI state.
 
             Test flow:
-            1. Navigate to forms page.
-            2. Input value into field.
-            3. Execute clear with condition=true.
-            4. Input new value and verify it replaces previous value.
+            1. Navigate to UI Elements page.
+            2. Input value.
+            3. Execute clear with condition=true → value should reset.
+            4. Input new value and verify it is applied.
             5. Input value again.
-            6. Execute clear with condition=false.
-            7. Input new value and verify it does NOT replace previous value.
+            6. Execute clear with condition=false → value should NOT reset.
+            7. Input additional value and verify concatenation.
 
             This scenario validates:
-            - Conditional execution of clear command
-            - Correct behavior when condition=true
-            - Skipping logic when condition=false
+            - Conditional execution of clear
+            - UI state after clear=true
+            - UI state after clear=false
         </description>
     </overview>
 
@@ -40,62 +40,59 @@
                    name="falseCondition"
                    spel="false"/>
 
-        <navigate comment="Navigate to forms page"
+        <navigate comment="Navigate to UI Elements page"
                   command="to"
-                  path="/forms"/>
+                  path="/ui-elements"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="uiElements.clearInput"/>
 
         <input comment="Enter initial value"
-               locator="forms.username"
+               locator="uiElements.clearInput"
                value="TestUser"/>
 
-        <clear comment="Clear field with true condition"
-               locator="forms.username"
+        <assert comment="Verify initial value">
+            <attribute comment="Verify initial value" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Clear with true condition"
+               locator="uiElements.clearInput"
                condition="trueCondition"/>
 
-        <input comment="Enter new value after clear"
-               locator="forms.username"
-               value="A"/>
+        <wait comment="Wait after clear" time="1"/>
 
-        <var comment="Store value after true condition"
-             name="afterTrue">
-            <element>
-                <attribute name="value"
-                           locator="forms.username"/>
-            </element>
-        </var>
-
-        <assert comment="Verify value replaced after clear">
-            <equal comment="Value should be new value">
-                <content>{{afterTrue}}</content>
-                <content>A</content>
-            </equal>
+        <assert comment="Verify value is empty">
+            <attribute comment="Verify value is empty" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: empty</content>
+            </attribute>
         </assert>
 
         <input comment="Enter initial value again"
-               locator="forms.username"
+               locator="uiElements.clearInput"
                value="TestUser"/>
 
+        <assert comment="Verify value before skip clear">
+            <attribute comment="Verify value before skip clear" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
+
         <clear comment="Attempt clear with false condition"
-               locator="forms.username"
+               locator="uiElements.clearInput"
                condition="falseCondition"/>
 
-        <input comment="Append new value without clearing"
-               locator="forms.username"
-               value="A"/>
+        <wait comment="Wait after skipped clear" time="1"/>
 
-        <var comment="Store value after false condition"
-             name="afterFalse">
-            <element>
-                <attribute name="value"
-                           locator="forms.username"/>
-            </element>
-        </var>
-
-        <assert comment="Verify value was NOT cleared">
-            <notEqual comment="Value should not be only new value">
-                <content>{{afterFalse}}</content>
-                <content>AA</content>
-            </notEqual>
+        <assert comment="Verify value NOT cleared">
+            <attribute comment="Verify value NOT cleared" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
         </assert>
 
     </web>

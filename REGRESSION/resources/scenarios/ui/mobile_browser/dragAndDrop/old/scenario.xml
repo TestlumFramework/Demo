@@ -1,0 +1,74 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for mobile browser command: DragAndDrop</description>
+        <name>Drag and Drop mobile browser test</name>
+    </overview>
+
+    <settings active="false">
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start WEB scripts">
+
+        <wait comment="Wait 1 second" time="1"/>
+
+        <navigate comment="Navigate to 'Developer Board' tab"
+                  command="to"
+                  path="/blank"/>
+
+        <dragAndDrop comment="Check the ability to upload a photo via drop zone" toLocator="developerBoard.selectFileDropZone">
+            <fileName>upload_dropZone1.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for dragAndDrop 'fileName'" name="innerHTML" locator="developerBoard.fileDropZone">
+                <content>File: upload_dropZone1.png</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <dragAndDrop comment="Check the ability to upload a photo via input element" toLocator="developerBoard.selectFileInput">
+            <fileName>upload_input.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for dragAndDrop 'fileName'" name="innerHTML" locator="developerBoard.fileInput">
+                <content>File: upload_input.png</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <dragAndDrop comment="Pick up and move the cube to another zone"
+                     toLocator=".//h5[text()='Also drop zone']/following-sibling::div" toLocatorStrategy="xpath">
+            <fromLocator>(.//div[text()='drag me'])[3]</fromLocator>
+        </dragAndDrop>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for dragAndDrop 'fromLocator'" name="innerHTML" locator="developerBoard.zone2Drag2">
+                <content>drag me</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for 1 second" time="1"/>
+
+        <dragAndDrop comment="Pick up and move the cube to another zone" toLocator="developerBoard.dragMe4">
+            <fromLocator>developerBoard.dragMe2</fromLocator>
+        </dragAndDrop>
+
+        <assert comment="Create assert for command's test">
+            <attribute comment="Assert for dragAndDrop 'fromLocator'" name="innerHTML" locator="developerBoard.zone2Drag3">
+                <content>drag me</content>
+            </attribute>
+        </assert>
+
+        <wait comment="Wait for timeout scenario" time="1"/>
+    </mobilebrowser>
+
+</scenario>
