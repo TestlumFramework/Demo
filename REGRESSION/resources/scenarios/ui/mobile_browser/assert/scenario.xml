@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>mobilebrowser</tags>
+        <tags>mobilebrowser-healthcheck</tags>
     </settings>
 
     <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
