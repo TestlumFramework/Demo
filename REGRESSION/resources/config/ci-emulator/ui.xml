@@ -2,6 +2,23 @@
           xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
           xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
 
+    <web enabled="false">
+        <baseUrl>http://mega-test-site:80</baseUrl>
+        <autoHealing enabled="false" mode="soft"/>
+        <browserSettings>
+            <takeScreenshots enabled="false"/>
+            <elementAutowait seconds="5"/>
+            <browsers>
+                <chrome alias="chrome_0" enabled="false" maximizedBrowserWindow="false" headlessMode="true"
+                        browserWindowSize="1536x864" keepDownloadedFiles="false">
+                    <browserType>
+                        <remoteBrowser browserVersion="144.0" remoteBrowserURL="http://selenium-hub:4444/"/>
+                    </browserType>
+                </chrome>
+            </browsers>
+        </browserSettings>
+    </web>
+
     <mobilebrowser enabled="true">
         <takeScreenshots enabled="false"/>
         <elementAutowait seconds="5"/>
