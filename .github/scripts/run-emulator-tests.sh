@@ -10,7 +10,7 @@ echo "Installing APK: ${APK_PATH}"
 adb install -r -g "${APK_PATH}"
 
 echo "Starting Appium on host (port 4723)..."
-nohup appium -p 4723 --allow-insecure=chromedriver_autodownload > appium.log 2>&1 &
+nohup appium -p 4723 --allow-insecure="*:chromedriver_autodownload" > appium.log 2>&1 &
 
 echo "Waiting for Appium /status..."
 for i in $(seq 1 30); do
