@@ -25,7 +25,10 @@
         <baseUrl>http://localhost:3000</baseUrl>
         <connection>
             <appiumServer>
-                <serverUrl>http://localhost:4723</serverUrl>
+                <!-- to run when testlum is launched locally without docker -->
+<!--                <serverUrl>http://localhost:4723</serverUrl>-->
+                <!-- to run when testlum is launched via docker -->
+                 <serverUrl>http://host.docker.internal:4723</serverUrl>
             </appiumServer>
         </connection>
         <devices>
@@ -44,7 +47,10 @@
         <elementAutowait seconds="5"/>
         <connection>
             <appiumServer>
-                <serverUrl>http://localhost:4723</serverUrl>
+                <!-- to run when testlum is launched locally without docker -->
+<!--                <serverUrl>http://localhost:4723</serverUrl>-->
+                <!-- to run when testlum is launched via docker -->
+                 <serverUrl>http://host.docker.internal:4723</serverUrl>
             </appiumServer>
         </connection>
         <devices>
