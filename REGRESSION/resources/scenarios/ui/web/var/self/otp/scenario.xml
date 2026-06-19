@@ -1,0 +1,69 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - OTP</name>
+        <description>
+            This scenario verifies OTP value generation and input usage.
+
+            Test flow:
+            1. Navigate to OTP test page.
+            2. Generate OTP value.
+            3. Input generated value.
+            4. Verify that input contains generated value.
+
+            This scenario validates:
+            - OTP generation
+            - variable injection into input
+            - correct value application
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to OTP Test page"
+                  command="to"
+                  path="/otp-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Generate OTP value"
+             name="otpValue">
+            <otp secretKey="JBSWY3DPEHPK3PXP"/>
+        </var>
+
+        <input comment="Input generated OTP"
+               locator="xpath=//input[@placeholder='6-digit code']"
+               value="{{otpValue}}"
+               highlight="true"/>
+
+        <assert comment="Verify input contains generated value">
+            <attribute comment="Check input value"
+                       name="value"
+                       locator="xpath=//input[@placeholder='6-digit code']">
+                <content>{{otpValue}}</content>
+            </attribute>
+        </assert>
+
+        <click comment="Click Verify button"
+               locator="xpath=//button[@type='submit']"/>
+
+        <wait comment="Wait for validation" time="1"/>
+
+        <assert comment="Verify success message is displayed">
+            <attribute comment="Check success message"
+                       name="text"
+                       locator="xpath=//span[@id='resultMessage']">
+                <content>Success!</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>
