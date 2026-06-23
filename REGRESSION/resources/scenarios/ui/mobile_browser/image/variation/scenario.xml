@@ -20,7 +20,7 @@
         </description>
     </overview>
 
-    <settings>
+    <settings onlyThis="true">
         <variations>image_part.csv</variations>
         <tags>mobilebrowser</tags>
     </settings>
