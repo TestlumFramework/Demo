@@ -19,7 +19,7 @@
         </description>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>mobilebrowser</tags>
     </settings>
 
