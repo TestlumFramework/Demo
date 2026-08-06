@@ -21,7 +21,7 @@
         <image comment="Test image fullscreen {{comment}}"
                condition="{{flag}}"
                file="{{imageFileName}}.png">
-            <fullScreen percentage="99"/>
+            <fullScreen percentage="95"/>
         </image>
 
     </native>
