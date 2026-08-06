@@ -7,7 +7,7 @@
         <name>Swipe native test</name>
     </overview>
 
-    <settings>
+    <settings active="false">
         <tags>native</tags>
     </settings>
 

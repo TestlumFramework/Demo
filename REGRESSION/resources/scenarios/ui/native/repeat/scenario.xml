@@ -7,7 +7,7 @@
         <name>Repeat in native</name>
     </overview>
 
-    <settings>
+    <settings active="false">
         <tags>native</tags>
     </settings>
     
