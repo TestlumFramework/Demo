@@ -15,12 +15,14 @@
 
         <click comment="Clicking on button imagePage" locator="testApp.imagePage"/>
 
+        <wait comment="Wait 2 seconds for page loading" time="2"/>
+
         <repeat comment="Repeat 2 times with variations"
                 variations="variations_native_command.csv">
             <image comment="Test image part {{comment}}"
                    condition="{{flag}}"
                    file="{{imageFileName}}.png">
-                <part locator="{{locatorImage}}" locatorStrategy="locatorId"/>
+                <part locator="{{locatorImage}}" locatorStrategy="locatorId" percentage="95"/>
             </image>
         </repeat>
 

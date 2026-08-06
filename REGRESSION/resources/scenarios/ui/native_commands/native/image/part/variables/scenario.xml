@@ -25,9 +25,11 @@
             <constant value="testApp.image"/>
         </var>
 
+        <wait comment="Wait 2 seconds for page loading" time="2"/>
+
         <image comment="Test image part with variables"
                file="{{imgFile}}.png">
-            <part locator="{{locImage}}" locatorStrategy="locatorId"/>
+            <part locator="{{locImage}}" locatorStrategy="locatorId" percentage="95"/>
         </image>
 
     </native>
