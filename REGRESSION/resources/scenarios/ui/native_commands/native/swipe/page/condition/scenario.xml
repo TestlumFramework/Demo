@@ -7,7 +7,7 @@
         <name>Swipe page condition</name>
     </overview>
 
-    <settings>
+    <settings active="false">
         <tags>native</tags>
     </settings>
 

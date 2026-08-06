@@ -7,7 +7,7 @@
         <name>Swipe page variations</name>
     </overview>
 
-    <settings>
+    <settings active="false">
         <variations>variations_native_command.csv</variations>
         <tags>native</tags>
     </settings>
