@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Variations</name>
+        <description>
+            This scenario verifies clear command using CSV-driven variations and UI state.
+
+            Test flow:
+            1. Load data from CSV file.
+            2. Navigate to page using injected path.
+            3. Input value using injected data.
+            4. Verify value is displayed.
+            5. Execute clear command.
+            6. Verify value is empty via UI.
+
+            This scenario validates:
+            - CSV-based variable injection
+            - Dynamic locator and value usage
+            - Stable clear execution
+            - UI state consistency
+        </description>
+    </overview>
+
+    <settings>
+        <variations>clear_variations.csv</variations>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="{{inputLocator}}"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{inputLocator}}"
+               value="{{value}}"/>
+
+        <clear comment="{{clearComment}}"
+               locator="{{inputLocator}}"
+               highlight="true"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{assertComment}}"
+                       name="innerText"
+                       locator="{{resultLocator}}">
+                <content>Value: empty</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

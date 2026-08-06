@@ -1,0 +1,72 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>GraphQL Repeat Variations</name>
+        <description>
+            This scenario verifies GraphQL execution inside repeat block using variations.
+
+            Test flow includes:
+            1. Execute GraphQL mutation inside repeat block using variation rows.
+            2. Create one book for each variation.
+            3. Verify response status = 200 for each iteration.
+            4. Retrieve all books after repeat execution.
+            5. Verify that all variation books were created in memory.
+            6. Reset GraphQL storage after test.
+
+            This scenario validates:
+            - GraphQL mutation execution inside repeat block
+            - Variation interpolation inside request files
+            - Stable repeated execution using variations
+            - Correct final storage state
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>graphql</tags>
+    </settings>
+
+    <repeat comment="Step 1-3. Execute GraphQL create mutation using variation rows"
+            variations="graphqlRepeatVariations.csv">
+
+        <graphql comment="Create book from repeat-variation row"
+                 alias="MEGA_GQL_APP">
+            <post endpoint="/graphql">
+                <response code="200" file="{{expected_file}}.json"/>
+                <body>
+                    <raw>
+                        {
+                        "query": "mutation { addSelfBook(newBook: { title: \"{{title}}\", author: \"{{author}}\", number: {{number}} }) { title author number } }"
+                        }
+                    </raw>
+                </body>
+            </post>
+        </graphql>
+
+    </repeat>
+
+    <graphql comment="Step 4-5. Verify all repeated variation books were created"
+             alias="MEGA_GQL_APP">
+        <get endpoint="/graphql">
+            <response code="200" file="expected_5.json"/>
+            <param name="query" data="{ getAllSelfBooks { title author number } }"/>
+        </get>
+    </graphql>
+
+    <graphql comment="Step 6. Reset GraphQL storage after repeat-variations test"
+             alias="MEGA_GQL_APP">
+        <post endpoint="/graphql">
+            <response code="200" file="expected_6.json"/>
+            <body>
+                <raw>
+                    {
+                    "query": "mutation { resetSelfBooks }"
+                    }
+                </raw>
+            </body>
+        </post>
+    </graphql>
+
+</scenario>

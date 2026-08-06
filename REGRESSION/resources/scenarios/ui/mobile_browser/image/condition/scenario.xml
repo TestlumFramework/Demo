@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Image - Part - Condition</name>
+        <description>
+            This scenario verifies conditional execution of image comparison in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute image comparison based on condition.
+
+            This scenario validates:
+            - conditional execution
+            - correct branch selection
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Should Execute"
+                   name="shouldExecute"
+                   spel="true"/>
+
+        <condition comment="Should Not Execute"
+                   name="shouldNotExecute"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <scrollTo comment="Scroll to image block"
+                  locator="uiElements.testImage"/>
+
+        <wait comment="Wait after scroll" time="1"/>
+
+        <image comment="Compare image for test env"
+               file="image_part.png"
+               condition="shouldExecute">
+            <part locator="uiElements.testImage"
+                  percentage="99.9"/>
+        </image>
+
+        <image comment="Compare image for prod env"
+               file="image_part.png"
+               condition="shouldNotExecute">
+            <part locator="uiElements.testImage"
+                  percentage="50.5"/>
+        </image>
+
+    </mobilebrowser>
+
+</scenario>

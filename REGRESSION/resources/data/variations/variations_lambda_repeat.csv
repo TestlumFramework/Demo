@@ -1,0 +1,4 @@
+lambdaComment,functionName,name,subject,score1,score2,score3,header,headerVersion,expected
+Use function to count average score,student-scores-python,Bob,Physics,50,50,50,X-Amz-Executed-Version,$LATEST,expected_8
+Use function to count average score,student-scores-python,Jane,Maths,60,60,60,X-Amz-Executed-Version,$LATEST,expected_9
+Use function to count average score,student-scores-python,Sebastian,Arts,50,50,60,X-Amz-Executed-Version,$LATEST,expected_10

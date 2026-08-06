@@ -1,0 +1,65 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>SwitchToFrame - General</name>
+        <description>
+            This scenario verifies switchToFrame command.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Scroll to iframe.
+            3. Switch to iframe.
+            4. Click button inside iframe.
+            5. Verify result inside iframe.
+
+            This scenario validates:
+            - iframe switching
+            - interaction inside iframe
+            - correct DOM context
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+
+        <scrollTo comment="Scroll to iframe"
+                  locator="uiElements.testFrame"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <switchToFrame comment="Switch to iframe"
+                       locator="uiElements.testFrame">
+
+            <click comment="Click button inside iframe"
+                   locator="uiElements.frameButton"/>
+
+            <wait comment="Wait after click"
+                  time="1"/>
+
+            <assert comment="Verify result inside iframe">
+                <present comment="Check result is displayed"
+                         locator="uiElements.frameResult"/>
+            </assert>
+
+        </switchToFrame>
+
+    </web>
+
+</scenario>

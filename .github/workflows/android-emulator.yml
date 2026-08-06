@@ -1,0 +1,117 @@
+name: mobilebrowser-and-native-regression-android
+
+on:
+  workflow_dispatch:
+    inputs: {}
+  schedule:
+    # Weekly, Mondays at 06:00 UTC.
+    - cron: '0 6 * * 1'
+
+concurrency:
+  group: android-emulator
+  cancel-in-progress: false
+
+env:
+  TESTLUM_IMAGE: ghcr.io/testlumframework/testlum:latest
+  APK_PATH: todoist-v10864.apk
+
+jobs:
+  emulator-tests:
+    name: MobileBrowser + native on Android emulator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+
+      - name: Verify APK is present
+        run: |
+          if [ ! -f "${APK_PATH}" ]; then
+            echo "::error::Missing ${APK_PATH}"
+            exit 1
+          fi
+
+      - name: Create Docker network
+        run: docker network create e2e_network
+
+      - name: Start website (mega-test-site)
+        run: |
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build mega-test-site
+
+      - name: Wait for website to be healthy
+        run: |
+          for i in $(seq 1 30); do
+            status="$(docker inspect -f '{{.State.Health.Status}}' mega-test-site 2>/dev/null || echo starting)"
+            echo "mega-test-site health: ${status}"
+            if [ "${status}" = "healthy" ]; then exit 0; fi
+            sleep 5
+          done
+          echo "::error::mega-test-site did not become healthy in time"
+          docker logs mega-test-site || true
+          exit 1
+
+      - name: Set up Node and Appium
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Appium and UiAutomator2 driver
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+
+      - name: Pull Testlum image
+        run: docker pull "${TESTLUM_IMAGE}"
+
+      - name: Run mobile + native tests on emulator
+        id: emulator_run
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          force-avd-creation: false
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: bash .github/scripts/run-emulator-tests.sh
+
+      - name: Teardown
+        if: always()
+        run: |
+          docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
+          docker network rm e2e_network || true
+
+      - name: Build Slack payload
+        id: build_message
+        if: always()
+        run: |
+          case "${{ steps.emulator_run.outcome }}" in
+            success)   icon="✅"; status="passed" ;;
+            failure)   icon="❌"; status="failed" ;;
+            cancelled) icon="⏹"; status="cancelled" ;;
+            *)         icon="➖"; status="${{ steps.emulator_run.outcome }}" ;;
+          esac
+
+          blocks=$(jq -n \
+            --arg header "*${{ github.workflow }} #${{ github.run_number }}* | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>" \
+            --arg line "${icon} *MobileBrowser + native on Android emulator* | \`${status}\`" \
+            '[{"type":"section","text":{"type":"mrkdwn","text":$header}},{"type":"section","text":{"type":"mrkdwn","text":$line}}]')
+
+          echo "payload=$(echo "$blocks" | jq -c .)" >> "$GITHUB_OUTPUT"
+
+      - name: Slack Notification
+        if: always()
+        uses: slackapi/slack-github-action@v2
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            unfurl_links: false
+            unfurl_media: false
+            blocks: ${{ steps.build_message.outputs.payload }}

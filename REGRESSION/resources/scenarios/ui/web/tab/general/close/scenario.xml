@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Close</name>
+        <description>
+            This scenario verifies closing browser tab.
+
+            Test flow:
+            1. Navigate to Forms page (tab 1).
+            2. Open UI Elements page in new tab (tab 2).
+            3. Close current tab.
+            4. Verify that focus returned to first tab.
+
+            This scenario validates:
+            - tab close command
+            - correct tab fallback
+            - browser context handling
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <tab comment="Open new tab with UI Elements page">
+            <open url="/ui-elements"/>
+        </tab>
+
+        <wait comment="Wait for tab creation"
+              time="2"/>
+
+        <tab comment="Switch to second tab">
+            <switch index="2"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="1"/>
+
+        <tab comment="Close current tab">
+            <close/>
+        </tab>
+
+        <wait comment="Wait after close"
+              time="1"/>
+
+        <assert comment="Verify we are back on Forms page">
+            <attribute comment="Check Forms input exists"
+                       name="type"
+                       locator="forms.username">
+                <content>text</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

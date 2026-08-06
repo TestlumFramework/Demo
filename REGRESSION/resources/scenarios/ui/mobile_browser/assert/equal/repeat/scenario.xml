@@ -1,0 +1,45 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Equal - Repeat Times</name>
+        <description>
+            This scenario verifies equal assertion execution inside repeat block using times in mobile browser.
+
+            It validates:
+            - Stable repeated execution of assert
+            - Equal assertion reliability across iterations
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <var comment="Get Dashboard title" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="/html/body/div/div/div[2]/main/div/div/h3"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <repeat comment="Execute assert equal multiple times" times="3">
+
+            <assert comment="Check equal inside repeat">
+                <equal comment="Compare static values">
+                    <content>{{dashboardTitle}}</content>
+                    <content>Dashboard</content>
+                </equal>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>

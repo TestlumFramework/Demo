@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Clear - Condition</name>
+        <description>
+            This scenario verifies conditional execution of clear command using UI state.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input value.
+            3. Execute clear with condition=true → value should reset.
+            4. Input new value and verify it is applied.
+            5. Input value again.
+            6. Execute clear with condition=false → value should NOT reset.
+            7. Input additional value and verify concatenation.
+
+            This scenario validates:
+            - Conditional execution of clear
+            - UI state after clear=true
+            - UI state after clear=false
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Condition should execute clear"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Condition should skip clear"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <scrollTo comment="Scroll to Clear section"
+                  locator="uiElements.clearInput"/>
+
+        <input comment="Enter initial value"
+               locator="uiElements.clearInput"
+               value="TestUser"/>
+
+        <assert comment="Verify initial value">
+            <attribute comment="Verify initial value" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Clear with true condition"
+               locator="uiElements.clearInput"
+               condition="trueCondition"/>
+
+        <wait comment="Wait after clear" time="1"/>
+
+        <assert comment="Verify value is empty">
+            <attribute comment="Verify value is empty" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: empty</content>
+            </attribute>
+        </assert>
+
+        <input comment="Enter initial value again"
+               locator="uiElements.clearInput"
+               value="TestUser"/>
+
+        <assert comment="Verify value before skip clear">
+            <attribute comment="Verify value before skip clear" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Attempt clear with false condition"
+               locator="uiElements.clearInput"
+               condition="falseCondition"/>
+
+        <wait comment="Wait after skipped clear" time="1"/>
+
+        <assert comment="Verify value NOT cleared">
+            <attribute comment="Verify value NOT cleared" name="innerText"
+                       locator="uiElements.clearResult">
+                <content>Value: TestUser</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

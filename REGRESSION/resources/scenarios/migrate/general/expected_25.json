@@ -1,0 +1,6 @@
+[ {
+  "query" : "DELETE FROM news",
+  "content" : {
+    "count" : 4
+  }
+} ]

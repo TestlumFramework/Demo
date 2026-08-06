@@ -1,0 +1,55 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Inner Pixel</name>
+        <description>
+            This scenario verifies inner scroll using pixel measure in mobile browser.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Scroll down inner container by pixel.
+            3. Verify that middle element becomes visible.
+
+            This scenario validates:
+            - inner scroll
+            - pixel measure
+            - element visibility after scroll
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <scroll comment="Scroll down inner container by pixel"
+                type="inner"
+                direction="down"
+                value="300"
+                measure="pixel"
+                locator="scrollTest.inner"/>
+
+        <wait comment="Wait for inner scroll to stabilize"
+              time="2"/>
+
+        <assert comment="Verify middle element is present after scroll">
+            <present comment="Check inner middle element"
+                     locator="scrollTest.innerMiddle"/>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

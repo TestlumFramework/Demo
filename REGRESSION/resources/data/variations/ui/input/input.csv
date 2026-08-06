@@ -1,0 +1,4 @@
+webComment,navigateComment,waitComment,waitTime,inputComment,assertComment,attributeComment,locator,value,highlight
+Start WEB script,Navigate to UI Elements page,Wait for page load,2,Input HELLO with highlight,Verify HELLO,Check value,uiElements.hotKeyInput1,HELLO,true
+Start WEB script,Navigate to UI Elements page,Wait for page load,2,Input WORLD without highlight,Verify WORLD,Check value,uiElements.hotKeyInput1,WORLD,false
+Start WEB script,Navigate to UI Elements page,Wait for page load,2,Input TEST value,Verify TEST,Check value,uiElements.hotKeyInput2,TEST,true

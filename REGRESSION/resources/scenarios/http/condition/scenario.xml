@@ -1,0 +1,98 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP Condition</name>
+        <description>
+            This scenario verifies HTTP request execution together with condition command.
+
+            Test flow includes:
+            1. Create true condition.
+            2. Execute POST request when condition is true.
+            3. Verify entity was created successfully.
+            4. Create false condition.
+            5. Execute invalid POST request when condition is false.
+            6. Verify invalid step was skipped and storage was not changed.
+            7. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Conditional execution when condition is true
+            - Skipped execution when condition is false
+            - Stable storage state after skipped step
+            - HTTP command interaction with condition logic
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <condition comment="Step 1. Create true condition"
+               name="shouldCreate"
+               spel="true"/>
+
+    <http comment="Step 2-3. Create entity when condition is true"
+          alias="MEGA_APP"
+          condition="shouldCreate">
+        <post endpoint="/api/test/entities">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Condition Entity",
+                    "description": "Created when condition is true",
+                    "status": "ACTIVE",
+                    "category": "CONDITION_TRUE"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 4. Verify entity exists after successful conditional execution"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_3.json"/>
+        </get>
+    </http>
+
+    <condition comment="Step 5. Create false condition"
+               name="shouldSkip"
+               spel="false"/>
+
+    <http comment="Step 6. This invalid request should be skipped because condition is false.
+    If it is executed unexpectedly, the step must fail due to request body validation errors"
+          alias="MEGA_APP"
+          condition="shouldSkip">
+        <post endpoint="/api/test/entities">
+            <response code="201"/>
+            <body>
+                <raw>
+                    {
+                    "name": "",
+                    "description": "bad",
+                    "status": "WRONG",
+                    "category": "bad"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 7. Verify storage was not changed after skipped step"
+          alias="MEGA_APP">
+        <get endpoint="/api/test/entities">
+            <response code="200" file="expected_6.json"/>
+        </get>
+    </http>
+
+    <http comment="Step 8. Reset entity storage after condition test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>

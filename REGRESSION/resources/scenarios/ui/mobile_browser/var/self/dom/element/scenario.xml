@@ -1,0 +1,47 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - DOM (Element)</name>
+        <description>
+            This scenario verifies var dom for specific element in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Capture DOM of specific element.
+            3. Verify that DOM matches expected value.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Get DOM of title"
+             name="elementDom">
+            <dom locator="uiElements.title"/>
+        </var>
+
+        <assert comment="Verify DOM contains expected text">
+            <equal comment="Compare that 2 values are equal">
+                <content><![CDATA[<h3 class="text-3xl font-medium text-gray-700">UI Elements</h3>]]></content>
+                <content>{{elementDom}}</content>
+            </equal>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,4 @@
+webComment,navigateComment,path,waitComment,waitTime,dropDownComment,locator,type,by,value,assertComment,attributeComment,attributeName,resultLocator,expected
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,1,Select value One,uiElements.singleSelect,select,text,One,Verify selected value,Check selected value,innerHTML,uiElements.singleResult,Selected value: 1
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,1,Select value Two,uiElements.singleSelect,select,text,Two,Verify selected value,Check selected value,innerHTML,uiElements.singleResult,Selected value: 2
+Start WEB script,Navigate to UI Elements page,/ui-elements,Wait for page load,1,Select value Three,uiElements.singleSelect,select,text,Three,Verify selected value,Check selected value,innerHTML,uiElements.singleResult,Selected value: 3

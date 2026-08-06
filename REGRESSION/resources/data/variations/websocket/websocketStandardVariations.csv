@@ -1,0 +1,3 @@
+wsComment,sendComment,receiveComment,message,expected_2
+WS variation 1,Send hello message,Receive hello echo,hello websocket,expected_2_1
+WS variation 2,Send ping message,Receive ping echo,ping,expected_2_2

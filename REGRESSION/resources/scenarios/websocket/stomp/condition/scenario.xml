@@ -1,0 +1,89 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>WebSocket STOMP Condition</name>
+        <description>
+            This scenario verifies condition support for STOMP WebSocket commands.
+
+            Test flow includes:
+            1. Create true and false conditions.
+            2. Execute STOMP websocket flow with true condition.
+            3. Subscribe to ping topic.
+            4. Send ping message.
+            5. Receive expected ping response.
+            6. Execute second STOMP websocket flow with false condition.
+            7. Verify false-conditioned websocket block is skipped.
+
+            This scenario validates:
+            - STOMP websocket execution when condition = true
+            - STOMP websocket skipping when condition = false
+            - Stable condition handling for STOMP flow
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>websocket</tags>
+    </settings>
+
+    <condition comment="Create true condition"
+               name="shouldExecute"
+               spel="true"/>
+
+    <condition comment="Create false condition"
+               name="shouldSkip"
+               spel="false"/>
+
+    <websocket comment="Step 1-5. This STOMP websocket block must execute because condition is true"
+               alias="MEGA_WS_APP"
+               disconnect="true"
+               condition="shouldExecute">
+
+        <stomp>
+
+            <subscribe comment="Subscribe to ping topic"
+                       topic="/topic/ping"/>
+
+            <send comment="Send ping message" endpoint="/app/ping">
+                <message>ping</message>
+            </send>
+
+            <receive comment="Receive ping response"
+                     topic="/topic/ping"
+                     limit="1"
+                     timeoutMillis="3000">
+                <file>expected_6.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+    <websocket comment="Step 6-7. This STOMP websocket block must be skipped because condition is false"
+               alias="MEGA_WS_APP"
+               disconnect="true"
+               condition="shouldSkip">
+
+        <stomp>
+
+            <subscribe comment="This subscription must never execute"
+                       topic="/topic/should-not-exist"/>
+
+            <send comment="This send must never execute" endpoint="/app/ping">
+                <message>SHOULD_NOT_RUN</message>
+            </send>
+
+            <receive comment="If this executes, test must fail"
+                     topic="/topic/should-not-exist"
+                     limit="1"
+                     timeoutMillis="1">
+                <file>expected_13.json</file>
+            </receive>
+
+        </stomp>
+
+    </websocket>
+
+</scenario>

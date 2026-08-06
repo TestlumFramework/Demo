@@ -1,0 +1,38 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test for Mobile Browser command: repeat</description>
+        <name>Repeat in Mobile Browser</name>
+    </overview>
+
+    <settings active="false">
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start Mobile Browser scripts">
+        <navigate comment="Navigate to developer board tab" command="to" path="/blank"/>
+
+        <wait comment="Wait for loading new page 1 second" time="1"/>
+
+        <scrollTo comment="Scroll to empty File field" locator="developerBoard.fileEmpty"/>
+
+        <repeat comment="Check the ability to run variations in repeat" variations="variations_2.csv">
+            <dragAndDrop comment="Check the ability to upload a photo via drop zone" toLocator="developerBoard.selectFileDropZone">
+                <fileName>{{fileName}}</fileName>
+            </dragAndDrop>
+
+            <assert comment="Create assert for command's test">
+                <attribute comment="Assert for dragAndDrop 'fileName'" name="innerHTML" locator="developerBoard.fileDropZone">
+                    <content>{{content}}</content>
+                </attribute>
+            </assert>
+
+            <wait comment="Wait for 1 second" time="1"/>
+        </repeat>
+    </mobilebrowser>
+
+</scenario>

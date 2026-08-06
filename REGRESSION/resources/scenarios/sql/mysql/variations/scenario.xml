@@ -1,0 +1,43 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>MySQL Data-Driven Test with dynamic expected files</description>
+        <name>MySQL Variations Test</name>
+    </overview>
+
+    <settings truncateStorages="true">
+        <variations>mysql_variations.csv</variations>
+        <tags>mysql</tags>
+    </settings>
+
+    <mysql alias="MYSQL_0"
+           comment="Create table and clear previous data for the current ID"
+           file="{{expected_1}}.json">
+        <query>
+            CREATE TABLE IF NOT EXISTS test_news (
+            id INT PRIMARY KEY,
+            title VARCHAR(100),
+            category VARCHAR(50)
+            );
+        </query>
+        <query>DELETE FROM test_news WHERE id = {{id}};</query>
+    </mysql>
+
+    <mysql alias="MYSQL_0"
+           comment="Insert dynamic data to table for user id {{id}}"
+           file="{{expected_2}}.json">
+        <query>
+            INSERT INTO test_news (id, title, category)
+            VALUES ({{id}}, '{{title}}', '{{category}}');
+        </query>
+    </mysql>
+
+    <mysql alias="MYSQL_0"
+           comment="Read data from table using variations"
+           file="{{expected_3}}.json">
+        <query>SELECT id, title, category FROM test_news WHERE id = {{id}};</query>
+    </mysql>
+
+</scenario>

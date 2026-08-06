@@ -109,7 +109,7 @@ install_apk() {
 manage_emulator() {
     if ! emulator -list-avds | grep -q "$AVD_NAME"; then
         log "Creating Emulator: $AVD_NAME..."
-        echo "no" | avdmanager create avd -n "$AVD_NAME" -k "$SYS_IMG" --force
+        echo "no" | avdmanager create avd -n "$AVD_NAME" -k "$SYS_IMG" -d "pixel_6" --force
     fi
 
     log "Starting $AVD_NAME..."

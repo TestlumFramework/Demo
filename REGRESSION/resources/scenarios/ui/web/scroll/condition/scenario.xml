@@ -1,0 +1,80 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Scroll - Page Percent (Condition)</name>
+        <description>
+            This scenario verifies scroll command using condition.
+
+            Test flow:
+            1. Navigate to Scroll Test page.
+            2. Create false condition → scroll should NOT execute.
+            3. Verify page is still at top.
+            4. Create true condition → scroll SHOULD execute.
+            5. Verify page is scrolled.
+
+            This scenario validates:
+            - conditional execution (true/false)
+            - scroll skip behavior
+            - scroll execution behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to Scroll Test page"
+                  command="to"
+                  path="/scroll-test"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <condition comment="Create false condition"
+                   name="shouldScrollFalse"
+                   spel="false"/>
+
+        <scroll comment="Try to scroll with false condition"
+                type="page"
+                direction="down"
+                value="80"
+                measure="percent"
+                condition="shouldScrollFalse"/>
+
+        <wait comment="Wait after skipped scroll"
+              time="1"/>
+
+        <assert comment="Verify page did not scroll">
+            <present comment="Top element should still be visible"
+                     locator="scrollTest.pageTop"/>
+        </assert>
+
+        <condition comment="Create true condition"
+                   name="shouldScrollTrue"
+                   spel="true"/>
+
+        <scroll comment="Scroll with true condition"
+                type="page"
+                direction="down"
+                value="80"
+                measure="percent"
+                condition="shouldScrollTrue"/>
+
+        <wait comment="Wait after scroll"
+              time="1"/>
+
+        <assert comment="Verify page scrolled">
+            <present comment="Bottom element should be visible"
+                     locator="scrollTest.pageBottom"/>
+        </assert>
+
+    </web>
+
+</scenario>

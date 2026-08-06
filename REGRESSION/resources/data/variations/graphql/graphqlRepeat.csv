@@ -1,0 +1,4 @@
+title,author,number,expected_1
+Repeat Book 1,Vadym,1,expected_2_1
+Repeat Book 2,Taras,2,expected_2_2
+Repeat Book 3,Knubisoft,3,expected_2_3

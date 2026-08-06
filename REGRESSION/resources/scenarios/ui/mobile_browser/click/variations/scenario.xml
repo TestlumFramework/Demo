@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Click - Variations</name>
+        <description>
+            This scenario verifies click command using CSV-driven variations in mobile browser.
+
+            Test flow:
+            1. Navigate using injected data.
+            2. Execute login click using injected locator.
+            3. Verify Dashboard is displayed.
+            4. Perform logout using injected steps.
+            5. Verify login page is displayed.
+
+            This scenario validates:
+            - CSV-based injection
+            - Dynamic locator and comment usage
+            - Navigation and state reset
+            - Full click lifecycle execution
+        </description>
+    </overview>
+
+    <settings>
+        <variations>click_variations.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <click comment="{{clickComment}}"
+               locator="{{locator}}"/>
+
+        <wait comment="{{waitAfterClickComment}}" time="{{waitAfterClick}}"/>
+
+        <assert comment="{{assertDashboardComment}}">
+            <attribute comment="{{dashboardAttributeComment}}"
+                       name="innerText"
+                       locator="{{dashboardLocator}}">
+                <content>{{dashboardText}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Repeat - Variations</name>
+        <description>
+            Verify repeat execution using variations in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <repeat comment="Repeat input using variations"
+                variations="repeatVariation.csv">
+
+            <clear comment="Clear input before repeat"
+                   locator="uiElements.hotKeyInput1"/>
+
+            <input comment="Set value from CSV"
+                   locator="uiElements.hotKeyInput1"
+                   value="{{value}}"/>
+
+            <wait comment="Stabilize after input"
+                  time="1"/>
+
+            <assert comment="Verify variation value">
+                <attribute comment="Check current value"
+                           name="value"
+                           locator="uiElements.hotKeyInput1">
+                    <content>{{expected}}</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>

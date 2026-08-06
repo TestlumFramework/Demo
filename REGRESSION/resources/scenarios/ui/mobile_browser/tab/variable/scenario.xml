@@ -1,0 +1,100 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Variable</name>
+        <description>
+            This scenario verifies tab command using variables in mobile browser.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <var comment="Mobile block comment"
+         name="webComment">
+        <constant value="Start MOBILE BROWSER script"/>
+    </var>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <var comment="Navigate comment"
+             name="navigateComment">
+            <constant value="Navigate to Forms page"/>
+        </var>
+
+        <var comment="Tab open comment"
+             name="tabOpenComment">
+            <constant value="Open new tab using variable URL"/>
+        </var>
+
+        <var comment="Wait comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Assert comment"
+             name="assertComment">
+            <constant value="Verify UI Elements page opened"/>
+        </var>
+
+        <var comment="Attribute comment"
+             name="attributeComment">
+            <constant value="Check page title"/>
+        </var>
+
+        <var comment="Path variable"
+             name="path">
+            <constant value="/forms"/>
+        </var>
+
+        <var comment="Tab URL variable"
+             name="tabUrl">
+            <constant value="/ui-elements"/>
+        </var>
+
+        <var comment="Locator variable"
+             name="locator">
+            <constant value="uiElements.title"/>
+        </var>
+
+        <var comment="Expected value"
+             name="expected">
+            <constant value="UI Elements"/>
+        </var>
+
+        <var comment="Time variable"
+             name="time">
+            <constant value="2"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{time}}"/>
+
+        <tab comment="{{tabOpenComment}}">
+            <open url="{{tabUrl}}"/>
+        </tab>
+
+        <wait comment="Wait after switch"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerText"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

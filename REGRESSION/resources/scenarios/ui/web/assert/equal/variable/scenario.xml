@@ -1,0 +1,63 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Equal - Variable</name>
+        <description>
+            This scenario verifies FULL variable injection into assert equal command.
+
+            It validates:
+            - locator injection
+            - value extraction into variable
+            - expected value injection
+            - assert execution using only variables
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="Store locator for dashboard title" name="dashboardTitleLocator">
+            <constant value="/html/body/div/div/div[2]/main/div/div/h3"/>
+        </var>
+
+        <var comment="Get Dashboard title from UI using locator variable" name="dashboardTitle">
+            <element>
+                <attribute name="innerText"
+                           locator="{{dashboardTitleLocator}}"
+                           locatorStrategy="xpath"/>
+            </element>
+        </var>
+
+        <var comment="Expected title value" name="expectedTitle">
+            <constant value="Dashboard"/>
+        </var>
+
+        <var comment="Duplicate expected value" name="expectedTitleCopy">
+            <constant value="Dashboard"/>
+        </var>
+
+        <var comment="Assert block comment" name="assertComment">
+            <constant value="Check equal using only variables"/>
+        </var>
+
+        <var comment="Equal comment" name="equalComment">
+            <constant value="Compare all variable values"/>
+        </var>
+        <assert comment="{{assertComment}}">
+            <equal comment="{{equalComment}}">
+                <content>{{dashboardTitle}}</content>
+                <content>{{expectedTitle}}</content>
+                <content>{{expectedTitleCopy}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

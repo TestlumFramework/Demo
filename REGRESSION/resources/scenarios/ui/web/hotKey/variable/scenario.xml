@@ -1,0 +1,115 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HotKey - Variable</name>
+        <description>
+            This scenario verifies hotKey commands using variables.
+
+            This scenario validates:
+            - locator injection
+            - value injection
+            - dynamic comments
+            - reusable hotKey flow
+        </description>
+    </overview>
+
+    <settings active="false">
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start Web Script">
+
+        <var comment="Web comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Input comment"
+             name="inputComment">
+            <constant value="Fill input"/>
+        </var>
+
+        <var comment="Highlight comment"
+             name="highlightComment">
+            <constant value="Highlight text"/>
+        </var>
+
+        <var comment="Copy comment"
+             name="copyComment">
+            <constant value="Copy text"/>
+        </var>
+
+        <var comment="Paste comment"
+             name="pasteComment">
+            <constant value="Paste text"/>
+        </var>
+
+        <var comment="Assert comment"
+             name="assertComment">
+            <constant value="Verify result"/>
+        </var>
+
+        <var comment="Source input"
+             name="input1">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Target input"
+             name="input2">
+            <constant value="uiElements.hotKeyInput2"/>
+        </var>
+
+        <var comment="Test value"
+             name="value">
+            <constant value="VARIABLE_TEST"/>
+        </var>
+
+        <var comment="Navigate comment" name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait comment" name="waitComment">
+            <constant value="Wait 1 second"/>
+        </var>
+
+        <var comment="Time variable" name="time">
+            <constant value="1"/>
+        </var>
+
+        <navigate comment="{{navigateComment}}" command="to" path="/ui-elements"/>
+
+        <input comment="{{inputComment}}"
+               locator="{{input1}}"
+               value="{{value}}"/>
+
+        <hotKey comment="{{highlightComment}}">
+            <highlight comment="{{highlightComment}}"
+                       locator="{{input1}}"/>
+        </hotKey>
+
+        <hotKey comment="{{copyComment}}">
+            <copy comment="{{copyComment}}"/>
+        </hotKey>
+
+        <hotKey comment="{{pasteComment}}">
+            <paste comment="{{pasteComment}}"
+                   locator="{{input2}}"/>
+        </hotKey>
+
+        <wait comment="{{waitComment}}" time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{assertComment}}" name="value"
+                       locator="{{input2}}">
+                <content>{{value}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

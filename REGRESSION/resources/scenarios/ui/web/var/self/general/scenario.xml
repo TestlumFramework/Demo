@@ -1,0 +1,91 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - General</name>
+        <description>
+            This scenario verifies basic functionality of var command.
+
+            Test flow:
+            1. Create url variable.
+            2. Create constant variable.
+            3. Navigate using constant variable.
+            4. Verify page using url variable in condition.
+            5. Create expression variable.
+            6. Navigate using expression variable.
+            7. Verify result.
+
+            This scenario validates:
+            - basic var creation
+            - variable injection into path
+            - variable usage in condition
+            - expression evaluation
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <wait comment="Wait for page load"
+              time="1"/>
+
+        <var comment="Get current URL"
+             name="currentUrl">
+            <url/>
+        </var>
+
+        <condition comment="Check we are on dashboard"
+                   name="isDashboard"
+                   spel="'{{currentUrl}}'.contains('/dashboard')"/>
+
+        <var comment="Create constant path"
+             name="pagePath">
+            <constant value="forms"/>
+        </var>
+
+        <navigate comment="Navigate using constant var"
+                  command="to"
+                  path="/{{pagePath}}"
+                  condition="{{isDashboard}}"/>
+
+        <wait comment="Wait for navigation"
+              time="2"/>
+
+        <assert comment="Verify Forms page opened">
+            <attribute comment="Verify Forms page opened"
+                       name="innerText"
+                       locator="forms.title">
+                <content>Forms</content>
+            </attribute>
+        </assert>
+
+        <var comment="Create dynamic path via expression"
+             name="exprPath">
+            <expression value="'ui-'.concat('elements')"/>
+        </var>
+
+        <navigate comment="Navigate using expression var"
+                  command="to"
+                  path="/{{exprPath}}"/>
+
+        <wait comment="Wait for navigation"
+              time="2"/>
+
+        <assert comment="Verify UI Elements page opened">
+            <attribute comment="Verify UI Elements page opened"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

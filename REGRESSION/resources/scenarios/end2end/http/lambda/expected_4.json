@@ -1,0 +1,7 @@
+{
+  "statusCode" : 200,
+  "body" : "{\"id\":\"6\",\"author\":\"Taras Shevchenko\",\"title\":\"Kobzar\",\"number\":6}",
+  "headers" : {
+    "Content-Type" : "application/json"
+  }
+}

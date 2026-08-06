@@ -1,0 +1,6 @@
+[ {
+  "query" : "INSERT INTO repeat_news (id, title) VALUES (10, 'Global Tech Update'), (20, 'Local Sports Events'), (30, 'Weather Forecast 2026')",
+  "content" : {
+    "count" : 3
+  }
+} ]

@@ -4,12 +4,13 @@
 
     <web enabled="true">
         <baseUrl>http://mega-test-site:80</baseUrl>
+        <autoHealing enabled="false" mode="soft"/>
         <browserSettings>
             <takeScreenshots enabled="false"/>
             <elementAutowait seconds="5"/>
             <browsers>
                 <chrome alias="CHROME_0" enabled="true" maximizedBrowserWindow="false" headlessMode="true"
-                        browserWindowSize="1536x864">
+                        browserWindowSize="1536x864" keepDownloadedFiles="false">
                     <browserType>
                         <remoteBrowser browserVersion="144.0" remoteBrowserURL="http://localhost:4444/"/>
                     </browserType>
@@ -24,7 +25,10 @@
         <baseUrl>http://localhost:3000</baseUrl>
         <connection>
             <appiumServer>
-                <serverUrl>http://localhost:4723</serverUrl>
+                <!-- to run when testlum is launched locally without docker -->
+<!--                <serverUrl>http://localhost:4723</serverUrl>-->
+                <!-- to run when testlum is launched via docker -->
+                 <serverUrl>http://host.docker.internal:4723</serverUrl>
             </appiumServer>
         </connection>
         <devices>
@@ -43,7 +47,10 @@
         <elementAutowait seconds="5"/>
         <connection>
             <appiumServer>
-                <serverUrl>http://localhost:4723</serverUrl>
+                <!-- to run when testlum is launched locally without docker -->
+<!--                <serverUrl>http://localhost:4723</serverUrl>-->
+                <!-- to run when testlum is launched via docker -->
+                 <serverUrl>http://host.docker.internal:4723</serverUrl>
             </appiumServer>
         </connection>
         <devices>

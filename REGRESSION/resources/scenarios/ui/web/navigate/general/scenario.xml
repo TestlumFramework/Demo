@@ -1,0 +1,83 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Navigate - General</name>
+        <description>
+            This scenario verifies navigate command (to, back, reload).
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Verify page is opened.
+            3. Navigate to Forms page.
+            4. Navigate back.
+            5. Verify previous page is opened.
+            6. Reload page.
+            7. Verify page is still correct.
+
+            This scenario validates:
+            - navigate to
+            - navigate back
+            - navigate reload
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Go to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <assert comment="Verify UI Elements page opened">
+            <attribute comment="Check page header"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <navigate comment="Go to Forms page"
+                  command="to"
+                  path="/forms"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <navigate comment="Go back to previous page"
+                  command="back"/>
+
+        <wait comment="Wait after back" time="2"/>
+
+        <assert comment="Verify returned to UI Elements">
+            <attribute comment="Check page header"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+        <navigate comment="Reload current page"
+                  command="reload"/>
+
+        <wait comment="Wait after reload" time="2"/>
+
+        <assert comment="Verify page after reload">
+            <attribute comment="Check page header after reload"
+                       name="innerText"
+                       locator="uiElements.title">
+                <content>UI Elements</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>

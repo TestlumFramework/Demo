@@ -1,0 +1,71 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT Repeat Times</name>
+        <description>
+            This scenario verifies JWT authentication flow inside repeat block using times.
+
+            Test flow includes:
+            1. Authenticate via auth tag.
+            2. Execute repeat block 3 times inside authenticated context.
+            3. Create protected resource on each iteration.
+            4. Verify each create response = 200.
+            5. After repeat, retrieve all protected resources.
+            6. Verify that 3 resources were created.
+            7. Reset JWT auth state.
+
+            This scenario validates:
+            - JWT authentication wrapping repeat command
+            - Repeated resource creation inside auth context
+            - Stable token reuse across iterations
+            - Correct accumulation of repeated executions
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <auth comment="Authenticate via JWT auth command"
+          apiAlias="MEGA_APP"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login">
+
+        <repeat comment="Create protected resource three times"
+                times="3">
+            <http comment="Create protected resource inside auth block"
+                  alias="MEGA_APP">
+                <post endpoint="/api/test/auth/jwt/resource">
+                    <response code="200"/>
+                    <body>
+                        <raw>
+                            {
+                            "value": "repeat-resource"
+                            }
+                        </raw>
+                    </body>
+                </post>
+            </http>
+
+        </repeat>
+
+        <http comment="Verify that all repeated resources were created"
+              alias="MEGA_APP">
+            <get endpoint="/api/test/auth/jwt/resources">
+                <response code="200" file="expected_6.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Reset JWT auth state after test"
+          alias="MEGA_APP">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

@@ -1,0 +1,3 @@
+comment,title,author,number,expected_1
+Step 1-4. Create first GraphQL book using first variation row,Variation Book One,Vadym,1,expected_1_1
+Step 1-4. Create second GraphQL book using second variation row,Variation Book Two,Taras,2,expected_1_2

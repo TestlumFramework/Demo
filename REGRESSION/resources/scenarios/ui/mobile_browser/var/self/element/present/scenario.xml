@@ -1,0 +1,50 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Var - Element (Present)</name>
+        <description>
+            This scenario verifies var element with present check in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Check element presence.
+            3. Store result in variable.
+            4. Verify variable value.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <var comment="Check element presence"
+             name="isPresent">
+            <element>
+                <present locator="uiElements.title"/>
+            </element>
+        </var>
+
+        <assert comment="Verify element is present">
+            <equal comment="Verify element is present">
+                <content>true</content>
+                <content>{{isPresent}}</content>
+            </equal>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

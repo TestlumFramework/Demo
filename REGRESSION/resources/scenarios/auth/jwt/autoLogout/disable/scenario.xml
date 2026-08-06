@@ -1,0 +1,68 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Auth JWT AutoLogout Disabled</name>
+        <description>
+            This scenario verifies JWT Authentication behavior when autoLogout is disabled.
+
+            Test flow includes:
+            1. Send request without Authorization header → expect 401.
+            2. Authenticate via auth tag using JWT login flow.
+            3. Send GET request inside auth block → expect 200.
+            4. Verify protected response body and X-Auth-Type header.
+            5. Exit auth block.
+            6. Send request again outside auth block → expect 200 because autoLogout=false.
+            7. Reset JWT auth state.
+
+            This scenario validates:
+            - JWT token retrieval via auth command
+            - Automatic Bearer token injection inside auth block
+            - Protected endpoint access with valid JWT token
+            - Authorization persistence after leaving auth block
+            - Continued authorized access when autoLogout is disabled
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>auth</tags>
+    </settings>
+
+    <http comment="Unauthorized request should return 401 before auth"
+          alias="MEGA_APP_NO_LOGOUT">
+        <get endpoint="/api/test/auth/jwt/resources">
+            <response code="401" file="expected_1.json"/>
+        </get>
+    </http>
+
+    <auth comment="Authenticate via JWT auth command"
+          apiAlias="MEGA_APP_NO_LOGOUT"
+          credentials="http-auth-user-jwt.json"
+          loginEndpoint="/api/test/auth/jwt/login">
+
+        <http comment="Access protected resources inside auth block"
+              alias="MEGA_APP_NO_LOGOUT">
+            <get endpoint="/api/test/auth/jwt/resources">
+                <response code="200" file="expected_3.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http comment="Authorized request should still work after auth block because autoLogout is disabled"
+          alias="MEGA_APP_NO_LOGOUT">
+        <get endpoint="/api/test/auth/jwt/resources">
+            <response code="200" file="expected_4.json"/>
+        </get>
+    </http>
+
+    <http comment="Reset JWT auth state after test"
+          alias="MEGA_APP_NO_LOGOUT">
+        <delete endpoint="/api/test/auth/jwt/reset">
+            <response code="200"/>
+        </delete>
+    </http>
+
+</scenario>

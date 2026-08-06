@@ -1,0 +1,2 @@
+navigateComment,path,clickComment,button,alertComment,action
+Navigate to modal,/modal,Click alert,modal.alertBtn,Accept alert,accept

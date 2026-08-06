@@ -1,0 +1,42 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Assert Present - Repeat Times</name>
+        <description>
+            This scenario verifies present assertion inside repeat block.
+
+            Test flow:
+            1. Execute present assertion 3 times.
+            2. Verify element remains present.
+
+            This scenario validates:
+            - Stable repeated execution
+            - Element presence consistency
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to 'tables page' for apply the 'assert' command"
+                  command="to" path="/forms"/>
+
+        <repeat comment="Repeat presence check" times="3">
+
+            <assert comment="Check presence inside repeat">
+                <present comment="Element should exist"
+                         locator="forms.save"/>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Tab - Variation</name>
+        <description>
+            This scenario verifies tab command using CSV variations in mobile browser.
+
+            Test flow:
+            1. Navigate using variable path.
+            2. Open new tab using variation URL.
+            3. Verify content using variation locator.
+        </description>
+    </overview>
+
+    <settings>
+        <variations>tabVariation.csv</variations>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="{{path}}"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{time}}"/>
+
+        <tab comment="{{tabComment}}">
+            <open url="{{url}}"/>
+        </tab>
+
+        <wait comment="{{waitAfterOpen}}"
+              time="{{time}}"/>
+
+        <assert comment="{{assertComment}}">
+            <attribute comment="{{attributeComment}}"
+                       name="innerText"
+                       locator="{{locator}}">
+                <content>{{expected}}</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

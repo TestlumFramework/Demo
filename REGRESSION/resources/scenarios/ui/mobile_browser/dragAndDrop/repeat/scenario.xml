@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DragAndDrop - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of dragAndDrop command in mobile browser.
+
+            Test flow:
+            1. Open Developer Board page.
+            2. Repeat dragAndDrop multiple times.
+            3. Verify file upload result after each execution.
+
+            This scenario validates:
+            - Stable dragAndDrop execution
+            - Consistent UI behavior across repeats
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to developer board" command="to" path="/blank"/>
+
+        <wait comment="Wait page load" time="1"/>
+
+        <repeat comment="Repeat dragAndDrop execution"
+                times="3">
+
+            <dragAndDrop comment="Upload file via drop zone"
+                         toLocator="developerBoard.selectFileDropZone">
+                <fileName>upload_dropZone.png</fileName>
+            </dragAndDrop>
+
+            <assert comment="Verify uploaded file">
+                <attribute comment="Check uploaded file name"
+                           name="innerHTML"
+                           locator="developerBoard.fileDropZone">
+                    <content>File: upload_dropZone.png</content>
+                </attribute>
+            </assert>
+
+        </repeat>
+
+    </mobilebrowser>
+
+</scenario>

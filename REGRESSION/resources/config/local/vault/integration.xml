@@ -6,14 +6,31 @@
         <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="jwt"/>
         </api>
+        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="jwt" autoLogout="false"/>
+        </api>
         <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="basic"/>
+        </api>
+        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="basic" autoLogout="false"/>
+        </api>
+        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="custom"
+                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  autoLogout="true"/>
+        </api>
+        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+            <auth authStrategy="custom"
+                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  autoLogout="false"/>
         </api>
         <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="true"/>
         <api alias="MULTIPART" url="https://postman-echo.com" enabled="true"/>
     </apis>
 
     <websockets>
+        <api alias="MEGA_WS_STANDARD" enabled="true" url="ws://localhost:8080/api/v1/ws-standard" protocol="standard"/>
         <api alias="MEGA_WS_APP" url="ws://localhost:8080/api/v1/ws-app" protocol="stomp" enabled="true"/>
         <api alias="ECHO" url="wss://ws.postman-echo.com/raw" protocol="standard" enabled="true"/>
     </websockets>
@@ -150,6 +167,31 @@
         </oracle>
     </oracleIntegration>
 
+    <sqlDatabaseIntegration>
+        <sqlDatabase alias="MARIADB_0"
+                     enabled="true"
+                     truncate="true">
+            <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
+            <username>root</username>
+            <password>root_password</password>
+            <connectionUrl>jdbc:mariadb://localhost:3316/testlum_db?allowMultiQueries=true</connectionUrl>
+            <hikari>
+                <connectionTimeout>30000</connectionTimeout>
+                <idleTimeout>600000</idleTimeout>
+                <maxLifetime>1800000</maxLifetime>
+                <maximumPoolSize>10</maximumPoolSize>
+                <minimumIdle>2</minimumIdle>
+                <connectionInitSql>SELECT 1</connectionInitSql>
+                <connectionTestQuery>SELECT 1</connectionTestQuery>
+                <poolName>MariaDbTestlumPool</poolName>
+                <autoCommit>true</autoCommit>
+            </hikari>
+            <customTruncate>
+                <truncateFile>mariadb_truncate.sql</truncateFile>
+            </customTruncate>
+        </sqlDatabase>
+    </sqlDatabaseIntegration>
+
     <redisIntegration>
         <redis alias="REDIS_0" enabled="true" truncate="true">
             <host>localhost</host>
@@ -161,11 +203,41 @@
         <kafka alias="KAFKA_0" enabled="true" truncate="true">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>1000</maxPollIntervalMs>
+            <!--            <maxPollIntervalMs>200</maxPollIntervalMs>-->
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true">
+            <bootstrapAddress>localhost:9094</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>100</maxPollRecords>
+            <maxPollIntervalMs>200</maxPollIntervalMs>
+            <clientId>client-queue</clientId>
+            <groupId>group-queue</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
+               enabled="true">
+            <bootstrapAddress>localhost:9094</bootstrapAddress>
+            <autoOffsetReset>latest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
             <maxPollIntervalMs>1000</maxPollIntervalMs>
-            <clientId>group</clientId>
-            <groupId>group</groupId>
-            <!--            <autoCommitTimeout>50</autoCommitTimeout>-->
+            <clientId>client-latest</clientId>
+            <groupId>group-latest</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
+        </kafka>
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
+               enabled="true">
+            <bootstrapAddress>localhost:9094</bootstrapAddress>
+            <autoOffsetReset>earliest</autoOffsetReset>
+            <maxPollRecords>2</maxPollRecords>
+            <maxPollIntervalMs>5000</maxPollIntervalMs>
+            <clientId>client-reduced</clientId>
+            <groupId>group-reduced</groupId>
+            <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
     </kafkaIntegration>
 

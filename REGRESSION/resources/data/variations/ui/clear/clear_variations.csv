@@ -1,0 +1,2 @@
+webComment,navigateComment,path,inputComment,inputLocator,value,clearComment,waitComment,waitTime,resultLocator,assertComment
+Start WEB script,Navigate to UI Elements,/ui-elements,Enter value,uiElements.clearInput,TestUser,Clear field,Wait after clear,1,uiElements.clearResult,Verify clear execution

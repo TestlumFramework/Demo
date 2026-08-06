@@ -1,0 +1,42 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Alert - Repeat</name>
+        <description>
+            This scenario verifies repeated alert execution.
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to modal page"
+                  command="to"
+                  path="/modal"/>
+
+        <repeat comment="Repeat alert 2 times" times="2">
+
+            <click comment="Trigger alert"
+                   locator="modal.openModalBtn"/>
+
+            <alert comment="Accept alert"
+                   action="accept"
+                   type="alert"
+                   waitUntilVisible="true"/>
+
+            <click comment="Close alert modal"
+                   locator="modal.closeModalBtn"/>
+
+        </repeat>
+
+    </web>
+
+</scenario>

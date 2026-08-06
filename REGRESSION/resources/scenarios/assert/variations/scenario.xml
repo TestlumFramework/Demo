@@ -1,0 +1,93 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Assert equal and notEqual(with variations)</description>
+        <name>Assert variations test</name>
+    </overview>
+
+    <settings>
+        <variations>assert_variations.csv</variations>
+        <tags>assert</tags>
+    </settings>
+
+    <var comment="var with equal expression for variations" name="equalVar">
+        <expression value="'{{val1}}' eq '{{val2}}'"/>
+    </var>
+
+    <var comment="var with notEqual expression for variations" name="notEqualVar">
+        <expression value="'{{val1}}' ne '{{val2}}'"/>
+    </var>
+
+    <assert comment="assert equal">
+        <equal comment="equal with var and expected value from variations">
+            <content>{{equalVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="assert notEqual">
+        <notEqual comment="notEqual with var and expected value from variations">
+            <content>{{notEqualVar}}</content>
+            <content>{{expectedEqual}}</content>
+        </notEqual>
+    </assert>
+
+    <condition comment="condition for variation values equality" name="equalCondition" spel="'{{val1}}' eq '{{val2}}'"/>
+
+    <condition comment="condition for variation values unequality" name="notEqualCondition" spel="'{{val1}}' ne '{{val2}}'"/>
+
+    <assert comment="check correct assert with vars and conditions">
+        <equal comment="equal var and condition">
+            <content>{{equalVar}}</content>
+            <content>{{equalCondition}}</content>
+        </equal>
+        <notEqual comment="notEqual var and condition">
+            <content>{{equalVar}}</content>
+            <content>{{notEqualCondition}}</content>
+        </notEqual>
+    </assert>
+
+    <assert comment="{{comment}}">
+        <equal comment="{{comment}}" condition="'{{val1}}' eq '{{val2}}'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </equal>
+        <notEqual comment="{{comment}}" condition="'{{val1}}' ne '{{val2}}'">
+            <content>{{val1}}</content>
+            <content>{{val2}}</content>
+        </notEqual>
+    </assert>
+
+<!--    <assert comment="Create assert with condition from variations" condition="{{condition}}">-->
+<!--        <equal comment="Check equal with condition from variations" condition="{{condition}}">-->
+<!--            <content>{{val1}}</content>-->
+<!--            <content>{{val2}}</content>-->
+<!--        </equal>-->
+<!--    </assert>-->
+
+    <var comment="Create variable for comment injecting" name="commentVar">
+        <constant value="Check injecting vars in assert/equal/notEqual attributes"/>
+    </var>
+
+    <var comment="Create variable for content injecting" name="testVar">
+        <constant value="Testlum"/>
+    </var>
+
+    <var comment="Create variable for condition injecting" name="conditionVar">
+        <expression value="1 eq 1"/>
+    </var>
+
+    <assert comment="{{commentVar}}" condition="{{conditionVar}}">
+        <equal comment="{{commentVar}}" condition="{{conditionVar}}">
+            <content>{{testVar}}</content>
+            <content>Testlum</content>
+        </equal>
+        <notEqual comment="{{commentVar}}" condition="{{conditionVar}}">
+            <content>{{testVar}}</content>
+            <content>Google</content>
+        </notEqual>
+    </assert>
+
+</scenario>

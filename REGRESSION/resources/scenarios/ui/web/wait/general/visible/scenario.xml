@@ -1,0 +1,64 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Wait - Visible</name>
+        <description>
+            This scenario verifies wait visible functionality.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Verify result is NOT visible initially.
+            3. Set wait time to 2 seconds.
+            4. Start delayed action.
+            5. Wait until result becomes visible.
+            6. Verify result is displayed.
+
+            This scenario validates:
+            - initial absence of element
+            - wait visible behavior
+            - async UI rendering
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script for wait visible">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <assert comment="Verify result is NOT visible before action">
+            <present comment="Result should not be displayed"
+                     locator="uiElements.waitResult"
+                     negative="true"/>
+        </assert>
+
+        <input comment="Set wait time to 2 seconds"
+               locator="uiElements.waitTime"
+               value="2"/>
+
+        <click comment="Start delayed action"
+               locator="uiElements.waitStart"/>
+
+        <wait comment="Wait until result becomes visible" time="3">
+        </wait>
+
+        <assert comment="Verify result is visible after wait">
+            <present comment="Result should be displayed"
+                     locator="uiElements.waitResult"/>
+        </assert>
+
+    </web>
+
+</scenario>

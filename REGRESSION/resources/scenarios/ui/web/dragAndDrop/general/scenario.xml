@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>DragAndDrop - General</name>
+        <description>
+            This scenario verifies dragAndDrop command functionality.
+
+            Test flow:
+            1. Navigate to Developer Board page.
+            2. Execute dragAndDrop using fileName.
+            3. Verify file upload result.
+            4. Execute dragAndDrop using fromLocator.
+            5. Verify element moved to target zone.
+
+            This scenario validates:
+            - DragAndDrop with fileName
+            - DragAndDrop with fromLocator
+            - File upload via drop zone
+            - Element movement between zones
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <click comment="Open Developer Board page"
+               locator="sideBar.developerBoard1"/>
+
+        <wait comment="Wait for page load" time="1"/>
+
+        <dragAndDrop comment="Upload file via drop zone"
+                     toLocator="developerBoard.selectFileDropZone">
+            <fileName>upload_dropZone.png</fileName>
+        </dragAndDrop>
+
+        <assert comment="Verify file uploaded via drop zone">
+            <attribute comment="Check uploaded file name"
+                       name="innerHTML"
+                       locator="developerBoard.fileDropZone">
+                <content>File: upload_dropZone.png</content>
+            </attribute>
+        </assert>
+    </web>
+
+</scenario>

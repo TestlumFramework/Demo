@@ -1,0 +1,2 @@
+webComment,navigateComment,path,waitComment,waitTime,scrollComment,assertComment,presentComment,scrollValue,locator
+Start WEB script,Navigate to Scroll Test page,/scroll-test,Wait for page load,2,Scroll 60 percent,Verify scroll 60,Check bottom visible,60,scrollTest.pageBottom

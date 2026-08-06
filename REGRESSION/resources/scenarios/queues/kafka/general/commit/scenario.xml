@@ -1,0 +1,58 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Kafka Self Testing: Manual Commit Behaviour</description>
+        <name>Kafka Commit Test</name>
+    </overview>
+
+    <settings>
+        <tags>kafka</tags>
+    </settings>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Kafka send and receive event without committing offest">
+
+        <receive topic="weather_commit">
+            <value>
+                []
+            </value>
+        </receive>
+
+        <send topic="weather_commit">
+            <value>
+                [ {
+                "city": "Odessa",
+                "temperature": 18
+                } ]
+            </value>
+        </send>
+    </kafka>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Kafka send and receive event without committing offest">
+
+        <receive commit="false"
+                 timeoutMillis="4000"
+                 topic="weather_commit">
+            <file>expected_5.json</file>
+        </receive>
+    </kafka>
+
+    <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL"
+           comment="Try to receive event under uncommitted offset">
+        <receive commit="true"
+                 timeoutMillis="4000"
+                 topic="weather_commit">
+            <file>expected_7.json</file>
+        </receive>
+
+        <receive timeoutMillis="4000"
+                 topic="weather_commit">
+            <value>[]</value>
+        </receive>
+
+    </kafka>
+
+</scenario>

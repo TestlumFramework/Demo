@@ -1,0 +1,67 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>HTTP PATCH</name>
+        <description>
+            This scenario verifies HTTP PATCH method behavior.
+
+            Test flow includes:
+            1. Create initial entity in memory.
+            2. Send PATCH request with partial update body.
+            3. Verify response status = 200.
+            4. Validate partially updated entity response body.
+            5. Reset in-memory storage after test.
+
+            This scenario validates:
+            - Partial entity update via PATCH method
+            - Selective field modification
+            - Updated entity state correctness
+        </description>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>http</tags>
+    </settings>
+
+    <http comment="Step 1. Create initial entity before PATCH request"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities">
+            <response code="201" file="expected_1.json"/>
+            <body>
+                <raw>
+                    {
+                    "name": "Patch Entity",
+                    "description": "Before patch",
+                    "status": "NEW",
+                    "category": "DEFAULT"
+                    }
+                </raw>
+            </body>
+        </post>
+    </http>
+
+    <http comment="Step 2-4. Partially update last entity via PATCH request"
+          alias="MEGA_APP">
+        <patch endpoint="/api/test/entities">
+            <response code="200" file="expected_2.json"/>
+            <body>
+                <raw>
+                    {
+                    "status": "ARCHIVED"
+                    }
+                </raw>
+            </body>
+        </patch>
+    </http>
+
+    <http comment="Step 5. Reset entity storage after PATCH test"
+          alias="MEGA_APP">
+        <post endpoint="/api/test/entities/reset">
+            <response code="200"/>
+        </post>
+    </http>
+
+</scenario>
