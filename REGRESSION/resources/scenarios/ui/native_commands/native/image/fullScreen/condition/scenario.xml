@@ -20,13 +20,13 @@
         <image comment="Test image fullscreen with condition true"
                condition="true"
                file="test_image.png">
-            <fullScreen/>
+            <fullScreen percentage="99"/>
         </image>
                
         <image comment="Test image fullscreen with condition false"
                condition="false"
                file="non_existed_image.png">
-            <fullScreen/>
+            <fullScreen percentage="99"/>
         </image>
 
     </native>

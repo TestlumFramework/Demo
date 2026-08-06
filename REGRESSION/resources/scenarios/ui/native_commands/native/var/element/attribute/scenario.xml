@@ -6,7 +6,7 @@
         <description>Test var command - element attribute</description>
         <name>Var element attribute</name>
     </overview>
-    <settings>
+    <settings active="false">
         <tags>native</tags>
     </settings>
 

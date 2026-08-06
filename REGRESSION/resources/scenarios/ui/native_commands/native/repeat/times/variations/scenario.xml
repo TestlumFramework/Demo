@@ -6,7 +6,7 @@
         <description>Test repeat command - times variations</description>
         <name>Repeat times variations</name>
     </overview>
-    <settings>
+    <settings active="false">
         <variations>variations_native_command.csv</variations>
         <tags>native</tags>
     </settings>

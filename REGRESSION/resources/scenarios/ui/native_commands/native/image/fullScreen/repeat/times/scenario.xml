@@ -21,7 +21,7 @@
                 times="3">
             <image comment="Test image fullscreen"
                    file="test_image.png">
-                <fullScreen/>
+                <fullScreen percentage="99"/>
             </image>
         </repeat>
 

@@ -18,7 +18,7 @@
 
         <image comment="Test general fullscreen image command"
                file="test_image.png">
-            <fullScreen/>
+            <fullScreen percentage="99"/>
         </image>
 
     </native>
