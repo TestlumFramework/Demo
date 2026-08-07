@@ -1,0 +1,22 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Testing general Native tag with variations</description>
+        <name>Native tag with variations</name>
+    </overview>
+
+    <settings>
+        <variations>variations_native_command.csv</variations>
+        <tags>native</tags>
+    </settings>
+  
+    <native comment="Test native command with comment {{comment}}"
+            condition="{{flag}}">
+        <wait comment="Waiting 1 second"
+              time="1"
+              unit="millis"/>
+    </native>
+
+</scenario>

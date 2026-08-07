@@ -1,0 +1,56 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test condition command - condition attr: skip/execute the condition itself</description>
+        <name>Condition condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <var comment="Default flag — will be used if condition is skipped"
+             name="myFlag">
+            <constant value="false"/>
+        </var>
+
+        <condition comment="Condition command itself skipped (condition=false)"
+                   condition="false"
+                   name="myFlag"
+                   spel="1 == 1"/>
+
+        <click comment="Click skipped because myFlag is still false"
+               condition="{{myFlag}}"
+               locator="testApp.clickButton"/>
+        <assert comment="Assert counter is 0">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 0</content>
+            </attribute>
+        </assert>
+
+        <condition comment="Condition command executes (condition=true)"
+                   condition="true"
+                   name="myFlagCondition"
+                   spel="1 == 1"/>
+
+        <click comment="Click executes because myFlag is now true"
+               condition="{{myFlagCondition}}"
+               locator="testApp.clickButton"/>
+        <assert comment="Assert counter is 1">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 1</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

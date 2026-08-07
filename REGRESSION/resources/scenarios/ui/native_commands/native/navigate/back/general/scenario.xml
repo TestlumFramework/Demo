@@ -1,0 +1,27 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>General test navigate back command</description>
+        <name>Navigate back general</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+        <navigate comment="Test navigate back" destination="back"/>
+        <assert comment="Verify depth text">
+            <attribute comment="Retrieving element text attribute for validation"
+                       locator="testApp.navTitle"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Navigate Page 2</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

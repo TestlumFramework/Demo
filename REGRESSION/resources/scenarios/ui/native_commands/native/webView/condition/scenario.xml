@@ -1,0 +1,45 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test webView command - condition</description>
+        <name>WebView condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to WebView screen" locator="testApp.webViewPage"/>
+        <wait comment="Waiting 3 seconds" time="3"/>
+
+        <webView comment="WebView click condition false — skipped"
+                 condition="false">
+            <click comment="Click skipped due to false condition" locator="testApp.webViewBtn"/>
+            <assert comment="Counter still zero — click was skipped">
+                <attribute comment="Verify counter unchanged"
+                           locator="testApp.webViewCounter"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>0</content>
+                </attribute>
+            </assert>
+        </webView>
+
+        <webView comment="WebView click condition true — executed"
+                 condition="true">
+            <click comment="Click executed due to true condition" locator="testApp.webViewBtn"/>
+            <assert comment="Counter incremented — click executed">
+                <attribute comment="Verify counter is 1"
+                           locator="testApp.webViewCounter"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>1</content>
+                </attribute>
+            </assert>
+        </webView>
+
+    </native>
+
+</scenario>

@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - generate numeric</description>
+        <name>Var generate numeric</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Generate random numeric string of length 6"
+             name="genNum">
+            <generate length="6">
+                <numeric/>
+            </generate>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{genNum}}"/>
+        <assert comment="Assert generated value was injected">
+            <attribute comment="Injected result contains the generated value"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text"
+                       negative="false">
+                <content>Injected value: {{genNum}}</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

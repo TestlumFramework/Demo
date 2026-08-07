@@ -13,7 +13,7 @@ concurrency:
 
 env:
   TESTLUM_IMAGE: ghcr.io/testlumframework/testlum:latest
-  APK_PATH: todoist-v10864.apk
+  APK_PATH: testlum-app-test-debug.apk
 
 jobs:
   emulator-tests:

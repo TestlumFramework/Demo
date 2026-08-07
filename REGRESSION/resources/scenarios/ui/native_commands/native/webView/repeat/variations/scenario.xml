@@ -1,0 +1,40 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test webView command - repeat variations</description>
+        <name>WebView repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to WebView screen" locator="testApp.webViewPage"/>
+        <wait comment="Waiting 1 second" time="1"/>
+
+        <repeat comment="Repeat webView across CSV rows"
+                variations="variations_native_command.csv">
+            <webView comment="WebView in repeat {{comment}}"
+                     condition="{{flag}}">
+                <click comment="Click webView button in repeat" locator="testApp.webViewBtn"/>
+                <wait comment="Waiting 1 second" time="1"/>
+            </webView>
+        </repeat>
+
+        <webView comment="Assert click counter in webView">
+            <assert comment="Verify click count is 2">
+                <attribute comment="Check counter value"
+                           locator="testApp.webViewCounter"
+                           locatorStrategy="locatorId"
+                           name="value">
+                    <content>2</content>
+                </attribute>
+            </assert>
+        </webView>
+
+    </native>
+
+</scenario>

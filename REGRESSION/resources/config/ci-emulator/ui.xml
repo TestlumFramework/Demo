@@ -53,8 +53,8 @@
                     <deviceName>AndroidDevice</deviceName>
                     <platformVersion>15.0</platformVersion>
                     <udid>emulator-5554</udid>
-                    <appPackage>com.todoist</appPackage>
-                    <appActivity>com.todoist.activity.HomeActivity</appActivity>
+                    <appPackage>com.example.myapplication</appPackage>
+                    <appActivity>com.example.myapplication.MainActivity</appActivity>
                 </appiumCapabilities>
             </device>
         </devices>

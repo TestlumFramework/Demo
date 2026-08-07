@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - generate alphanumeric</description>
+        <name>Var generate alphanumeric</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Generate random alphanumeric string of length 10"
+             name="genAlnum">
+            <generate length="10">
+                <alphanumeric/>
+            </generate>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{genAlnum}}"/>
+        <assert comment="Assert generated alphanumeric value injected">
+            <attribute comment="Check injected result is not empty"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text"
+                       negative="false">
+                <content>Injected value: {{genAlnum}}</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

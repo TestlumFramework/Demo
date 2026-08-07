@@ -1,0 +1,35 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test condition command - inside repeat: evaluated each iteration</description>
+        <name>Condition in repeat</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <repeat comment="Repeat 3 times — condition inside repeat"
+                times="3">
+            <condition comment="Evaluate true inside repeat"
+                       name="repeatFlag"
+                       spel="2 * 2 == 4"/>
+            <click comment="Click executes each iteration (repeatFlag=true)"
+                   condition="{{repeatFlag}}"
+                   locator="testApp.clickButton"/>
+        </repeat>
+        <assert comment="Assert counter is 3">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 3</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

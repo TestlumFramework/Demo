@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test wait command - repeat variations</description>
+        <name>Wait repeat variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Wait screen" locator="testApp.waitPage"/>
+        <click comment="Reset state" locator="testApp.resetButtonWait"/>
+        <click comment="Start long task" locator="testApp.startTaskButton"/>
+
+        <repeat comment="Repeat wait across CSV rows"
+                variations="variations_native_wait.csv">
+            <wait comment="Wait 1 second {{comment}}"
+                  condition="{{flag}}"
+                  time="{{seconds}}"
+                  unit="seconds"/>
+        </repeat>
+        <assert comment="Assert wait status is Complete">
+            <attribute comment="Check status text"
+                       locator="testApp.waitStatus"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Complete</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

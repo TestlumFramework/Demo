@@ -1,0 +1,31 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test assert attribute - variables: content from variable</description>
+        <name>Assert attribute variables</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+        <var comment="Store expected counter value in variable"
+             name="expectedCounter">
+            <constant value="Counter: 0"/>
+        </var>
+
+        <assert comment="Assert counter text using variable in content">
+            <attribute comment="Check counter text matches variable value"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>{{expectedCounter}}</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

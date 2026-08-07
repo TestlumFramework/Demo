@@ -1,0 +1,3 @@
+comment,flag,locatorClick,locatorClear,locatorDragFrom,locatorDragTo,locatorInput,inputText,locatorImage,imageFileName,locatorSwipeElement,varName,assertContent,spel,conditionName,time
+comment1,true,testApp.clickButton,testApp.clearInputText,testApp.elementToBeFlipped,testApp.placeWhereElementWillBe,testApp.inputArea,TestA,testApp.image,test_image,testApp.swipeElement,someValue,Counter: 0,2 * 2 == 4,repeatFlag,4
+comment2,true,testApp.clickButton,testApp.clearInputText,testApp.elementToBeFlipped,testApp.placeWhereElementWillBe,testApp.inputArea,TestB,testApp.image,test_image,testApp.swipeElement,someValue,Counter: 0,2 * 2 == 4,repeatFlag,4

@@ -1,0 +1,58 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - condition</description>
+        <name>Var condition</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Set default value"
+             name="myVar">
+            <constant value="Default"/>
+        </var>
+
+        <var comment="Var condition false - should be skipped"
+             condition="false"
+             name="myVar">
+            <constant value="ShouldNotAppear"/>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{myVar}}"/>
+        <assert comment="Assert injected value is [Default]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: Default</content>
+            </attribute>
+        </assert>
+
+        <clear comment="Clear input field for next check" locator="testApp.varInputField"/>
+
+        <var comment="Var condition true - should execute"
+             condition="true"
+             name="myVar">
+            <constant value="Assigned"/>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{myVar}}"/>
+        <assert comment="Assert injected value is [Assigned]">
+            <attribute comment="Check injected result text"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Injected value: Assigned</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

@@ -1,0 +1,36 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test var command - generate randomRegexp</description>
+        <name>Var generate regexp</name>
+    </overview>
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Var screen" locator="testApp.varPage"/>
+
+        <var comment="Generate value matching regexp pattern"
+             name="genRegexp">
+            <generate length="5">
+                <randomRegexp pattern="[A-Z]{3}[0-9]{2}"/>
+            </generate>
+        </var>
+        <input comment="Type value into input field"
+               locator="testApp.varInputField"
+               value="{{genRegexp}}"/>
+        <assert comment="Assert regexp-generated value injected">
+            <attribute comment="Check injected result is not empty"
+                       locator="testApp.varInjectedResult"
+                       locatorStrategy="locatorId"
+                       name="text"
+                       negative="false">
+                <content>Injected value: {{genRegexp}}</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

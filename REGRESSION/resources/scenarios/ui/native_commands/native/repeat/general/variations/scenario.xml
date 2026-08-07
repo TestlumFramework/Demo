@@ -1,0 +1,32 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test repeat command - general variations</description>
+        <name>Repeat general variations</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Navigate to Click screen" locator="testApp.clickPage"/>
+        <click comment="Reset counter" locator="testApp.resetClick"/>
+
+        <repeat comment="Repeat click across CSV rows"
+                variations="variations_native_command.csv">
+            <click comment="Click button {{comment}}" locator="{{locatorClick}}"/>
+        </repeat>
+        <assert comment="Assert counter is 2">
+            <attribute comment="Check counter text"
+                       locator="testApp.counter"
+                       locatorStrategy="locatorId"
+                       name="text">
+                <content>Counter: 2</content>
+            </attribute>
+        </assert>
+    </native>
+
+</scenario>

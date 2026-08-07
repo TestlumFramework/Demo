@@ -1,0 +1,20 @@
+<scenario xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>General test navigate overview command</description>
+        <name>Navigate overview general</name>
+    </overview>
+
+    <settings>
+        <tags>native</tags>
+    </settings>
+
+    <native comment="Executing native automation sequence">
+        <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
+
+        <navigate comment="Test navigate overview" destination="overview"/>
+    </native>
+
+</scenario>
