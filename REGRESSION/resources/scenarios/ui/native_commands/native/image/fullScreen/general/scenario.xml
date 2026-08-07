@@ -7,7 +7,7 @@
         <name>Image fullscreen command</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>native</tags>
     </settings>
 

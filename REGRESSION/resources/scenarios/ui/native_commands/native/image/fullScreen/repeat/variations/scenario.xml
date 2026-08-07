@@ -7,7 +7,7 @@
         <name>Image fullscreen repeat variations</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>native</tags>
     </settings>
 

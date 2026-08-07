@@ -12,8 +12,8 @@
 
         <!--    UI    -->
         <tag name="web" enabled="false"/>
-        <tag name="mobilebrowser" enabled="false"/>
-        <tag name="mobilebrowser-healthcheck" enabled="false"/>
+        <tag name="mobilebrowser" enabled="true"/>
+        <tag name="mobilebrowser-healthcheck" enabled="true"/>
         <tag name="native" enabled="true"/>
         <tag name="native-healthcheck" enabled="true"/>
 
