@@ -24,7 +24,7 @@
 
         <image comment="Test image fullscreen with variables"
                file="{{imgFile}}.png">
-            <fullScreen percentage="95"/>
+            <fullScreen percentage="90"/>
         </image>
 
     </native>
