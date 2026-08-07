@@ -7,7 +7,7 @@
         <name>Image fullscreen command variations</name>
     </overview>
 
-    <settings>
+    <settings onlyThis="true">
         <variations>variations_native_command.csv</variations>
         <tags>native</tags>
     </settings>

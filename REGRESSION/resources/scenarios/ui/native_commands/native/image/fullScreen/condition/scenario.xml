@@ -7,7 +7,7 @@
         <name>Image fullscreen condition</name>
     </overview>
 
-    <settings>
+    <settings onlyThis="true">
         <tags>native</tags>
     </settings>
 

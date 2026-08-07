@@ -7,7 +7,7 @@
         <name>Image fullscreen variables test</name>
     </overview>
 
-    <settings>
+    <settings onlyThis="true">
         <tags>native</tags>
     </settings>
 

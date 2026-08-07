@@ -7,7 +7,7 @@
         <name>Image part repeat times</name>
     </overview>
 
-    <settings>
+    <settings onlyThis="true">
         <tags>native</tags>
     </settings>
 
