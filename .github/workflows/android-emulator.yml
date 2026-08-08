@@ -2,7 +2,17 @@ name: mobilebrowser-and-native-regression-android
 
 on:
   workflow_dispatch:
-    inputs: {}
+    inputs:
+      suite:
+        description: Which suite to run
+        type: choice
+        required: false
+        default: all
+        options:
+          - all
+          - mobilebrowser
+          - native
+          - webview
   schedule:
     # Weekly, Mondays at 06:00 UTC.
     - cron: '0 6 * * 1'
@@ -14,11 +24,41 @@ concurrency:
 env:
   TESTLUM_IMAGE: ghcr.io/testlumframework/testlum:latest
   APK_PATH: testlum-app-test-debug.apk
+  # Pinned so a weekly run cannot silently pick up a new Appium release.
+  APPIUM_VERSION: 3.6.0
+  UIAUTOMATOR2_VERSION: 8.2.2
 
 jobs:
-  emulator-tests:
-    name: MobileBrowser + native on Android emulator
+  matrix-setup:
+    name: Resolve suites
     runs-on: ubuntu-latest
+    outputs:
+      suites: ${{ steps.pick.outputs.suites }}
+    steps:
+      - name: Pick suites
+        id: pick
+        env:
+          SUITE: ${{ inputs.suite || 'all' }}
+        run: |
+          case "${SUITE}" in
+            mobilebrowser) suites='["mobilebrowser"]' ;;
+            native)        suites='["native"]' ;;
+            webview)       suites='["webview"]' ;;
+            *)             suites='["mobilebrowser","native","webview"]' ;;
+          esac
+          echo "Running suites: ${suites}"
+          echo "suites=${suites}" >> "$GITHUB_OUTPUT"
+
+  emulator-tests:
+    name: ${{ matrix.suite }} on Android emulator
+    needs: matrix-setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      # One wedged emulator must not cancel the other suites.
+      fail-fast: false
+      matrix:
+        suite: ${{ fromJSON(needs.matrix-setup.outputs.suites) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -61,24 +101,64 @@ jobs:
 
       - name: Install Appium and UiAutomator2 driver
         run: |
-          npm install -g appium
-          appium driver install uiautomator2
+          npm install -g "appium@${APPIUM_VERSION}"
+          appium driver install "uiautomator2@${UIAUTOMATOR2_VERSION}"
+          appium --version
 
       - name: Pull Testlum image
         run: docker pull "${TESTLUM_IMAGE}"
 
-      - name: Run mobile + native tests on emulator
+      - name: Run ${{ matrix.suite }} tests on emulator
         id: emulator_run
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          SUITE: ${{ matrix.suite }}
+          CONFIG_FILE: config-ci-regression-mobile-emulator-${{ matrix.suite }}.xml
         with:
           api-level: 35
           target: google_apis
           arch: x86_64
           profile: pixel_6
           force-avd-creation: false
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          ram-size: 4096M
+          cores: 2
+          emulator-boot-timeout: 900
+          emulator-options: >-
+            -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+            -camera-back none -camera-front none -no-metrics
           disable-animations: true
           script: bash .github/scripts/run-emulator-tests.sh
+
+      - name: Collect Testlum report output
+        if: always()
+        run: |
+          # Everything Testlum writes under REGRESSION/ is untracked, so git is an
+          # exact way to find the Extent report and any failure screenshots without
+          # having to guess the output path.
+          mkdir -p testlum-output
+          git status --porcelain --untracked-files=all -- REGRESSION \
+            | awk '{print $2}' > /tmp/testlum-written.txt || true
+          echo "Files written under REGRESSION/ during the run:"
+          cat /tmp/testlum-written.txt
+          while read -r f; do
+            [ -f "$f" ] || continue
+            mkdir -p "testlum-output/$(dirname "$f")"
+            cp "$f" "testlum-output/$f"
+          done < /tmp/testlum-written.txt
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: emulator-diagnostics-${{ matrix.suite }}
+          if-no-files-found: ignore
+          retention-days: 14
+          path: |
+            appium.log
+            logcat.txt
+            adb-health.log
+            adb-devices.txt
+            testlum-output/**
 
       - name: Teardown
         if: always()
@@ -86,26 +166,35 @@ jobs:
           docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci down -v --timeout 10 || true
           docker network rm e2e_network || true
 
+  notify:
+    name: Slack notification
+    needs: [matrix-setup, emulator-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
       - name: Build Slack payload
         id: build_message
-        if: always()
+        env:
+          OVERALL: ${{ needs.emulator-tests.result }}
+          SUITES: ${{ needs.matrix-setup.outputs.suites }}
         run: |
-          case "${{ steps.emulator_run.outcome }}" in
+          overall="${OVERALL}"
+          suites="$(echo "${SUITES:-[]}" | jq -r 'join(", ")')"
+          case "${overall}" in
             success)   icon="✅"; status="passed" ;;
             failure)   icon="❌"; status="failed" ;;
             cancelled) icon="⏹"; status="cancelled" ;;
-            *)         icon="➖"; status="${{ steps.emulator_run.outcome }}" ;;
+            *)         icon="➖"; status="${overall}" ;;
           esac
 
           blocks=$(jq -n \
             --arg header "*${{ github.workflow }} #${{ github.run_number }}* | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>" \
-            --arg line "${icon} *MobileBrowser + native on Android emulator* | \`${status}\`" \
+            --arg line "${icon} *Android emulator* | suites: \`${suites}\` | \`${status}\`" \
             '[{"type":"section","text":{"type":"mrkdwn","text":$header}},{"type":"section","text":{"type":"mrkdwn","text":$line}}]')
 
           echo "payload=$(echo "$blocks" | jq -c .)" >> "$GITHUB_OUTPUT"
 
       - name: Slack Notification
-        if: always()
         uses: slackapi/slack-github-action@v2
         with:
           method: chat.postMessage

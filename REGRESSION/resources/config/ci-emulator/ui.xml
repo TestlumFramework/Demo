@@ -40,7 +40,7 @@
     </mobilebrowser>
 
     <native enabled="true">
-        <takeScreenshots enabled="false"/>
+        <takeScreenshots enabled="true"/>
         <elementAutowait seconds="5"/>
         <connection>
             <appiumServer>

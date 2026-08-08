@@ -16,7 +16,7 @@
 
         <repeat comment="Repeat 2 times with variations"
                 variations="variations_native_command.csv">
-            <navigate comment="Test navigate back {comment}"
+            <navigate comment="Test navigate back {{comment}}"
                       condition="{{flag}}"
                       destination="back"/>
         </repeat>

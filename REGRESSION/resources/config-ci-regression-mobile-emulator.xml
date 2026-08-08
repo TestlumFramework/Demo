@@ -15,6 +15,7 @@
         <tag name="mobilebrowser" enabled="true"/>
         <tag name="mobilebrowser-healthcheck" enabled="true"/>
         <tag name="native" enabled="true"/>
+        <tag name="native-webview" enabled="true"/>
         <tag name="native-healthcheck" enabled="true"/>
 
         <!--    General    -->

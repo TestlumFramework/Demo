@@ -21,8 +21,10 @@
                          fromLocatorStrategy="locatorId"
                          toLocator="{{locatorDragTo}}"
                          toLocatorStrategy="locatorId"/>
+            <wait comment="Let the drop counter settle" time="1"/>
         </repeat>
 
+        <wait comment="Let the drop counter settle" time="1"/>
         <assert comment="Validating expected UI state">
             <attribute comment="Retrieving element text attribute for validation"
                        locator="//android.widget.TextView[@text='Dropped: 2']"

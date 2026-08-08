@@ -13,8 +13,8 @@
         <!--    UI    -->
         <tag name="web" enabled="false"/>
         <tag name="mobilebrowser" enabled="false"/>
-        <tag name="mobilebrowser-healthcheck" enabled="true"/>
-        <tag name="native" enabled="false"/>
+        <tag name="mobilebrowser-healthcheck" enabled="false"/>
+        <tag name="native" enabled="true"/>
         <tag name="native-webview" enabled="false"/>
         <tag name="native-healthcheck" enabled="true"/>
 
@@ -67,7 +67,7 @@
     </runScenariosByTag>
 
     <report>
-        <extentReports projectName="testlum-professional-subscription">
+        <extentReports projectName="testlum-android-emulator-native">
             <htmlReportGenerator enabled="true"/>
             <klovServerReportGenerator enabled="false">
                 <mongoDB host="192.168.0.10" port="27017"/>
@@ -77,14 +77,7 @@
     </report>
 
     <environments>
-        <env folder="ci" enabled="true" threads="1"/>
+        <env folder="ci-emulator" enabled="true" threads="1"/>
     </environments>
-
-    <vault>
-        <host>vault-e2e</host>
-        <port>8200</port>
-        <scheme>http</scheme>
-        <token>myroot</token>
-    </vault>
 
 </globalTestConfiguration>
