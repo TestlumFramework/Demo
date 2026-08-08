@@ -8,7 +8,7 @@
     </overview>
 
     <settings>
-        <tags>native</tags>
+        <tags>native-webview</tags>
     </settings>
 
     <native comment="Executing native automation sequence">

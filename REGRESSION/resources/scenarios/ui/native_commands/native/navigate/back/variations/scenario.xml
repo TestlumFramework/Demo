@@ -15,7 +15,7 @@
     <native comment="Executing native automation sequence">
         <click comment="Clicking on button navigatePage" locator="testApp.navigatePage"/>
 
-        <navigate comment="Test navigate {comment}"
+        <navigate comment="Test navigate {{comment}}"
                   condition="{{flag}}"
                   destination="back"/>
         <assert comment="Verify depth text">

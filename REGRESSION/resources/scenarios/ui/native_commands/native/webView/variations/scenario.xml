@@ -8,7 +8,7 @@
     </overview>
     <settings>
         <variations>variations_native_command.csv</variations>
-        <tags>native</tags>
+        <tags>native-webview</tags>
     </settings>
 
     <native comment="Executing native automation sequence">

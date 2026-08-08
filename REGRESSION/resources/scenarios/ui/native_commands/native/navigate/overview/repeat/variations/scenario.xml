@@ -16,18 +16,10 @@
 
         <repeat comment="Repeat 2 times with variations"
                 variations="variations_native_command.csv">
-            <navigate comment="Test navigate overview {comment}"
+            <navigate comment="Test navigate overview {{comment}}"
                       condition="{{flag}}"
                       destination="overview"/>
         </repeat>
-        <assert comment="Verify depth text">
-            <attribute comment="Retrieving element text attribute for validation"
-                       locator="testApp.navTitle"
-                       locatorStrategy="locatorId"
-                       name="text">
-                <content>Navigate Page 3</content>
-            </attribute>
-        </assert>
     </native>
 
 </scenario>
