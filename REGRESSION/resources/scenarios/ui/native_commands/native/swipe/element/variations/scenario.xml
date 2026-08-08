@@ -8,7 +8,7 @@
     </overview>
 
     <settings active="false">
-        <variations>variations_native_command.csv</variations>
+<!--        <variations>variations_native_command.csv</variations>-->
         <tags>native</tags>
     </settings>
 
