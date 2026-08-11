@@ -31,9 +31,9 @@ configFileName="-c=config-local.xml"
 pathToFiles="-p=$workspace/REGRESSION/resources"
 
 # Dynamic params
-# dockerImageName=$1
-# configFileName=$2
-# pathToFiles=$3
+dockerImageName=$1
+configFileName=$2
+pathToFiles=$3
 
 # -----------------------------------------------------------------------------
 # Validates that all required arguments are provided
