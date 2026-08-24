@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
+          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test otp variable creation and usage</description>
+        <name>Variable(otp) Test</name>
+        <developer>Anatoliy</developer>
+    </overview>
+
+    <settings>
+        <tags>var</tags>
+    </settings>
+
+    <var comment="Create OTP variable" name="myOtp">
+        <otp secretKey="JBSWY3DPEHPK3PXP"/>
+    </var>
+
+    <condition comment="Check if OTP is 6 digits" name="otpCondition" spel="'{{myOtp}}'.length() == 6 and '{{myOtp}}'.matches('^[0-9]+$')"/>
+
+    <assert comment="Check if the condition for OTP is true">
+        <equal comment="Check if the condition for OTP is true">
+            <content>{{otpCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <wait comment="Wait 31 seconds for the TOTP window to change" time="31"/>
+
+    <var comment="Create new OTP variable after time passed" name="myOtpNew">
+        <otp secretKey="JBSWY3DPEHPK3PXP"/>
+    </var>
+
+    <condition comment="Check if new OTP is different from the old one" name="otpChangedCondition" spel="'{{myOtp}}' != '{{myOtpNew}}'"/>
+
+    <assert comment="Check if the condition for OTP change is true">
+        <equal comment="Check if the condition for OTP change is true">
+            <content>{{otpChangedCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

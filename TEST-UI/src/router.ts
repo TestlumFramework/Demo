@@ -9,6 +9,7 @@ import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
 import ScrollTest from "./views/ScrollTest.vue";
+import OtpTestPage from "./views/OtpTestPage.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -56,6 +57,12 @@ const routes: RouteRecordRaw[] = [
     path: '/scroll-test',
     name: 'ScrollTest',
     component: ScrollTest,
+  },
+  {
+    path: '/otp-test',
+    name: 'OtpTestPage',
+    component: OtpTestPage,
+    meta: { layout: 'empty' },
   }
 ];
 
