@@ -4,6 +4,7 @@
 
     <web enabled="true">
         <baseUrl>http://mega-test-site:80</baseUrl>
+        <autoHealing enabled="false" mode="soft"/>
         <browserSettings>
             <takeScreenshots enabled="false"/>
             <elementAutowait seconds="5"/>
