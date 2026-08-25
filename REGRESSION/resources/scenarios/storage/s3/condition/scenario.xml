@@ -1,6 +1,6 @@
 <scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
-          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
 
     <overview>
         <description>Condition s3 test: remove bucket only if condition is true, verify bucket still exists if condition is false</description>

@@ -1,6 +1,6 @@
-<page xmlns="http://www.knubisoft.com/testlum/testing/model/pages"
+<page xmlns="http://www.testlum.com/testing/model/pages"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/pages pages.xsd">
+      xsi:schemaLocation="http://www.testlum.com/testing/model/pages pages.xsd">
 
     <details>
         <name>Test App Locators</name>

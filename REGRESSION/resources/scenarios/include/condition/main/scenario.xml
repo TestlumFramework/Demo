@@ -1,6 +1,6 @@
 <scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns="http://www.knubisoft.com/testlum/testing/model/scenario"
-          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/scenario scenario.xsd">
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
 
     <overview>
         <description>Self test for Include command with condition</description>
@@ -24,11 +24,10 @@
 
     <include comment="Include test scenario with false condition" scenario="include/condition/not_included/scenario.xml" condition="falseCondition"/>
 
-<!--  WRONG! - include should not work with the false condition-->
-    <assert comment="Check WRONG variable from included scenario value">
-        <equal comment="Currently variable has incorrect value">
+    <assert comment="Check that theBestTool variable was not overwritten by included scenario">
+        <equal comment="Check equality of theBestToolVariable with it's initial value from first include">
             <content>{{theBestTool}}</content>
-            <content>ShouldNotBeIncluded</content>
+            <content>Testlum</content>
         </equal>
     </assert>
 
