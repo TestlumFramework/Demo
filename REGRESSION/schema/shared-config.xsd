@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:schema xmlns:x="http://www.w3.org/2001/XMLSchema"
-          targetNamespace="http://www.knubisoft.com/testlum/testing/model/global-config"
-          xmlns:tns="http://www.knubisoft.com/testlum/testing/model/global-config"
+          targetNamespace="http://www.testlum.com/testing/model/global-config"
+          xmlns:tns="http://www.testlum.com/testing/model/global-config"
           elementFormDefault="qualified"
           xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" jaxb:version="3.0">
 
@@ -22,15 +22,15 @@
     </x:simpleType>
 
     <x:complexType name="autoHealing">
-      <x:attribute name="enabled" type="x:boolean" use="required"/>
-      <x:attribute name="mode" type="tns:autoHealingMode" use="required"/>
+        <x:attribute name="enabled" type="x:boolean" use="required"/>
+        <x:attribute name="mode" type="tns:autoHealingMode" use="required"/>
     </x:complexType>
 
     <x:simpleType name="autoHealingMode">
-      <x:restriction base="x:string">
-        <x:enumeration value="soft"/>
-        <x:enumeration value="persistent"/>
-      </x:restriction>
+        <x:restriction base="x:string">
+            <x:enumeration value="soft"/>
+            <x:enumeration value="persistent"/>
+        </x:restriction>
     </x:simpleType>
 
     <x:simpleType name="urlWebsocket" final="restriction">
