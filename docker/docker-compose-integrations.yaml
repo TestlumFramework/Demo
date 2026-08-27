@@ -16,9 +16,9 @@ services:
       - e2e_network
     healthcheck:
       test: [ "CMD-SHELL", 'if [ "$(curl -s -o /dev/null -I -w ''%{http_code}'' http://localhost:8000)" == "400" ]; then exit 0; else exit 1; fi',]
-      interval: 5s
-      timeout: 5s
-      retries: 3
+      interval: 10s
+      timeout: 10s
+      retries: 10
     profiles: [ci, local]
 
   # only to drop and create table
