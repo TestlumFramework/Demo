@@ -37,7 +37,7 @@
 
         <!--    Databases    -->
         <tag name="mysql" enabled="false"/>
-        <tag name="postgresql" enabled="true"/>
+        <tag name="postgres" enabled="true"/>
         <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="false"/>
         <tag name="mongodb" enabled="false"/>
