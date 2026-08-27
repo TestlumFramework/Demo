@@ -13,7 +13,7 @@
     </settings>
 
     <postgres alias="POSTGRES_0"
-              comment="Create table and clear previous data for the current ID"
+              comment="Create table"
               file="{{expected_1}}.json">
         <query>
             CREATE TABLE IF NOT EXISTS test_news (
@@ -22,7 +22,6 @@
             category VARCHAR(50)
             );
         </query>
-        <query>DELETE FROM test_news WHERE id = {{id}};</query>
     </postgres>
 
     <postgres alias="POSTGRES_0"
