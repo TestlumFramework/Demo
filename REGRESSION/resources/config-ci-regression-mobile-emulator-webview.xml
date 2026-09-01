@@ -27,6 +27,7 @@
         <tag name="migrate" enabled="false"/>
         <tag name="include" enabled="false"/>
         <tag name="wait" enabled="false"/>
+        <tag name="var-linux-only" enabled="false"/>
 
         <!--    API    -->
         <tag name="http" enabled="false"/>

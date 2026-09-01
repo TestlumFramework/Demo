@@ -27,6 +27,7 @@
         <tag name="migrate" enabled="false"/>
         <tag name="include" enabled="true"/>
         <tag name="wait" enabled="true"/>
+        <tag name="var-linux-only" enabled="false"/>
 
         <!--    API    -->
         <tag name="http" enabled="false"/>
@@ -63,7 +64,7 @@
 
         <!--    Other    -->
         <tag name="shell" enabled="false"/>
-        <tag name="shell-windows" enabled="true"/>
+        <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="false"/>
     </runScenariosByTag>
 

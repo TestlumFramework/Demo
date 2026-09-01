@@ -9,7 +9,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>var</tags>
+        <tags>var-linux-only</tags>
     </settings>
 
     <migrate comment="DB migration for testing" alias="POSTGRES_0">

@@ -131,7 +131,7 @@ manage_emulator() {
 # -----------------------------------------------------------------------------
 start_appium() {
     log "Starting Appium Server..."
-    appium --address 127.0.0.1 --port 4723 --allow-insecure *:chromedriver_autodownload
+    appium --address 127.0.0.1 --port 4723 --allow-insecure *:chromedriver_autodownload --allow-cors
 }
 
 # -----------------------------------------------------------------------------

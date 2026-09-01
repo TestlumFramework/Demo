@@ -9,7 +9,7 @@
     </overview>
 
     <settings>
-        <tags>var</tags>
+        <tags>var-linux-only</tags>
     </settings>
 
     <var comment="Create variable with constant value" name="constantVar">
