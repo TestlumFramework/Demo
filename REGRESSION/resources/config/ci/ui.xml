@@ -1,6 +1,6 @@
 <uiConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns="http://www.knubisoft.com/testlum/testing/model/global-config"
-          xsi:schemaLocation="http://www.knubisoft.com/testlum/testing/model/global-config global-config.xsd">
+          xmlns="http://www.testlum.com/testing/model/global-config"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/global-config global-config.xsd">
 
     <web enabled="true">
         <baseUrl>http://mega-test-site:80</baseUrl>

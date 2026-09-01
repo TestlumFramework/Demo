@@ -227,6 +227,14 @@ jobs:
               return f"[{text}]({url})"
             return text
 
+          with open(".github/regression-matrix.json", "r", encoding="utf-8") as f:
+            matrix_config = json.load(f)
+
+          image_order = {
+            entry["image"]: index
+            for index, entry in enumerate(matrix_config.get("entries", []))
+          }
+
           with open("results/ghcr_versions.json", "r", encoding="utf-8") as f:
             versions = json.load(f)
 
@@ -278,7 +286,10 @@ jobs:
               item["run_mobile_tests"] = "true"
             item["last_updated"] = published_by_tag.get(key, data.get("run_date", "N/A"))
 
-          ordered = sorted(rows.values(), key=lambda x: (x["image"] != "latest", x["image"]))
+          ordered = sorted(
+            rows.values(),
+            key=lambda x: (image_order.get(x["image"], len(image_order)), x["image"]),
+          )
 
           table_lines = [
             "| Image | Linux `amd64` | Linux `arm64` | Windows `amd64` | Branch | Last Updated | Mobile Tests |",
