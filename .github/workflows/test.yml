@@ -24,7 +24,7 @@ jobs:
       - name: Build matrix from config
         id: build
         run: |
-          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch) ]}' .github/regression-matrix.json)
+          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch + {enable_testrail_validation: ((($entry.enable_testrail_validation // false) and ($arch.enable_testrail_validation // false)) | tostring)}) ]}' .github/regression-matrix.json)
           echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
 
   # Setting up TestRail resources. It's an idempotent operation:
@@ -92,6 +92,20 @@ jobs:
         run: |
           docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
+
+      - name: Create TestRail Run
+        id: testrail_run
+        if: ${{ matrix.enable_testrail_validation == 'true' }}
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          TESTRAIL_PROJECT_ID: ${{ needs.testrail-setup.outputs.project_id }}
+          TESTRAIL_SUITE_ID: ${{ needs.testrail-setup.outputs.suite_id }}
+          TESTRAIL_CASE_IDS: ${{ needs.testrail-setup.outputs.case_ids }}
+          RUN_NAME: "${{ matrix.image }} | ${{ matrix.os_family }}/${{ matrix.arch }} | #${{ github.run_number }}"
+          RUN_DESCRIPTION: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node .github/scripts/testrail/create-testrail-run.mjs
 
       - name: Run Regression (Linux)
         if: ${{ matrix.os_family == 'linux' }}
