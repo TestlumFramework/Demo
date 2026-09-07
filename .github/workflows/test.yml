@@ -27,9 +27,33 @@ jobs:
           matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch) ]}' .github/regression-matrix.json)
           echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
 
+  # Setting up TestRail resources. It's an idempotent operation:
+  # the project, suite, section and cases are reused across pipelines.
+  # Isolation comes from the per-execution runs, which the cleanup job deletes.
+  testrail-setup:
+    name: Create TestRail resources
+    runs-on: ubuntu-latest
+    outputs:
+      project_id: ${{ steps.setup.outputs.project_id }}
+      suite_id: ${{ steps.setup.outputs.suite_id }}
+      section_id: ${{ steps.setup.outputs.section_id }}
+      case_ids: ${{ steps.setup.outputs.case_ids }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+      - name: Ensure project, section and cases exist
+        id: setup
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          PROJECT_NAME: "Testlum Regression"
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node .github/scripts/testrail/testrail-setup.mjs
+
   run-tests:
     name: ${{ matrix.image }} on ${{ matrix.runs_on }} from ${{ matrix.tests_branch }} branch
-    needs: prepare-matrix
+    needs: [prepare-matrix, testrail-setup]
     runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
