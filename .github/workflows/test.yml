@@ -157,6 +157,20 @@ jobs:
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
 
+      - name: Validate TestRail Results
+        id: validate_testrail
+        if: ${{ !cancelled() && matrix.enable_testrail_validation == 'true' && steps.testrail_run.outcome == 'success' }}
+        uses: ./.github/actions/run-testlum
+        with:
+          image_tag: latest
+          config_file: config-ci-regression-testrail-validation.xml
+          resources_path: testlum-tests/REGRESSION
+          testrail_url: ${{ secrets.TESTRAIL_URL }}
+          testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
+          testrail_api_key: ${{ secrets.TESTRAIL_API_KEY }}
+          testrail_project_id: ${{ needs.testrail-setup.outputs.project_id }}
+          testrail_run_id: ${{ steps.testrail_run.outputs.run_id }}
+
       - name: Cleanup Test Environment (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}
         uses: ./.github/actions/cleanup-test-env
@@ -174,12 +188,16 @@ jobs:
           pull_outcome="${{ steps.pull_image_linux.outcome }}"
           regression_outcome="${{ steps.run_regression_linux.outcome }}"
           mobile_outcome="${{ steps.run_regression_mobile_linux.outcome }}"
+          testrail_outcome="${{ steps.validate_testrail.outcome }}"
 
           status="passed"
           if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${{ matrix.run_mobile_tests_on_image }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${{ matrix.enable_testrail_validation }}" = "true" ] && [ "${testrail_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then

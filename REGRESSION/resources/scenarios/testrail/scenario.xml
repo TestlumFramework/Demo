@@ -1,0 +1,54 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>TestRail run results</name>
+        <description>
+            This scenario verifies that the regression execution actually reported into TestRail.
+
+            Test flow includes:
+            1. Fetch every result posted against the run in TESTRAIL_RUN_ID.
+            2. Fetch every test of that run together with its automation id.
+
+            This scenario validates:
+            - Testlum posted one result per TestRail-enabled scenario
+            - Each result was matched to the case its caseMatchKeyValue points at
+            - Every case ended up in the passed state
+
+            The run is created by the "Create TestRail Run" workflow step and handed over
+            through TESTRAIL_RUN_ID, so this scenario is only meaningful inside CI.
+        </description>
+        <developer>Mykhailo Rudyk</developer>
+    </overview>
+
+    <settings>
+        <tags>testrail-validation</tags>
+    </settings>
+
+    <!-- TestRail authenticates every call with Basic auth and has no login endpoint,
+         so loginEndpoint is a formality here; the header is what matters. -->
+    <auth comment="Apply Basic Auth header for the TestRail API"
+          apiAlias="TESTRAIL"
+          credentials="testrail-credentials.json"
+          loginEndpoint="/ignore">
+
+        <http comment="Step 1. Read the results posted against the run"
+              alias="TESTRAIL">
+            <get endpoint="/get_results_for_run/${TESTRAIL_RUN_ID}">
+                <!-- lenient: TestRail wraps the payload in paging metadata and every result
+                     carries volatile ids and timestamps that cannot be pinned in a file. -->
+                <response code="200" file="expected_1.json" mode="lenient"/>
+            </get>
+        </http>
+
+        <http comment="Step 2. Read the tests of the run to check the case matching"
+              alias="TESTRAIL">
+            <get endpoint="/get_tests/${TESTRAIL_RUN_ID}">
+                <response code="200" file="expected_2.json" mode="lenient"/>
+            </get>
+        </http>
+
+    </auth>
+
+</scenario>

@@ -76,11 +76,6 @@ inputs:
     required: false
     default: ""
 
-  testrail_auth_token:
-    description: Base64 of "username:api_key", sent as the TestRail Basic auth header.
-    required: false
-    default: ""
-
 runs:
   using: composite
   steps:
@@ -110,7 +105,6 @@ runs:
           -e TESTRAIL_API_KEY="${{ inputs.testrail_api_key }}" \
           -e TESTRAIL_PROJECT_ID="${{ inputs.testrail_project_id }}" \
           -e TESTRAIL_RUN_ID="${{ inputs.testrail_run_id }}" \
-          -e TESTRAIL_AUTH_TOKEN="${{ inputs.testrail_auth_token }}" \
           -v "${MOUNT_DIR}:/REGRESSION" \
           "${IMAGE}" -c="${{ inputs.config_file }}" -p="${RESOURCES_DIR}"
         EXIT_CODE=$?
