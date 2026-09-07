@@ -240,6 +240,25 @@ jobs:
           name: result-${{ matrix.image }}-${{ matrix.os_family }}-${{ matrix.arch }}
           path: results/*.json
 
+  # Cleanup TestRail runs and results, so the next pipeline starts against an empty project.
+  # The project, suite, section and cases survive.
+  testrail-cleanup:
+    name: Delete TestRail runs
+    runs-on: ubuntu-latest
+    needs: [testrail-setup, run-tests]
+    if: ${{ always() && needs.testrail-setup.result == 'success' }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+
+      - name: Delete runs and their results
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          TESTRAIL_PROJECT_ID: ${{ needs.testrail-setup.outputs.project_id }}
+        run: node .github/scripts/testrail/delete-testrail-runs.mjs
+
   update-readme:
     runs-on: ubuntu-latest
     needs: run-tests
