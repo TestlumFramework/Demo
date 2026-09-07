@@ -74,6 +74,14 @@
                 <mongoDB host="192.168.0.10" port="27017"/>
                 <klovServer url="https://reports.knubisoft.com"/>
             </klovServerReportGenerator>
+            <testRailReports addScreenshotForFailure="true"
+                             enabled="true">
+                <username>${TESTRAIL_USERNAME}</username>
+                <apiKey>${TESTRAIL_API_KEY}</apiKey>
+                <url>${TESTRAIL_URL}</url>
+                <projectId>${TESTRAIL_PROJECT_ID}</projectId>
+                <caseMatchKey>custom_automation_id</caseMatchKey>
+            </testRailReports>
         </extentReports>
     </report>
 

@@ -4,7 +4,8 @@
 
     <overview>
         <description>PostgreSQL CRUD Operations Test</description>
-        <name>Postgres Basic CRUD Test</name>
+        <name>PostgreSQL CRUD Operations Test</name>
+        <testRail enabled="true" caseMatchKeyValue="db_case" testRailRunId="${TESTRAIL_RUN_ID}"/>
     </overview>
 
     <settings truncateStorages="true">

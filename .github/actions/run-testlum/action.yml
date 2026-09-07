@@ -51,6 +51,36 @@ inputs:
     required: false
     default: ""
 
+  testrail_url:
+    description: TestRail instance base API url.
+    required: false
+    default: ""
+
+  testrail_username:
+    description: TestRail username.
+    required: false
+    default: ""
+
+  testrail_api_key:
+    description: TestRail API key.
+    required: false
+    default: ""
+
+  testrail_project_id:
+    description: TestRail project the results belong to.
+    required: false
+    default: ""
+
+  testrail_run_id:
+    description: TestRail run created for this execution; read by each scenario's testRailRunId.
+    required: false
+    default: ""
+
+  testrail_auth_token:
+    description: Base64 of "username:api_key", sent as the TestRail Basic auth header.
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -75,6 +105,12 @@ runs:
           -e TWILIO_AUTH_TOKEN="${{ inputs.twilio_auth_token }}" \
           -e TWILIO_PHONE_NUMBER="${{ inputs.twilio_phone_number }}" \
           -e BROWSER_STACK_LOCAL_IDENTIFIER="${{ inputs.browser_stack_local_identifier }}" \
+          -e TESTRAIL_URL="${{ inputs.testrail_url }}" \
+          -e TESTRAIL_USERNAME="${{ inputs.testrail_username }}" \
+          -e TESTRAIL_API_KEY="${{ inputs.testrail_api_key }}" \
+          -e TESTRAIL_PROJECT_ID="${{ inputs.testrail_project_id }}" \
+          -e TESTRAIL_RUN_ID="${{ inputs.testrail_run_id }}" \
+          -e TESTRAIL_AUTH_TOKEN="${{ inputs.testrail_auth_token }}" \
           -v "${MOUNT_DIR}:/REGRESSION" \
           "${IMAGE}" -c="${{ inputs.config_file }}" -p="${RESOURCES_DIR}"
         EXIT_CODE=$?
