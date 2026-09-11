@@ -332,8 +332,28 @@ jobs:
       
       - name: Build Slack payload
         id: build_message
+        env:
+          SERVER_URL: ${{ github.server_url }}
+          REPOSITORY: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          WORKFLOW_REF: ${{ github.ref_name }}
         run: |
           blocks='[{"type":"section","text":{"type":"mrkdwn","text":"*${{ github.workflow }} #${{ github.run_number }}* | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|🔎 Open Build>"}}]'
+
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            trigger="🕓 Scheduled run"
+          else
+            trigger="👤 Started by <${SERVER_URL}/${TRIGGERING_ACTOR}|${TRIGGERING_ACTOR}>"
+          fi
+
+          context=$(jq -n \
+            --arg trigger "$trigger" \
+            --arg ref "$WORKFLOW_REF" \
+            --arg ref_url "${SERVER_URL}/${REPOSITORY}/tree/${WORKFLOW_REF}" \
+            '{"type":"context","elements":[{"type":"mrkdwn","text":($trigger + "  |  🌿 Workflow branch: <" + $ref_url + "|" + $ref + ">")}]}')
+
+          blocks=$(echo "$blocks" | jq ". + [$context]")
 
           for f in results/*.json; do
             [ -f "$f" ] || continue
@@ -343,6 +363,7 @@ jobs:
             os=$(jq -r '.os_family' "$f")
             arch=$(jq -r '.arch' "$f")
             status=$(jq -r '.status' "$f")
+            tests_branch=$(jq -r '.tests_branch' "$f")
 
             case "$status" in
               passed)    icon="✅" ;;
@@ -357,7 +378,8 @@ jobs:
               --arg os "$os" \
               --arg arch "$arch" \
               --arg status "$status" \
-              '{"type":"section","text":{"type":"mrkdwn","text":($icon + " *" + $image + "* | " + $os + " / " + $arch + " | `" + $status + "`")}}')
+              --arg tests_branch "$tests_branch" \
+              '{"type":"section","text":{"type":"mrkdwn","text":($icon + " *" + $image + "* | " + $os + " / " + $arch + " | `" + $status + "` | 🌿 " + $tests_branch)}}')
 
             blocks=$(echo "$blocks" | jq ". + [$block]")
           done
