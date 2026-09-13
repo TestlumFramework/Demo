@@ -6,6 +6,7 @@
         <description>Self test for command: Condition</description>
         <name>Conditions</name>
         <developer>Bohdan Shakhov</developer>
+        <testRail enabled="true" testCaseId="${TESTRAIL_CONDITION_CASE_ID}" testRailRunId="${TESTRAIL_RUN_ID}"/>
     </overview>
 
     <settings>

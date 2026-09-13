@@ -65,8 +65,6 @@
         <tag name="shell" enabled="true"/>
         <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="true"/>
-
-        <tag name="testrail-validation" enabled="false"/>
     </runScenariosByTag>
 
     <report>
@@ -82,7 +80,6 @@
                 <apiKey>${TESTRAIL_API_KEY}</apiKey>
                 <url>${TESTRAIL_URL}</url>
                 <projectId>${TESTRAIL_PROJECT_ID}</projectId>
-                <caseMatchKey>custom_automation_id</caseMatchKey>
             </testRailReports>
         </extentReports>
     </report>

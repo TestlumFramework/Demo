@@ -1,5 +1,5 @@
 /**
- * Minimal TestRail API client shared by the workflow scripts.
+ * TestRail API client shared by the workflow scripts.
  */
 const MAX_ATTEMPTS = 5;
 

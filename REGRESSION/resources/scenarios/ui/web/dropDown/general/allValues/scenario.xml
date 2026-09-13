@@ -19,7 +19,6 @@
             - allValues deselect
             - multi-select behavior
         </description>
-        <testRail enabled="true" caseMatchKeyValue="web_drop_down_case" testRailRunId="${TESTRAIL_RUN_ID}"/>
     </overview>
 
     <settings>
