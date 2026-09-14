@@ -60,6 +60,7 @@
         <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
         <tag name="smtp" enabled="true"/>
+        <tag name="email" enabled="true"/>
 
         <!--    Other    -->
         <tag name="shell" enabled="true"/>

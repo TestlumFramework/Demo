@@ -319,4 +319,15 @@
             <secretAccessKey>wzsTjXDJL2C5Wq</secretAccessKey>
         </ses>
     </sesIntegration>
+
+    <emailIntegration>
+        <email alias="EMAIL_0" enabled="false">
+            <protocol>imaps</protocol>
+            <host>imap.gmail.com</host>
+            <port>993</port>
+            <username>testlum.test.acc@gmail.com</username>
+            <password>dummy-password</password>
+            <folder>INBOX</folder>
+        </email>
+    </emailIntegration>
 </integrations>

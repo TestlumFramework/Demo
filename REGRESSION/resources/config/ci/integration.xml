@@ -319,4 +319,15 @@
             <secretAccessKey>{{secret/data/lambda/secretKey.key}}</secretAccessKey>
         </ses>
     </sesIntegration>
+
+    <emailIntegration>
+        <email alias="EMAIL_0" enabled="true">
+            <protocol>imaps</protocol>
+            <host>${EMAIL_HOST}</host>
+            <port>993</port>
+            <username>${EMAIL_USERNAME}</username>
+            <password>${EMAIL_PASSWORD}</password>
+            <folder>INBOX</folder>
+        </email>
+    </emailIntegration>
 </integrations>

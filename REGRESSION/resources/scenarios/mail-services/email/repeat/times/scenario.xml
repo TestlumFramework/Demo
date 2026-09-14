@@ -1,0 +1,22 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies repeated email retrieval using loop counter.</description>
+        <name>Email Repeat Times Test</name>
+    </overview>
+
+    <settings active="false">
+        <tags>email</tags>
+    </settings>
+
+    <repeat comment="Check email inbox multiple times"
+            times="2">
+        <email comment="Repeated email inbox polling"
+               alias="EMAIL_0"
+               pattern="код:\s*(\d{6})"
+               timeout="5000"/>
+    </repeat>
+
+</scenario>

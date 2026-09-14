@@ -1,0 +1,22 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies repeated email retrieval using CSV variation rows.</description>
+        <name>Email Repeat Variation Test</name>
+    </overview>
+
+    <settings active="false">
+        <tags>email</tags>
+    </settings>
+
+    <repeat comment="Check email inbox using variation rows"
+            variations="email_repeat.csv">
+        <email comment="Fetch email using row pattern"
+               alias="EMAIL_0"
+               pattern="{{pattern}}"
+               targetVariable="{{targetVar}}"/>
+    </repeat>
+
+</scenario>

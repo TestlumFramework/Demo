@@ -1,0 +1,3 @@
+comment,pattern,targetVar
+Fetch numeric OTP,Код:\s*(\d{6}),code1
+Fetch alphanumeric token,token is:\s*([A-Z0-9\-]+),code2

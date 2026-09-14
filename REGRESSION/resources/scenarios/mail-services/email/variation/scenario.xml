@@ -1,0 +1,20 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies CSV-driven email command execution across multiple test data variations.</description>
+        <name>Email Variation Test</name>
+    </overview>
+
+    <settings active="false">
+        <variations>email_variations.csv</variations>
+        <tags>email</tags>
+    </settings>
+
+    <email comment="{{comment}}"
+           alias="EMAIL_0"
+           pattern="{{pattern}}"
+           targetVariable="{{targetVar}}"/>
+
+</scenario>
