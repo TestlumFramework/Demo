@@ -1,0 +1,81 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>InputEmail - General</name>
+        <description>
+            This scenario verifies inputEmail command execution with highlight and target variable extraction.
+
+            Test flow:
+            1. Generate random 6-digit OTP code.
+            2. Send verification email via SMTP containing the OTP.
+            3. Include web login steps.
+            4. Navigate to UI Elements page.
+            5. Fetch OTP from mailbox and type it into input field using inputEmail.
+            6. Verify input element value matches sent OTP code.
+            7. Verify targetVariable matches sent OTP code.
+
+            This scenario validates:
+            - email mailbox connection and regex extraction
+            - typing into UI element
+            - highlight=true behavior
+            - targetVariable assignment
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web,email</tags>
+    </settings>
+
+    <var comment="Generate random 6-digit OTP code"
+         name="generatedOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <smtp comment="Send verification email to recipient inbox"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>InputEmail General Test</subject>
+        <text>Ваш одноразовий код: {{generatedOtp}} для тестування форми.</text>
+    </smtp>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Clear input field before test"
+               locator="uiElements.hotKeyInput1"/>
+
+        <inputEmail comment="Fetch OTP from email and type into input field"
+                    alias="EMAIL_0"
+                    locator="uiElements.hotKeyInput1"
+                    pattern="код:\s*(\d{6})"
+                    timeout="25000"
+                    highlight="true"
+                    targetVariable="extractedOtp"/>
+
+        <assert comment="Verify input field contains the OTP code">
+            <attribute comment="Check input1 value matches generated OTP"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>{{generatedOtp}}</content>
+            </attribute>
+            <equal comment="Check targetVariable equality inside web">
+                <content>{{extractedOtp}}</content>
+                <content>{{generatedOtp}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>

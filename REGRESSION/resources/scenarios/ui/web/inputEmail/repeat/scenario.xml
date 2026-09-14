@@ -1,0 +1,58 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>InputEmail - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of inputEmail command.
+
+            Test flow:
+            1. Include web login steps.
+            2. Navigate to UI Elements page.
+            3. Repeat inputEmail execution multiple times.
+            4. Verify element is present after each iteration.
+
+            This scenario validates:
+            - repeat execution container support
+            - schema validity for webRepeat with inputEmail
+        </description>
+    </overview>
+
+    <settings active="false">
+        <tags>web,email</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB repeat script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <repeat comment="Repeat inputEmail 2 times"
+                times="2">
+
+            <clear comment="Clear input field before repeat iteration"
+                   locator="uiElements.hotKeyInput1"/>
+
+            <inputEmail comment="Input extracted code in loop"
+                        alias="EMAIL_0"
+                        locator="uiElements.hotKeyInput1"
+                        pattern="код:\s*(\d{6})"
+                        timeout="5000"/>
+
+            <assert comment="Verify input field is present">
+                <present comment="Check input1 is present"
+                         locator="uiElements.hotKeyInput1"/>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

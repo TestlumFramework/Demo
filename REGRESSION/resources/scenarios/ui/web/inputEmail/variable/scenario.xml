@@ -1,0 +1,101 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>InputEmail - Variable</name>
+        <description>
+            This scenario verifies inputEmail command using variables.
+
+            Test flow:
+            1. Generate random 6-digit OTP code.
+            2. Define configuration variables for locator, alias, pattern, timeout, and target.
+            3. Send verification email via SMTP using variables.
+            4. Include web login steps.
+            5. Navigate to UI Elements page.
+            6. Execute inputEmail with injected variable values.
+            7. Verify input element value and targetVariable.
+
+            This scenario validates:
+            - locator variable injection
+            - pattern variable injection
+            - targetVariable name injection
+            - comment variable injection
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web,email</tags>
+    </settings>
+
+    <var comment="Generate random 6-digit OTP code"
+         name="varOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <var comment="Locator variable for input field"
+         name="varLocator">
+        <constant value="uiElements.hotKeyInput1"/>
+    </var>
+
+    <var comment="Regex pattern variable for OTP extraction"
+         name="varPattern">
+        <constant value="змінної:\s*(\d{6})"/>
+    </var>
+
+    <var comment="Target variable name"
+         name="varTargetName">
+        <constant value="extractedVarOtp"/>
+    </var>
+
+    <var comment="Comment text variable"
+         name="varStepComment">
+        <constant value="Execute inputEmail with variable values"/>
+    </var>
+
+    <smtp comment="Send email with variable OTP"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>InputEmail Variable Test</subject>
+        <text>Код для змінної: {{varOtp}} створено успішно.</text>
+    </smtp>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Clear input field before test"
+               locator="{{varLocator}}"/>
+
+        <inputEmail comment="{{varStepComment}}"
+                    alias="EMAIL_0"
+                    locator="{{varLocator}}"
+                    pattern="{{varPattern}}"
+                    timeout="25000"
+                    highlight="true"
+                    targetVariable="{{varTargetName}}"/>
+
+        <assert comment="Verify value entered via variables">
+            <attribute comment="Check input value matches varOtp"
+                       name="value"
+                       locator="{{varLocator}}">
+                <content>{{varOtp}}</content>
+            </attribute>
+            <equal comment="Check targetVariable matches varOtp">
+                <content>{{extractedVarOtp}}</content>
+                <content>{{varOtp}}</content>
+            </equal>
+        </assert>
+
+    </web>
+
+</scenario>
