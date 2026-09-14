@@ -35,6 +35,7 @@
         <tag name="graphql" enabled="false"/>
         <tag name="auth-basic-mixed" enabled="false"/>
         <tag name="auth-jwt-mixed" enabled="false"/>
+        <tag name="auth" enabled="false"/>
 
         <!--    Databases    -->
         <tag name="mysql" enabled="false"/>
