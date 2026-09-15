@@ -325,9 +325,11 @@
             <protocol>imaps</protocol>
             <host>imap.gmail.com</host>
             <port>993</port>
-            <username>*****************************</username>
-            <password>*****************************</password>
+            <emailAddress>testlum.test.acc@gmail.com</emailAddress>
+            <password>dummy-password</password>
             <folder>INBOX</folder>
+            <ssl>true</ssl>
+            <timeout>10000</timeout>
         </email>
     </emailIntegration>
 </integrations>

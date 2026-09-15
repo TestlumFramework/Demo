@@ -325,9 +325,11 @@
             <protocol>imaps</protocol>
             <host>${EMAIL_HOST}</host>
             <port>993</port>
-            <username>${EMAIL_USERNAME}</username>
+            <emailAddress>${EMAIL_USERNAME}</emailAddress>
             <password>${EMAIL_PASSWORD}</password>
             <folder>INBOX</folder>
+            <ssl>true</ssl>
+            <timeout>10000</timeout>
         </email>
     </emailIntegration>
 </integrations>
