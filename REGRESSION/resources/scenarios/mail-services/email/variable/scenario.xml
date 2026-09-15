@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies variable injection in email request.</description>
+        <name>Email Variable Test</name>
+    </overview>
+
+    <settings>
+        <tags>email</tags>
+    </settings>
+
+    <var comment="Generate random 6-digit OTP code" name="otpValue">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <var comment="Subject text variable" name="subjectText">
+        <constant value="Variable Resolution Subject"/>
+    </var>
+
+    <var comment="Message body template variable" name="messageBody">
+        <constant value="Ваш одноразовий код: {{otpValue}} для верифікації"/>
+    </var>
+
+    <var comment="Regex pattern variable for OTP extraction" name="otpPattern">
+        <constant value="код:\s*(\d{6})"/>
+    </var>
+
+    <var comment="Comment text variable" name="stepComment">
+        <constant value="Fetch email using interpolated pattern variable"/>
+    </var>
+
+    <var comment="Target variable name" name="targetVar">
+        <constant value="extractedCode"/>
+    </var>
+
+    <smtp comment="Send email using variables"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>{{subjectText}}</subject>
+        <text>{{messageBody}}</text>
+    </smtp>
+
+    <email comment="{{stepComment}}"
+           alias="EMAIL_0"
+           pattern="{{otpPattern}}"
+           timeout="20000"
+           targetVariable="{{targetVar}}"/>
+
+    <assert comment="Verify that extracted code equals expected variable">
+        <equal comment="Check variable equality">
+            <content>{{extractedCode}}</content>
+            <content>{{otpValue}}</content>
+        </equal>
+    </assert>
+
+</scenario>

@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies repeated email retrieval using loop counter.</description>
+        <name>Email Repeat Times Test</name>
+    </overview>
+
+    <settings>
+        <tags>email</tags>
+    </settings>
+
+    <repeat comment="Check email inbox multiple times in loop"
+            times="2">
+
+        <var comment="Generate random 6-digit OTP code"
+             name="loopOtp">
+            <generate length="6">
+                <numeric/>
+            </generate>
+        </var>
+
+        <smtp comment="Send email for repeat loop iteration"
+              alias="SMTP_0"
+              recipientEmail="game_den@ukr.net">
+            <subject>Email Repeat Times Test</subject>
+            <text>Ваш одноразовий код: {{loopOtp}} для циклу.</text>
+        </smtp>
+
+        <email comment="Retrieve email in repeat loop iteration"
+               alias="EMAIL_0"
+               pattern="код:\s*(\d{6})"
+               timeout="25000"
+               targetVariable="receivedLoopOtp"/>
+
+    </repeat>
+
+    <assert comment="Verify that last received OTP from loop matches generated value">
+        <equal comment="Check receivedLoopOtp matches loopOtp">
+            <content>{{receivedLoopOtp}}</content>
+            <content>{{loopOtp}}</content>
+        </equal>
+    </assert>
+
+</scenario>

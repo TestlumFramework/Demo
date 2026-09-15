@@ -1,0 +1,103 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>InputEmail - Condition</name>
+        <description>
+            This scenario verifies conditional execution of inputEmail command.
+
+            Test flow:
+            1. Include web login steps.
+            2. Generate random 6-digit OTP code.
+            3. Send verification email via SMTP.
+            4. Define true and false conditions.
+            5. Navigate to UI Elements page.
+            6. Execute inputEmail with true condition and verify element value and target variable.
+            7. Execute inputEmail with false condition and verify element value remains unchanged.
+
+            This scenario validates:
+            - condition true execution
+            - condition false skipping
+            - input stability
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web,email</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <var comment="Generate random 6-digit OTP code"
+         name="condOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <smtp comment="Send verification email to recipient inbox"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>InputEmail Condition Test</subject>
+        <text>Ваш код для умови: {{condOtp}} успішно згенеровано.</text>
+    </smtp>
+
+    <web comment="Start WEB script">
+
+        <condition comment="Condition that allows execution"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Condition that blocks execution"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <clear comment="Clear input field before test"
+               locator="uiElements.hotKeyInput1"/>
+
+        <inputEmail comment="Input value from email when true condition is met"
+                    alias="EMAIL_0"
+                    locator="uiElements.hotKeyInput1"
+                    pattern="умови:\s*(\d{6})"
+                    timeout="25000"
+                    condition="trueCondition"
+                    targetVariable="receivedCondOtp"/>
+
+        <assert comment="Verify value is entered after true condition">
+            <attribute comment="Check input1 value matches condOtp"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>{{condOtp}}</content>
+            </attribute>
+            <equal comment="Check receivedCondOtp matches condOtp">
+                <content>{{receivedCondOtp}}</content>
+                <content>{{condOtp}}</content>
+            </equal>
+        </assert>
+
+        <inputEmail comment="Try to overwrite value when false condition"
+                    alias="EMAIL_0"
+                    locator="uiElements.hotKeyInput1"
+                    pattern="NON_EXISTING_PATTERN"
+                    timeout="2000"
+                    condition="falseCondition"/>
+
+        <assert comment="Verify value is not changed by false condition">
+            <attribute comment="Value must remain unchanged after false condition"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>{{condOtp}}</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>
