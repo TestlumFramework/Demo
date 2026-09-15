@@ -8,10 +8,10 @@
             This scenario verifies inputEmail command using variables.
 
             Test flow:
-            1. Generate random 6-digit OTP code.
-            2. Define configuration variables for locator, alias, pattern, timeout, and target.
-            3. Send verification email via SMTP using variables.
-            4. Include web login steps.
+            1. Include web login steps.
+            2. Generate random 6-digit OTP code.
+            3. Define configuration variables for locator, pattern, and target.
+            4. Send verification email via SMTP using variables.
             5. Navigate to UI Elements page.
             6. Execute inputEmail with injected variable values.
             7. Verify input element value and targetVariable.
@@ -27,6 +27,9 @@
     <settings>
         <tags>web,email</tags>
     </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
 
     <var comment="Generate random 6-digit OTP code"
          name="varOtp">
@@ -61,9 +64,6 @@
         <subject>InputEmail Variable Test</subject>
         <text>Код для змінної: {{varOtp}} створено успішно.</text>
     </smtp>
-
-    <include comment="Include login steps"
-             scenario="/ui/includes/login_web/scenario.xml"/>
 
     <web comment="Start WEB script">
 

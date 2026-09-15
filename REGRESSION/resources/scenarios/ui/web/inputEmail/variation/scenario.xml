@@ -8,25 +8,33 @@
             This scenario verifies inputEmail command using CSV variations.
 
             Test flow:
-            1. Include web login steps.
-            2. Navigate to UI Elements page.
-            3. Execute inputEmail with data rows from CSV.
-            4. Verify target element presence.
+            1. Send verification email with variation data via SMTP.
+            2. Include web login steps.
+            3. Navigate to UI Elements page.
+            4. Execute inputEmail with data rows from CSV.
+            5. Verify entered value matches expected variation.
 
             This scenario validates:
             - CSV variation row injection
-            - dynamic locator, pattern, and alias
-            - schema validity for variation-driven inputEmail
+            - dynamic locator, pattern, and target variable
+            - typing and DOM validation across variations
         </description>
     </overview>
 
-    <settings active="false">
+    <settings>
         <variations>inputEmail_variations.csv</variations>
         <tags>web,email</tags>
     </settings>
 
     <include comment="Include login steps"
              scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <smtp comment="Send email for variation scenario iteration"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>{{subject}}</subject>
+        <text>{{body}}</text>
+    </smtp>
 
     <web comment="Start WEB variations script">
 
@@ -43,12 +51,20 @@
                     alias="EMAIL_0"
                     locator="{{locator}}"
                     pattern="{{pattern}}"
-                    timeout="5000"
+                    timeout="25000"
+                    highlight="true"
                     targetVariable="{{targetVar}}"/>
 
-        <assert comment="Verify input field is present after inputEmail">
-            <present comment="Check target element is present"
-                     locator="{{locator}}"/>
+        <assert comment="Verify input field contains the expected value">
+            <attribute comment="Check input value matches expectedValue"
+                       name="value"
+                       locator="{{locator}}">
+                <content>{{expectedValue}}</content>
+            </attribute>
+            <equal comment="Check target variable matches expectedValue">
+                <content>{{currentVarResult}}</content>
+                <content>{{expectedValue}}</content>
+            </equal>
         </assert>
 
     </web>

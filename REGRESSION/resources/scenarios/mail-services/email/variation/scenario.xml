@@ -7,14 +7,29 @@
         <name>Email Variation Test</name>
     </overview>
 
-    <settings active="false">
+    <settings>
         <variations>email_variations.csv</variations>
         <tags>email</tags>
     </settings>
 
+    <smtp comment="Send email for variation scenario run"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>{{subject}}</subject>
+        <text>{{body}}</text>
+    </smtp>
+
     <email comment="{{comment}}"
            alias="EMAIL_0"
            pattern="{{pattern}}"
+           timeout="25000"
            targetVariable="{{targetVar}}"/>
+
+    <assert comment="Verify extracted value matches expected variation">
+        <equal comment="Check targetVar matches expectedValue">
+            <content>{{varOtp}}</content>
+            <content>{{expectedValue}}</content>
+        </equal>
+    </assert>
 
 </scenario>

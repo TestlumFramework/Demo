@@ -8,9 +8,9 @@
             This scenario verifies conditional execution of inputEmail command.
 
             Test flow:
-            1. Generate random 6-digit OTP code.
-            2. Send verification email via SMTP.
-            3. Include web login steps.
+            1. Include web login steps.
+            2. Generate random 6-digit OTP code.
+            3. Send verification email via SMTP.
             4. Define true and false conditions.
             5. Navigate to UI Elements page.
             6. Execute inputEmail with true condition and verify element value and target variable.
@@ -27,6 +27,9 @@
         <tags>web,email</tags>
     </settings>
 
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
     <var comment="Generate random 6-digit OTP code"
          name="condOtp">
         <generate length="6">
@@ -40,9 +43,6 @@
         <subject>InputEmail Condition Test</subject>
         <text>Ваш код для умови: {{condOtp}} успішно згенеровано.</text>
     </smtp>
-
-    <include comment="Include login steps"
-             scenario="/ui/includes/login_web/scenario.xml"/>
 
     <web comment="Start WEB script">
 

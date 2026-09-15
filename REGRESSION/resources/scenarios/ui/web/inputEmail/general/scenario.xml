@@ -8,9 +8,9 @@
             This scenario verifies inputEmail command execution with highlight and target variable extraction.
 
             Test flow:
-            1. Generate random 6-digit OTP code.
-            2. Send verification email via SMTP containing the OTP.
-            3. Include web login steps.
+            1. Include web login steps.
+            2. Generate random 6-digit OTP code.
+            3. Send verification email via SMTP containing the OTP.
             4. Navigate to UI Elements page.
             5. Fetch OTP from mailbox and type it into input field using inputEmail.
             6. Verify input element value matches sent OTP code.
@@ -28,6 +28,9 @@
         <tags>web,email</tags>
     </settings>
 
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
     <var comment="Generate random 6-digit OTP code"
          name="generatedOtp">
         <generate length="6">
@@ -41,9 +44,6 @@
         <subject>InputEmail General Test</subject>
         <text>Ваш одноразовий код: {{generatedOtp}} для тестування форми.</text>
     </smtp>
-
-    <include comment="Include login steps"
-             scenario="/ui/includes/login_web/scenario.xml"/>
 
     <web comment="Start WEB script">
 
