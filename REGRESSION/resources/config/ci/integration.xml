@@ -309,6 +309,14 @@
             <smtpAuth>true</smtpAuth>
             <smtpStarttlsEnable>true</smtpStarttlsEnable>
         </smtp>
+        <smtp alias="SMTP_1" enabled="true">
+            <host>smtp.gmail.com</host>
+            <port>465</port>
+            <username>${SMTP_USERNAME}</username>
+            <password>${SMTP_PASSWORD}</password>
+            <smtpAuth>true</smtpAuth>
+            <smtpStarttlsEnable>false</smtpStarttlsEnable>
+        </smtp>
     </smtpIntegration>
 
     <sesIntegration>
