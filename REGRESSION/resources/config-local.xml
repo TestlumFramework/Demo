@@ -67,6 +67,11 @@
         <tag name="shell" enabled="false"/>
         <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="false"/>
+
+        <tag name="ott" enabled="true"/>
+        <tag name="ottWeb" enabled="true"/>
+        <tag name="ottMobilebrowser" enabled="true"/>
+        <tag name="ottNative" enabled="true"/>
     </runScenariosByTag>
 
     <report>

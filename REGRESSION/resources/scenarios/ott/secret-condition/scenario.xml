@@ -1,0 +1,48 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test Ott with inline secret combined with condition attribute — verifies both skip and execute paths</description>
+        <name>Ott Test with secret and condition</name>
+    </overview>
+
+    <settings onlyThis="true">
+        <tags>ott</tags>
+    </settings>
+
+    <var comment="Initial value to prove ott was NOT executed when condition is false" name="notGeneratedSecretOtp">
+        <constant value="INITIAL_NOT_TOUCHED"/>
+    </var>
+
+    <ott comment="Ott with secret and false condition must NOT execute (must not overwrite initial)"
+         name="notGeneratedSecretOtp" secret="JBSWY3DPEHPK3PXP" condition="false"/>
+
+    <assert comment="Verify notGeneratedSecretOtp was never touched — command with false condition did not run">
+        <equal comment="notGeneratedSecretOtp must still equal the initial value">
+            <content>{{notGeneratedSecretOtp}}</content>
+            <content>INITIAL_NOT_TOUCHED</content>
+        </equal>
+    </assert>
+
+    <ott comment="Ott with secret and true condition must be generated" name="generatedSecretOtp"
+         secret="JBSWY3DPEHPK3PXP" condition="true"/>
+
+    <condition comment="Verify generatedSecretOtp has correct format" name="otpFormatCondition"
+               spel="'{{generatedSecretOtp}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="Check that otpFormatCondition is true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <assert comment="Sanity check: generatedSecretOtp must NOT equal the untouched initial">
+        <notEqual comment="generatedSecretOtp differs from initial">
+            <content>{{generatedSecretOtp}}</content>
+            <content>INITIAL_NOT_TOUCHED</content>
+        </notEqual>
+    </assert>
+
+</scenario>

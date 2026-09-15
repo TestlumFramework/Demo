@@ -1,0 +1,40 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Web Ott Test inside repeat</name>
+        <description>Verify UI Ott command executes correctly inside a repeat block within a web session</description>
+    </overview>
+
+    <settings onlyThis="true">
+        <tags>ottWeb</tags>
+    </settings>
+
+    <var comment="Counter of valid iterations" name="webValidCount">
+        <constant value="0"/>
+    </var>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page" command="to" path="/ui-elements"/>
+
+        <repeat comment="Generate OTP code 3 times in a row inside web session" times="3">
+            <ott comment="Generate OTP code for this iteration" alias="OTT_QA" name="webIterationCode"/>
+
+            <var comment="Increment webValidCount when webIterationCode has correct format" name="webValidCount"
+                 condition="'{{webIterationCode}}'.matches('^[0-9]{6}$')">
+                <expression value="{{webValidCount}} + 1"/>
+            </var>
+        </repeat>
+
+    </web>
+
+    <assert comment="All 3 iterations must have produced a validly formatted code">
+        <equal comment="webValidCount must equal 3">
+            <content>{{webValidCount}}</content>
+            <content>3</content>
+        </equal>
+    </assert>
+
+</scenario>
