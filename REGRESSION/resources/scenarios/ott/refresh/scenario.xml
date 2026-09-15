@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verify refresh attribute controls whether the code is keeps cached code (refresh=false) or regenerated on
+            each access (refresh=true) across TOTP windows
+        </description>
+        <name>Ott Test with refresh attribute</name>
+    </overview>
+
+    <settings onlyThis="true">
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate code WITHOUT refresh (default, keeps cached code)" alias="OTT_QA" name="cachedCode"/>
+    <ott comment="Generate code WITH refresh=true (regenerated on each access)" alias="OTT_QA" name="refreshingCode"
+         refresh="true"/>
+
+    <var comment="Capture first read of cachedCode" name="cachedCodeFirstRead">
+        <constant value="{{cachedCode}}"/>
+    </var>
+    <var comment="Capture first read of refreshingCode" name="refreshingCodeFirstRead">
+        <constant value="{{refreshingCode}}"/>
+    </var>
+
+    <wait comment="Wait past the 30-second TOTP window" time="31"/>
+
+    <var comment="Capture second read of cachedCode" name="cachedCodeSecondRead">
+        <constant value="{{cachedCode}}"/>
+    </var>
+    <var comment="Capture second read of refreshingCode" name="refreshingCodeSecondRead">
+        <constant value="{{refreshingCode}}"/>
+    </var>
+
+    <assert comment="Without refresh, the same code must be returned on both reads (cached code)">
+        <equal comment="cachedCodeFirstRead must equal cachedCodeSecondRead">
+            <content>{{cachedCodeFirstRead}}</content>
+            <content>{{cachedCodeSecondRead}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="With refresh=true, codes across two TOTP windows must differ" name="refreshingCodesDiffer"
+               spel="!('{{refreshingCodeFirstRead}}'.equals('{{refreshingCodeSecondRead}}'))"/>
+
+    <assert comment="Check refreshingCodesDiffer is true">
+        <equal comment="Check refreshingCodesDiffer is true">
+            <content>{{refreshingCodesDiffer}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

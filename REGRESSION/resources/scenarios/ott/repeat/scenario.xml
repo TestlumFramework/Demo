@@ -1,0 +1,34 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verify Ott command executes correctly inside repeat block</description>
+        <name>Ott Test inside repeat</name>
+    </overview>
+
+    <settings onlyThis="true">
+        <tags>ott</tags>
+    </settings>
+
+    <var comment="Counter of valid iterations" name="validCount">
+        <constant value="0"/>
+    </var>
+
+    <repeat comment="Generate OTP code 3 times in a row" times="3">
+        <ott comment="Generate OTP code for this iteration" alias="OTT_QA" name="iterationCode"/>
+
+        <var comment="Increment validCount when iterationCode has correct format" name="validCount"
+             condition="'{{iterationCode}}'.matches('^[0-9]{6}$')">
+            <expression value="{{validCount}} + 1"/>
+        </var>
+    </repeat>
+
+    <assert comment="All 3 iterations must have produced a validly formatted code">
+        <equal comment="validCount must equal 3">
+            <content>{{validCount}}</content>
+            <content>3</content>
+        </equal>
+    </assert>
+
+</scenario>

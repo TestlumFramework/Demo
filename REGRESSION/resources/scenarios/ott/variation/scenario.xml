@@ -1,0 +1,34 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test Ott command with variations — different alias is selected per CSV row via condition (alias
+            itself cannot be injected via a template variable, per framework's aliasPattern restriction). Each variation
+            run executes exactly ONE of the two ott branches below, based on caseName.
+        </description>
+        <name>Ott Test with variations</name>
+    </overview>
+
+    <settings onlyThis="true">
+        <variations>ott_variations.csv</variations>
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate code via OTT_QA when case is firstRun" alias="OTT_QA" name="otpCode"
+         condition="'{{caseName}}'.equals('firstRun')"/>
+
+    <ott comment="Generate code via OTT_DEFAULT when case is secondRun" alias="OTT_DEFAULT" name="otpCode"
+         condition="'{{caseName}}'.equals('secondRun')"/>
+
+    <condition comment="Verify generated code has correct format" name="otpFormatCondition"
+               spel="'{{otpCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="Check that otpFormatCondition is true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>
