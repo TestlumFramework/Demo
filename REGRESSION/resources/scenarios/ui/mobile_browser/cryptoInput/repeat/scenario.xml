@@ -20,7 +20,7 @@
     </overview>
 
     <settings>
-        <tags>customMobileBrowser</tags>
+        <tags>mobilebrowser</tags>
     </settings>
 
     <include comment="Include login step"

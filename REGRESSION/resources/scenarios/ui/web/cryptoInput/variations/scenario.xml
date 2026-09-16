@@ -23,7 +23,7 @@
 
     <settings>
         <variations>cryptoInput.csv</variations>
-        <tags>customWeb</tags>
+        <tags>web</tags>
     </settings>
 
     <include comment="Include login steps"
