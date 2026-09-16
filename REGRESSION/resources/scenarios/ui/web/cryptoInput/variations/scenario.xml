@@ -1,0 +1,52 @@
+
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>CryptoInput - Variations</name>
+        <description>
+            This scenario verifies cryptoInput command with encrypt using CSV variations.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute cryptoInput with different values.
+            3. Verify that encrypted values are entered.
+
+            This scenario validates:
+            - CSV-based injection
+            - dynamic value usage
+            - encrypt behavior
+            - cryptoInput stability
+        </description>
+    </overview>
+
+    <settings>
+        <variations>cryptoInput.csv</variations>
+        <tags>customWeb</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="{{webComment}}">
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}"
+              time="{{waitTime}}"/>
+
+        <cryptoInput comment="{{inputComment}}"
+                     locator="{{locator}}"
+                     locatorStrategy="locatorId">
+
+            <encrypt alias="CRYPTO1"
+                     value="{{value}}"/>
+
+        </cryptoInput>
+
+    </web>
+
+</scenario>

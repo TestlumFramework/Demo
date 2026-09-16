@@ -1,0 +1,38 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Verify Crypto encrypt and decrypt with different input values.
+        </description>
+        <name>Crypto variations test</name>
+    </overview>
+
+    <settings>
+        <variations>crypto.csv</variations>
+        <tags>crypto</tags>
+    </settings>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt variation value"
+            name="encryptedValue">
+        <value>{{plainText}}</value>
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt encrypted value"
+            name="decryptedValue">
+        <value>{{encryptedValue}}</value>
+    </crypto>
+
+    <assert comment="Decrypted value must equal original">
+        <equal comment="Check equal">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+</scenario>

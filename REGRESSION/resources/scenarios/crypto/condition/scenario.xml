@@ -1,0 +1,392 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Comprehensive general test for Crypto command.
+            The scenario validates encryption, decryption, variables,
+            conditions, conditional execution, special characters,
+            unicode and round-trip data integrity.
+        </description>
+        <name>Crypto command - comprehensive test</name>
+    </overview>
+
+    <settings>
+        <tags>crypto</tags>
+    </settings>
+
+
+    <var comment="Create basic plaintext"
+         name="plainText">
+        <constant value="'dota DOTA2'"/>
+    </var>
+
+    <var comment="Create second plaintext"
+         name="secondPlainText">
+        <constant value="'Testlum Crypto Test'"/>
+    </var>
+
+    <var comment="Create text with special characters"
+         name="specialText">
+        <constant value="'Crypto !@#$%^&amp;*()_+-= Test 123'"/>
+    </var>
+
+    <var comment="Create unicode plaintext"
+         name="unicodeText">
+        <constant value="'Привет Testlum 你好 &#128640;'"/>
+    </var>
+
+
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt basic plaintext"
+            name="encryptedValue">
+        <value>
+            {{plainText}}
+        </value>
+    </crypto>
+
+    <assert comment="Encrypted value must differ from plaintext">
+        <notEqual comment="Encryption must change the source value">
+            <content>{{plainText}}</content>
+            <content>{{encryptedValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt basic encrypted value"
+            name="decryptedValue">
+        <value>
+            {{encryptedValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Decrypted value must equal original plaintext">
+        <equal comment="Basic encryption/decryption round trip">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="Test a true boolean condition"
+               name="TRUE_CONDITION"
+               spel="1 &lt; 2"/>
+
+    <assert comment="This assertion must execute because condition is true"
+            condition="TRUE_CONDITION">
+        <equal comment="True condition must allow execution">
+            <content>true</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <condition comment="Test a false boolean condition"
+               name="FALSE_CONDITION"
+               spel="2 &lt; 1"/>
+
+    <assert comment="This assertion must be skipped"
+            condition="FALSE_CONDITION">
+        <equal comment="This assertion should not execute">
+            <content>wrong</content>
+            <content>wrong</content>
+        </equal>
+    </assert>
+
+    <condition comment="Enable conditional crypto operation"
+               name="CRYPTO_ENABLED"
+               spel="true"/>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt value using a true condition"
+            condition="CRYPTO_ENABLED"
+            name="conditionalEncryptedValue">
+        <value>
+            {{plainText}}
+        </value>
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt conditionally encrypted value"
+            condition="CRYPTO_ENABLED"
+            name="conditionalDecryptedValue">
+        <value>
+            {{conditionalEncryptedValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Verify conditional crypto round trip"
+            condition="CRYPTO_ENABLED">
+        <equal comment="Conditional crypto must preserve original data">
+            <content>{{plainText}}</content>
+            <content>{{conditionalDecryptedValue}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Verify conditional encryption changed the value"
+            condition="CRYPTO_ENABLED">
+        <notEqual comment="Conditional encrypted value must differ">
+            <content>{{plainText}}</content>
+            <content>{{conditionalEncryptedValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt second plaintext"
+            name="encryptedSecondValue">
+        <value>
+            {{secondPlainText}}
+        </value>
+    </crypto>
+
+    <assert comment="Second encrypted value must differ from source">
+        <notEqual comment="Second encryption must change the value">
+            <content>{{secondPlainText}}</content>
+            <content>{{encryptedSecondValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt second encrypted value"
+            name="decryptedSecondValue">
+        <value>
+            {{encryptedSecondValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Second encryption round trip must succeed">
+        <equal comment="Second decrypted value must equal source">
+            <content>{{secondPlainText}}</content>
+            <content>{{decryptedSecondValue}}</content>
+        </equal>
+    </assert>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt value containing special characters"
+            name="encryptedSpecialValue">
+        <value>
+            {{specialText}}
+        </value>
+    </crypto>
+
+    <assert comment="Special encrypted value must differ from source">
+        <notEqual comment="Special characters encryption must change value">
+            <content>{{specialText}}</content>
+            <content>{{encryptedSpecialValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt special characters value"
+            name="decryptedSpecialValue">
+        <value>
+            {{encryptedSpecialValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Special characters must survive round trip">
+        <equal comment="Special characters must remain unchanged">
+            <content>{{specialText}}</content>
+            <content>{{decryptedSpecialValue}}</content>
+        </equal>
+    </assert>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt unicode value"
+            name="encryptedUnicodeValue">
+        <value>
+            {{unicodeText}}
+        </value>
+    </crypto>
+
+    <assert comment="Unicode encrypted value must differ from source">
+        <notEqual comment="Unicode encryption must change value">
+            <content>{{unicodeText}}</content>
+            <content>{{encryptedUnicodeValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt unicode value"
+            name="decryptedUnicodeValue">
+        <value>
+            {{encryptedUnicodeValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Unicode round trip must succeed">
+        <equal comment="Unicode value must remain unchanged">
+            <content>{{unicodeText}}</content>
+            <content>{{decryptedUnicodeValue}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="First condition for combined test"
+               name="FIRST_CONDITION"
+               spel="1 == 1"/>
+
+    <condition comment="Second condition for combined test"
+               name="SECOND_CONDITION"
+               spel="2 &gt; 1"/>
+
+    <assert comment="First condition must be true"
+            condition="FIRST_CONDITION">
+        <equal comment="First condition result">
+            <content>true</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <assert comment="Second condition must be true"
+            condition="SECOND_CONDITION">
+        <equal comment="Second condition result">
+            <content>true</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt value when first condition is true"
+            condition="FIRST_CONDITION"
+            name="firstConditionEncrypted">
+        <value>
+            {{secondPlainText}}
+        </value>
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt value when first condition is true"
+            condition="FIRST_CONDITION"
+            name="firstConditionDecrypted">
+        <value>
+            {{firstConditionEncrypted}}
+        </value>
+    </crypto>
+
+    <assert comment="Verify crypto under first condition"
+            condition="FIRST_CONDITION">
+        <equal comment="Conditional round trip must succeed">
+            <content>{{secondPlainText}}</content>
+            <content>{{firstConditionDecrypted}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="Disable crypto operation"
+               name="DISABLED_CRYPTO"
+               spel="false"/>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="This encryption must be skipped"
+            condition="DISABLED_CRYPTO"
+            name="skippedEncryptedValue">
+        <value>
+            {{plainText}}
+        </value>
+    </crypto>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt plaintext again"
+            name="roundTripEncrypted">
+        <value>
+            {{decryptedValue}}
+        </value>
+    </crypto>
+
+    <assert comment="Repeated encryption must change the plaintext">
+        <notEqual comment="Repeated encrypted value must differ">
+            <content>{{plainText}}</content>
+            <content>{{roundTripEncrypted}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt repeated encrypted value"
+            name="roundTripDecrypted">
+        <value>
+            {{roundTripEncrypted}}
+        </value>
+    </crypto>
+
+    <assert comment="Repeated round trip must preserve original data">
+        <equal comment="Repeated encryption and decryption">
+            <content>{{plainText}}</content>
+            <content>{{roundTripDecrypted}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Final basic encryption check">
+        <notEqual comment="Final encrypted value must differ">
+            <content>{{plainText}}</content>
+            <content>{{encryptedValue}}</content>
+        </notEqual>
+
+        <equal comment="Final decrypted value must match">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Final second value check">
+        <notEqual comment="Second encrypted value must differ">
+            <content>{{secondPlainText}}</content>
+            <content>{{encryptedSecondValue}}</content>
+        </notEqual>
+
+        <equal comment="Second decrypted value must match">
+            <content>{{secondPlainText}}</content>
+            <content>{{decryptedSecondValue}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Final special characters check">
+        <notEqual comment="Special encrypted value must differ">
+            <content>{{specialText}}</content>
+            <content>{{encryptedSpecialValue}}</content>
+        </notEqual>
+
+        <equal comment="Special decrypted value must match">
+            <content>{{specialText}}</content>
+            <content>{{decryptedSpecialValue}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Final unicode check">
+        <notEqual comment="Unicode encrypted value must differ">
+            <content>{{unicodeText}}</content>
+            <content>{{encryptedUnicodeValue}}</content>
+        </notEqual>
+
+        <equal comment="Unicode decrypted value must match">
+            <content>{{unicodeText}}</content>
+            <content>{{decryptedUnicodeValue}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="Final true condition"
+               name="FINAL_SUCCESS"
+               spel="10 &gt; 1"/>
+
+    <assert comment="Final condition must be true"
+            condition="FINAL_SUCCESS">
+        <equal comment="Final condition validation">
+            <content>success</content>
+            <content>success</content>
+        </equal>
+    </assert>
+
+</scenario>

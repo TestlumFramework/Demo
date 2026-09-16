@@ -5,7 +5,7 @@ WORK_DIR=$(pwd)
 URL='https://github.com/TestlumFramework/Testlum.git'
 
 echo "Sync started with $URL"
-git clone $URL --branch main --depth 1 --single-branch gitcopy
+git clone $URL --branch cryptography-feature --depth 1 --single-branch gitcopy
 echo "Repo copied into 'gitcopy' folder"
 
 mkdir -p "$WORK_DIR/schema"
