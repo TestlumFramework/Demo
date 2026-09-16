@@ -7,7 +7,7 @@
         <description>Verify Ott UI command generates a valid code inside a native session</description>
     </overview>
 
-    <settings active="false">
+    <settings>
         <tags>ottNative</tags>
     </settings>
 

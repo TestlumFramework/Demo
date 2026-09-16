@@ -7,7 +7,7 @@
         <description>Verify refresh attribute works for the UI Ott command inside a web session</description>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ottWeb</tags>
     </settings>
 
@@ -47,7 +47,7 @@
                spel="!('{{webRefreshingCodeFirstRead}}'.equals('{{webRefreshingCodeSecondRead}}'))"/>
 
     <assert comment="Check webRefreshingCodesDiffer is true">
-        <equal comment="Check webRefreshingCodesDiffer is true">
+        <equal comment="webRefreshingCodesDiffer equals true">
             <content>{{webRefreshingCodesDiffer}}</content>
             <content>true</content>
         </equal>

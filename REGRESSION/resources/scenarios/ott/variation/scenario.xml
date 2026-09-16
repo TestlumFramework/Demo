@@ -10,7 +10,7 @@
         <name>Ott Test with variations</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <variations>ott_variations.csv</variations>
         <tags>ott</tags>
     </settings>
@@ -25,7 +25,7 @@
                spel="'{{otpCode}}'.matches('^[0-9]{6}$')"/>
 
     <assert comment="Check that otpFormatCondition is true">
-        <equal comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
             <content>{{otpFormatCondition}}</content>
             <content>true</content>
         </equal>

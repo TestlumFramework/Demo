@@ -9,7 +9,7 @@
         <name>Ott Test with refresh attribute</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ott</tags>
     </settings>
 
@@ -44,7 +44,7 @@
                spel="!('{{refreshingCodeFirstRead}}'.equals('{{refreshingCodeSecondRead}}'))"/>
 
     <assert comment="Check refreshingCodesDiffer is true">
-        <equal comment="Check refreshingCodesDiffer is true">
+        <equal comment="refreshingCodesDiffer equals true">
             <content>{{refreshingCodesDiffer}}</content>
             <content>true</content>
         </equal>

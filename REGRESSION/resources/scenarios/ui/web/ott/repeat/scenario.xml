@@ -7,7 +7,7 @@
         <description>Verify UI Ott command executes correctly inside a repeat block within a web session</description>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ottWeb</tags>
     </settings>
 

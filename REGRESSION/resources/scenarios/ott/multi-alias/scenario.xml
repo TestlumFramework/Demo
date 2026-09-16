@@ -7,7 +7,7 @@
         <name>Ott Test with multiple aliases</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ott</tags>
     </settings>
 

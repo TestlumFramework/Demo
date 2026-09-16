@@ -7,7 +7,7 @@
         <name>Ott</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ott</tags>
     </settings>
 
@@ -17,7 +17,7 @@
                spel="'{{otpCode}}'.matches('^[0-9]{6}$')"/>
 
     <assert comment="Check that otpFormatCondition is true">
-        <equal comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
             <content>{{otpFormatCondition}}</content>
             <content>true</content>
         </equal>

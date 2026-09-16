@@ -7,7 +7,7 @@
         <name>Ott Test inside repeat</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ott</tags>
     </settings>
 

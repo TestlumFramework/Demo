@@ -7,7 +7,7 @@
         <name>Ott Test with conditions</name>
     </overview>
 
-    <settings onlyThis="true">
+    <settings>
         <tags>ott</tags>
     </settings>
 
@@ -31,17 +31,10 @@
                spel="'{{generatedOtp}}'.matches('^[0-9]{6}$')"/>
 
     <assert comment="Check that otpFormatCondition is true">
-        <equal comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
             <content>{{otpFormatCondition}}</content>
             <content>true</content>
         </equal>
-    </assert>
-
-    <assert comment="Sanity check: generatedOtp must NOT equal the untouched initial">
-        <notEqual comment="generatedOtp differs from initial">
-            <content>{{generatedOtp}}</content>
-            <content>INITIAL_NOT_TOUCHED</content>
-        </notEqual>
     </assert>
 
 </scenario>
