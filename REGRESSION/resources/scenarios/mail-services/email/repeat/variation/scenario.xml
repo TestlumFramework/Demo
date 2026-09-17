@@ -1,0 +1,43 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies repeated email retrieval using CSV variation rows.</description>
+        <name>Email Repeat Variation Test</name>
+    </overview>
+
+    <settings>
+        <tags>email</tags>
+    </settings>
+
+    <repeat comment="Check email inbox using variation rows"
+            variations="email_repeat.csv">
+
+        <smtp comment="Send verification email for variation row"
+              alias="SMTP_0"
+              recipientEmail="game_den@ukr.net">
+            <subject>{{subject}}</subject>
+            <text>{{body}}</text>
+        </smtp>
+
+        <email comment="{{comment}}"
+               alias="EMAIL_0"
+               pattern="{{pattern}}"
+               timeout="25000"
+               targetVariable="{{targetVar}}"/>
+
+    </repeat>
+
+    <assert comment="Verify extracted values from variation rows">
+        <equal comment="Check code1 equals expected OTP">
+            <content>{{code1}}</content>
+            <content>629104</content>
+        </equal>
+        <equal comment="Check code2 equals expected token">
+            <content>{{code2}}</content>
+            <content>SEC-84729</content>
+        </equal>
+    </assert>
+
+</scenario>

@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>This scenario verifies condition-based execution control.</description>
+        <name>Email Condition Test</name>
+    </overview>
+
+    <settings>
+        <tags>email</tags>
+    </settings>
+
+    <condition comment="Condition that allows command execution" name="executeEmail" spel="true"/>
+    <condition comment="Condition that blocks command execution" name="skipEmail" spel="false"/>
+
+    <var comment="Generate random 6-digit OTP code" name="generatedOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <smtp comment="Send email when condition is true"
+          alias="SMTP_0"
+          condition="executeEmail"
+          recipientEmail="game_den@ukr.net">
+        <subject>Condition True Test Email</subject>
+        <text>Ваш одноразовий код: {{generatedOtp}} для перевірки умов.</text>
+    </smtp>
+
+    <email comment="Retrieve email when condition is true"
+           alias="EMAIL_0"
+           condition="executeEmail"
+           pattern="код:\s*(\d{6})"
+           timeout="20000"
+           targetVariable="condOtp"/>
+
+    <assert comment="Verify extracted OTP under true condition"
+            condition="executeEmail">
+        <equal comment="Check OTP matches sent value">
+            <content>{{condOtp}}</content>
+            <content>{{generatedOtp}}</content>
+        </equal>
+    </assert>
+
+    <email comment="This email step should be skipped by false condition"
+           alias="EMAIL_0"
+           condition="skipEmail"
+           pattern="NON_EXISTENT_PATTERN"
+           timeout="2000"
+           targetVariable="shouldNotBeSet"/>
+
+</scenario>
