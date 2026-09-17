@@ -2,6 +2,19 @@
               xmlns="http://www.testlum.com/testing/model/global-config"
               xsi:schemaLocation="http://www.testlum.com/testing/model/global-config global-config.xsd">
 
+    <cryptographyIntegrations>
+        <cryptography alias="CRYPTO1"
+                      enabled="true"
+                      method="AES">
+            <secret>Tv(&gt;^E1d}X16ej#u$JTjzfQdDh$iuxKW</secret>
+        </cryptography>
+        <cryptography alias="CRYPTO2"
+                      enabled="true"
+                      method="CHACHA20">
+            <secret>MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=</secret>
+        </cryptography>
+    </cryptographyIntegrations>
+
     <apis>
         <api alias="MEGA_APP" url="http://mega-test-api:8080/api/v1" enabled="false">
             <auth authStrategy="jwt"/>

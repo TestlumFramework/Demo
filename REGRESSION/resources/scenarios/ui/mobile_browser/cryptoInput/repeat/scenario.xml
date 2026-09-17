@@ -1,0 +1,70 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>CryptoInput - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of cryptoInput command in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Repeat cryptoInput execution 3 times.
+            3. Verify the final decrypted value.
+
+            This scenario validates:
+            - repeat execution
+            - cryptoInput stability
+            - decrypt behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <var comment="Expected decrypted value" name="expectedValue">
+        <constant value="REPEAT"/>
+    </var>
+
+    <crypto alias="CRYPTO1"
+            comment="Encrypted value"
+            name="encryptedValue"
+            action="encrypt">
+        <value>{{expectedValue}}</value>
+    </crypto>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <repeat comment="Repeat cryptoInput 3 times"
+                times="3">
+
+            <cryptoInput comment="Input decrypted value"
+                         locator="uiElements.hotKeyInput1">
+                <decrypt alias="CRYPTO1"
+                         value="{{encryptedValue}}"/>
+            </cryptoInput>
+
+        </repeat>
+
+        <assert comment="Verify decrypted value after repeat">
+            <attribute comment="Check cryptoInput value"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>REPEAT</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

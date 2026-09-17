@@ -1,0 +1,83 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>CryptoInput - Condition</name>
+        <description>
+            This scenario verifies conditional execution of cryptoInput command in mobile browser.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Execute cryptoInput with true condition.
+            3. Verify decrypted value is entered.
+            4. Execute cryptoInput with false condition.
+            5. Verify value is NOT changed.
+
+            This scenario validates:
+            - condition true execution
+            - condition false skipping
+            - correct cryptoInput behavior
+        </description>
+    </overview>
+
+    <settings>
+        <tags>mobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step"
+             scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <condition comment="Always true condition"
+                   name="trueCondition"
+                   spel="true"/>
+
+        <condition comment="Always false condition"
+                   name="falseCondition"
+                   spel="false"/>
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load"
+              time="2"/>
+
+        <clear comment="Clear input before test"
+               locator="uiElements.hotKeyInput1"/>
+
+        <cryptoInput comment="Input decrypted value with true condition"
+                     locator="uiElements.hotKeyInput1"
+                     condition="trueCondition">
+            <decrypt alias="CRYPTO1"
+                     value="azGkRZP0s47fzT1rJ28Cq1Lcsi0qiiu1c37k9NitOaOm"/>
+        </cryptoInput>
+
+        <assert comment="Verify decrypted value is entered">
+            <attribute comment="Check value after true condition"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>HELLO</content>
+            </attribute>
+        </assert>
+
+        <cryptoInput comment="Try to overwrite value with false condition"
+                     locator="uiElements.hotKeyInput1"
+                     condition="falseCondition">
+            <decrypt alias="CRYPTO1"
+                     value="azGkRZP0s47fzT1rJ28Cq1Lcsi0qiiu1c37k9NitOaOm"/>
+        </cryptoInput>
+
+        <assert comment="Verify value is NOT changed">
+            <attribute comment="Value should remain unchanged"
+                       name="value"
+                       locator="uiElements.hotKeyInput1">
+                <content>HELLO</content>
+            </attribute>
+        </assert>
+
+    </mobilebrowser>
+
+</scenario>

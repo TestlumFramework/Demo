@@ -1,0 +1,151 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Crypto - Variable</name>
+        <description>
+            General test for Crypto command using variables.
+
+            This scenario validates:
+            - value injection
+            - encrypted value injection
+            - decrypted value injection
+            - plain text encryption and decryption
+            - special characters encryption and decryption
+            - unicode encryption and decryption
+            - dynamic comments usage
+        </description>
+    </overview>
+
+    <settings>
+        <tags>crypto</tags>
+    </settings>
+
+    <var comment="Encrypt command comment"
+         name="encryptComment">
+        <constant value="Encrypt value using variables"/>
+    </var>
+
+    <var comment="Decrypt command comment"
+         name="decryptComment">
+        <constant value="Decrypt value using variables"/>
+    </var>
+
+    <var comment="Encrypted assert comment"
+         name="encryptedAssertComment">
+        <constant value="Verify encrypted value"/>
+    </var>
+
+    <var comment="Decrypted assert comment"
+         name="decryptedAssertComment">
+        <constant value="Verify decrypted value"/>
+    </var>
+
+    <var comment="Encrypted content assert comment"
+         name="encryptedContentComment">
+        <constant value="Check encrypted value"/>
+    </var>
+
+    <var comment="Decrypted content assert comment"
+         name="decryptedContentComment">
+        <constant value="Check decrypted value"/>
+    </var>
+
+    <var comment="Plain text value"
+         name="plainText">
+        <constant value="dota DOTA2"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="{{encryptComment}}"
+            name="encryptedValue">
+
+        <value>{{plainText}}</value>
+
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="{{decryptComment}}"
+            name="decryptedValue">
+
+        <value>{{encryptedValue}}</value>
+
+    </crypto>
+
+    <assert comment="{{decryptedAssertComment}}">
+
+        <equal comment="{{decryptedContentComment}}">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+
+    </assert>
+
+    <var comment="Special characters value"
+         name="specialText">
+        <constant value="Hello_Test-123! @#$%^&amp;*()[]{}+=:;,.?/|~`"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="{{encryptComment}}"
+            name="encryptedSpecial">
+
+        <value>{{specialText}}</value>
+
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="{{decryptComment}}"
+            name="decryptedSpecial">
+
+        <value>{{encryptedSpecial}}</value>
+
+    </crypto>
+
+    <assert comment="{{decryptedAssertComment}}">
+
+        <equal comment="{{decryptedContentComment}}">
+            <content>{{specialText}}</content>
+            <content>{{decryptedSpecial}}</content>
+        </equal>
+
+    </assert>
+
+    <var comment="Unicode value"
+         name="unicodeText">
+        <constant value="Привет Testlum 你好 🚀"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="{{encryptComment}}"
+            name="encryptedUnicode">
+
+        <value>{{unicodeText}}</value>
+
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="{{decryptComment}}"
+            name="decryptedUnicode">
+
+        <value>{{encryptedUnicode}}</value>
+
+    </crypto>
+
+    <assert comment="{{decryptedAssertComment}}">
+
+        <equal comment="{{decryptedContentComment}}">
+            <content>{{unicodeText}}</content>
+            <content>{{decryptedUnicode}}</content>
+        </equal>
+
+    </assert>
+
+</scenario>

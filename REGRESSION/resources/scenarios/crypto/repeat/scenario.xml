@@ -1,0 +1,61 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Verify that Crypto encrypt and decrypt work correctly when executed repeatedly.
+            The scenario also verifies that the repeat command is executed exactly 3 times.
+        </description>
+        <name>Crypto - Repeat</name>
+    </overview>
+
+    <settings>
+        <tags>crypto</tags>
+    </settings>
+
+    <var name="plainText" comment="Initial crypto value">
+        <constant value="dota DOTA2"/>
+    </var>
+
+    <var name="repeatCount" comment="Counter for repeat iterations">
+        <constant value="0"/>
+    </var>
+
+    <repeat comment="Execute crypto commands 3 times" times="3">
+
+        <crypto comment="Encrypt value"
+                action="encrypt"
+                alias="CRYPTO2"
+                name="encryptedValue">
+            <value>{{plainText}}</value>
+        </crypto>
+
+        <crypto comment="Decrypt encrypted value"
+                action="decrypt"
+                alias="CRYPTO2"
+                name="decryptedValue">
+            <value>{{encryptedValue}}</value>
+        </crypto>
+
+        <var name="repeatCount" comment="Increment repeat counter">
+            <expression value="{{repeatCount}} + 1"/>
+        </var>
+
+    </repeat>
+
+    <assert comment="Verify final decrypted value after repeat">
+        <equal comment="Check final decrypted value">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+    <assert comment="Verify repeat executed exactly 3 times">
+        <equal comment="Check repeat count">
+            <content>{{repeatCount}}</content>
+            <content>3</content>
+        </equal>
+    </assert>
+
+</scenario>

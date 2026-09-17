@@ -1,0 +1,92 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Verify conditional execution of the Crypto command.
+            The scenario verifies that Crypto overwrites a variable when
+            the condition is true and does not overwrite it when the
+            condition is false.
+        </description>
+        <name>Crypto - Condition</name>
+    </overview>
+
+    <settings>
+        <tags>crypto</tags>
+    </settings>
+
+    <var name="plainText"
+         comment="Plaintext value">
+        <constant value="dota DOTA2"/>
+    </var>
+
+    <var name="encryptedValue"
+         comment="Initial value before conditional encryption">
+        <constant value="initial value"/>
+    </var>
+
+    <condition name="CRYPTO_ENABLED"
+               comment="Enable Crypto execution"
+               spel="1 &lt; 2"/>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt and overwrite value when condition is true"
+            condition="CRYPTO_ENABLED"
+            name="encryptedValue">
+        <value>{{plainText}}</value>
+    </crypto>
+
+    <assert comment="Verify Crypto overwrites variable when condition is true">
+        <notEqual comment="Encrypted value must replace initial value">
+            <content>{{encryptedValue}}</content>
+            <content>initial value</content>
+        </notEqual>
+    </assert>
+
+    <var name="decryptedValue"
+         comment="Initial value before conditional decryption">
+        <constant value="initial value"/>
+    </var>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt and overwrite value when condition is true"
+            condition="CRYPTO_ENABLED"
+            name="decryptedValue">
+        <value>{{encryptedValue}}</value>
+    </crypto>
+
+    <assert comment="Verify Crypto decrypt overwrites variable when condition is true">
+        <equal comment="Decrypted value must replace initial value">
+            <content>{{decryptedValue}}</content>
+            <content>{{plainText}}</content>
+        </equal>
+    </assert>
+
+    <var name="disabledEncryptedValue"
+         comment="Initial value before disabled encryption">
+        <constant value="encryption disabled"/>
+    </var>
+
+    <condition name="CRYPTO_DISABLED"
+               comment="Disable Crypto execution"
+               spel="2 &lt; 1"/>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encryption must not overwrite value when condition is false"
+            condition="CRYPTO_DISABLED"
+            name="disabledEncryptedValue">
+        <value>{{plainText}}</value>
+    </crypto>
+
+    <assert comment="Verify Crypto does not overwrite variable when condition is false">
+        <equal comment="Original value must remain unchanged">
+            <content>{{disabledEncryptedValue}}</content>
+            <content>encryption disabled</content>
+        </equal>
+    </assert>
+
+</scenario>
