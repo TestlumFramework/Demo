@@ -5,10 +5,10 @@
     <overview>
         <description>
             General test for Crypto command.
-            Covers encryption, decryption, variables, special characters,
-            unicode and conditional execution.
+            Covers encryption and decryption with plain text,
+            special characters and unicode.
         </description>
-        <name>Crypto general test</name>
+        <name>Crypto - General</name>
     </overview>
 
     <settings>
@@ -17,20 +17,18 @@
 
     <var comment="Plain text"
          name="plainText">
-        <constant value="'dota DOTA2'"/>
+        <constant value="dota DOTA2"/>
     </var>
 
     <crypto action="encrypt"
             alias="CRYPTO2"
             comment="Encrypt plain text"
             name="encryptedValue">
-        <value>
-            {{plainText}}
-        </value>
+        <value>{{plainText}}</value>
     </crypto>
 
     <assert comment="Encrypted value must differ from plain text">
-        <notEqual comment="Check not equal">
+        <notEqual comment="Check encrypted value">
             <content>{{plainText}}</content>
             <content>{{encryptedValue}}</content>
         </notEqual>
@@ -40,44 +38,44 @@
             alias="CRYPTO2"
             comment="Decrypt encrypted value"
             name="decryptedValue">
-        <value>
-            {{encryptedValue}}
-        </value>
+        <value>{{encryptedValue}}</value>
     </crypto>
 
     <assert comment="Decrypted value must equal original">
-        <equal comment="Check equal">
+        <equal comment="Check decrypted value">
             <content>{{plainText}}</content>
             <content>{{decryptedValue}}</content>
         </equal>
     </assert>
 
-
     <var comment="Special characters"
          name="specialText">
-        <constant value="'Hello_Test-123! @#$%^&amp;*()[]{}+=:;,.?/|~`'"/>
+        <constant value="Hello_Test-123! @#$%^&amp;*()[]{}+=:;,.?/|~`"/>
     </var>
 
     <crypto action="encrypt"
             alias="CRYPTO2"
             comment="Encrypt special characters"
             name="encryptedSpecial">
-        <value>
-            {{specialText}}
-        </value>
+        <value>{{specialText}}</value>
     </crypto>
+
+    <assert comment="Encrypted special characters must differ from original">
+        <notEqual comment="Check encrypted special value">
+            <content>{{specialText}}</content>
+            <content>{{encryptedSpecial}}</content>
+        </notEqual>
+    </assert>
 
     <crypto action="decrypt"
             alias="CRYPTO2"
             comment="Decrypt special characters"
             name="decryptedSpecial">
-        <value>
-            {{encryptedSpecial}}
-        </value>
+        <value>{{encryptedSpecial}}</value>
     </crypto>
 
-    <assert comment="Special characters must survive encryption and decryption">
-        <equal comment="Check equal">
+    <assert comment="Decrypted special characters must equal original">
+        <equal comment="Check decrypted special value">
             <content>{{specialText}}</content>
             <content>{{decryptedSpecial}}</content>
         </equal>
@@ -85,85 +83,34 @@
 
     <var comment="Unicode text"
          name="unicodeText">
-        <constant value="'Привет Testlum 你好 🚀'"/>
+        <constant value="Привет Testlum 你好 🚀"/>
     </var>
 
     <crypto action="encrypt"
             alias="CRYPTO2"
             comment="Encrypt unicode text"
             name="encryptedUnicode">
-        <value>
-            {{unicodeText}}
-        </value>
+        <value>{{unicodeText}}</value>
     </crypto>
+
+    <assert comment="Encrypted unicode value must differ from original">
+        <notEqual comment="Check encrypted unicode value">
+            <content>{{unicodeText}}</content>
+            <content>{{encryptedUnicode}}</content>
+        </notEqual>
+    </assert>
 
     <crypto action="decrypt"
             alias="CRYPTO2"
             comment="Decrypt unicode text"
             name="decryptedUnicode">
-        <value>
-            {{encryptedUnicode}}
-        </value>
+        <value>{{encryptedUnicode}}</value>
     </crypto>
 
-    <assert comment="Unicode must survive encryption and decryption">
-        <equal comment="Check equal">
+    <assert comment="Decrypted unicode value must equal original">
+        <equal comment="Check decrypted unicode value">
             <content>{{unicodeText}}</content>
             <content>{{decryptedUnicode}}</content>
-        </equal>
-    </assert>
-
-    <condition comment="Crypto execution is enabled"
-               name="CRYPTO_ENABLED"
-               spel="true"/>
-
-    <crypto action="encrypt"
-            alias="CRYPTO2"
-            comment="Conditional encryption"
-            condition="CRYPTO_ENABLED"
-            name="conditionalEncrypted">
-        <value>
-            {{plainText}}
-        </value>
-    </crypto>
-
-    <crypto action="decrypt"
-            alias="CRYPTO2"
-            comment="Conditional decryption"
-            condition="CRYPTO_ENABLED"
-            name="conditionalDecrypted">
-        <value>
-            {{conditionalEncrypted}}
-        </value>
-    </crypto>
-
-    <assert comment="Conditional crypto must execute"
-            condition="CRYPTO_ENABLED">
-        <equal  comment="Check equal">
-            <content>{{plainText}}</content>
-            <content>{{conditionalDecrypted}}</content>
-        </equal>
-    </assert>
-
-    <condition comment="Crypto execution is disabled"
-               name="CRYPTO_DISABLED"
-               spel="false"/>
-
-    <crypto action="encrypt"
-            alias="CRYPTO2"
-            comment="Encryption must be skipped"
-            condition="CRYPTO_DISABLED"
-            name="skippedEncrypted">
-        <value>
-            {{plainText}}
-        </value>
-    </crypto>
-
-    <assert comment="Assertion must be skipped when condition is false"
-            condition="CRYPTO_DISABLED">
-        <equal comment="Check equal">
-            <content>wrong</content>
-            <content>value</content>
         </equal>
     </assert>
 

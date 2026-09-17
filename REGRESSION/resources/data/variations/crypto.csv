@@ -1,6 +1,6 @@
-plainText
-dota DOTA2
-hello world
-123456789
-!@#$%^&*()
-Привіт світ
+plainText,encryptComment,decryptComment,assertComment
+dota DOTA2,Encrypt dota value,Decrypt dota value,Check dota value
+hello world,Encrypt hello value,Decrypt hello value,Check hello value
+123456789,Encrypt number value,Decrypt number value,Check number value
+!@#$%^&*(),Encrypt special value,Decrypt special value,Check special value
+Привіт світ,Encrypt unicode value,Decrypt unicode value,Check unicode value

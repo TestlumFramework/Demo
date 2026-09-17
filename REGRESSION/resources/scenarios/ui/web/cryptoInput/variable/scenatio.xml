@@ -1,0 +1,143 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>CryptoInput - Variable</name>
+        <description>
+            This scenario verifies cryptoInput command using variables.
+
+            This scenario validates:
+            - locator injection
+            - value injection
+            - encrypt operation
+            - decrypt operation
+            - dynamic comments usage
+            - encrypted value input
+            - decrypted value input
+        </description>
+    </overview>
+
+    <settings>
+        <tags>cryptoWeb</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <var comment="WEB section comment"
+             name="webComment">
+            <constant value="Start WEB script"/>
+        </var>
+
+        <var comment="Navigate command comment"
+             name="navigateComment">
+            <constant value="Navigate to UI Elements page"/>
+        </var>
+
+        <var comment="Wait command comment"
+             name="waitComment">
+            <constant value="Wait for page load"/>
+        </var>
+
+        <var comment="Encrypt input command comment"
+             name="encryptInputComment">
+            <constant value="Input encrypted value"/>
+        </var>
+
+        <var comment="Decrypt input command comment"
+             name="decryptInputComment">
+            <constant value="Input decrypted value"/>
+        </var>
+
+        <var comment="Encrypt assert comment"
+             name="encryptAssertComment">
+            <constant value="Verify encrypted value"/>
+        </var>
+
+        <var comment="Decrypt assert comment"
+             name="decryptAssertComment">
+            <constant value="Verify decrypted value"/>
+        </var>
+
+        <var comment="Encrypted attribute assert comment"
+             name="encryptedAttributeComment">
+            <constant value="Check encrypted input value"/>
+        </var>
+
+        <var comment="Decrypted attribute assert comment"
+             name="decryptedAttributeComment">
+            <constant value="Check decrypted input value"/>
+        </var>
+
+        <var comment="First input locator"
+             name="encryptLocator">
+            <constant value="uiElements.hotKeyInput1"/>
+        </var>
+
+        <var comment="Second input locator"
+             name="decryptLocator">
+            <constant value="uiElements.hotKeyInput2"/>
+        </var>
+
+        <var comment="Value to encrypt"
+             name="value">
+            <constant value="VARIABLE_TEST"/>
+        </var>
+
+
+        <navigate comment="{{navigateComment}}"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="{{waitComment}}"
+              time="2"/>
+
+        <cryptoInput comment="{{encryptInputComment}}"
+                     locator="{{encryptLocator}}"
+                     locatorStrategy="locatorId">
+
+            <encrypt alias="CRYPTO1"
+                     value="{{value}}"/>
+
+        </cryptoInput>
+
+
+        <assert comment="{{encryptAssertComment}}">
+
+            <attribute comment="{{encryptedAttributeComment}}"
+                       name="value"
+                       locator="{{encryptLocator}}">
+
+                <content>{{encryptedValue}}</content>
+
+            </attribute>
+
+        </assert>
+
+        <cryptoInput comment="{{decryptInputComment}}"
+                     locator="{{decryptLocator}}"
+                     locatorStrategy="locatorId">
+
+            <decrypt alias="CRYPTO1"
+                     value="{{encryptedValue}}"/>
+
+        </cryptoInput>
+
+        <assert comment="{{decryptAssertComment}}">
+
+            <attribute comment="{{decryptedAttributeComment}}"
+                       name="value"
+                       locator="{{decryptLocator}}">
+
+                <content>{{value}}</content>
+
+            </attribute>
+
+        </assert>
+
+    </web>
+
+</scenario>

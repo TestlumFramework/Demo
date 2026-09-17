@@ -20,7 +20,7 @@
     </overview>
 
     <settings>
-        <tags>web</tags>
+        <tags>cryptoWeb</tags>
     </settings>
 
     <include comment="Include login step"

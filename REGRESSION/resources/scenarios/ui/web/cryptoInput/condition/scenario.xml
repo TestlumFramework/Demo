@@ -11,8 +11,8 @@
             1. Navigate to UI Elements page.
             2. Execute cryptoInput with true condition.
             3. Verify decrypted value is entered.
-            4. Execute cryptoInput with false condition.
-            5. Verify value is NOT changed.
+            4. Execute cryptoInput with false condition using a different value.
+            5. Verify the original value is not changed.
 
             This scenario validates:
             - condition true execution
@@ -22,7 +22,7 @@
     </overview>
 
     <settings>
-        <tags>web</tags>
+        <tags>cryptoWeb</tags>
     </settings>
 
     <include comment="Include login step"
@@ -69,11 +69,11 @@
                      locatorStrategy="locatorId"
                      condition="falseCondition">
             <decrypt alias="CRYPTO1"
-                     value="azGkRZP0s47fzT1rJ28Cq1Lcsi0qiiu1c37k9NitOaOm"/>
+                     value="DIFFERENT_ENCRYPTED_VALUE"/>
         </cryptoInput>
 
-        <assert comment="Verify value is NOT changed">
-            <attribute comment="Value should remain unchanged"
+        <assert comment="Verify value is not changed">
+            <attribute comment="Value should remain HELLO"
                        name="value"
                        locator="uiElements.hotKeyInput1">
                 <content>HELLO</content>
