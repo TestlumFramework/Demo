@@ -1,0 +1,34 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Web Ott Test</name>
+        <description>Verify Ott UI command generates code inside a web session</description>
+    </overview>
+
+    <settings>
+        <tags>ottWeb</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <ott comment="Generate OTP code inside web session" alias="OTT_QA" name="webOtpCode"/>
+
+    </web>
+
+    <condition comment="Verify webOtpCode has correct format" name="otpFormatCondition"
+               spel="'{{webOtpCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

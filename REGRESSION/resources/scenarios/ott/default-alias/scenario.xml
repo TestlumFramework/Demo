@@ -1,0 +1,26 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verify Ott uses "DEFAULT" alias when alias attribute is omitted</description>
+        <name>Ott Test with default alias</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate OTP code without specifying alias" name="defaultAliasCode"/>
+
+    <condition comment="Verify defaultAliasCode has correct format" name="otpFormatCondition"
+               spel="'{{defaultAliasCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

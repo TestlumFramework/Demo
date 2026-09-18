@@ -1,0 +1,31 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verify Ott secret attribute supports variable injection</description>
+        <name>Ott Test with secret injected via variable</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <var comment="Create variable holding the secret value" name="secretVar">
+        <constant value="JBSWY3DPEHPK3PXP"/>
+    </var>
+
+    <ott comment="Generate OTP code using secret injected from variable" name="injectedSecretCode"
+         secret="{{secretVar}}"/>
+
+    <condition comment="Verify injectedSecretCode has correct format" name="otpFormatCondition"
+               spel="'{{injectedSecretCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

@@ -1,0 +1,40 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test Ott command with conditions</description>
+        <name>Ott Test with conditions</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <var comment="Initial value to prove ott was NOT executed when condition is false" name="notGeneratedOtp">
+        <constant value="INITIAL_NOT_TOUCHED"/>
+    </var>
+
+    <ott comment="Ott with false condition must not be generated" name="notGeneratedOtp" alias="OTT_QA"
+         condition="false"/>
+
+    <assert comment="Verify notGeneratedOtp was never touched — command with false condition did not run">
+        <equal comment="notGeneratedOtp must still equal the initial value">
+            <content>{{notGeneratedOtp}}</content>
+            <content>INITIAL_NOT_TOUCHED</content>
+        </equal>
+    </assert>
+
+    <ott comment="Ott with true condition must be generated" name="generatedOtp" alias="OTT_QA" condition="true"/>
+
+    <condition comment="Verify generatedOtp has correct format" name="otpFormatCondition"
+               spel="'{{generatedOtp}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>
