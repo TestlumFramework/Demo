@@ -1,0 +1,117 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            General test for Crypto command.
+            Covers encryption and decryption with plain text,
+            special characters and unicode.
+        </description>
+        <name>Crypto - General</name>
+    </overview>
+
+    <settings>
+        <tags>crypto</tags>
+    </settings>
+
+    <var comment="Plain text"
+         name="plainText">
+        <constant value="dota DOTA2"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt plain text"
+            name="encryptedValue">
+        <value>{{plainText}}</value>
+    </crypto>
+
+    <assert comment="Encrypted value must differ from plain text">
+        <notEqual comment="Check encrypted value">
+            <content>{{plainText}}</content>
+            <content>{{encryptedValue}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt encrypted value"
+            name="decryptedValue">
+        <value>{{encryptedValue}}</value>
+    </crypto>
+
+    <assert comment="Decrypted value must equal original">
+        <equal comment="Check decrypted value">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+    <var comment="Special characters"
+         name="specialText">
+        <constant value="Hello_Test-123! @#$%^&amp;*()[]{}+=:;,.?/|~`"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt special characters"
+            name="encryptedSpecial">
+        <value>{{specialText}}</value>
+    </crypto>
+
+    <assert comment="Encrypted special characters must differ from original">
+        <notEqual comment="Check encrypted special value">
+            <content>{{specialText}}</content>
+            <content>{{encryptedSpecial}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt special characters"
+            name="decryptedSpecial">
+        <value>{{encryptedSpecial}}</value>
+    </crypto>
+
+    <assert comment="Decrypted special characters must equal original">
+        <equal comment="Check decrypted special value">
+            <content>{{specialText}}</content>
+            <content>{{decryptedSpecial}}</content>
+        </equal>
+    </assert>
+
+    <var comment="Unicode text"
+         name="unicodeText">
+        <constant value="Привет Testlum 你好 🚀"/>
+    </var>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="Encrypt unicode text"
+            name="encryptedUnicode">
+        <value>{{unicodeText}}</value>
+    </crypto>
+
+    <assert comment="Encrypted unicode value must differ from original">
+        <notEqual comment="Check encrypted unicode value">
+            <content>{{unicodeText}}</content>
+            <content>{{encryptedUnicode}}</content>
+        </notEqual>
+    </assert>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="Decrypt unicode text"
+            name="decryptedUnicode">
+        <value>{{encryptedUnicode}}</value>
+    </crypto>
+
+    <assert comment="Decrypted unicode value must equal original">
+        <equal comment="Check decrypted unicode value">
+            <content>{{unicodeText}}</content>
+            <content>{{decryptedUnicode}}</content>
+        </equal>
+    </assert>
+
+</scenario>

@@ -8,3 +8,4 @@ target/
 /HELP.md
 .DS_store
 .java-version
+REGRESSION/resources/report/

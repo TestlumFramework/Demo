@@ -28,6 +28,7 @@
         <tag name="include" enabled="true"/>
         <tag name="wait" enabled="true"/>
         <tag name="var-linux-only" enabled="true"/>
+        <tag name="crypto" enabled="true"/>
 
         <!--    API    -->
         <tag name="http" enabled="true"/>

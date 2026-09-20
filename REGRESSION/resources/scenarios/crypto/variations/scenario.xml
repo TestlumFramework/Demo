@@ -1,0 +1,51 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Crypto - Variations</name>
+        <description>
+            This scenario verifies crypto encrypt and decrypt commands with CSV variations.
+
+            Test flow:
+            1. Inject different values from CSV.
+            2. Encrypt the variation value.
+            3. Decrypt the encrypted value.
+            4. Verify that the decrypted value equals the original variation value.
+
+            This scenario validates:
+            - CSV-based injection
+            - attribute injection
+            - dynamic value usage
+            - encrypt behavior
+            - decrypt behavior
+        </description>
+    </overview>
+
+    <settings>
+        <variations>crypto.csv</variations>
+        <tags>crypto</tags>
+    </settings>
+
+    <crypto action="encrypt"
+            alias="CRYPTO2"
+            comment="{{encryptComment}}"
+            name="encryptedValue">
+        <value>{{plainText}}</value>
+    </crypto>
+
+    <crypto action="decrypt"
+            alias="CRYPTO2"
+            comment="{{decryptComment}}"
+            name="decryptedValue">
+        <value>{{encryptedValue}}</value>
+    </crypto>
+
+    <assert comment="{{assertComment}}">
+        <equal comment="Check decrypted value">
+            <content>{{plainText}}</content>
+            <content>{{decryptedValue}}</content>
+        </equal>
+    </assert>
+
+</scenario>

@@ -3,44 +3,44 @@
               xsi:schemaLocation="http://www.testlum.com/testing/model/global-config global-config.xsd">
 
     <apis>
-        <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="jwt"/>
         </api>
-        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="jwt" autoLogout="false"/>
         </api>
-        <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="basic"/>
         </api>
-        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="basic" autoLogout="false"/>
         </api>
-        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="custom"
                   authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
                   autoLogout="true"/>
         </api>
-        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
+        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="false">
             <auth authStrategy="custom"
                   authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
                   autoLogout="false"/>
         </api>
-        <api alias="MULTIPART" url="https://postman-echo.com" enabled="true"/>
-        <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="true"/>
+        <api alias="MULTIPART" url="https://postman-echo.com" enabled="false"/>
+        <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="false"/>
     </apis>
 
     <websockets>
-        <api alias="MEGA_WS_STANDARD" enabled="true" url="ws://localhost:8080/api/v1/ws-standard" protocol="standard"/>
-        <api alias="MEGA_WS_APP" url="ws://localhost:8080/api/v1/ws-app" protocol="stomp" enabled="true"/>
-        <api alias="ECHO" url="wss://ws.postman-echo.com/raw" protocol="standard" enabled="true"/>
+        <api alias="MEGA_WS_STANDARD" enabled="false" url="ws://localhost:8080/api/v1/ws-standard" protocol="standard"/>
+        <api alias="MEGA_WS_APP" url="ws://localhost:8080/api/v1/ws-app" protocol="stomp" enabled="false"/>
+        <api alias="ECHO" url="wss://ws.postman-echo.com/raw" protocol="standard" enabled="false"/>
     </websockets>
 
     <graphqlIntegration>
-        <api alias="MEGA_GQL_APP" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_GQL_APP" url="http://localhost:8080/api/v1" enabled="false"/>
     </graphqlIntegration>
 
     <lambdaIntegration>
-        <lambda alias="LAMBDA" enabled="true">
+        <lambda alias="LAMBDA" enabled="false">
             <region>eu-central-1</region>
             <endpoint>http://localhost:4566</endpoint>
             <accessKeyId>JQttVjEfR3y4UJ</accessKeyId>
@@ -49,7 +49,7 @@
     </lambdaIntegration>
 
     <dynamoIntegration>
-        <dynamo alias="DYNAMO_0" enabled="true" truncate="true">
+        <dynamo alias="DYNAMO_0" enabled="false" truncate="true">
             <region>eu-central-1</region>
             <endpoint>http://localhost:8100</endpoint>
             <accessKeyId>dHwXPbnU9FVb3o</accessKeyId>
@@ -59,7 +59,7 @@
     </dynamoIntegration>
 
     <mongoIntegration>
-        <mongo alias="MONGO_0" enabled="true" truncate="true">
+        <mongo alias="MONGO_0" enabled="false" truncate="true">
             <database>mongo_db</database>
             <host>localhost</host>
             <port>27017</port>
@@ -67,7 +67,7 @@
             <password>password</password>
         </mongo>
 
-        <mongo alias="MONGO_BOOKS_0" enabled="true" truncate="true">
+        <mongo alias="MONGO_BOOKS_0" enabled="false" truncate="true">
             <database>graphql_db</database>
             <host>localhost</host>
             <port>27017</port>
@@ -77,7 +77,7 @@
     </mongoIntegration>
 
     <postgresIntegration>
-        <postgres alias="POSTGRES_0" enabled="true" truncate="true">
+        <postgres alias="POSTGRES_0" enabled="false" truncate="true">
             <jdbcDriver>org.postgresql.Driver</jdbcDriver>
             <username>playground</username>
             <password>playground</password>
@@ -96,7 +96,7 @@
             </hikari>
         </postgres>
 
-        <postgres alias="POSTGRES_AUTH" enabled="true" truncate="true">
+        <postgres alias="POSTGRES_AUTH" enabled="false" truncate="true">
             <jdbcDriver>org.postgresql.Driver</jdbcDriver>
             <username>user</username>
             <password>password</password>
@@ -117,7 +117,7 @@
     </postgresIntegration>
 
     <mysqlIntegration>
-        <mysql alias="MYSQL_0" enabled="true" truncate="true">
+        <mysql alias="MYSQL_0" enabled="false" truncate="true">
             <jdbcDriver>com.mysql.cj.jdbc.Driver</jdbcDriver>
             <username>playground</username>
             <password>playground</password>
@@ -169,7 +169,7 @@
 
     <sqlDatabaseIntegration>
         <sqlDatabase alias="MARIADB_0"
-                     enabled="true"
+                     enabled="false"
                      truncate="true">
             <jdbcDriver>org.mariadb.jdbc.Driver</jdbcDriver>
             <username>root</username>
@@ -193,14 +193,14 @@
     </sqlDatabaseIntegration>
 
     <redisIntegration>
-        <redis alias="REDIS_0" enabled="true" truncate="true">
+        <redis alias="REDIS_0" enabled="false" truncate="true">
             <host>localhost</host>
             <port>6379</port>
         </redis>
     </redisIntegration>
 
     <kafkaIntegration>
-        <kafka alias="KAFKA_0" enabled="true" truncate="true">
+        <kafka alias="KAFKA_0" enabled="false" truncate="true">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
@@ -210,7 +210,7 @@
             <groupId>group-queue</groupId>
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
-        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="true">
+        <kafka alias="KAFKA_WITH_REDUCED_POLL_INVERVAL" enabled="false">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
@@ -220,7 +220,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_LATEST_AUTO_OFFSET"
-               enabled="true">
+               enabled="false">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>latest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
@@ -230,7 +230,7 @@
             <autoCommitTimeout>2000</autoCommitTimeout>
         </kafka>
         <kafka alias="KAFKA_WITH_REDUCED_POLL_RECORDS"
-               enabled="true">
+               enabled="false">
             <bootstrapAddress>localhost:9094</bootstrapAddress>
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>2</maxPollRecords>
@@ -242,7 +242,7 @@
     </kafkaIntegration>
 
     <rabbitmqIntegration>
-        <rabbitmq alias="RABBIT_0" enabled="true" truncate="true">
+        <rabbitmq alias="RABBIT_0" enabled="false" truncate="true">
             <host>localhost</host>
             <port>5672</port>
             <username>guest</username>
@@ -254,7 +254,7 @@
     </rabbitmqIntegration>
 
     <sqsIntegration>
-        <sqs alias="SQS_0" enabled="true" truncate="true">
+        <sqs alias="SQS_0" enabled="false" truncate="true">
             <region>eu-central-1</region>
             <endpoint>http://localhost:4566</endpoint>
             <accessKeyId>JQttVjEfR3y4UJ</accessKeyId>
@@ -278,7 +278,7 @@
     </elasticsearchIntegration>
 
     <s3Integration>
-        <s3 alias="S3_0" enabled="true" truncate="true">
+        <s3 alias="S3_0" enabled="false" truncate="true">
             <region>eu-central-1</region>
             <endpoint>http://localhost:4566</endpoint>
             <accessKeyId>JQttVjEfR3y4UJ</accessKeyId>
@@ -312,11 +312,25 @@
     </smtpIntegration>
 
     <sesIntegration>
-        <ses alias="SES_0" enabled="true">
+        <ses alias="SES_0" enabled="false">
             <region>eu-central-1</region>
             <endpoint>http://localhost:4566</endpoint>
             <accessKeyId>JQttVjEfR3y4UJ</accessKeyId>
             <secretAccessKey>wzsTjXDJL2C5Wq</secretAccessKey>
         </ses>
     </sesIntegration>
+
+    <cryptographyIntegrations>
+        <cryptography alias="CRYPTO1"
+                      enabled="true"
+                      method="AES">
+            <secret>Tv(&gt;^E1d}X16ej#u$JTjzfQdDh$iuxKW</secret>
+        </cryptography>
+        <cryptography alias="CRYPTO2"
+                      enabled="true"
+                      method="CHACHA20">
+            <secret>MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=</secret>
+        </cryptography>
+    </cryptographyIntegrations>
+
 </integrations>

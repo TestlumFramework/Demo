@@ -1,0 +1,4 @@
+webComment,navigateComment,waitComment,waitTime,inputComment,locator,value
+Start WEB,Go to UI Elements,Wait for page load,2,Encrypt value 1,uiElements.hotKeyInput1,HELLO
+Start WEB,Go to UI Elements,Wait for page load,2,Encrypt value 2,uiElements.hotKeyInput1,WORLD
+Start WEB,Go to UI Elements,Wait for page load,2,Encrypt value 3,uiElements.hotKeyInput1,dota DOTA2
