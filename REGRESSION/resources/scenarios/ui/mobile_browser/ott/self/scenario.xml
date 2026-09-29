@@ -1,0 +1,45 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Mobile Browser Ott Test</name>
+        <description>Verify Ott UI command generates a valid code inside a mobile browser session (alias-based and
+            inline secret)
+        </description>
+    </overview>
+
+    <settings>
+        <tags>ottMobilebrowser</tags>
+    </settings>
+
+    <include comment="Include login step" scenario="/ui/includes/login_mobile_browser/scenario.xml"/>
+
+    <mobilebrowser comment="Start MOBILE BROWSER script">
+
+        <navigate comment="Navigate to UI Elements page" command="to" path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <ott comment="Generate OTP code by alias" alias="OTT_QA" name="mobileAliasCode"/>
+        <ott comment="Generate OTP code by inline secret" secret="JBSWY3DPEHPK3PXP" name="mobileSecretCode"/>
+
+    </mobilebrowser>
+
+    <condition comment="Verify mobileAliasCode has correct format" name="aliasFormatCondition"
+               spel="'{{mobileAliasCode}}'.matches('^[0-9]{6}$')"/>
+    <condition comment="Verify mobileSecretCode has correct format" name="secretFormatCondition"
+               spel="'{{mobileSecretCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Both codes have correct format">
+        <equal comment="aliasFormatCondition is true">
+            <content>{{aliasFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+        <equal comment="secretFormatCondition is true">
+            <content>{{secretFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

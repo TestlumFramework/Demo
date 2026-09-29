@@ -1,0 +1,56 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Web Ott Test with refresh attribute</name>
+        <description>Verify refresh attribute works for the UI Ott command inside a web session</description>
+    </overview>
+
+    <settings>
+        <tags>ottWeb</tags>
+    </settings>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page" command="to" path="/ui-elements"/>
+
+        <ott comment="Generate code WITHOUT refresh (cached code)" alias="OTT_QA" name="webCachedCode"/>
+        <ott comment="Generate code WITH refresh=true" alias="OTT_QA" name="webRefreshingCode" refresh="true"/>
+
+    </web>
+
+    <var comment="Capture first read of webCachedCode" name="webCachedCodeFirstRead">
+        <constant value="{{webCachedCode}}"/>
+    </var>
+    <var comment="Capture first read of webRefreshingCode" name="webRefreshingCodeFirstRead">
+        <constant value="{{webRefreshingCode}}"/>
+    </var>
+
+    <wait comment="Wait past the 30-second TOTP window" time="31"/>
+
+    <var comment="Capture second read of webCachedCode" name="webCachedCodeSecondRead">
+        <constant value="{{webCachedCode}}"/>
+    </var>
+    <var comment="Capture second read of webRefreshingCode" name="webRefreshingCodeSecondRead">
+        <constant value="{{webRefreshingCode}}"/>
+    </var>
+
+    <assert comment="Without refresh, code must remain the same across the window">
+        <equal comment="webCachedCodeFirstRead must equal webCachedCodeSecondRead">
+            <content>{{webCachedCodeFirstRead}}</content>
+            <content>{{webCachedCodeSecondRead}}</content>
+        </equal>
+    </assert>
+
+    <condition comment="With refresh=true, code must differ across the window" name="webRefreshingCodesDiffer"
+               spel="!('{{webRefreshingCodeFirstRead}}'.equals('{{webRefreshingCodeSecondRead}}'))"/>
+
+    <assert comment="Check webRefreshingCodesDiffer is true">
+        <equal comment="webRefreshingCodesDiffer equals true">
+            <content>{{webRefreshingCodesDiffer}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

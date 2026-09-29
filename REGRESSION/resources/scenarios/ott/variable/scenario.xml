@@ -1,0 +1,30 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test Ott command with variables inject</description>
+        <name>Ott Test with variables inject</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <var comment="Create variable for name inject" name="nameVar">
+        <constant value="injectedOtpCode"/>
+    </var>
+
+    <ott comment="Ott with injected name" alias="OTT_QA" name="{{nameVar}}"/>
+
+    <condition comment="Verify injectedOtpCode has correct format" name="otpFormatCondition"
+               spel="'{{injectedOtpCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

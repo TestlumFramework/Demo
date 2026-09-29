@@ -1,0 +1,42 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Verify different aliases resolve to different secrets and produce different codes</description>
+        <name>Ott Test with multiple aliases</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate code for OTT_QA alias" alias="OTT_QA" name="qaCode"/>
+    <ott comment="Generate code for OTT_DEFAULT alias" alias="OTT_DEFAULT" name="defaultCode"/>
+
+    <condition comment="Verify qaCode format" name="qaFormatCondition"
+               spel="'{{qaCode}}'.matches('^[0-9]{6}$')"/>
+    <condition comment="Verify defaultCode format" name="defaultFormatCondition"
+               spel="'{{defaultCode}}'.matches('^[0-9]{6}$')"/>
+    <condition comment="Check codes differ (different secrets per alias)" name="codesDiffer"
+               spel="!('{{qaCode}}'.equals('{{defaultCode}}'))"/>
+
+    <assert comment="Both codes have correct format">
+        <equal comment="qaFormatCondition is true">
+            <content>{{qaFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+        <equal comment="defaultFormatCondition is true">
+            <content>{{defaultFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <assert comment="Codes for OTT_QA and OTT_DEFAULT must differ">
+        <equal comment="codesDiffer is true">
+            <content>{{codesDiffer}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

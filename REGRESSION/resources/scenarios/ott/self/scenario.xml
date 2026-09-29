@@ -1,0 +1,35 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Self test for command: Ott</description>
+        <name>Ott</name>
+    </overview>
+
+    <settings>
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate OTP code for OTT_QA alias" name="otpCode" alias="OTT_QA"/>
+
+    <condition comment="Verify generated code is exactly 6 digits" name="otpFormatCondition"
+               spel="'{{otpCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+    <ott comment="Generate OTP code again for the same alias" name="otpCodeRepeat" alias="OTT_QA"/>
+
+    <assert comment="Same alias within the same 30-second TOTP window must yield the same code">
+        <equal comment="otpCode and otpCodeRepeat must match">
+            <content>{{otpCode}}</content>
+            <content>{{otpCodeRepeat}}</content>
+        </equal>
+    </assert>
+
+</scenario>

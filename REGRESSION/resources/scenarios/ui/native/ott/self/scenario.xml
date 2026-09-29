@@ -1,0 +1,37 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Native Ott Test</name>
+        <description>Verify Ott UI command generates a valid code inside a native session</description>
+    </overview>
+
+    <settings>
+        <tags>ottNative</tags>
+    </settings>
+
+    <native comment="Start native scripts">
+
+        <ott comment="Generate OTP code by alias" alias="OTT_QA" name="nativeAliasCode"/>
+        <ott comment="Generate OTP code by inline secret" secret="JBSWY3DPEHPK3PXP" name="nativeSecretCode"/>
+
+    </native>
+
+    <condition comment="Verify nativeAliasCode has correct format" name="aliasFormatCondition"
+               spel="'{{nativeAliasCode}}'.matches('^[0-9]{6}$')"/>
+    <condition comment="Verify nativeSecretCode has correct format" name="secretFormatCondition"
+               spel="'{{nativeSecretCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Both codes have correct format">
+        <equal comment="aliasFormatCondition is true">
+            <content>{{aliasFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+        <equal comment="secretFormatCondition is true">
+            <content>{{secretFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>

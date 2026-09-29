@@ -1,0 +1,27 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Test Ott inline secret with CSV variations</description>
+        <name>Ott Test with secret variations</name>
+    </overview>
+
+    <settings>
+        <variations>ott_secret_variations.csv</variations>
+        <tags>ott</tags>
+    </settings>
+
+    <ott comment="Generate OTP code for variation {{caseName}}" secret="{{secretValue}}" name="otpCode"/>
+
+    <condition comment="Verify generated code has correct format" name="otpFormatCondition"
+               spel="'{{otpCode}}'.matches('^[0-9]{6}$')"/>
+
+    <assert comment="Check that otpFormatCondition is true">
+        <equal comment="otpFormatCondition equals true">
+            <content>{{otpFormatCondition}}</content>
+            <content>true</content>
+        </equal>
+    </assert>
+
+</scenario>
