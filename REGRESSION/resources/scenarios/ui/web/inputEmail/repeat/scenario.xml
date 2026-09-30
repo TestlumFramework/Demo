@@ -1,0 +1,86 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>InputEmail - Repeat</name>
+        <description>
+            This scenario verifies repeated execution of inputEmail command in a loop.
+
+            Test flow:
+            1. Generate random OTP codes and send verification emails via SMTP.
+            2. Include web login steps.
+            3. Navigate to UI Elements page.
+            4. Repeat inputEmail execution across iterations.
+            5. Verify target element presence after each iteration.
+
+            This scenario validates:
+            - repeat execution container support
+            - repeated mailbox polling and UI typing
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web,email</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <var comment="Generate first repeat OTP code" name="firstRepeatOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <var comment="Generate second repeat OTP code" name="secondRepeatOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <smtp comment="Send first email for repeat test"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>InputEmail Repeat Verification 1</subject>
+        <text>Код повтору: {{firstRepeatOtp}} для перевірки 1.</text>
+    </smtp>
+
+    <smtp comment="Send second email for repeat test"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>InputEmail Repeat Verification 2</subject>
+        <text>Код повтору: {{secondRepeatOtp}} для перевірки 2.</text>
+    </smtp>
+
+    <web comment="Start WEB repeat script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <repeat comment="Repeat inputEmail 2 times"
+                times="2">
+
+            <clear comment="Clear input field before repeat iteration"
+                   locator="uiElements.hotKeyInput1"/>
+
+            <inputEmail comment="Input extracted code in loop"
+                        alias="EMAIL_0"
+                        locator="uiElements.hotKeyInput1"
+                        pattern="повтору:\s*(\d{6})"
+                        timeout="25000"
+                        highlight="true"/>
+
+            <assert comment="Verify input field is present">
+                <present comment="Check input1 is present"
+                         locator="uiElements.hotKeyInput1"/>
+            </assert>
+
+        </repeat>
+
+    </web>
+
+</scenario>

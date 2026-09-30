@@ -1,0 +1,40 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of email inbox test</description>
+        <name>Email</name>
+    </overview>
+
+    <settings>
+        <tags>email</tags>
+    </settings>
+
+    <var comment="Generate random 6-digit OTP code" name="generatedOtp">
+        <generate length="6">
+            <numeric/>
+        </generate>
+    </var>
+
+    <smtp comment="Send verification email to recipient inbox"
+          alias="SMTP_0"
+          recipientEmail="game_den@ukr.net">
+        <subject>Email Inbox Verification Code</subject>
+        <text>Шановний користувачу, ваш одноразовий код: {{generatedOtp}} для підтвердження входу.</text>
+    </smtp>
+
+    <email comment="Wait for email and extract OTP code into variable"
+           alias="EMAIL_0"
+           pattern="код:\s*(\d{6})"
+           timeout="20000"
+           targetVariable="receivedOtp"/>
+
+    <assert comment="Verify that received OTP matches the sent OTP code">
+        <equal comment="Check OTP equality">
+            <content>{{receivedOtp}}</content>
+            <content>{{generatedOtp}}</content>
+        </equal>
+    </assert>
+
+</scenario>
