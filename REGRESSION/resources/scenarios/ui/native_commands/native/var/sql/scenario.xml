@@ -7,7 +7,7 @@
         <name>ewfjknkjewefwjfewwfe</name>
     </overview>
 
-    <settings truncateStorages="true">
+    <settings truncateStorages="true" active="false">
         <tags>native</tags>
     </settings>
 
