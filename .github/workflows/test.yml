@@ -403,6 +403,7 @@ jobs:
           PY
 
       - name: Commit and push README
+        if: ${{ github.ref_name == 'main' }}
         run: |
           if git diff --quiet; then
             echo "No README updates to commit."
@@ -472,6 +473,7 @@ jobs:
           echo "payload=$(echo "$blocks" | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification
+        if: ${{ github.ref_name == 'main' }}
         uses: slackapi/slack-github-action@v2
         with:
           method: chat.postMessage
