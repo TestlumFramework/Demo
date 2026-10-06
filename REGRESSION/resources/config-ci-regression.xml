@@ -66,6 +66,9 @@
         <tag name="shell" enabled="true"/>
         <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="true"/>
+
+        <!-- TestRail -->
+        <tag name="testRail" enabled="true"/>
     </runScenariosByTag>
 
     <report>

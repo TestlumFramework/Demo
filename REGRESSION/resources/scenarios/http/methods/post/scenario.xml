@@ -20,7 +20,6 @@
             - In-memory reset behavior
         </description>
         <developer>Vadym Kostenko</developer>
-        <testRail enabled="true" testCaseId="${TESTRAIL_HTTP_CASE_ID}" testRailRunId="${TESTRAIL_RUN_ID}"/>
     </overview>
 
     <settings>

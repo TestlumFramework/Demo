@@ -1,0 +1,32 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>TestRail Second Scenario with multiple cases</name>
+        <description>
+            After the scenarios' execution, the result of this scenario
+            has to be pushed to TestRail for 2 cases:
+            TESTRAIL_CONDITION_CASE_ID and
+            (ignore cases names, it's just sample cases).
+        </description>
+        <developer>Mykhailo Rudyk</developer>
+        <testRail enabled="true" testCaseId="${TESTRAIL_CONDITION_CASE_ID},${TESTRAIL_DB_CASE_ID}" testRailRunId="${TESTRAIL_RUN_ID}"/>
+    </overview>
+
+    <settings>
+        <tags>testRail</tags>
+    </settings>
+
+    <var comment="Simple case with constant" name="const">
+        <constant value="We're Testlum!"/>
+    </var>
+
+    <assert comment="Simple assert checking var">
+        <equal comment="Check whether 'const' var equals 'We're Testlum!'">
+            <content>{{const}}</content>
+            <content>We're Testlum!</content>
+        </equal>
+    </assert>
+
+</scenario>
