@@ -147,6 +147,14 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          testrail_url: ${{ secrets.TESTRAIL_URL }}
+          testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
+          testrail_api_key: ${{ secrets.TESTRAIL_API_KEY }}
+          testrail_project_id: ${{ needs.testrail-setup.outputs.project_id }}
+          testrail_run_id: ${{ steps.testrail_run.outputs.run_id }}
+          testrail_condition_case_id: ${{ needs.testrail-setup.outputs.testrail_condition_case_id }}
+          testrail_http_case_id: ${{ needs.testrail-setup.outputs.testrail_http_case_id }}
+          testrail_db_case_id: ${{ needs.testrail-setup.outputs.testrail_db_case_id }}
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
@@ -222,9 +230,13 @@ jobs:
         run: |
           $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
           $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
+          $testrailOutcome = "${{ steps.validate_testrail.outcome }}"
 
           $status = "passed"
           if ($regressionOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ("${{ matrix.enable_testrail_validation }}" -eq "true" -and $testrailOutcome -eq "failure") {
             $status = "failed"
           }
           if ($regressionOutcome -eq "cancelled") {

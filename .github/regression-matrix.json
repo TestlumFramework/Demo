@@ -34,7 +34,7 @@
       "runs_on": "windows-2025",
       "run_mobile_tests_on_arch": false,
       "enabled": true,
-      "enable_testrail_validation": false
+      "enable_testrail_validation": true
     }
   ]
 }
