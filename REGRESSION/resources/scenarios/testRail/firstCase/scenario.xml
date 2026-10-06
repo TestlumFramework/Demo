@@ -22,9 +22,9 @@
     </var>
 
     <assert comment="Simple assert checking var">
-        <equal comment="Check whether 'const' var equals 'Hello!'">
+        <equal comment="Check whether 'const' var equals 'Hello World!'">
             <content>{{const}}</content>
-            <content>Hello!</content>
+            <content>Hello World!</content>
         </equal>
     </assert>
 
