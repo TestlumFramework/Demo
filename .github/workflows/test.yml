@@ -24,12 +24,39 @@ jobs:
       - name: Build matrix from config
         id: build
         run: |
-          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch) ]}' .github/regression-matrix.json)
+          matrix=$(jq -c '{include: [ .entries[] as $entry | .arches[] as $arch | select(($arch.enabled // true) == true) | ($entry + $arch + {enable_testrail_validation: ((($entry.enable_testrail_validation // false) and ($arch.enable_testrail_validation // false)) | tostring)}) ]}' .github/regression-matrix.json)
           echo "matrix=${matrix}" >> "$GITHUB_OUTPUT"
+
+  # Setting up TestRail resources. It's an idempotent operation:
+  # the project, suite, section and cases are reused across pipelines.
+  # Isolation comes from the per-execution runs, which the cleanup job deletes.
+  testrail-setup:
+    name: Create TestRail resources
+    runs-on: ubuntu-latest
+    outputs:
+      project_id: ${{ steps.setup.outputs.project_id }}
+      suite_id: ${{ steps.setup.outputs.suite_id }}
+      section_id: ${{ steps.setup.outputs.section_id }}
+      case_ids: ${{ steps.setup.outputs.case_ids }}
+      testrail_condition_case_id: ${{ steps.setup.outputs.testrail_condition_case_id }}
+      testrail_http_case_id: ${{ steps.setup.outputs.testrail_http_case_id }}
+      testrail_db_case_id: ${{ steps.setup.outputs.testrail_db_case_id }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+      - name: Ensure project, section and cases exist
+        id: setup
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          PROJECT_NAME: "Testlum Regression"
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node .github/scripts/testrail/testrail-setup.mjs
 
   run-tests:
     name: ${{ matrix.image }} on ${{ matrix.runs_on }} from ${{ matrix.tests_branch }} branch
-    needs: prepare-matrix
+    needs: [prepare-matrix, testrail-setup]
     runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
@@ -69,6 +96,20 @@ jobs:
           docker pull --platform linux/${{ matrix.arch }} ghcr.io/testlumframework/testlum:${{ matrix.image }}
           docker tag ghcr.io/testlumframework/testlum:${{ matrix.image }} testlum:${{ matrix.image }}
 
+      - name: Create TestRail Run
+        id: testrail_run
+        if: ${{ matrix.enable_testrail_validation == 'true' }}
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          TESTRAIL_PROJECT_ID: ${{ needs.testrail-setup.outputs.project_id }}
+          TESTRAIL_SUITE_ID: ${{ needs.testrail-setup.outputs.suite_id }}
+          TESTRAIL_CASE_IDS: ${{ needs.testrail-setup.outputs.case_ids }}
+          RUN_NAME: "${{ matrix.image }} | ${{ matrix.os_family }}/${{ matrix.arch }} | #${{ github.run_number }}"
+          RUN_DESCRIPTION: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node .github/scripts/testrail/create-testrail-run.mjs
+
       - name: Run Regression (Linux)
         if: ${{ matrix.os_family == 'linux' }}
         id: run_regression_linux
@@ -83,6 +124,14 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          testrail_url: ${{ secrets.TESTRAIL_URL }}
+          testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
+          testrail_api_key: ${{ secrets.TESTRAIL_API_KEY }}
+          testrail_project_id: ${{ needs.testrail-setup.outputs.project_id }}
+          testrail_run_id: ${{ steps.testrail_run.outputs.run_id }}
+          testrail_condition_case_id: ${{ needs.testrail-setup.outputs.testrail_condition_case_id }}
+          testrail_http_case_id: ${{ needs.testrail-setup.outputs.testrail_http_case_id }}
+          testrail_db_case_id: ${{ needs.testrail-setup.outputs.testrail_db_case_id }}
 
       - name: Run Regression (Windows)
         if: ${{ matrix.os_family == 'windows' }}
@@ -98,6 +147,14 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+          testrail_url: ${{ secrets.TESTRAIL_URL }}
+          testrail_username: ${{ secrets.TESTRAIL_USERNAME }}
+          testrail_api_key: ${{ secrets.TESTRAIL_API_KEY }}
+          testrail_project_id: ${{ needs.testrail-setup.outputs.project_id }}
+          testrail_run_id: ${{ steps.testrail_run.outputs.run_id }}
+          testrail_condition_case_id: ${{ needs.testrail-setup.outputs.testrail_condition_case_id }}
+          testrail_http_case_id: ${{ needs.testrail-setup.outputs.testrail_http_case_id }}
+          testrail_db_case_id: ${{ needs.testrail-setup.outputs.testrail_db_case_id }}
 
       - name: Run Regression (Mobile and Native Linux)
         id: run_regression_mobile_linux
@@ -113,6 +170,19 @@ jobs:
           twilio_account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
           twilio_auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
           twilio_phone_number: ${{ secrets.TWILIO_PHONE_NUMBER }}
+
+      - name: Validate TestRail Results
+        id: validate_testrail
+        if: ${{ !cancelled() && matrix.enable_testrail_validation == 'true' && steps.testrail_run.outcome == 'success' }}
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          TESTRAIL_RUN_ID: ${{ steps.testrail_run.outputs.run_id }}
+          TESTRAIL_CONDITION_CASE_ID: ${{ needs.testrail-setup.outputs.testrail_condition_case_id }}
+          TESTRAIL_HTTP_CASE_ID: ${{ needs.testrail-setup.outputs.testrail_http_case_id }}
+          TESTRAIL_DB_CASE_ID: ${{ needs.testrail-setup.outputs.testrail_db_case_id }}
+        run: node .github/scripts/testrail/validate-testrail-run.mjs
 
       - name: Cleanup Test Environment (Linux)
         if: ${{ always() && matrix.os_family == 'linux' }}
@@ -131,12 +201,16 @@ jobs:
           pull_outcome="${{ steps.pull_image_linux.outcome }}"
           regression_outcome="${{ steps.run_regression_linux.outcome }}"
           mobile_outcome="${{ steps.run_regression_mobile_linux.outcome }}"
+          testrail_outcome="${{ steps.validate_testrail.outcome }}"
 
           status="passed"
           if [ "${setup_outcome}" = "failure" ] || [ "${pull_outcome}" = "failure" ] || [ "${regression_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${{ matrix.run_mobile_tests_on_image }}" = "true" ] && [ "${mobile_outcome}" = "failure" ]; then
+            status="failed"
+          fi
+          if [ "${{ matrix.enable_testrail_validation }}" = "true" ] && [ "${testrail_outcome}" = "failure" ]; then
             status="failed"
           fi
           if [ "${setup_outcome}" = "cancelled" ] || [ "${pull_outcome}" = "cancelled" ] || [ "${regression_outcome}" = "cancelled" ] || [ "${mobile_outcome}" = "cancelled" ]; then
@@ -156,9 +230,13 @@ jobs:
         run: |
           $safeTag = "${{ matrix.image }}" -replace '[^a-zA-Z0-9._-]', '_'
           $regressionOutcome = "${{ steps.run_regression_windows.outcome }}"
+          $testrailOutcome = "${{ steps.validate_testrail.outcome }}"
 
           $status = "passed"
           if ($regressionOutcome -eq "failure") {
+            $status = "failed"
+          }
+          if ("${{ matrix.enable_testrail_validation }}" -eq "true" -and $testrailOutcome -eq "failure") {
             $status = "failed"
           }
           if ($regressionOutcome -eq "cancelled") {
@@ -178,6 +256,25 @@ jobs:
         with:
           name: result-${{ matrix.image }}-${{ matrix.os_family }}-${{ matrix.arch }}
           path: results/*.json
+
+  # Cleanup TestRail runs and results, so the next pipeline starts against an empty project.
+  # The project, suite, section and cases survive.
+  testrail-cleanup:
+    name: Delete TestRail runs
+    runs-on: ubuntu-latest
+    needs: [testrail-setup, run-tests]
+    if: ${{ always() && needs.testrail-setup.result == 'success' }}
+    steps:
+      - name: Checkout Workflow Repository
+        uses: actions/checkout@v4
+
+      - name: Delete runs and their results
+        env:
+          TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
+          TESTRAIL_USERNAME: ${{ secrets.TESTRAIL_USERNAME }}
+          TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
+          TESTRAIL_PROJECT_ID: ${{ needs.testrail-setup.outputs.project_id }}
+        run: node .github/scripts/testrail/delete-testrail-runs.mjs
 
   update-readme:
     runs-on: ubuntu-latest
@@ -318,6 +415,7 @@ jobs:
           PY
 
       - name: Commit and push README
+        if: ${{ github.ref_name == 'main' }}
         run: |
           if git diff --quiet; then
             echo "No README updates to commit."
@@ -387,6 +485,7 @@ jobs:
           echo "payload=$(echo "$blocks" | jq -c .)" >> $GITHUB_OUTPUT
 
       - name: Slack Notification
+        if: ${{ github.ref_name == 'main' }}
         uses: slackapi/slack-github-action@v2
         with:
           method: chat.postMessage

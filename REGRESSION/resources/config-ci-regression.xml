@@ -66,6 +66,9 @@
         <tag name="shell" enabled="true"/>
         <tag name="shell-windows" enabled="false"/>
         <tag name="elasticsearch" enabled="true"/>
+
+        <!-- TestRail -->
+        <tag name="testRail" enabled="true"/>
     </runScenariosByTag>
 
     <report>
@@ -75,6 +78,13 @@
                 <mongoDB host="192.168.0.10" port="27017"/>
                 <klovServer url="https://reports.knubisoft.com"/>
             </klovServerReportGenerator>
+            <testRailReports addScreenshotForFailure="true"
+                             enabled="true">
+                <username>${TESTRAIL_USERNAME}</username>
+                <apiKey>${TESTRAIL_API_KEY}</apiKey>
+                <url>${TESTRAIL_URL}</url>
+                <projectId>${TESTRAIL_PROJECT_ID}</projectId>
+            </testRailReports>
         </extentReports>
     </report>
 
