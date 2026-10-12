@@ -1,0 +1,7 @@
+{
+  "tests": [
+    { "title": "Condition - Self Test", "case_id_env": "TESTRAIL_CONDITION_CASE_ID", "status_id": 1 },
+    { "title": "HTTP POST", "case_id_env": "TESTRAIL_HTTP_CASE_ID", "status_id": 1 },
+    { "title": "PostgreSQL CRUD Operations Test", "case_id_env": "TESTRAIL_DB_CASE_ID", "status_id": 1 }
+  ]
+}
