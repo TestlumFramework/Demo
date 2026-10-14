@@ -1,0 +1,52 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>Input - Placeholder Locator</name>
+        <description>
+            This scenario verifies that an input element can be located using
+            the Text locator type with the placeholder option enabled.
+
+            Test flow:
+            1. Navigate to UI Elements page.
+            2. Input a value into the Email field using the placeholder locator.
+            3. Verify the input value.
+
+            This scenario validates:
+            - Text locator type with placeholder="true"
+            - Input execution using the placeholder attribute
+            - Verification of the entered value
+        </description>
+    </overview>
+
+    <settings>
+        <tags>web</tags>
+    </settings>
+
+    <include comment="Include login steps"
+             scenario="/ui/includes/login_web/scenario.xml"/>
+
+    <web comment="Start WEB script">
+
+        <navigate comment="Navigate to UI Elements page"
+                  command="to"
+                  path="/ui-elements"/>
+
+        <wait comment="Wait for page load" time="2"/>
+
+        <input comment="Input value using placeholder locator"
+               locator="uiElements.emailInput"
+               value="PLACEHOLDER_TEST"/>
+
+        <assert comment="Verify value entered using placeholder locator">
+            <attribute comment="Check Email input value"
+                       name="value"
+                       locator="uiElements.emailInput">
+                <content>PLACEHOLDER_TEST</content>
+            </attribute>
+        </assert>
+
+    </web>
+
+</scenario>
