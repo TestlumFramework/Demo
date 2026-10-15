@@ -120,6 +120,10 @@
             <xpath>(.//h4[text()='DropDown Test']/following::p)[2]</xpath>
         </locator>
 
+        <locator locatorId="emailInput">
+            <text placeholder="true">Email</text>
+        </locator>
+
         <locator locatorId="hotKeyInput1">
             <xpath>.//input[@placeholder='Input 1']</xpath>
         </locator>
