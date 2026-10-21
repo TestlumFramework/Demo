@@ -25,15 +25,12 @@
         <repeat comment="Repeat alert 2 times" times="2">
 
             <click comment="Trigger alert"
-                   locator="modal.openModalBtn"/>
+                   locator="modal.alertBtn"/>
 
             <alert comment="Accept alert"
                    action="accept"
                    type="alert"
                    waitUntilVisible="true"/>
-
-            <click comment="Close alert modal"
-                   locator="modal.closeModalBtn"/>
 
         </repeat>
 
