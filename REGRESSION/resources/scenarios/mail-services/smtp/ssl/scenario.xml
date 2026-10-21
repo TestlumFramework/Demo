@@ -1,0 +1,21 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Demonstration of SMTP SSL on port 465</description>
+        <name>SMTP SSL</name>
+    </overview>
+
+    <settings>
+        <tags>smtp</tags>
+    </settings>
+
+    <smtp comment="Testing SMTP delivery using implicit SSL on port 465"
+          alias="SMTP_1"
+          recipientEmail="testlum.test.acc@gmail.com">
+        <subject>SMTP SSL Port 465 Test</subject>
+        <text>This test verifies SMTP delivery using implicit SSL on port 465.</text>
+    </smtp>
+
+</scenario>
