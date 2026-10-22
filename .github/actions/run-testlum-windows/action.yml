@@ -43,6 +43,46 @@ inputs:
     required: false
     default: ""
 
+  testrail_url:
+    description: TestRail instance base API url.
+    required: false
+    default: ""
+
+  testrail_username:
+    description: TestRail username.
+    required: false
+    default: ""
+
+  testrail_api_key:
+    description: TestRail API key.
+    required: false
+    default: ""
+
+  testrail_project_id:
+    description: TestRail project the results belong to.
+    required: false
+    default: ""
+
+  testrail_run_id:
+    description: TestRail run created for this execution; read by each scenario's testRailRunId.
+    required: false
+    default: ""
+
+  testrail_condition_case_id:
+    description: TestRail case id read by the second TestRail scenario's testCaseId.
+    required: false
+    default: ""
+
+  testrail_http_case_id:
+    description: TestRail case id read by the first TestRail scenario's testCaseId.
+    required: false
+    default: ""
+
+  testrail_db_case_id:
+    description: TestRail case id read by the second TestRail scenario's testCaseId.
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -52,6 +92,15 @@ runs:
 
     - name: Launch Tests
       shell: pwsh
+      env:
+        TESTRAIL_URL: ${{ inputs.testrail_url }}
+        TESTRAIL_USERNAME: ${{ inputs.testrail_username }}
+        TESTRAIL_API_KEY: ${{ inputs.testrail_api_key }}
+        TESTRAIL_PROJECT_ID: ${{ inputs.testrail_project_id }}
+        TESTRAIL_RUN_ID: ${{ inputs.testrail_run_id }}
+        TESTRAIL_CONDITION_CASE_ID: ${{ inputs.testrail_condition_case_id }}
+        TESTRAIL_HTTP_CASE_ID: ${{ inputs.testrail_http_case_id }}
+        TESTRAIL_DB_CASE_ID: ${{ inputs.testrail_db_case_id }}
       run: |
         $ErrorActionPreference = "Continue"
 
@@ -72,6 +121,14 @@ runs:
           -e TWILIO_ACCOUNT_SID="${{ inputs.twilio_account_sid }}" `
           -e TWILIO_AUTH_TOKEN="${{ inputs.twilio_auth_token }}" `
           -e TWILIO_PHONE_NUMBER="${{ inputs.twilio_phone_number }}" `
+          -e TESTRAIL_URL `
+          -e TESTRAIL_USERNAME `
+          -e TESTRAIL_API_KEY `
+          -e TESTRAIL_PROJECT_ID `
+          -e TESTRAIL_RUN_ID `
+          -e TESTRAIL_CONDITION_CASE_ID `
+          -e TESTRAIL_HTTP_CASE_ID `
+          -e TESTRAIL_DB_CASE_ID `
           "$image" -c="${{ inputs.config_file }}" -p="$resourcesDir"
         $exitCode = $LASTEXITCODE
 

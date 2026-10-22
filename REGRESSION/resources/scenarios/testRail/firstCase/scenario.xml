@@ -1,0 +1,31 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <name>TestRail First Case</name>
+        <description>
+            After the scenarios' execution, the result of this scenario
+            has to be pushed to TestRail for case TESTRAIL_HTTP_CASE_ID
+            (ignore case name, it's just a sample case).
+        </description>
+        <developer>Mykhailo Rudyk</developer>
+        <testRail enabled="true" testCaseId="${TESTRAIL_HTTP_CASE_ID}" testRailRunId="${TESTRAIL_RUN_ID}"/>
+    </overview>
+
+    <settings>
+        <tags>testRail</tags>
+    </settings>
+
+    <var comment="Simple case with constant" name="const">
+        <constant value="Hello World!"/>
+    </var>
+
+    <assert comment="Simple assert checking var">
+        <equal comment="Check whether 'const' var equals 'Hello World!'">
+            <content>{{const}}</content>
+            <content>Hello World!</content>
+        </equal>
+    </assert>
+
+</scenario>
