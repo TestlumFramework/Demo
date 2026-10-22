@@ -17,12 +17,12 @@
         </api>
         <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="custom"
-                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
                   autoLogout="true"/>
         </api>
         <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
             <auth authStrategy="custom"
-                  authCustomClassName="com.knubisoft.testlum.testing.framework.auth.CustomAuth"
+                  authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
                   autoLogout="false"/>
         </api>
         <api alias="MULTIPART" url="https://postman-echo.com" enabled="true"/>

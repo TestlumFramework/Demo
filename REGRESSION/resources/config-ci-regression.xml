@@ -27,6 +27,7 @@
         <tag name="migrate" enabled="true"/>
         <tag name="include" enabled="true"/>
         <tag name="wait" enabled="true"/>
+        <tag name="var-linux-only" enabled="true"/>
 
         <!--    API    -->
         <tag name="http" enabled="true"/>
@@ -34,10 +35,11 @@
         <tag name="graphql" enabled="true"/>
         <tag name="auth-basic-mixed" enabled="true"/>
         <tag name="auth-jwt-mixed" enabled="true"/>
+        <tag name="auth" enabled="true"/>
 
         <!--    Databases    -->
         <tag name="mysql" enabled="true"/>
-        <tag name="postgresql" enabled="true"/>
+        <tag name="postgres" enabled="true"/>
         <tag name="clickhouse" enabled="false"/>
         <tag name="oracle" enabled="true"/>
         <tag name="mongodb" enabled="true"/>

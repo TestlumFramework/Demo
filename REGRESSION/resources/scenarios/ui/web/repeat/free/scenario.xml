@@ -8,7 +8,7 @@
     </overview>
 
     <settings active="true">
-        <tags>free</tags>
+        <tags>web</tags>
     </settings>
 
     <include comment="Include login steps" scenario="/ui/includes/login_web/scenario.xml"/>

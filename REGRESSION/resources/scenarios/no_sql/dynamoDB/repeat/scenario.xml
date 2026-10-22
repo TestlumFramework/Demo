@@ -8,7 +8,7 @@
     </overview>
 
     <settings truncateStorages="true">
-        <tags>dynamo</tags>
+        <tags>dynamodb</tags>
     </settings>
 
     <dynamo alias="DYNAMO_0"
