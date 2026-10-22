@@ -8,11 +8,11 @@
       "mobile_config_file": "config-ci-regression-mobile.xml",
       "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
       "run_mobile_tests_on_image": true,
-      "enable_testrail_validation": false
+      "enable_testrail_validation": true
     },
     {
-      "image": "testrail_preview",
-      "tests_branch": "testrail/main",
+      "image": "3.0.0",
+      "tests_branch": "main",
       "config_file": "config-ci-regression.xml",
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
@@ -22,7 +22,7 @@
     },
     {
       "image": "2.0.0",
-      "tests_branch": "main",
+      "tests_branch": "v2.0.0",
       "config_file": "config-ci-regression.xml",
       "windows_config_file": "config-ci-regression-windows.xml",
       "mobile_config_file": "config-ci-regression-mobile.xml",
