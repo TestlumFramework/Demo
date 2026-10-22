@@ -4,7 +4,7 @@
 
     <overview>
         <description>PostgreSQL CRUD Operations Test</description>
-        <name>Postgres Basic CRUD Test</name>
+        <name>PostgreSQL CRUD Operations Test</name>
     </overview>
 
     <settings truncateStorages="true">
