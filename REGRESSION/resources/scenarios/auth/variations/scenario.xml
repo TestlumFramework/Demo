@@ -16,7 +16,7 @@
 
             This scenario validates:
             - Variation injection into auth comment
-            - Variation injection into auth login endpoint
+            - Variation injection into auth strategy alias
             - Variation injection into nested http comment
             - Variation injection into nested http endpoint
             - Variation injection into request body
@@ -32,9 +32,9 @@
     </settings>
 
     <auth comment="{{authComment}}"
-          apiAlias="MEGA_APP"
+          strategyAlias="{{authStrategyAlias}}"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/{{authLoginEndpoint}}">
+          autoLogout="true">
 
         <http comment="{{httpComment}}"
               alias="MEGA_APP">

@@ -2,29 +2,29 @@
               xmlns="http://www.testlum.com/testing/model/global-config"
               xsi:schemaLocation="http://www.testlum.com/testing/model/global-config global-config.xsd">
 
+    <authStrategies>
+        <jwt alias="APP_JWT"
+             loginEndpoint="http://localhost:8080/api/v1/api/test/auth/jwt/login"
+             tokenName="token"/>
+
+        <jwt alias="APP_JWT_USERS"
+             loginEndpoint="http://localhost:8080/api/v1/jwt/login"
+             tokenName="token"/>
+
+        <basic alias="APP_BASIC"/>
+
+        <custom alias="APP_CUSTOM"
+                loginEndpoint="http://localhost:8080/api/v1/api/test/auth/custom/login"
+                className="com.testlum.testing.framework.auth.CustomAuth"/>
+    </authStrategies>
+
     <apis>
-        <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="jwt"/>
-        </api>
-        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="jwt" autoLogout="false"/>
-        </api>
-        <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="basic"/>
-        </api>
-        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="basic" autoLogout="false"/>
-        </api>
-        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="custom"
-                  authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
-                  autoLogout="true"/>
-        </api>
-        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true">
-            <auth authStrategy="custom"
-                  authCustomClassName="com.testlum.testing.framework.auth.CustomAuth"
-                  autoLogout="false"/>
-        </api>
+        <api alias="MEGA_APP" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_APP_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_APP_BASIC" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_APP_BASIC_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_APP_CUSTOM" url="http://localhost:8080/api/v1" enabled="true"/>
+        <api alias="MEGA_APP_CUSTOM_NO_LOGOUT" url="http://localhost:8080/api/v1" enabled="true"/>
         <api alias="MULTIPART" url="https://postman-echo.com" enabled="true"/>
         <api alias="CAT_FACTS" url="https://catfact.ninja/" enabled="true"/>
     </apis>
@@ -205,7 +205,7 @@
             <autoOffsetReset>earliest</autoOffsetReset>
             <maxPollRecords>100</maxPollRecords>
             <maxPollIntervalMs>1000</maxPollIntervalMs>
-<!--            <maxPollIntervalMs>200</maxPollIntervalMs>-->
+            <!--            <maxPollIntervalMs>200</maxPollIntervalMs>-->
             <clientId>client-queue</clientId>
             <groupId>group-queue</groupId>
             <autoCommitTimeout>2000</autoCommitTimeout>

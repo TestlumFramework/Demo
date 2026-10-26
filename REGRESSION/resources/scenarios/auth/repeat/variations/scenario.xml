@@ -31,9 +31,9 @@
     </settings>
 
     <auth comment="Authenticate via JWT auth command"
-          apiAlias="MEGA_APP"
+          strategyAlias="APP_JWT"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/api/test/auth/jwt/login">
+          autoLogout="true">
 
         <repeat comment="Create protected resource for each variation"
                 variations="authRepeatVariations.csv">
