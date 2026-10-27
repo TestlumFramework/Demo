@@ -14,8 +14,7 @@
         <basic alias="APP_BASIC"/>
 
         <custom alias="APP_CUSTOM"
-                loginEndpoint="http://localhost:8080/api/v1/api/test/auth/custom/login"
-                className="com.testlum.testing.framework.auth.CustomAuth"/>
+                className="com.testlum.testing.framework.auth.CustomAuthLocal"/>
     </authStrategies>
 
     <apis>
