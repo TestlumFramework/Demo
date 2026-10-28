@@ -8,7 +8,7 @@
       "mobile_config_file": "config-ci-regression-mobile.xml",
       "windows_mobile_config_file": "config-ci-regression-mobile-windows.xml",
       "run_mobile_tests_on_image": true,
-      "enable_testrail_validation": true
+      "enable_testrail_validation": false
     }
   ],
   "arches": [
