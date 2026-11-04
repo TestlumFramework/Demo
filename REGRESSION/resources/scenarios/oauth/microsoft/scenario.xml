@@ -1,0 +1,53 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Obtain a Microsoft access token using a refresh token and read name and email through the Demo API.
+            Verify tokenVariable access through var, explicit and automatic Authorization headers,
+            and cleanup after the auth block.
+        </description>
+        <name>Microsoft OAuth Refresh Token</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>oauth-microsoft</tags>
+    </settings>
+
+    <auth strategyAlias="MICROSOFT"
+          credentials="microsoft-user.json"
+          autoLogout="true"
+          tokenVariable="microsoftToken"
+          comment="Authenticate with Microsoft using a refresh token">
+
+        <var name="microsoftTokenCopy" comment="Read Microsoft access token from the auth context">
+            <constant value="{{microsoftToken}}"/>
+        </var>
+
+        <http alias="MEGA_APP" comment="Read Microsoft profile using the token copied through var">
+            <get endpoint="/api/test/auth/microsoft/profile">
+                <response code="200" file="expected_2.json"/>
+                <header name="Authorization" data="Bearer {{microsoftTokenCopy}}"/>
+            </get>
+        </http>
+
+        <http alias="MEGA_APP" comment="Read the Microsoft user profile through the Demo API">
+            <get endpoint="/api/test/auth/microsoft/profile">
+                <response code="200" file="expected_2.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <var name="microsoftTokenCopy" comment="Read Microsoft access token from the auth context">
+        <constant value="{{microsoftToken}}"/>
+    </var>
+
+    <http alias="MEGA_APP" comment="Verify that autoLogout clears the Microsoft Authorization header">
+        <get endpoint="/api/test/auth/microsoft/profile">
+            <response code="401" file="expected_3.json"/>
+        </get>
+    </http>
+</scenario>

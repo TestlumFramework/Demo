@@ -15,6 +15,16 @@
 
         <custom alias="APP_CUSTOM"
                 className="com.testlum.testing.framework.auth.CustomAuthRegression"/>
+
+        <google alias="GOOGLE"
+                clientId="{{secret/data/oauth/google/clientId.key}}"
+                clientSecret="{{secret/data/oauth/google/clientSecret.key}}"/>
+
+        <microsoft alias="MICROSOFT"
+                   clientId="{{secret/data/oauth/microsoft/clientId.key}}"
+                   clientSecret="{{secret/data/oauth/microsoft/clientSecret.key}}"
+                   tenant="common"
+                   scope="https://graph.microsoft.com/User.Read"/>
     </authStrategies>
 
     <apis>
