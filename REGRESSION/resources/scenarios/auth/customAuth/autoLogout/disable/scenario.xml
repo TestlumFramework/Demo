@@ -38,9 +38,9 @@
     </http>
 
     <auth comment="Apply Custom Auth header"
-          apiAlias="MEGA_APP_CUSTOM_NO_LOGOUT"
+          strategyAlias="APP_CUSTOM"
           credentials="http-auth-user-custom.json"
-          loginEndpoint="/api/test/auth/custom/login">
+          autoLogout="false">
 
         <http comment="Access protected custom resource inside auth block"
               alias="MEGA_APP_CUSTOM_NO_LOGOUT">
