@@ -1,0 +1,49 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Obtain a Google access token using a refresh token and read name and email through the Demo API.
+            Verify tokenVariable access through var, explicit and automatic Authorization headers,
+            and cleanup after the auth block.
+        </description>
+        <name>Google OAuth Refresh Token</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>oauth-google</tags>
+    </settings>
+
+    <auth strategyAlias="GOOGLE"
+          credentials="google-user.json"
+          autoLogout="true"
+          tokenVariable="googleToken"
+          comment="Authenticate with Google using a refresh token">
+
+        <var name="googleTokenCopy" comment="Read Google access token from the auth context">
+            <constant value="{{googleToken}}"/>
+        </var>
+
+        <http alias="MEGA_APP" comment="Read Google profile using the token copied through var">
+            <get endpoint="/api/test/auth/google/profile">
+                <response code="200" file="expected_2.json"/>
+                <header name="Authorization" data="Bearer {{googleTokenCopy}}"/>
+            </get>
+        </http>
+
+        <http alias="MEGA_APP" comment="Read the Google user profile through the Demo API">
+            <get endpoint="/api/test/auth/google/profile">
+                <response code="200" file="expected_2.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http alias="MEGA_APP" comment="Verify that autoLogout clears the Google Authorization header">
+        <get endpoint="/api/test/auth/google/profile">
+            <response code="401" file="expected_3.json"/>
+        </get>
+    </http>
+</scenario>

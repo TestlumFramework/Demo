@@ -32,4 +32,8 @@ if $(vault status | grep Initialized | awk '{print $2}'); then
     vault kv put secret/ses/accessKeyId key=DEFAULT_ACCESS_KEY
     vault kv put secret/browserStack/user username=bohdanshakhov_fMHusx
     vault kv put secret/browserStack/accessKey key=xzf94rKxaDBUxULLwJXC
+    vault kv put secret/oauth/google/clientId key="$GOOGLE_CLIENT_ID"
+    vault kv put secret/oauth/google/clientSecret key="$GOOGLE_CLIENT_SECRET"
+    vault kv put secret/oauth/microsoft/clientId key="$MICROSOFT_CLIENT_ID"
+    vault kv put secret/oauth/microsoft/clientSecret key="$MICROSOFT_CLIENT_SECRET"
 fi

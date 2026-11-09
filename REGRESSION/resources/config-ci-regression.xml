@@ -36,6 +36,8 @@
         <tag name="auth-basic-mixed" enabled="true"/>
         <tag name="auth-jwt-mixed" enabled="true"/>
         <tag name="auth" enabled="true"/>
+        <tag name="oauth-google" enabled="true"/>
+        <tag name="oauth-microsoft" enabled="true"/>
 
         <!--    Databases    -->
         <tag name="mysql" enabled="true"/>

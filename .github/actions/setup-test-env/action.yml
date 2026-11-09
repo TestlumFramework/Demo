@@ -22,6 +22,22 @@ inputs:
     required: false
     default: "true"
 
+  google_client_id:
+    description: Google OAuth client ID.
+    required: true
+
+  google_client_secret:
+    description: Google OAuth client secret.
+    required: true
+
+  microsoft_client_id:
+    description: Microsoft OAuth client ID.
+    required: true
+
+  microsoft_client_secret:
+    description: Microsoft OAuth client secret.
+    required: true
+
 runs:
   using: composite
   steps:
@@ -58,7 +74,12 @@ runs:
       working-directory: ${{ inputs.working_directory }}
       run: |
         docker compose -f docker/docker-compose-integrations.yaml --profile ci up -d --force-recreate
-        docker exec -t vault-e2e sh /tmp/init_vault.sh
+        docker exec -t \
+          -e GOOGLE_CLIENT_ID="${{ inputs.google_client_id }}" \
+          -e GOOGLE_CLIENT_SECRET="${{ inputs.google_client_secret }}" \
+          -e MICROSOFT_CLIENT_ID="${{ inputs.microsoft_client_id }}" \
+          -e MICROSOFT_CLIENT_SECRET="${{ inputs.microsoft_client_secret }}" \
+          vault-e2e sh /tmp/init_vault.sh
 
     - name: Run Selenium Grid Browsers
       shell: bash
@@ -68,4 +89,10 @@ runs:
     - name: Run Mega Test App
       shell: bash
       working-directory: ${{ inputs.working_directory }}
-      run: docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
+      run: |
+        export GOOGLE_CLIENT_ID="${{ inputs.google_client_id }}"
+        export GOOGLE_CLIENT_SECRET="${{ inputs.google_client_secret }}"
+        export MICROSOFT_CLIENT_ID="${{ inputs.microsoft_client_id }}"
+        export MICROSOFT_CLIENT_SECRET="${{ inputs.microsoft_client_secret }}"
+
+        docker compose -f docker/docker-compose-mega-test-app.yaml --profile ci up -d --build --force-recreate
