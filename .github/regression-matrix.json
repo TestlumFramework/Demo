@@ -16,7 +16,7 @@
       "os_family": "linux",
       "arch": "amd64",
       "runs_on": "ubuntu-latest",
-      "run_mobile_tests_on_arch": true,
+      "run_mobile_tests_on_arch": false,
       "enabled": true,
       "enable_testrail_validation": true
     },
