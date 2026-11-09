@@ -29,21 +29,9 @@
         <http alias="MEGA_APP" comment="Read Microsoft profile using the token copied through var">
             <get endpoint="/api/test/auth/microsoft/profile">
                 <response code="200" file="expected_2.json"/>
-                <header name="Authorization" data="Bearer {{microsoftTokenCopy}}"/>
             </get>
         </http>
-
-        <http alias="MEGA_APP" comment="Read the Microsoft user profile through the Demo API">
-            <get endpoint="/api/test/auth/microsoft/profile">
-                <response code="200" file="expected_2.json"/>
-            </get>
-        </http>
-
     </auth>
-
-    <var name="microsoftTokenCopy" comment="Read Microsoft access token from the auth context">
-        <constant value="{{microsoftToken}}"/>
-    </var>
 
     <http alias="MEGA_APP" comment="Verify that autoLogout clears the Microsoft Authorization header">
         <get endpoint="/api/test/auth/microsoft/profile">
