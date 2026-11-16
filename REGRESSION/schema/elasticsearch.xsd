@@ -35,7 +35,7 @@
         <x:complexContent>
             <x:extension base="tns:elasticSearchRequest">
                 <x:sequence>
-                    <x:element name="body" type="tns:body" minOccurs="0"/>
+                    <x:element name="body" type="tns:bodyWithoutMultipart" minOccurs="0"/>
                 </x:sequence>
             </x:extension>
         </x:complexContent>
@@ -78,6 +78,7 @@
         </x:sequence>
         <x:attribute name="code" type="tns:codePattern" default="200"/>
         <x:attribute name="file" type="tns:expectedPattern"/>
+        <x:attribute name="mode" type="tns:mode" default="strict"/>
     </x:complexType>
 
     <x:complexType name="elasticSearchResponseWarning">
