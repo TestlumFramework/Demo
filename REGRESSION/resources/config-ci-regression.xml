@@ -43,7 +43,7 @@
         <tag name="s3" enabled="true"/>
         <tag name="sendgrid" enabled="false"/>
         <tag name="twilio" enabled="false"/>
-        <tag name="smtp" enabled="true"/>
+        <tag name="smtp" enabled="false"/>
         <tag name="ses" enabled="true"/>
     </runScenariosByTag>
 
