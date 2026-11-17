@@ -519,7 +519,7 @@
       <h4 class="text-gray-600">Video in other frame</h4>
       <div class="w-full h-full">
         <div class="embed-responsive embed-responsive-16by9 py-8">
-          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/6ihAN0WE1vo"
+          <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/W9nZ6u15yis"
                   allowfullscreen></iframe>
         </div>
       </div>
