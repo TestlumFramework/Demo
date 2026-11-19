@@ -26,7 +26,7 @@
         <developer>Vadym Kostenko</developer>
     </overview>
 
-    <settings active="false">
+    <settings>
         <tags>auth</tags>
     </settings>
 
@@ -35,9 +35,9 @@
                spel="true"/>
 
     <auth comment="Step 2-4. Authenticate via JWT auth command and execute protected request"
-          apiAlias="MEGA_APP"
+          strategyAlias="APP_JWT"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/api/test/auth/jwt/login"
+          autoLogout="true"
           condition="shouldAuthenticate">
 
         <http comment="Step 3-4. Verify protected resource is accessible inside authenticated block"
@@ -55,9 +55,9 @@
 
     <auth comment="Step 6-7. This auth block should be skipped because condition is false.
     If it executes unexpectedly, login must fail because invalid credentials are provided"
-          apiAlias="MEGA_APP"
+          strategyAlias="APP_JWT"
           credentials="invalid-http-auth-user-jwt.json"
-          loginEndpoint="/api/test/auth/jwt/login"
+          autoLogout="true"
           condition="shouldSkipAuth">
 
         <http comment="This request must never execute because auth block should be skipped"

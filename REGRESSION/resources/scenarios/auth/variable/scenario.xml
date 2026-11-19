@@ -8,8 +8,8 @@
             This scenario verifies JWT authentication flow using variables.
 
             Test flow includes:
-            1. Create variables for comments, login endpoint, protected endpoint, reset endpoint, condition and request values.
-            2. Authenticate via auth tag using variable-based login endpoint.
+            1. Create variables for comments, strategy alias, protected endpoint, reset endpoint, condition and request values.
+            2. Authenticate via auth tag using variable-based strategy alias.
             3. Create protected resource using variable-based endpoint and body.
             4. Verify create response = 200 using expected file with injected variables.
             5. Reset JWT auth state using variable-based endpoint.
@@ -41,7 +41,7 @@
 
     <var comment="Create variable for auth comment"
          name="authComment">
-        <constant value="Authenticate via JWT auth command using variable-based login endpoint"/>
+        <constant value="Authenticate via JWT auth command using variable-based strategy alias"/>
     </var>
 
     <var comment="Create variable for create resource comment"
@@ -54,9 +54,9 @@
         <constant value="Reset JWT auth state using variable-based endpoint"/>
     </var>
 
-    <var comment="Create login endpoint variable"
-         name="loginEndpoint">
-        <constant value="api/test/auth/jwt/login"/>
+    <var comment="Create auth strategy alias variable"
+         name="strategyAlias">
+        <constant value="APP_JWT"/>
     </var>
 
     <var comment="Create resource creation endpoint variable"
@@ -75,9 +75,9 @@
     </var>
 
     <auth comment="{{authComment}}"
-          apiAlias="MEGA_APP"
+          strategyAlias="{{strategyAlias}}"
           credentials="http-auth-user-jwt.json"
-          loginEndpoint="/{{loginEndpoint}}"
+          autoLogout="true"
           condition="{{shouldExecute}}">
 
         <http comment="{{createComment}}"

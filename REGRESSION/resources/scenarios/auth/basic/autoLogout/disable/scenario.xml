@@ -39,9 +39,9 @@
     </http>
 
     <auth comment="Apply Basic Auth header"
-          apiAlias="MEGA_APP_BASIC_NO_LOGOUT"
+          strategyAlias="APP_BASIC"
           credentials="http-auth-user-basic.json"
-          loginEndpoint="/ignore">
+          autoLogout="false">
 
         <http comment="Get users inside auth block"
               alias="MEGA_APP_BASIC_NO_LOGOUT">

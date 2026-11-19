@@ -45,8 +45,8 @@
         </get>
     </http>
 
-    <auth comment="Check ability to log in by 'auth' command" apiAlias="MEGA_APP_BASIC"
-          credentials="auth-user-basic.json" loginEndpoint="/basic/login">
+    <auth comment="Check ability to log in by 'auth' command" strategyAlias="APP_BASIC"
+          credentials="auth-user-basic.json" autoLogout="true">
 
         <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
               alias="MEGA_APP_BASIC">

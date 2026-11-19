@@ -118,8 +118,8 @@
         <dataset>{{patch}}</dataset>
     </migrate>
 
-    <auth comment="Check ability to log in by 'auth' command" apiAlias="MEGA_APP" credentials="{{auth}}.json"
-          loginEndpoint="/jwt/login">
+    <auth comment="Check ability to log in by 'auth' command" strategyAlias="APP_JWT_USERS" credentials="{{auth}}.json"
+          autoLogout="true">
 
         <http comment="Check ability to get list of all users by authorized user inside 'auth' command"
               alias="MEGA_APP">
