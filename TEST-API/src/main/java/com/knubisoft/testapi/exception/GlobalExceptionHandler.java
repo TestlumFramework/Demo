@@ -11,11 +11,14 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -78,6 +81,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ApiTestAuthException.class)
     public ResponseEntity<Object> handleApiTestAuthException(ApiTestAuthException ex) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, String>> handleGoogleOAuthError(final ResponseStatusException exception) {
+        return ResponseEntity.status(exception.getStatus())
+                .header("Cache-Control", "no-store")
+                .header("Referrer-Policy", "no-referrer")
+                .body(Collections.singletonMap("error", exception.getReason()));
     }
 
     private ResponseEntity<Object> buildResponse(HttpStatus httpStatus, Exception ex) {

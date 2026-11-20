@@ -91,6 +91,16 @@ inputs:
     required: false
     default: ""
 
+  google_user_refresh_token:
+    description: OAuth google user refresh token.
+    required: false
+    default: ""
+
+  microsoft_user_refresh_token:
+    description: OAuth microsoft user refresh token.
+    required: false
+    default: ""
+
 runs:
   using: composite
   steps:
@@ -108,6 +118,8 @@ runs:
         set +e
         docker run -t -u "$(id -u):$(id -g)" --rm \
           --network=e2e_network \
+          -e GOOGLE_USER_REFRESH_TOKEN="${{ inputs.google_user_refresh_token }}" \
+          -e MICROSOFT_USER_REFRESH_TOKEN="${{ inputs.microsoft_user_refresh_token }}" \
           -e SENDGRID_API_KEY="${{ inputs.sendgrid_api_key }}" \
           -e SMTP_USERNAME="${{ inputs.smtp_username }}" \
           -e SMTP_PASSWORD="${{ inputs.smtp_password }}" \

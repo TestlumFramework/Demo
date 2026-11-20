@@ -79,6 +79,10 @@ jobs:
         id: setup_env_linux
         uses: ./.github/actions/setup-test-env
         with:
+          google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
+          google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          microsoft_client_id: ${{ secrets.MICROSOFT_CLIENT_ID }}
+          microsoft_client_secret: ${{ secrets.MICROSOFT_CLIENT_SECRET }}
           working_directory: testlum-tests
           browserstack_access_key: ${{ secrets.BROWSERSTACK_KEY }}
           browserstack_binary_arch: ${{ matrix.arch }}
@@ -115,6 +119,8 @@ jobs:
         id: run_regression_linux
         uses: ./.github/actions/run-testlum
         with:
+          google_user_refresh_token: ${{ secrets.GOOGLE_USER_REFRESH_TOKEN }}
+          microsoft_user_refresh_token: ${{ secrets.MICROSOFT_USER_REFRESH_TOKEN }}
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.config_file }}
           resources_path: testlum-tests/REGRESSION
@@ -161,6 +167,8 @@ jobs:
         if: ${{ matrix.os_family == 'linux' && matrix.run_mobile_tests_on_image && matrix.run_mobile_tests_on_arch }}
         uses: ./.github/actions/run-testlum
         with:
+          google_user_refresh_token: ${{ secrets.GOOGLE_USER_REFRESH_TOKEN }}
+          microsoft_user_refresh_token: ${{ secrets.MICROSOFT_USER_REFRESH_TOKEN }}
           image_tag: ${{ matrix.image }}
           config_file: ${{ matrix.mobile_config_file }}
           resources_path: testlum-tests/REGRESSION

@@ -1,0 +1,28 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>Authenticate with Microsoft inside the outer Google auth block.</description>
+        <name>Included Microsoft OAuth</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings active="false">
+        <tags>oauth-microsoft</tags>
+    </settings>
+
+    <auth strategyAlias="MICROSOFT"
+          credentials="microsoft-user.json"
+          autoLogout="true"
+          tokenVariable="oauthToken"
+          comment="Authenticate with Microsoft inside the included scenario">
+
+        <http alias="MEGA_APP" comment="Verify Microsoft authorization inside the included scenario">
+            <get endpoint="/api/test/auth/microsoft/profile">
+                <response code="200" file="expected_4.json"/>
+            </get>
+        </http>
+
+    </auth>
+</scenario>

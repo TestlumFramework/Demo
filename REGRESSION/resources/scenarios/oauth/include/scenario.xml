@@ -1,0 +1,46 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Authenticate with Google, include a scenario authenticated with Microsoft,
+            and verify that Google authorization is restored after the include.
+        </description>
+        <name>OAuth Nested Include</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>oauth-google</tags>
+    </settings>
+
+    <auth strategyAlias="GOOGLE"
+          credentials="google-user.json"
+          autoLogout="true"
+          tokenVariable="oauthToken"
+          comment="Authenticate with Google before including another auth scenario">
+
+        <http alias="MEGA_APP" comment="Verify Google authorization before the include">
+            <get endpoint="/api/test/auth/google/profile">
+                <response code="200" file="expected_2.json"/>
+            </get>
+        </http>
+
+        <include scenario="oauth/include/included/scenario.xml"
+                 comment="Execute the included scenario with Microsoft authorization"/>
+
+        <http alias="MEGA_APP" comment="Verify Google authorization is restored after the include">
+            <get endpoint="/api/test/auth/google/profile">
+                <response code="200" file="expected_5.json"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http alias="MEGA_APP" comment="Verify authorization is cleared after the outer auth block">
+        <get endpoint="/api/test/auth/google/profile">
+            <response code="401" file="expected_6.json"/>
+        </get>
+    </http>
+</scenario>

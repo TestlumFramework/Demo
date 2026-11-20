@@ -3,18 +3,28 @@
               xsi:schemaLocation="http://www.testlum.com/testing/model/global-config global-config.xsd">
 
     <authStrategies>
-        <jwt alias="APP_JWT"
+        <jwt alias="APP_JWT" enabled="true"
              loginEndpoint="http://localhost:8080/api/v1/api/test/auth/jwt/login"
              tokenName="token"/>
 
-        <jwt alias="APP_JWT_USERS"
+        <jwt alias="APP_JWT_USERS" enabled="true"
              loginEndpoint="http://localhost:8080/api/v1/jwt/login"
              tokenName="token"/>
 
-        <basic alias="APP_BASIC"/>
+        <basic alias="APP_BASIC" enabled="true"/>
 
-        <custom alias="APP_CUSTOM"
+        <custom alias="APP_CUSTOM" enabled="true"
                 className="com.testlum.testing.framework.auth.CustomAuthLocal"/>
+
+        <google alias="GOOGLE" enabled="true"
+                clientId="{{secret/data/oauth/google/clientId.key}}"
+                clientSecret="{{secret/data/oauth/google/clientSecret.key}}"/>
+
+        <microsoft alias="MICROSOFT" enabled="true"
+                   clientId="{{secret/data/oauth/microsoft/clientId.key}}"
+                   clientSecret="{{secret/data/oauth/microsoft/clientSecret.key}}"
+                   tenant="common"
+                   scope="https://graph.microsoft.com/User.Read"/>
     </authStrategies>
 
     <apis>
