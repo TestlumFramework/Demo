@@ -1,0 +1,60 @@
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://www.testlum.com/testing/model/scenario"
+          xsi:schemaLocation="http://www.testlum.com/testing/model/scenario scenario.xsd">
+
+    <overview>
+        <description>
+            Copy the Google tokenVariable into a regular var inside auth.
+            After automatic logout, copy that var again and use it in an explicit Authorization header.
+            Verify that automatic authorization stays cleared while the regular token copies remain usable.
+        </description>
+        <name>Google OAuth TokenVariable And Var</name>
+        <developer>Vadym Kostenko</developer>
+    </overview>
+
+    <settings>
+        <tags>oauth-google</tags>
+    </settings>
+
+    <auth strategyAlias="GOOGLE"
+          credentials="google-user.json"
+          autoLogout="true"
+          tokenVariable="googleToken"
+          comment="Authenticate with Google and expose the token inside the auth block">
+
+        <var name="googleTokenCopy" comment="Copy the auth token into a regular scenario variable">
+            <constant value="{{googleToken}}"/>
+        </var>
+
+        <http alias="MEGA_APP" comment="Verify the token copy works inside the auth block">
+            <get endpoint="/api/test/auth/google/profile">
+                <response code="200" file="expected_3.json"/>
+                <header name="Authorization" data="Bearer {{googleTokenCopy}}"/>
+            </get>
+        </http>
+
+    </auth>
+
+    <http alias="MEGA_APP" comment="Verify automatic authorization is cleared after logout">
+        <get endpoint="/api/test/auth/google/profile">
+            <response code="401" file="expected_4.json"/>
+        </get>
+    </http>
+
+    <var name="googleTokenCopy2" comment="Read the preserved regular token copy after leaving auth">
+        <constant value="{{googleTokenCopy}}"/>
+    </var>
+
+    <http alias="MEGA_APP" comment="Use the second token copy in an explicit header after logout">
+        <get endpoint="/api/test/auth/google/profile">
+            <response code="200" file="expected_6.json"/>
+            <header name="Authorization" data="Bearer {{googleTokenCopy2}}"/>
+        </get>
+    </http>
+
+    <http alias="MEGA_APP" comment="Verify explicit token use did not restore automatic authorization">
+        <get endpoint="/api/test/auth/google/profile">
+            <response code="401" file="expected_7.json"/>
+        </get>
+    </http>
+</scenario>
